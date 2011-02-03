@@ -8,10 +8,8 @@ import java.util.List;
  * @author Team Maka
  */
 public abstract class SubSystemObject {
-  /** A List of Sensors in this System's scope.*/
-  protected List<Sensor> sensorList;
-  /** A List of Actuators in this System's scope.*/
-  protected List<Actuator> actuatorList;
+  /** A List of Environment in this System's scope.*/
+  protected List<Environment> sensorList;
   /** The name of this System (e.g. "Aquaponics").*/
   protected String subSystemName;
   /** The URL Base for use by REST. */
@@ -58,6 +56,6 @@ public abstract class SubSystemObject {
   /**
    * Tells the object to poll data from the sensors and put them in the DataBase.
    */
-  public abstract void poll();
+  public abstract void run();
   
 }

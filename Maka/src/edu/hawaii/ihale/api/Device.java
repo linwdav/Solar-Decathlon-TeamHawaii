@@ -7,7 +7,7 @@ package edu.hawaii.ihale.api;
  *
  */
 public class Device {
-  /** ensures unique IDs.*/
+  /** Ensures unique IDs.*/
   private static int idCounter = 100;
   /** A unique Identifier.**/
   protected int ID;
@@ -22,7 +22,7 @@ public class Device {
    * @param subSystemName String representing the name of the SubSystem (eg "Aquaponics").
    * @param deviceDescription String describing the location and function of the device.
    */
-  Device(String subSystemName, String deviceDescription) {
+  public Device(String subSystemName, String deviceDescription) {
     ID = idCounter;
     idCounter ++;
     this.subSystemName = subSystemName;

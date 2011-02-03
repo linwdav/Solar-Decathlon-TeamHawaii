@@ -9,9 +9,9 @@ package edu.hawaii.ihale.api;
 public class Environment {
 
 	/** Unique sensor for GET requests on the Environment. */
-	private Sensor;
+	private Sensor sensor;
 	/** Unique actuator for PUT requests on the Environment. */
-	private Actuator;
+	private Actuator actuator;
 
 	/**
 	 * Polls environment data.
