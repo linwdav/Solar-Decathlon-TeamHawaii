@@ -23,7 +23,7 @@ public class Sample {
   private String systemID;
   
   /**
-   * Creates a Contact instance given its field values as strings. 
+   * Creates a Sample instance given its field values as strings. 
    * @param data The map holding the data.
    * @param systemID String holds name of system.
  
@@ -43,7 +43,7 @@ public class Sample {
   }
   
   /**
-   * Returns the unique time associated with this contact.
+   * Returns the unique time associated with this sample.
    * @return The unique time.
    */
   public long getUniqueTime() {
@@ -51,7 +51,7 @@ public class Sample {
   }
 
   /**
-   * Returns the system name associated with this contact.
+   * Returns the system name associated with this sample.
    * @return The system name.
    */
   public String getSystemID() {

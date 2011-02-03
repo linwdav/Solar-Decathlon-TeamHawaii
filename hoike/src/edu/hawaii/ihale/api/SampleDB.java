@@ -3,7 +3,7 @@ package edu.hawaii.ihale.api;
 
 
 /**
- * Provides a specification of the operations that should be implemented by every ContactDB.
+ * Provides a specification of the operations that should be implemented by every SampleDB.
  * @author Nathan Dorman
  * @author David Lin
  * @author Leonardo Nguyen
