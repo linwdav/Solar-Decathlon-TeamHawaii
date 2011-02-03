@@ -5,7 +5,7 @@ import java.util.Map;
 
 
 /**
- * Provides a simple record of information about a person.
+ * Provides a simple record of information about a sample.
  * @author Nathan Dorman
  * @author David Lin
  * @author Leonardo Nguyen
@@ -15,10 +15,11 @@ public class Sample {
   /** all data will be stored in this map. */
   private Map<String, String> data;
   
-  /** The contact's unique ID. */
+  /** The sample's unique ID. */
   private long uniqueTime;
   /** The unique ID element name. */
   
+  /** The sample's secondary key, name of the system. */
   private String systemID;
   
   /**
@@ -34,6 +35,14 @@ public class Sample {
   }
   
   /**
+   * Returns the entire sample instance.
+   * @return The sample.
+   */
+  public Sample getSample() {
+    return this;
+  }
+  
+  /**
    * Returns the unique time associated with this contact.
    * @return The unique time.
    */
@@ -42,11 +51,19 @@ public class Sample {
   }
 
   /**
-   * Returns the unique time associated with this contact.
-   * @return The unique time.
+   * Returns the system name associated with this contact.
+   * @return The system name.
    */
   public String getSystemID() {
     return this.systemID;
+  }
+  
+  /**
+   * Returns all data in this sample.
+   * @return The data map.
+   */
+  public Map<String, String> getData() {
+    return this.data;
   }
   
   /**
@@ -54,8 +71,8 @@ public class Sample {
    * @param key The type of data to retrieve from the map.
    * @return The data associated to the key.
    */
-  public String getData(String key) {
-    return data.get(key);
+  public String getKey(String key) {
+    return this.data.get(key);
   }
   
   /**
