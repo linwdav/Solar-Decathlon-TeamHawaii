@@ -1,0 +1,68 @@
+<project name="build" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+  <description>
+  The basic build file for this system.
+  </description>
+
+  <import file="common.build.xml" />
+
+  <!-- Library versions -->
+  <property name="junit.version" value="4.5" />
+  <property name="berkeleydb.version" value="4.1.7" />
+  
+  <target name="install-libraries" description="Install libraries needed for compilation">
+    <ivy:retrieve organisation="org.junit" module="junit" revision="${junit.version}" pattern="${lib.dir}/junit/[artifact].[ext]" sync="true" inline="true" conf="default" log="download-only" transitive="false" type="jar" />
+    <path id="junit.path" location="${lib.dir}/junit/junit.jar" />
+
+  </target>
+
+  <!-- Basic properties for this system. -->
+  <property name="system.name" value="api-contactdb" />
+  <property name="system.main.class" value="edu.hawaii.ihale.api.Sample" />
+  <property name="majorVersionNumber" value="1" />
+  <property name="minorVersionNumber" value="0" />
+  <tstamp>
+    <format property="DAYSTAMP" pattern="Mdd" />
+    <format property="TSTAMP" pattern="HH:mm:ss" />
+  </tstamp>
+  <property name="version" value="${majorVersionNumber}.${minorVersionNumber}.${DAYSTAMP}" />
+
+  <!-- The compile classpath is useful to many tools. -->
+  <path id="compile.classpath">
+    <path refid="junit.path" />
+    <!-- Add the build path as that is where the API classes are compiled to. -->
+    <pathelement path="${build.classes.dir}" />
+  </path>
+  
+  <!-- To illustrate this API, we have three source directories. -->
+  <property name="src.api.dir" location="${basedir}/src"/>
+
+  <macrodef name="compile-component">
+     <attribute name="src.dir" default="${src.dir}"/>
+     <sequential>
+       <mkdir dir="${build.classes.dir}" />
+       <javac srcdir="@{src.dir}" destdir="${build.classes.dir}" debug="on" includeAntRuntime="no">
+         <classpath refid="compile.classpath" />
+         <compilerarg value="-Xlint:all" />
+         <compilerarg value="-Werror" />
+       </javac>
+     </sequential>
+  </macrodef>
+  
+  <target name="compile" depends="install-ivy, install-libraries" description="Compiles api">
+    <compile-component src.dir="${src.api.dir}"/>
+  </target>
+
+  <path id="run.classpath">
+    <path refid="compile.classpath" />
+  </path>
+
+  <target name="run" depends="compile">
+    <java classpathref="run.classpath" classname="${system.main.class}" fork="true" />
+  </target>
+
+</project>
+
+
+
+
+
