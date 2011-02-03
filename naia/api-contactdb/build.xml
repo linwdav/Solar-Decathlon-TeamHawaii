@@ -1,0 +1,88 @@
+<project name="build" default="compile" xmlns:ivy="antlib:org.apache.ivy.ant">
+  <description>
+  The basic build file for this system.
+  </description>
+
+  <import file="common.build.xml" />
+
+  <!-- Library versions -->
+  <property name="junit.version" value="4.5" />
+  <property name="berkeleydb.version" value="4.1.7" />
+  
+  <target name="install-libraries" description="Install libraries needed for compilation">
+    <ivy:retrieve organisation="org.junit" module="junit" revision="${junit.version}" pattern="${lib.dir}/junit/[artifact].[ext]" sync="true" inline="true" conf="default" log="download-only" transitive="false" type="jar" />
+    <path id="junit.path" location="${lib.dir}/junit/junit.jar" />
+
+    <ivy:retrieve organisation="com.sleepycat" module="berkeley-db-java" revision="${berkeleydb.version}" pattern="${lib.dir}/berkeleydb/[artifact].[ext]" sync="true" inline="true" conf="default" log="download-only" transitive="true" type="jar,javadoc" />
+    <path id="berkeleydb.path">
+      <fileset dir="${lib.dir}/berkeleydb">
+        <include name="*.jar" />
+      </fileset>
+    </path>
+  </target>
+
+  <!-- Basic properties for this system. -->
+  <property name="system.name" value="api-ihale-naia" />
+  <property name="system.main.class" value="edu.hawaii.ihale.frontend.Client" />
+  <property name="majorVersionNumber" value="1" />
+  <property name="minorVersionNumber" value="0" />
+  <tstamp>
+    <format property="DAYSTAMP" pattern="Mdd" />
+    <format property="TSTAMP" pattern="HH:mm:ss" />
+  </tstamp>
+  <property name="version" value="${majorVersionNumber}.${minorVersionNumber}.${DAYSTAMP}" />
+
+  <!-- The compile classpath is useful to many tools. -->
+  <path id="compile.classpath">
+    <path refid="junit.path" />
+    <path refid="berkeleydb.path" />
+    <!-- Add the build path as that is where the API classes are compiled to. -->
+    <pathelement path="${build.classes.dir}" />
+  </path>
+  
+  <!-- To illustrate this API, we have three source directories. -->
+  <property name="src.frontend.dir" location="${basedir}/src-frontend"/>
+  <property name="src.backend.dir" location="${basedir}/src-backend"/>
+  <property name="src.api.dir" location="${basedir}/src-api"/>
+
+  <macrodef name="compile-component">
+     <attribute name="src.dir" default="${src.dir}"/>
+     <sequential>
+       <mkdir dir="${build.classes.dir}" />
+       <javac srcdir="@{src.dir}" destdir="${build.classes.dir}" debug="on" includeAntRuntime="no">
+         <classpath refid="compile.classpath" />
+         <compilerarg value="-Xlint:all" />
+         <compilerarg value="-Werror" />
+       </javac>
+     </sequential>
+  </macrodef>
+  
+  <target name="compile-api" depends="install-ivy, install-libraries" description="Compiles front-end">
+    <compile-component src.dir="${src.api.dir}"/>
+  </target>
+
+  <target name="compile-frontend" depends="install-ivy, install-libraries, compile-api" description="Compiles front-end">
+    <compile-component src.dir="${src.frontend.dir}"/>
+  </target>
+  
+  <target name="compile-backend" depends="install-ivy, install-libraries, compile-api" description="Compiles back-end">
+    <compile-component src.dir="${src.backend.dir}"/>
+  </target>
+
+  <target name="compile" depends="install-ivy, install-libraries, compile-api, compile-frontend, compile-backend" description="Compiles everything.">
+  </target>
+
+  <path id="run.classpath">
+    <path refid="compile.classpath" />
+  </path>
+
+  <target name="run" depends="compile">
+    <java classpathref="run.classpath" classname="${system.main.class}" fork="true" />
+  </target>
+
+</project>
+
+
+
+
+
