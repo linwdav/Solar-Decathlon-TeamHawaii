@@ -1,58 +1,110 @@
 package edu.hawaii.ihale.api;
 
 /**
- * Provides a specification of the operations that should be implemented by iHale for the lighting
- * system.
+ * Provides information about the lighting in a room.
  * 
  * @author Team Kohola
  */
-public interface Lighting {
+public class Lighting {
+
+  private String room;
+  private boolean lightOn;
+  private boolean normalMode;
+  private String colorCode;
+  private int percentOn;
 
   /**
-   * To turn on or off the lights in the given room.
+   * Creates a Lighting instance given its field values.
    * 
    * @param room The name of a room.
+   * @param lightOn Whether the light is on.
+   * @param normalMode Whether it's in normal mode or entertainment mode.
+   * @param colorCode The RGB hexidecimal value.
+   * @param percentOn The percentage of the lighting.
    */
-  public void toggleLightsSwitch(String room);
+  public Lighting(String room, boolean lightOn, 
+      boolean normalMode, String colorCode, int percentOn) {
+    this.room = room;
+    this.lightOn = lightOn;
+    this.normalMode = normalMode;
+    this.colorCode = colorCode;
+    this.percentOn = percentOn;
+  }
 
   /**
-   * To retrieve the current state of the lighting in the given room.
+   * Returns the name of the room.
    * 
-   * @param room The name of a room
-   * @return The state of the lights ("ON" or "OFF")
+   * @return The name of the room.
    */
-  public String getCurrentState(String room);
+  public String getRoom() {
+    return this.room;
+  }
 
   /**
-   * To set the color of lighting in the given room.
-   * 
-   * @param room The name of a room.
-   * @param colorCode The color given in RGB hexidecimal format.
+   * Toggles the lights switch on or off.
    */
-  public void setLightsColorOf(String room, String colorCode);
+  public void toggleLightsSwitch() {
+    lightOn = !lightOn;
+  }
 
   /**
-   * To get the current color of the lighting in the given room.
+   * Returns the lighting state.
    * 
-   * @param room The name of a room.
-   * @return The color given in RGB hexidecimal format.
+   * @return Whether the lights are on or off.
    */
-  public String getLightsColorOf(String room);
+  public boolean isOn() {
+    return this.lightOn;
+  }
 
   /**
-   * To get the current mode of the lighting in the given room.
-   * 
-   * @param room The name of a room.
-   * @return "LOCK", "FOLLOW", or "ENTERTAINMENT"
+   * Change between normal mode and entertainment mode.
    */
-  public String getLightsModeOf(String room);
+  public void changeMode() {
+    normalMode = !normalMode;
+  }
 
   /**
-   * To set the current mode of the lighting in the given room.
+   * Returns the lighting mode.
    * 
-   * @param room The name of a room.
-   * @param mode The lighting mode ("LOCK", "FOLLOW", or "ENTERTAINMENT")
+   * @return Whether the lights are in normal mode or entertainment mode.
    */
-  public void setLightsModeOf(String room, String mode);
+  public boolean getMode() {
+    return this.normalMode;
+  }
 
+  /**
+   * Set the color of the lights in this room.
+   * 
+   * @param colorCode The RGB hexidecimal value.
+   */
+  public void setColor(String colorCode) {
+    this.colorCode = colorCode;
+  }
+
+  /**
+   * Returns the color of the lights in this room.
+   * 
+   * @return The RGB hexidecimal value.
+   */
+  public String getColor() {
+    return this.colorCode;
+  }
+
+  /**
+   * Set the light intensity in this room.
+   * 
+   * @param percentage The light intensity range from 0 to 100.
+   */
+  public void setPercentOn(int percentage) {
+    this.percentOn = percentage;
+  }
+
+  /**
+   * Returns the light intensity in this room.
+   * 
+   * @return The light intensity range from 0 to 100.
+   */
+  public int getPercentOn() {
+    return this.percentOn;
+  }
 }

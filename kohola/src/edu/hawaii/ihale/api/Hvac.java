@@ -1,24 +1,59 @@
 package edu.hawaii.ihale.api;
 
 /**
- * Provides a specification of the operations that should be implemented by iHale for the Hvac
- * system.
+ * Provides information about the Hvac system.
  * 
  * @author Team Kohola
  */
-public interface Hvac {
+public class Hvac {
+
+  private long roomTemperature;
+  private long waterVolume;
 
   /**
-   * To set the desired room temperature in the house.
+   * Creates a Hvac instance given its field values.
    * 
-   * @param value The temperature in Celsius.
+   * @param roomTemperature The room temperature in Celsius.
+   * @param waterVolume The water volume in the tank.
    */
-  public void setDesiredTemperature(long value);
+  public Hvac(long roomTemperature, long waterVolume) {
+    this.roomTemperature = roomTemperature;
+    this.waterVolume = waterVolume;
+  }
 
   /**
-   * To retrieve the desired room temperature in the house.
+   * Set the desired temperature.
    * 
-   * @return The temperature in Celsius.
+   * @param desiredTemperature The temperature in Celsius.
    */
-  public long getDesiredTemperature();
+  public void setTemperature(long desiredTemperature) {
+    this.roomTemperature = desiredTemperature;
+  }
+
+  /**
+   * Returns the desired temperature.
+   * 
+   * @return The temperautre in Celsius.
+   */
+  public long getTemperature() {
+    return this.roomTemperature;
+  }
+
+  /**
+   * Set the water volume in the water tank.
+   * 
+   * @param waterVolume The water volume in liter.
+   */
+  public void setWaterVolume(long waterVolume) {
+    this.waterVolume = waterVolume;
+  }
+
+  /**
+   * Returns the water volume in the water tank.
+   * 
+   * @return The water volume in liter.
+   */
+  public long getWaterVolume() {
+    return this.waterVolume;
+  }
 }
