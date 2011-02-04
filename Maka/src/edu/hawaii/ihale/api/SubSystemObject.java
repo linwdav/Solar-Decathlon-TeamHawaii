@@ -1,15 +1,16 @@
 package edu.hawaii.ihale.api;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * An Object that represents a whole subsystem, and has access to all applicable sensors. 
  * This object collects and stores all data for sensors within it's scope.  
  * @author Team Maka
  */
-public abstract class SubSystemObject {
+  public abstract class SubSystemObject {
   /** A List of Environment in this System's scope.*/
-  protected List<Environment> sensorList;
+  protected Map<String,Environment> environmentList;
   /** The name of this System (e.g. "Aquaponics").*/
   protected String subSystemName;
   /** The URL Base for use by REST. */
@@ -29,20 +30,8 @@ public abstract class SubSystemObject {
     this.port = port;
   }
   
-  /**
-   * Adds a Actuator Object to the scope of this Object.
-   * @param actuator The Actuator to add.
-   */
-  public void addActuator(Actuator actuator) {
-    actuatorList.add(actuator);
-  }
-  
-  /**
-   * Adds a Sensor Object to the scope of this Object.
-   * @param sensor The Sensor to add.
-   */
-  public void addSensor(Sensor sensor) {
-    sensorList.add(sensor);
+  public Environment getEnvrionment(String key) { 
+    
   }
   
   /**

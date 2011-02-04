@@ -13,8 +13,10 @@ public class Device {
   protected int ID;
   /** A String describing the device and it's location.**/
   protected String deviceDescription;
-  /** A String holding the name of the subSystem to which this Device belongs.*/
-  protected String subSystemName;
+  /** A String holding the name of the Environment to which this Device belongs.*/
+  protected String environmentName;
+  /** A String containing the URL of the object.*/
+  protected String url;
   
   
   /**
@@ -22,10 +24,10 @@ public class Device {
    * @param subSystemName String representing the name of the SubSystem (eg "Aquaponics").
    * @param deviceDescription String describing the location and function of the device.
    */
-  public Device(String subSystemName, String deviceDescription) {
+  public Device(String environmentName, String deviceDescription) {
     ID = idCounter;
     idCounter ++;
-    this.subSystemName = subSystemName;
+    this.environmentName = environmentName;
     this.deviceDescription = deviceDescription;
   }
   
@@ -42,7 +44,7 @@ public class Device {
    * @return A String with the SubSystem's name.
    */
   public String getSubSystemName() {
-    return subSystemName;
+    return environmentName;
   }
   
   /**
@@ -53,11 +55,12 @@ public class Device {
     return ID;
   }
   
+  
   /**
    * Returns a String representation of the Device.
    * @return The String representation of the device.
    */
   public String toString() {
-    return "" + subSystemName + ID + "  " + deviceDescription;
+    return "" + environmentName + ID + "  " + deviceDescription;
   }
 }

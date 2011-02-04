@@ -15,11 +15,11 @@ public class Sensor extends Device {
   
   /**
    * Constructor.
-   * @param subSystemName String representing the name of the SubSystem (eg "Aquaponics").
+   * @param environmentName String representing the name of the Environment (e.g. "livingroom").
    * @param deviceDescription String describing the location and function of the device.
    */
-  public Sensor(String subSystemName, String deviceDescription) {
-    super(subSystemName, deviceDescription);
+  public Sensor(String environmentName, String deviceDescription) {
+    super(environmentName, deviceDescription);
   }
   
   /**
@@ -33,10 +33,10 @@ public class Sensor extends Device {
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.newDocument();
     // Create and attach the root element <contact>.
-    Element rootElement = doc.createElement(subSystemName);
+    Element rootElement = doc.createElement(environmentName);
     doc.appendChild(rootElement);
     // Now create and attach the fields for this contact.
-    attachElement(doc, rootElement, subSystemName + ID, data.toString());
+    attachElement(doc, rootElement, environmentName + ID, "DATA GOES HERE");
     return doc;
   }
   

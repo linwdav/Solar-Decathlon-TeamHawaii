@@ -1,31 +1,33 @@
 package edu.hawaii.ihale.api;
 
+import java.util.Map;
+
 /**
- * An Object used by HSIM.  Actuators will change this object, and Sensors will
- * read data from it.
+ * A room-based sub-grouping that allows interaction between 
+ * Sensors and Actuators of various SubSystems.  This class
+ * should be extended, and all Devices should be instantiated
+ * in the new Class.  This means that any Device defined should 
+ * have a controller/accessor method.
+ * 
  * @author Team Maka
  *
  */
-public class Environment {
+public abstract class Environment {
 
 	/** Unique sensor for GET requests on the Environment. */
-	private Sensor sensor;
+	@SuppressWarnings("unused")
+  private Map<String,Sensor> sensors;
 	/** Unique actuator for PUT requests on the Environment. */
-	private Actuator actuator;
+	@SuppressWarnings("unused")
+  private Map<String,Actuator> actuators;
+	/** String holding the Environment name (e.g. "livingroom").*/
+  private String environmentName;
 
-	/**
-	 * Polls environment data.
-	 * @return data The current data reading of the Environment.
-	 */
-	public Document getData() {
-		// To be implemented later.
-		return null;
-	}
-	
-	/**
-	 * Issues command to envinronment.
-	 */
-	public void putCommand(Document command) {
-		// To be implemented later.
-	}
+  /**
+   * Returns the environment's name as a String.
+   * @return A String containing the environment's name.
+   */
+  public String getEnvironmentName() {
+    return environmentName;
+  }
 }

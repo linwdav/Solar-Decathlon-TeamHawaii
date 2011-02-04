@@ -1,5 +1,7 @@
 package edu.hawaii.ihale.api;
 
+import org.w3c.dom.Document;
+
 /** 
  * A Class representing an Actuator Object, returns data in XML Format.
  * @author Team Maka
@@ -8,11 +10,11 @@ public class Actuator extends Device {
   
   /**
    * Constructor.
-   * @param subSystemName String representing the name of the SubSystem (eg "Aquaponics").
+   * @param environmentName String representing the name of the Environment (eg "livingroom").
    * @param deviceDescription String describing the location and function of the device.
    */
-  public Actuator(String subSystemName, String deviceDescription) {
-    super(subSystemName, deviceDescription);
+  public Actuator(String environmentName, String deviceDescription) {
+    super(environmentName, deviceDescription);
   }
 
   /**
