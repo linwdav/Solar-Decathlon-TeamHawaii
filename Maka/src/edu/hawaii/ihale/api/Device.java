@@ -17,6 +17,8 @@ public class Device {
   protected String environmentName;
   /** A String containing the URL of the object.*/
   protected String url;
+  /** IP Address for the device*/
+  
   
   
   /**

@@ -40,6 +40,7 @@ public class Sensor extends Device {
     return doc;
   }
   
+  
   /**
    * Helper function that creates a child element and attaches it to the passed parent element.
    * @param doc The document for creating elements. 
@@ -52,4 +53,6 @@ public class Sensor extends Device {
     childElement.setTextContent(childValue);
     parent.appendChild(childElement);
   }
+  
+  
 }
