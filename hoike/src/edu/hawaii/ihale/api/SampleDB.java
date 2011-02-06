@@ -1,5 +1,7 @@
 package edu.hawaii.ihale.api;
 
+import java.util.ArrayList;
+
 
 
 /**
@@ -19,6 +21,40 @@ public interface SampleDB {
    * @return The sample, or null.
    */
   public Sample getSample(long uniqueTime, String systemID);
+  
+  /**
+   * Return all Samples in a ArrayList.
+   * 
+   * @return All Samples.
+   */
+  public ArrayList<Sample> getAllSamples();
+  
+  /**
+   * Return all Samples that share a common system name.
+   * 
+   * @param systemID The system to retrieve samples for.
+   * @return All Samples sharing the same system name.
+   */
+  public ArrayList<Sample> getSamplesByName(String systemID);
+  
+  /**
+   * Returns all samples in the specified range.
+   * 
+   * @param start The Start time.
+   * @param end The end time.
+   * @return All Samples in the specified range.
+   */
+  public ArrayList<Sample> getSamplesByRange(long start, long end);
+  
+  /**
+   * Returns all samples in the specified range with designated system name.
+   * 
+   * @param start The start time.
+   * @param end The end time.
+   * @param systemID The designated system name.
+   * @return
+   */
+  public ArrayList<Sample> getSamplesByRange(long start, long end, String systemID);
   
   /**
    * Store the passed Sample in the database.
