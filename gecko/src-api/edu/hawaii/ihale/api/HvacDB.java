@@ -5,33 +5,33 @@ package edu.hawaii.ihale.api;
  * 
  * @author Team Hawaii
  */
-public interface AquaponicsDB {
+public interface HvacDB {
   
   /**
-   * Get the instance of this Aquaponics by Primary Key ID.
+   * Get the instance of this Hvac by Primary Key ID.
    *  
    * @param id String
-   * @return Aquaponics
+   * @return Hvac
    */
-  public Aquaponics getById(String id);
+  public Hvac getById(String id);
 
   /**
-   * Get the instance of this Aquaponics by Secondary Key TimeStamp.
+   * Get the instance of this Hvac by Secondary Key TimeStamp.
    *  
    * @param timestamp long
-   * @return Aquaponics
+   * @return Hvac
    */
-  public Aquaponics getByTimeStamp(long timestamp);
+  public Hvac getByTimeStamp(long timestamp);
   
   /**
-   * Sets the status of the Aquaponics System.
+   * Sets the status of the Hvac System.
    * 
    * @param status Integer
    */
   public void putStatus(int status);
   
   /**
-   * Sets the water temperature of the Aquaponics System.
+   * Sets the water temperature of the Hvac System.
    * 
    * @param temperature double
    */
