@@ -7,8 +7,8 @@ package edu.hawaii.ihale.api;
  */
 public class Hvac {
 
+  private String timestamp;
   private long roomTemperature;
-  private long waterVolume;
 
   /**
    * Creates a Hvac instance given its field values.
@@ -16,9 +16,9 @@ public class Hvac {
    * @param roomTemperature The room temperature in Celsius.
    * @param waterVolume The water volume in the tank.
    */
-  public Hvac(long roomTemperature, long waterVolume) {
-    this.roomTemperature = roomTemperature;
-    this.waterVolume = waterVolume;
+  public Hvac(String timestamp, long roomTemperature) {
+    this.timestamp = timestamp;
+    this.roomTemperature = roomTemperature;    
   }
 
   /**
@@ -39,21 +39,13 @@ public class Hvac {
     return this.roomTemperature;
   }
 
+ 
   /**
-   * Set the water volume in the water tank.
+   * Returns the timestamp associated with this instance.
    * 
-   * @param waterVolume The water volume in liter.
+   * @return The timestamp.
    */
-  public void setWaterVolume(long waterVolume) {
-    this.waterVolume = waterVolume;
-  }
-
-  /**
-   * Returns the water volume in the water tank.
-   * 
-   * @return The water volume in liter.
-   */
-  public long getWaterVolume() {
-    return this.waterVolume;
+  public String getTimestamp() {
+    return this.timestamp;
   }
 }
