@@ -9,36 +9,36 @@ package edu.hawaii.ihale.api;
 public interface AquaponicsApi {
 
   /**
-   * Returns the AquaponicsItem instance that the sensors are reading currently from the aquaponics
-   * system. This method should only be used by iHale to GET the current readings from the
-   * aquaponics system.
+   * GET the Aquaponics instance that the sensors are reading currently from the aquaponics system.
+   * This method should only be used by iHale to GET the current readings from the aquaponics
+   * system.
    * 
-   * @return The AquaponicsItem
+   * @return The Aquaponics
    */
-  public AquaponicsItem getAquaponics();
+  public Aquaponics getAquaponics();
 
   /**
-   * Store the passed AquaponicsItem in the database. This method should be used when the aquaponics
-   * subsystem performs a PUT to iHale
+   * Store the passed aquaponics instance in the database. This method should be used when the
+   * aquaponics subsystem performs a PUT to iHale
    * 
-   * @param item The AquaponicsItem to store.
+   * @param aquaponics The Aquaponics instance to store.
    */
-  public void putAquaponicsToDB(AquaponicsItem item);
+  public void putAquaponicsToDB(Aquaponics aquaponics);
 
   /**
-   * Put the passed temperature to the aquaponics subsystem. Assuming that iHale can tell the
+   * POST the passed temperature to the aquaponics subsystem. Assuming that iHale can tell the
    * subsystem to change its water temperature.
    * 
    * @param value The temperature in Celsius.
    */
-  public void putTemperatureToSubsystem(long value);
+  public void postTemperatureToSubsystem(long value);
 
   /**
-   * Put the passed volume to the aquaponics subsystem. Assuming that iHale can tell the subsystem
+   * POST the passed volume to the aquaponics subsystem. Assuming that iHale can tell the subsystem
    * to change its water volume.
    * 
    * @param value The temperature in liter.
    */
-  public void putVolumeToSubsystem(long value);
+  public void postVolumeToSubsystem(long value);
 
 }

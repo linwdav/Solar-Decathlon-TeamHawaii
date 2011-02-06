@@ -1,7 +1,7 @@
 package edu.hawaii.ihale.api;
 
 /**
- * Provides information about the lighting in a room.
+ * Provides information about lighting system of the house.
  * 
  * @author Team Kohola
  */

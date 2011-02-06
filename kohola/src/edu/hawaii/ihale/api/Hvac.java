@@ -1,7 +1,7 @@
 package edu.hawaii.ihale.api;
 
 /**
- * Provides information about the Hvac system.
+ * Provides information about Hvac system of the house.
  * 
  * @author Team Kohola
  */

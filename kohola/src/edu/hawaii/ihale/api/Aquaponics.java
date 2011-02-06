@@ -1,11 +1,11 @@
 package edu.hawaii.ihale.api;
 
 /**
- * Provides information about aquaponics system.
+ * Provides information about the aquaponics system.
  * 
  * @author Team Kohola
  */
-public class AquaponicsItem {
+public class Aquaponics {
 
   private String timestamp;
   private long waterOxygen;
@@ -14,7 +14,7 @@ public class AquaponicsItem {
   private long waterVolume;
 
   /**
-   * Creates a aquaponics instance given its field values.
+   * Creates an aquaponics instance given its field values.
    * 
    * @param timestamp The time when this instance is created.
    * @param waterOxygen The oxygen concentration. (unit: ppm)
@@ -22,7 +22,7 @@ public class AquaponicsItem {
    * @param waterPh The water PH value.
    * @param waterVolume The water volume in liter.
    */
-  public AquaponicsItem(String timestamp, long waterOxygen, long waterTemperature, long waterPh,
+  public Aquaponics(String timestamp, long waterOxygen, long waterTemperature, long waterPh,
       long waterVolume) {
     this.timestamp = timestamp;
     this.waterOxygen = waterOxygen;
@@ -52,7 +52,7 @@ public class AquaponicsItem {
   /**
    * Returns the water temperature associated with this instance.
    * 
-   * @return The water temperature in Celcius.
+   * @return The water temperature in Celsius.
    */
   public long getWaterTemperature() {
     return this.waterTemperature;

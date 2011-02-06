@@ -9,7 +9,7 @@ package edu.hawaii.ihale.api;
 public interface HvacApi {
 
   /**
-   * Returns the Hvac instance that the sensors are reading currently from the Hvac system. This
+   * GET the Hvac instance that the sensors are reading currently from the Hvac system. This
    * method should only be used by iHale to GET the current readings from the Hvac system.
    * 
    * @return The Hvac instance.
@@ -25,10 +25,10 @@ public interface HvacApi {
   public void postHvacToDB(Hvac hvac);
 
   /**
-   * Put the passed temperature to the Hvac subsystem. Assuming that iHale can tell the
+   * Post the passed temperature to the Hvac subsystem. Assuming that iHale can tell the
    * subsystem to change the room temperature.
    * 
    * @param value The temperature in Celsius.
    */
-  public void putDesiredTemperature(long value);
+  public void postDesiredTemperature(long value);
 }
