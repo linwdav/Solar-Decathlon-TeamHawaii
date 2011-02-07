@@ -10,7 +10,7 @@ import java.util.Map;
  * @author David Lin
  * @author Leonardo Nguyen
  */
-public abstract class DataSample implements DataSampleDB {
+public class DataSample {
 
   /** All data will be stored in this map. */
   private Map<String, String> data;
