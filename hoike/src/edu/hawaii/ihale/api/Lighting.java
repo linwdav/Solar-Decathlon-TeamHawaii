@@ -10,64 +10,76 @@ package edu.hawaii.ihale.api;
 public class Lighting {
 
   /** Fields for the system. */
-  private float waterVolume;
-  private float waterTemperature;
-  private float waterPH;
-  private float waterOxygen;
+  private float patio;
+  private float livingRoom;
+  private float kitchen;
+  private float bedroomA;
+  private float bedroomB;
   private long lastUpdated;
 
   /**
    * Default constructor.
    * 
-   * @param waterVolume The water volume in liters.
-   * @param waterTemperature The water temperature in Celsius.
-   * @param waterPH The water PH.
-   * @param waterOxygen The oyxgenation level of the water.
+   * @param patio Brightness of LED lights in the patio.
+   * @param livingRoom Brightness of LED lights in the living room.
+   * @param kitchen Brightness of LED lights in the kitchen.
+   * @param bedroomA Brightness of LED lights in the bedroom A.
+   * @param bedroomB Brightness of LED lights in the bedroom B.
    * @param lastUpdated The timestamp for the last update.
    */
-  public Lighting(float waterVolume, float waterTemperature, float waterPH, float waterOxygen,
+  public Lighting(float patio, float livingRoom, float kitchen, float bedroomA, float bedroomB,
       long lastUpdated) {
-    this.waterVolume = waterVolume;
-    this.waterTemperature = waterTemperature;
-    this.waterPH = waterPH;
-    this.waterOxygen = waterOxygen;
+    this.patio = patio;
+    this.livingRoom = livingRoom;
+    this.kitchen = kitchen;
+    this.bedroomA = bedroomA;
+    this.bedroomB = bedroomB;
     this.lastUpdated = lastUpdated;
   }
 
   /**
-   * Return the water volume in liters.
+   * Return the brightness of LED lights in the patio.
    * 
-   * @return the waterVolume
+   * @return the patio
    */
-  public float getWaterVolume() {
-    return waterVolume;
+  public float getPatio() {
+    return patio;
   }
 
   /**
-   * Return the water temperature in Celsius.
+   * Return the brightness of LED lights in the living room.
    * 
-   * @return the waterTemperature
+   * @return the livingRoom
    */
-  public float getWaterTemperature() {
-    return waterTemperature;
+  public float getLivingRoom() {
+    return livingRoom;
   }
 
   /**
-   * Return the PH of the water.
+   * Return the brightness of LED lights in the kitchen.
    * 
-   * @return the waterPH
+   * @return the livingRoom
    */
-  public float getWaterPH() {
-    return waterPH;
+  public float getKitchen() {
+    return kitchen;
   }
 
   /**
-   * Return the oxygenation level of the water.
+   * Return the brightness of LED lights in bedroom A.
    * 
-   * @return the waterOxygen
+   * @return the bedroomA
    */
-  public float getWaterOxygen() {
-    return waterOxygen;
+  public float getBedroomA() {
+    return bedroomA;
+  }
+
+  /**
+   * Return the brightness of LED lights in bedroom B.
+   * 
+   * @return the bedroomB
+   */
+  public float getBedroomB() {
+    return bedroomB;
   }
 
   /**

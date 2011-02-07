@@ -13,7 +13,6 @@ public class Water {
   private float waterVolume;
   private float waterTemperature;
   private float waterPH;
-  private float waterOxygen;
   private long lastUpdated;
 
   /**
@@ -22,15 +21,12 @@ public class Water {
    * @param waterVolume The water volume in liters.
    * @param waterTemperature The water temperature in Celsius.
    * @param waterPH The water PH.
-   * @param waterOxygen The oyxgenation level of the water.
    * @param lastUpdated The timestamp for the last update.
    */
-  public Water(float waterVolume, float waterTemperature, float waterPH, float waterOxygen,
-      long lastUpdated) {
+  public Water(float waterVolume, float waterTemperature, float waterPH, long lastUpdated) {
     this.waterVolume = waterVolume;
     this.waterTemperature = waterTemperature;
     this.waterPH = waterPH;
-    this.waterOxygen = waterOxygen;
     this.lastUpdated = lastUpdated;
   }
 
@@ -59,15 +55,6 @@ public class Water {
    */
   public float getWaterPH() {
     return waterPH;
-  }
-
-  /**
-   * Return the oxygenation level of the water.
-   * 
-   * @return the waterOxygen
-   */
-  public float getWaterOxygen() {
-    return waterOxygen;
   }
 
   /**
