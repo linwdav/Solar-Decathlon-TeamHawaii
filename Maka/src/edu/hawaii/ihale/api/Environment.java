@@ -53,30 +53,26 @@ public abstract class Environment extends ServerResource {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.newDocument();
-    // Create and attach the root element <contact>.
+    // Create and attach the root element <device>.
     Element rootElement;
     String device = (String)this.getRequestAttributes().get("device");
-    if (device.toLowerCase().equals("sensor")) { 
-      rootElement = doc.createElement("Sensors");
-      List<Sensor> list = new ArrayList<Sensor>(sensors.values());
-      for (Sensor sensor : list) {
-        Element node = doc.createElement("Sensor");
-        attachElement(doc, node, "id", "" + sensor.getID());
-        attachElement(doc, node, "description", "" + sensor.getDeviceDescription());
-        attachElement(doc, node, "id", "" + sensor.getID());
-      }
-    }
-    else {
-      rootElement = doc.createElement("Actuators");
-      List<Actuator> list = new ArrayList<Actuator>(actuators.values());
-      for (Actuator actuator : list) {
-        Element node = doc.createElement("Sensor");
-        attachElement(doc, node, "id", "" + actuator.getID());
-        attachElement(doc, node, "description", "" + actuator.getDeviceDescription());
-        attachElement(doc, node, "id", "" + actuator.getID());
-      }
-      rootElement = doc.createElement("Actuators");
-    }
+	rootElement = doc.createElement("Sensors");
+	List<Sensor> list = new ArrayList<Sensor>(sensors.values());
+	for (Sensor sensor : list) {
+	Element node = doc.createElement("Sensor");
+	attachElement(doc, node, "id", "" + sensor.getID());
+	attachElement(doc, node, "description", "" + sensor.getDeviceDescription());
+	attachElement(doc, node, "id", "" + sensor.getID());
+	}
+	rootElement = doc.createElement("Actuators");
+	List<Actuator> list = new ArrayList<Actuator>(actuators.values());
+	for (Actuator actuator : list) {
+	Element node = doc.createElement("Sensor");
+	attachElement(doc, node, "id", "" + actuator.getID());
+	attachElement(doc, node, "description", "" + actuator.getDeviceDescription());
+	attachElement(doc, node, "id", "" + actuator.getID());
+	}
+	rootElement = doc.createElement("Actuators");
     doc.appendChild(rootElement);
     // The requested contact was found, so add the Contact's XML representation to the response.
     result.setDocument(doc);
