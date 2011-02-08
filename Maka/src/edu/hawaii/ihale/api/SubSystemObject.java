@@ -8,8 +8,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
-import org.restlet.resource.Put;
-import org.restlet.resource.Delete;
 import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -75,11 +73,13 @@ import org.w3c.dom.Element;
     DocumentBuilder builder = factory.newDocumentBuilder();
     Document doc = builder.newDocument();
     // Create and attach the root element <contact>.
-    Element rootElement = doc.createElement("Environments");
+    Element rootElement = doc.createElement(subSystemName);
+    Element environment = doc.createElement("Environments");
     List<Environment> list = new ArrayList<Environment>(environmentList.values());
     for (Environment environ : list) {
-      attachElement(doc, rootElement, "Environment",environ.getEnvironmentName());
+      attachElement(doc, environment, "Environment",environ.getEnvironmentName());
     }
+    rootElement.appendChild(environment);
     doc.appendChild(rootElement);
     result.setDocument(doc);
     return result;
