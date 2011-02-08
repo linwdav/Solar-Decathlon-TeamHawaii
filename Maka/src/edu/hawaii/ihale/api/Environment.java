@@ -56,23 +56,21 @@ public abstract class Environment extends ServerResource {
     // Create and attach the root element <device>.
     Element rootElement;
     String device = (String)this.getRequestAttributes().get("device");
-	rootElement = doc.createElement("Sensors");
+	rootElement = doc.createElement("devices");
 	List<Sensor> list = new ArrayList<Sensor>(sensors.values());
 	for (Sensor sensor : list) {
-	Element node = doc.createElement("Sensor");
+	Element node = doc.createElement("sensors");
 	attachElement(doc, node, "id", "" + sensor.getID());
 	attachElement(doc, node, "description", "" + sensor.getDeviceDescription());
 	attachElement(doc, node, "id", "" + sensor.getID());
 	}
-	rootElement = doc.createElement("Actuators");
 	List<Actuator> list = new ArrayList<Actuator>(actuators.values());
 	for (Actuator actuator : list) {
-	Element node = doc.createElement("Sensor");
+	Element node = doc.createElement("actuators");
 	attachElement(doc, node, "id", "" + actuator.getID());
 	attachElement(doc, node, "description", "" + actuator.getDeviceDescription());
 	attachElement(doc, node, "id", "" + actuator.getID());
 	}
-	rootElement = doc.createElement("Actuators");
     doc.appendChild(rootElement);
     // The requested contact was found, so add the Contact's XML representation to the response.
     result.setDocument(doc);

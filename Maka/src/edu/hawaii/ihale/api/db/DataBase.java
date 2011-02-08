@@ -16,11 +16,10 @@ public interface DataBase {
   public Document getItem(String id);
   
   /**
-   * Stores an XML Document based on a Key.
-   * @param id A String representing the Key.
-   * @param doc The XML Document to store.
+   * Stores a DBResource object into the database.
+   * @param resource The Resource to store.
    */
-  public void putItem(String id, Document doc);
+  public void putDBResource(DBResource resource);
   
   /**
    * Returns an XML Document that contains properties representing data
