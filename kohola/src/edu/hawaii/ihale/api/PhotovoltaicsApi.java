@@ -17,9 +17,17 @@ public interface PhotovoltaicsApi {
   public void putPhotovoltaics(Photovoltaics photovoltaics);
 
   /**
-   * GET the energy meter reading from the photovoltaic system. 
+   * GET the current energy meter reading from the photovoltaic system. 
    * 
    * @return The energy meter readings.
    */
-  public Photovoltaics getPhotovoltaics();
+  public Photovoltaics getInstantaneousPhotovoltaics();
+  
+  /**
+   * GET the stored energy meter reading from the photovoltaic system.
+   * (Perhaps add some parameters once we know what's going on) 
+   * 
+   * @return The energy meter readings.
+   */
+  public Photovoltaics getStoredPhotovoltaics();
 }
