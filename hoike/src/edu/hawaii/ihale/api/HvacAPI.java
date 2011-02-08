@@ -1,7 +1,7 @@
 package edu.hawaii.ihale.api;
 
 /**
- * Provides a specification of the operations that should be implemented by every hvacAPI.
+ * Provides a specification of the operations that should be implemented by every HvacAPI.
  * 
  * @author Nathan Dorman
  * @author David Lin
@@ -16,4 +16,10 @@ public interface HvacAPI {
    */
   public HVAC getHVAC();
   
+  /**
+   * POST information from the HVAC system sensors into the database.
+   * 
+   * @param hvac The hvac system information.
+   */
+  public void putHVAC(HVAC hvac);
 }
