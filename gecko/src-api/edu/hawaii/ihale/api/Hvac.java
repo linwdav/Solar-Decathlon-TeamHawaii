@@ -10,7 +10,6 @@ public class Hvac extends GenericSystem {
 
   private double temperature;
   private double storedEnergy;
-  private double energyConsumption;
   private double airQuality;
 
   /**
@@ -22,15 +21,13 @@ public class Hvac extends GenericSystem {
    * @param status int
    * @param temperature double
    * @param storedEnergy double
-   * @param energyConsumption double
    * @param airQuality double
    */
   public Hvac(String title, String desc, long timestamp, int status, double temperature,
-      double storedEnergy, double energyConsumption, double airQuality) {
+      double storedEnergy, double airQuality) {
     super(title, desc, timestamp, status);
     this.temperature = temperature;
     this.storedEnergy = storedEnergy;
-    this.energyConsumption = energyConsumption;
     this.airQuality = airQuality;
   }
 
@@ -50,15 +47,6 @@ public class Hvac extends GenericSystem {
    */
   public double getStoredEnergy() {
     return storedEnergy;
-  }
-
-  /**
-   * Get this System's energy consumption.
-   * 
-   * @return double
-   */
-  public double getEnergyConsumption() {
-    return energyConsumption;
   }
 
   /**

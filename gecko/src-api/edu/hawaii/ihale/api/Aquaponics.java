@@ -12,7 +12,6 @@ public class Aquaponics extends GenericSystem {
   private double capacity;
   private double phLevel;
   private double algaeContent;
-  private double energyUse;
   private double temperature;
 
   /**
@@ -26,17 +25,15 @@ public class Aquaponics extends GenericSystem {
    * @param capacity double
    * @param phLevel double
    * @param algaeContent double
-   * @param energyUse double
    * @param temperature double
    */
   public Aquaponics(String title, String desc, long timestamp, int status, double waterLevel,
-      double capacity, double phLevel, double algaeContent, double energyUse, double temperature) {
+      double capacity, double phLevel, double algaeContent, double temperature) {
     super(title, desc, timestamp, status);
     this.waterLevel = waterLevel;
     this.capacity = capacity;
     this.phLevel = phLevel;
     this.algaeContent = algaeContent;
-    this.energyUse = energyUse;
     this.temperature = temperature;
   }
 
@@ -74,15 +71,6 @@ public class Aquaponics extends GenericSystem {
    */
   public double getAlgaeContent() {
     return algaeContent;
-  }
-
-  /**
-   * Get this System's energy use.
-   * 
-   * @return double
-   */
-  public double getEnergyUse() {
-    return energyUse;
   }
 
   /**

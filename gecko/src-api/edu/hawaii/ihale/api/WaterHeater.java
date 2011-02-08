@@ -8,7 +8,6 @@ package edu.hawaii.ihale.api;
  */
 public class WaterHeater extends GenericSystem {
 
-  private double energyConsumption;
   private double capacity;
   private double level;
   private int quality;
@@ -21,29 +20,18 @@ public class WaterHeater extends GenericSystem {
    * @param desc String
    * @param timestamp long
    * @param status int
-   * @param energyConsumption double
    * @param capacity double
    * @param level double
    * @param quality int
    * @param temperature double
    */
-  public WaterHeater(String title, String desc, long timestamp, int status,
-      double energyConsumption, double capacity, double level, int quality, double temperature) {
+  public WaterHeater(String title, String desc, long timestamp, int status, double capacity,
+      double level, int quality, double temperature) {
     super(title, desc, timestamp, status);
-    this.energyConsumption = energyConsumption;
     this.capacity = capacity;
     this.level = level;
     this.quality = quality;
     this.temperature = temperature;
-  }
-
-  /**
-   * Gets this System's energy consumption.
-   * 
-   * @return double
-   */
-  public double getEnergyConsumption() {
-    return energyConsumption;
   }
 
   /**

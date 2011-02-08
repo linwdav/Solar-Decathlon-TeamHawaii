@@ -10,7 +10,6 @@ import java.util.List;
  */
 public class Lighting extends GenericSystem {
 
-  private double energyConsumption;
   private String profile;
   private List<LightingRoom> rooms;
 
@@ -21,25 +20,14 @@ public class Lighting extends GenericSystem {
    * @param desc String
    * @param timestamp long
    * @param status int
-   * @param energyConsumption double
    * @param profile String
    * @param rooms List<LightingRoom>;
    */
-  public Lighting(String title, String desc, long timestamp, int status,
-      double energyConsumption, String profile, List<LightingRoom> rooms ) {
+  public Lighting(String title, String desc, long timestamp, int status, String profile,
+      List<LightingRoom> rooms) {
     super(title, desc, timestamp, status);
-    this.energyConsumption = energyConsumption;
     this.profile = profile;
     this.rooms = rooms;
-  }
-
-  /**
-   * Gets this System's energy consumption.
-   * 
-   * @return double
-   */
-  public double getEnergyConsumption() {
-    return energyConsumption;
   }
 
   /**

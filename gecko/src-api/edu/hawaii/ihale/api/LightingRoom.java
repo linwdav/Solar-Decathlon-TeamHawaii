@@ -9,7 +9,6 @@ public class LightingRoom {
 
   private String id;
   private double color;
-  private double energyConsumption;
   private boolean status;
   private double level;
 
@@ -20,15 +19,12 @@ public class LightingRoom {
    * @param status boolean Whether lights are on or off.
    * @param level double Lights brightness level
    * @param color double
-   * @param energyConsumption double
    */
-  public LightingRoom(String id, boolean status, double level, double color,
-      double energyConsumption) {
+  public LightingRoom(String id, boolean status, double level, double color) {
     this.id = id;
     this.status = status;
     this.level = level;
     this.color = color;
-    this.energyConsumption = energyConsumption;
   }
 
   /**
@@ -47,15 +43,6 @@ public class LightingRoom {
    */
   public double getColor() {
     return color;
-  }
-
-  /**
-   * Gets this Room's energy consumption.
-   * 
-   * @return double
-   */
-  public double getEnergyConsumption() {
-    return energyConsumption;
   }
 
   /**
