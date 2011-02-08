@@ -22,13 +22,13 @@ import org.w3c.dom.Element;
  * @author Team Maka
  *
  */
-public abstract class Environment extends ServerResource{
+public abstract class Environment extends ServerResource {
 
-	/** Unique sensor for GET requests on the Environment. */
+  /** Unique sensor for GET requests on the Environment. */
   private Map<String,Sensor> sensors;
-	/** Unique actuator for PUT requests on the Environment. */
+  /** Unique actuator for PUT requests on the Environment. */
   private Map<String,Actuator> actuators;
-	/** String holding the Environment name (e.g. "livingroom").*/
+  /** String holding the Environment name (e.g. "livingroom").*/
   private String environmentName;
 
   /**
@@ -56,7 +56,7 @@ public abstract class Environment extends ServerResource{
     // Create and attach the root element <contact>.
     Element rootElement;
     String device = (String)this.getRequestAttributes().get("device");
-    if(device.toLowerCase().equals("sensor")) { 
+    if (device.toLowerCase().equals("sensor")) { 
       rootElement = doc.createElement("Sensors");
       List<Sensor> list = new ArrayList<Sensor>(sensors.values());
       for (Sensor sensor : list) {

@@ -19,6 +19,7 @@ public class Actuator extends Device {
 
   /**
    * Activates the Actuator.
+   * @param command XML containing the new settings.
    */
   public void putCommand(Document command) {
     // Invoke Environment invokeChange().

@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
  * This object collects and stores all data for sensors within it's scope.  
  * @author Team Maka
  */
-  public abstract class SubSystemObject extends ServerResource{
+  public abstract class SubSystemObject extends ServerResource {
   /** A List of Environment in this System's scope.*/
   protected Map<String,Environment> environmentList;
   /** The name of this System (e.g. "Aquaponics").*/
@@ -39,6 +39,11 @@ import org.w3c.dom.Element;
     this.port = port;
   }
   
+  /**
+   * Returns an Environment Variable by its key.
+   * @param key The object's subSystemName.
+   * @return The Environment sepcified.
+   */
   public Environment getEnvrionment(String key) { 
     return environmentList.get(key);
   }

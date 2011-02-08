@@ -23,7 +23,7 @@ public class Device {
   
   /**
    * Constructor.
-   * @param subSystemName String representing the name of the SubSystem (eg "Aquaponics").
+   * @param environmentName String representing the name of the SubSystem (eg "Aquaponics").
    * @param deviceDescription String describing the location and function of the device.
    */
   public Device(String environmentName, String deviceDescription) {
