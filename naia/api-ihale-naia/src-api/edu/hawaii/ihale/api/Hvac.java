@@ -16,7 +16,6 @@ public class Hvac {
   private double airTemp;
   // Device used to send and receive data
   private String device;
-  
 
   // Time the hvac reading was taken
   private long timeStamp;
@@ -42,16 +41,16 @@ public class Hvac {
   long getTimeStamp() {
     return this.timeStamp;
   }
-  
+
   /**
    * Get the pH of the water tank
-   *
+   * 
    * @return pH of tank.
    */
   double getpowerConsumption() {
     return this.powerConsumption;
   }
-  
+
   /**
    * Get the air temperature.
    * 
@@ -60,15 +59,15 @@ public class Hvac {
   double getAirTemp() {
     return this.airTemp;
   }
-  
+
   /**
    * Gets the device name used for I/O with the iHale aquaponics system
+   * 
    * @return device name.
    */
   String getDevice() {
     return this.device;
   }
-  
 
   /**
    * Return this Hvac object as a formatted string.
@@ -77,13 +76,13 @@ public class Hvac {
    */
   @Override
   public String toString() {
-    
+
     // Date formatting variables
     Date date = new Date(this.timeStamp);
     DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
-    
-    return String.format("[Power Consuption: %d Air Temp: %d Device: %s]", dateFormat.format(date), 
-        this.powerConsumption,this.airTemp, this.device);
-        
+
+    return String.format("[Power Consuption: %d Air Temp: %d Device: %s]", dateFormat.format(date),
+        this.powerConsumption, this.airTemp, this.device);
+
   }
 } // End Hvac class

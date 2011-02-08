@@ -3,8 +3,8 @@ package edu.hawaii.ihale.api;
 import java.util.ArrayList;
 
 /**
- * Provides a specification of the operations that should be implemented by every AquaponicsActionDB.
- * This database contains a list of all 
+ * Provides a specification of the operations that should be implemented by every AquaponicsDB. This
+ * database contains a list of all Aquaponics readings.
  * 
  * @author Team Naia
  */

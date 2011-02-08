@@ -29,7 +29,7 @@ public class HvacAction {
    */
   public Document changeSetting(String settingName, String settingDescription, String value) {
     this.statusMessage = settingDescription + " changed to " + value;
-    
+
     try {
       return this.createDOM(settingName, value);
     }
@@ -41,9 +41,9 @@ public class HvacAction {
   }
 
   /**
-   * Creates DOM state-action object.  This is the XML structured representation 
-   * of the request to change an hvac setting.  Example of a request to change
-   * the Air Temperature to 70 degrees Fahrenheit.
+   * Creates DOM state-action object. This is the XML structured representation of the request to
+   * change an hvac setting. Example of a request to change the Air Temperature to 70 degrees
+   * Fahrenheit.
    * 
    * <pre>
    *   <state-action system="aquaponics" name="air-temp">
@@ -56,29 +56,29 @@ public class HvacAction {
    * @throws ParserConfigurationException
    */
   public Document createDOM(String category, String value) throws ParserConfigurationException {
-    
+
     // Create DOM Object
     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
     Document document = documentBuilder.newDocument();
-    
+
     // Create Root Element
     Element rootElement = document.createElement("state-action");
-    
+
     // Set Root Element Attributes
     rootElement.setAttribute("system", "hvac");
     rootElement.setAttribute("name", category);
-    
+
     // Add root to DOM
     document.appendChild(rootElement);
-    
+
     // Create text node to hold value
     Element element = document.createElement("state");
     element.appendChild(document.createTextNode(value));
-    
+
     // Add child node to root to hold state information
     rootElement.appendChild(element);
-    
+
     return document;
   }
 

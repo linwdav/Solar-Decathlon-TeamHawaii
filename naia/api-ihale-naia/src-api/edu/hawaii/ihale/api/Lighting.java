@@ -27,10 +27,10 @@ public class Lighting {
     this.device = device;
     this.timeStamp = timeStamp;
   }
-  
+
   /**
    * Get the pH of the water tank
-   *
+   * 
    * @return pH of tank.
    */
   double getpowerConsumption() {
@@ -45,15 +45,15 @@ public class Lighting {
   long getTimeStamp() {
     return this.timeStamp;
   }
-  
+
   /**
    * Gets the device name used for I/O with the iHale aquaponics system
+   * 
    * @return device name.
    */
   String getDevice() {
     return this.device;
   }
-  
 
   /**
    * Return this Hvac object as a formatted string.
@@ -62,13 +62,13 @@ public class Lighting {
    */
   @Override
   public String toString() {
-    
+
     // Date formatting variables
     Date date = new Date(this.timeStamp);
     DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
-    
-    return String.format("[Power Consuption: %d Device: %s]", dateFormat.format(date), 
+
+    return String.format("[Power Consuption: %d Device: %s]", dateFormat.format(date),
         this.powerConsumption, this.device);
-        
+
   }
 } // End Lighting class

@@ -4,7 +4,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 /**
- * Describes the aquaponics
+ * Describes an aquaponics readings object.
  * 
  * @author Team Naia
  */
@@ -34,8 +34,8 @@ public class Aquaponics {
    * @param device The device used to send and receive data from the iHale system
    * @param timeStamp The time that the aquaponics reading was taken
    */
-  public Aquaponics(double pH, double waterTemp, double airTemp, double waterLevel,
-      String device, long timeStamp) {
+  public Aquaponics(double pH, double waterTemp, double airTemp, double waterLevel, String device,
+      long timeStamp) {
     this.pH = pH;
     this.waterTemp = waterTemp;
     this.airTemp = airTemp;
@@ -52,16 +52,16 @@ public class Aquaponics {
   long getTimeStamp() {
     return this.timeStamp;
   }
-  
+
   /**
    * Get the pH of the water tank
-   *
+   * 
    * @return pH of tank.
    */
   double getPH() {
     return this.pH;
   }
-  
+
   /**
    * Get the water temperature.
    * 
@@ -70,7 +70,7 @@ public class Aquaponics {
   double getWaterTemp() {
     return this.waterTemp;
   }
-  
+
   /**
    * Get the air temperature.
    * 
@@ -79,7 +79,7 @@ public class Aquaponics {
   double getAirTemp() {
     return this.airTemp;
   }
-  
+
   /**
    * Get the water level.
    * 
@@ -88,15 +88,15 @@ public class Aquaponics {
   double getWaterLevel() {
     return this.waterLevel;
   }
-  
+
   /**
    * Gets the device name used for I/O with the iHale aquaponics system
+   * 
    * @return device name.
    */
   String getDevice() {
     return this.device;
   }
-  
 
   /**
    * Return this Aquaponics object as a formatted string.
@@ -105,13 +105,15 @@ public class Aquaponics {
    */
   @Override
   public String toString() {
-    
+
     // Date formatting variables
     Date date = new Date(this.timeStamp);
     DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.LONG);
-    
-    return String.format("[Time: %s pH: %d Water Temp: %d F Air Temp: %d Water Level: %d L Device: %s]", dateFormat.format(date), 
-        this.pH, this.waterTemp,this.airTemp, this.waterLevel, this.device);
-        
+
+    return String.format(
+        "[Time: %s pH: %d Water Temp: %d F Air Temp: %d Water Level: %d L Device: %s]",
+        dateFormat.format(date), this.pH, this.waterTemp, this.airTemp, this.waterLevel,
+        this.device);
+
   }
 } // End Aquaponics class
