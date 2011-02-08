@@ -8,74 +8,99 @@ package edu.hawaii.ihale.api;
  * @author Leonardo Nguyen
  */
 public class Photovoltaics {
-
+  
   /** Fields for the system. */
-  private float waterVolume;
-  private float waterTemperature;
-  private float waterPH;
-  private float waterOxygen;
-  private long lastUpdated;
-
+  private long timestamp;
+  private String meter;
+  private float energy;
+  private float energyWS;
+  private float power;
+  private float cpower;
+  private float frequency;
+  
   /**
    * Default constructor.
    * 
-   * @param waterVolume The water volume in liters.
-   * @param waterTemperature The water temperature in Celsius.
-   * @param waterPH The water PH.
-   * @param waterOxygen The oyxgenation level of the water.
-   * @param lastUpdated The timestamp for the last update.
+   * @param meter The device these measurements are associated with.
+   * @param energy A cumulative energy meter value expressed in units of kilo-Watt/hour.
+   * @param energyWS A cumulative energy meter value expressed in units of Watt/second.
+   * @param power The average power measured.
+   * @param cpower The current value of the power component.
+   * @param frequency The frequency in Hertz.
+   * @param timestamp The time to when these measurements were obtained, measured in the seconds
+   *                  elapsed since January 1st, 1970 (UTC).
    */
-  public Photovoltaics(float waterVolume, float waterTemperature, float waterPH, float waterOxygen,
-      long lastUpdated) {
-    this.waterVolume = waterVolume;
-    this.waterTemperature = waterTemperature;
-    this.waterPH = waterPH;
-    this.waterOxygen = waterOxygen;
-    this.lastUpdated = lastUpdated;
+  public Photovoltaics(String meter, float energy, float energyWS, float power, float cpower,
+      float frequency, long timestamp) {
+    this.meter = meter;
+    this.energy = energy;
+    this.energyWS = energyWS;
+    this.power = power;
+    this.cpower = cpower;
+    this.frequency = frequency;
+    this.timestamp = timestamp;
   }
 
   /**
-   * Return the water volume in liters.
+   * Returns the meter device association.
    * 
-   * @return the waterVolume
+   * @return The meter device association (i.e., Solar or Grid).
    */
-  public float getWaterVolume() {
-    return waterVolume;
+  public String getMeterDevice() {
+    return this.meter;
   }
-
+  
   /**
-   * Return the water temperature in Celsius.
+   * Returns the energy meter value expressed in units of kW/h.
    * 
-   * @return the waterTemperature
+   * @return The energy meter value.
    */
-  public float getWaterTemperature() {
-    return waterTemperature;
+  public float getEnergy() {
+    return this.energy;
   }
-
+  
   /**
-   * Return the PH of the water.
+   * Returns the energy meter value expressed in units of W/s.
    * 
-   * @return the waterPH
+   * @return The energy meter value.
    */
-  public float getWaterPH() {
-    return waterPH;
+  public float getEnergyWS() {
+    return this.energyWS;
   }
-
+  
   /**
-   * Return the oxygenation level of the water.
+   * Returns the average power.
    * 
-   * @return the waterOxygen
+   * @return The average power.
    */
-  public float getWaterOxygen() {
-    return waterOxygen;
+  public float getPower() {
+    return this.power;
   }
-
+  
   /**
-   * Return the timestamp for the last update.
+   * Returns the current value of the power component.
    * 
-   * @return the lastUpdated
+   * @return The current value of the power component.
    */
-  public long getLastUpdated() {
-    return lastUpdated;
+  public float getCPower() {
+    return this.cpower;
+  }
+  
+  /**
+   * Returns the frequency measured in Hertz.
+   * 
+   * @return The frequency.
+   */
+  public float getFrequency() {
+    return this.frequency;
+  }
+  
+  /**
+   * Returns the timestamp of when these measurements were obtained.
+   *
+   * @return The timestamp.
+   */
+  public long getTimestamp() {
+    return this.timestamp;
   }
 }

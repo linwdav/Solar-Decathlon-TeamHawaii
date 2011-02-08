@@ -16,4 +16,10 @@ public interface PhotovoltaicsAPI {
    */
   public Photovoltaics getPhotovoltaics();
   
+  /**
+   * PUT information from the photovoltaics system sensors into a database.
+   * 
+   * @param photovoltaics The photovoltaics information to be inserted.
+   */
+  public void putPhotovoltaics(Photovoltaics photovoltaics);
 }

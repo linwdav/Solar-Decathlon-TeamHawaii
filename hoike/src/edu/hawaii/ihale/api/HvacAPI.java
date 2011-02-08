@@ -22,4 +22,12 @@ public interface HvacAPI {
    * @param hvac The hvac system information.
    */
   public void putHVAC(HVAC hvac);
+  
+  /**
+   * DELETE a HVAC record with timestamp value.
+   *
+   * @param timestamp The timestamp of the HVAC record to be removed.
+   */
+  public void deleteHVAC(long timestamp);
+  
 }
