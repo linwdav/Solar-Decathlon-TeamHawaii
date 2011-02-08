@@ -10,150 +10,59 @@ package edu.hawaii.ihale.api;
 public class HVAC {
 
   /** Fields for the system. */
-  private float livingRoomHumidity;
-  private float livingRoomTemperature;
-  private float kitchenHumidity;
-  private float kitchenTemperature;
-  private float bathroomHumidity;
-  private float bathroomTemperature;
-  private float naturalSpaceHumidity;
-  private float naturalSpaceTemperature;
-  private float extraRoomHumidity;
-  private float extraRoomTemperature;
-  private long lastUpdated;
+  private String roomName;
+  private float humidity;
+  private float temperature;
+  private long timestamp;
   
   /**
    * Default constructor.
    * 
-   * @param livingRoomHumidity The living room's relative humidity.
-   * @param livingRoomTemperature The living room's temperature in Fahrenheit.
-   * @param kitchenHumidity The kitchen's relative humidity.
-   * @param kitchenTemperature The kitchen's room temperature in Fahrenheit.
-   * @param bathroomHumidity The bathroom's relative humidity.
-   * @param bathroomTemperature The bathroom's room temperature in Fahrenheit.
-   * @param naturalSpaceHumidity The natural space section of the home's relative humidity.
-   * @param naturalSpaceTemperature The natural space section of the home's room temperature in 
-   *                                Fahrenheit.
-   * @param extraRoomHumidity The extra room within the home's relative humidity.
-   * @param extraRoomTemperature The extra room within the home's room temperature in Fahrenheit.
-   * @param lastUpdated The timestamp for the last update.
+   * @param roomName The room name within the home (i.e., naturalSpaceRoom).
+   * @param humidity The room's relative humidity.
+   * @param temperature The temperature within the room.
+   * @param timestamp The timestamp of when these measurements were obtained by the sensors.
    */
-  public HVAC(float livingRoomHumidity, float livingRoomTemperature, float kitchenHumidity, 
-      float kitchenTemperature, float bathroomHumidity, float bathroomTemperature, 
-      float naturalSpaceHumidity, float naturalSpaceTemperature, float extraRoomHumidity, 
-      float extraRoomTemperature, long lastUpdated) {
-    
-    this.livingRoomHumidity = livingRoomHumidity;
-    this.livingRoomTemperature = livingRoomTemperature;
-    this.kitchenHumidity = kitchenHumidity;
-    this.kitchenTemperature = kitchenTemperature;
-    this.bathroomHumidity = bathroomHumidity;
-    this.bathroomTemperature = bathroomTemperature;
-    this.kitchenHumidity = kitchenHumidity;
-    this.kitchenTemperature = kitchenTemperature;
-    this.naturalSpaceHumidity = naturalSpaceHumidity;
-    this.naturalSpaceTemperature = naturalSpaceTemperature;
-    this.extraRoomHumidity = extraRoomHumidity;
-    this.extraRoomTemperature = extraRoomTemperature;
-    this.lastUpdated = lastUpdated;
-  }
-
-  /**
-   * Returns the living room's relative humidity.
-   * 
-   * @return The living room's relative humidity.
-   */
-  public float getlivingRoomHumidity() {
-    return livingRoomHumidity;
-  }
-
-  /**
-   * Returns the living room's relative temperature.
-   * 
-   * @return The living room's relative humidity.
-   */
-  public float getlivingRoomTemperature() {
-    return livingRoomTemperature;
-  }
-
-  /**
-   * Returns the kitchen's relative humidity.
-   * 
-   * @return The kitchen's relative humidity.
-   */
-  public float getkitchenHumidity() {
-    return kitchenHumidity;
-  }
-
-  /**
-   * Returns The kitchen's room temperature.
-   * 
-   * @return The kitchen's room temperature.
-   */
-  public float getkitchenTemperature() {
-    return kitchenTemperature;
+  public HVAC(String roomName, float humidity, float temperature, long timestamp) {
+    this.roomName = roomName;
+    this.humidity = humidity;
+    this.temperature = temperature;
+    this.timestamp = timestamp;
   }
   
   /**
-   * Returns the bathroom's relative humidity.
-   *
-   * @return The bathroom's relative humidity.
-   */
-  public float getBathroomHumidity() {
-    return bathroomHumidity;
-  }
-  
-  /**
-   * Returns the bathroom's room temperature.
+   * Returns the room's name.
    * 
-   * @return The bathroom's room temperature.
+   * @return Room name.
    */
-  public float getBathroomTemperature() {
-    return bathroomTemperature;
+  public String getRoomName() {
+    return this.roomName;
   }
   
   /**
-   * Returns the natural space section of the home's relative humidity.
+   * Returns the room's relative humidity.
    * 
-   * @return The natural space section of the home's relative humidity.
+   * @return The relative humidity.
    */
-  public float getNaturalSpaceHumidity() {
-    return naturalSpaceHumidity;
+  public float getHumidity() {
+    return this.humidity;
   }
   
   /**
-   * Returns the natural space section of the home's room temperature.
+   * Return the temperature of the room.
    * 
-   * @return The natural space section of the home's room temperature.
+   * @return The temperature.
    */
-  public float getNaturalSpaceTemperature() {
-    return naturalSpaceTemperature;
+  public float getTemperature() {
+    return this.temperature;
   }
   
   /**
-   * Returns the extra room within the home's relative humidity.
-   *
-   * @return The extra room within the home's relative humidity.
-   */
-  public float getExtraRoomHumidty() {
-    return extraRoomHumidity;
-  }
-  
-  /**
-   * Returns the extra room within the home's room temperature.
+   * Returns the timestamp of when the measurements were obtained for this room.
    * 
-   * @return The extra room within the home's room temperature.
+   * @return The timestamp.
    */
-  public float getExtraRoomTemperature() {
-    return extraRoomTemperature;
-  }
-  
-  /**
-   * Return the timestamp for the last update.
-   * 
-   * @return the lastUpdated
-   */
-  public long getLastUpdated() {
-    return lastUpdated;
+  public long getTimestamp() {
+    return this.timestamp;
   }
 }

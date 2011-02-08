@@ -22,4 +22,11 @@ public interface PhotovoltaicsAPI {
    * @param photovoltaics The photovoltaics information to be inserted.
    */
   public void putPhotovoltaics(Photovoltaics photovoltaics);
+  
+  /**
+   * DELETE a Photovoltaic record with timestamp value.
+   *
+   * @param timestamp The timestamp of the Photovoltaic record to be removed.
+   */
+  public void deletePhotovoltaics(long timestamp);
 }
