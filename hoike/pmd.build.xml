@@ -44,7 +44,7 @@
          failonerror="${pmd.failonerror}"
          failOnRuleViolation="${pmd.failonerror}">
       <formatter type="xml" toFile="${pmd.dir}/pmd.xml" />
-      <fileset dir="${src.api.dir}" includes="**/*.java" />
+      <fileset dir="${src.dir}" includes="**/*.java" />
     </pmd>
     <!-- Provide a value for this property if it hasn't gotten one by the pmd task already. -->
     <property name="pmd.failure.count" value="0"/>

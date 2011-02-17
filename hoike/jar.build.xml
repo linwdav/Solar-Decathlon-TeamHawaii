@@ -16,8 +16,6 @@
      <copy todir="${tmp.dir}">
        <fileset dir="${basedir}/build/classes/"/>
      </copy>
-    
-
 
     <jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">
        <manifest>

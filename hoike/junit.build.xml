@@ -20,7 +20,7 @@
       </classpath>
       <formatter type="xml" />
       <batchtest todir="${junit.build.dir}">
-        <fileset dir="${src.api.dir}" includes="**/Test*.java"/>
+        <fileset dir="${src.dir}" includes="**/Test*.java"/>
       </batchtest>
     </junit>
   </target>

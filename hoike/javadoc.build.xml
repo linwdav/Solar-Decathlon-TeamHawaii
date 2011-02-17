@@ -10,7 +10,7 @@
   <target name="javadoc.tool" depends="compile" description="Generate JavaDoc.">
     <mkdir dir="${javadoc.dir}" />
     <javadoc classpathref="compile.classpath"
-             sourcepath="${src.api.dir}"
+             sourcepath="${src.dir}"
              destdir="${javadoc.dir}"
              author="true"
              version="true"
