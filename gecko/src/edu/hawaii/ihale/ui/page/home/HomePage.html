@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<body>
+<wicket:extend>
+  <div id="Status" wicket:id="HomeStatus" class="span-5">
+  </div>
+  <div id="Main" class="span-19 last">
+		<p>
+	    Please click on the button below to go to the requested area. To add or remove buttons, please go to the
+	    <a wicket:id="settingsPage" href="#">Settings Page</a>
+	  </p>
+		  
+	  <wicket:link>
+	    <div id="homePageButtonList">
+	    
+	    <table>
+	     <tr>
+	       <td>
+	       <a wicket:id="HomeButtonLink1" href="#">
+				  <div class="homePageButton">
+						<ul>
+							<li class="main">
+							  Aquaponics            
+							</li>
+					  </ul>
+					</div>
+					</a>
+         </td>
+         <td>
+         <a wicket:id="HomeButtonLink2" href="#">
+          <div class="homePageButton">
+            <ul>
+              <li class="main">
+                Electricity              
+              </li>
+            </ul>
+          </div>
+          </a>
+         </td>
+         <td>
+         <a wicket:id="HomeButtonLink3" href="#">
+          <div class="homePageButton">
+            <ul>
+              <li class="main">
+                HVAC                              
+              </li>
+              <li>Heating, Ventilation, and Cooling</li>
+            </ul>
+          </div>
+          </a>
+         </td>
+	     </tr>
+       <tr>
+         <td>
+         <a wicket:id="HomeButtonLink4" href="#">
+          <div class="homePageButton">
+            <ul>
+              <li class="main">
+                Lights              
+              </li>
+            </ul>
+          </div>
+          </a>
+         </td>
+         <td>
+         <a wicket:id="HomeButtonLink5" href="#">
+          <div class="homePageButton">
+            <ul>
+              <li class="main">
+                Water Heater              
+              </li>
+            </ul>
+          </div>
+          </a>
+         </td>
+         <td>
+         <a wicket:id="HomeButtonLink6" href="#">
+          <div class="homePageButton">
+            <ul>
+              <li class="main">
+                Settings                            
+              </li>
+            </ul>
+          </div>
+          </a>
+         </td>
+       </tr>	    
+	    </table>	      
+	    </div>
+	  </wicket:link>
+  </div>
+</wicket:extend>
+</body>
+</html>

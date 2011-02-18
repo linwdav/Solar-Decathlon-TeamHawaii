@@ -1,0 +1,73 @@
+div.containerBorder
+{
+	background : url('../images/containerBorder.png') repeat-x;
+	margin : 0 auto;
+  width : 1000px;
+}
+
+div.container
+{
+  margin : 0 1px;
+}
+
+div#page
+{
+  background : white;
+  height : 100%;
+  min-height 650px: 
+}
+
+div#header
+{
+	margin-top : 1em;
+	margin-bottom : 2em;
+}
+
+div#menubar
+{
+  margin-bottom : 1em;
+}
+div#menubar table
+{
+  border-top : 1px solid #777;
+  border-bottom : 1px solid #777;
+  width : 100%;	
+}
+
+div#menubar table td
+{
+  padding : 0px;
+	text-align : center;
+  width : 14.25%;
+}
+
+div#menubar table td a
+{
+  text-decoration : none;	
+}
+
+div#menubar table td a div
+{
+  background : url('../images/MenuBarNormal.png');
+  height : 23px;
+  padding-top : 7px;
+}
+
+div#menubar table td a:hover div
+{
+  background : url('../images/MenuBarHover.png');
+  text-decoration : underline; 
+}
+
+div#menubar table td a.selected div
+{
+  background : url('../images/MenuBarSelected.png');
+  color : white;
+  font-weight : bold;
+}
+
+
+div#menubar table td a
+{
+  width : 100%;
+}

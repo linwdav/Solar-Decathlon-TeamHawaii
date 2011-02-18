@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="ihale-api/ihale-api-backend-example.jar"/>
+	<classpathentry kind="lib" path="ihale-api/ihale-api.jar"/>
+	<classpathentry kind="lib" path="lib/wicket/wicket.jar"/>
+	<classpathentry kind="lib" path="lib/wicket/wicket-extensions.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="lib/slf4j/slf4j-simple.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/jetty-util.jar"/>
+	<classpathentry kind="lib" path="lib/jetty/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="lib/junit/junit.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

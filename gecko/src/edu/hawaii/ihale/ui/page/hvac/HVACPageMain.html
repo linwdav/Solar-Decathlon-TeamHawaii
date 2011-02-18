@@ -1,0 +1,25 @@
+<html>
+<body>
+<wicket:panel>
+	<h3>HVAC System</h3>
+	<form wicket:id="form">
+	<table>
+		<tr>
+			<td width="200">Power:</td>
+			<td><input type="checkbox" wicket:id="HVACPower" /></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;Desired Temperature:</td>
+			<td><input wicket:id="HVACDesiredTemp" type="text" /></td>
+		</tr>
+		<tr>
+			<td>&nbsp;&nbsp;&nbsp;&nbsp;Power Level:</td>
+			<td><input wicket:id="HVACPowerLevel" type="text" /></td>
+		</tr>
+	</table>
+	<p><input wicket:id="cancel" type="submit" value="Cancel" /> <input
+		wicket:id="save" type="submit" value="Save" /></p>
+	</form>
+</wicket:panel>
+</body>
+</html>

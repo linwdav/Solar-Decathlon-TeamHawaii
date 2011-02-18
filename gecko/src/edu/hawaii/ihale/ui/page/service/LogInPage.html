@@ -1,0 +1,23 @@
+<html>
+<body>
+<wicket:extend>
+  <div class="span-18">
+    <p>Welcome to the Home Management System 2.0!</p>
+    <p>Please log in on the right side. For guests, please click on the button below.</p>
+  </div>
+  <div class="span-6 last">
+    <div class="LogInDiv">
+      <div wicket:id="feedback">
+      </div>
+      <form wicket:id="LogInForm">
+        <ul>
+	        <li><input wicket:id="LogInUser" type="text"/></li>
+	        <li><input wicket:id="LogInPasswd" type="password"/></li>
+	        <li><input type="submit" value="Log In"/></li>
+        </ul>
+      </form>
+    </div>
+  </div>
+</wicket:extend>
+</body>
+</html>
