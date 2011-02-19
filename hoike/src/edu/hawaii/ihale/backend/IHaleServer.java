@@ -2,6 +2,7 @@ package edu.hawaii.ihale.backend;
 
 import org.restlet.Application;
 import org.restlet.Component;
+import org.restlet.Context;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
@@ -18,9 +19,11 @@ import org.restlet.routing.Router;
  */
 public class IHaleServer extends Application {
 
-  // Path to the properties file
+  // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
+  // Restlet server properties file name.
   private static String configurationFile = "configuration.properties";
+  // Full path to the Restlet server properties file.
   private static String configFilePath = currentDirectory + "\\" + configurationFile;
   
   /**
@@ -36,10 +39,8 @@ public class IHaleServer extends Application {
     component.getServers().add(Protocol.HTTP, port);
     // Create an application (this class).
     Application application = new IHaleServer();
-    // Attach the application to the component with a defined contextRoot.
-    //String contextRoot = "";
+    // Attach the application to the component.
     component.getDefaultHost().attach(application);
-    //component.getDefaultHost().attach(contextRoot, application);
     component.start();
   }  
   
@@ -51,6 +52,9 @@ public class IHaleServer extends Application {
    */
   public static void main(String[] args) throws Exception {
     
+    /** TO-DO: Retrieve the port number from the properties file
+     * 
+     */
     
     // The port number Restlet HTTP server is listening on for incoming requests.
     int port = 8000;
@@ -63,13 +67,34 @@ public class IHaleServer extends Application {
    */
   @Override
   public Restlet createInboundRoot() {
-      // Create a router restlet.
-      //Router router = new Router(getContext());
+
+      /** TO-DO: Retrieve the system URIs from the properties file and store in the below
+       *         strings. 
+       */
+    
+      // Define the systems that support resource handling by the Restlet HTTP server.
+      String aquaponicsSystem = "aquaponics";
+      String hvacSystem = "hvac";
+      String lightingSystem = "lighting";
+      // Commented out to avoid ant complaints.
+      //String pvSystem = "";
+      //String electricalSystem = "";
       
+      // Create a router restlet.
       Router router = new Router();
       // Attach the resources to the router.
-      router.attach("/aquaponics/{request}", ResourceTesting.class);
-      router.attach("/hvac/{request}", ResourceTesting.class);
+      router.attach("/" + aquaponicsSystem + "/{request}", AquaponicsResource.class);
+      router.attach("/" + hvacSystem + "/{request}", HvacResource.class);
+      router.attach("/" + lightingSystem + "/{request}", LightingResource.class);
+
+      /** TO-DO: Need to figure out a solution for PV and Electrical since they share the same
+       *         ending URI patterns. 
+       *         i.e., PV:
+       *               http://egauge-1.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
+       *               Electrical:
+       *               http://egauge-2.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
+       */
+      
       // Return the root router
       return router;
   }
