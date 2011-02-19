@@ -36,9 +36,9 @@ public class IHaleServer extends Application {
    * @throws Exception if problems occur starting up this server. 
    */
   public static void runServer(int port) throws Exception {
-    // Create a component.  
+    // Create a new Restlet component and add a HTTP server connector to it.  
     Component component = new Component();
-    component.getServers().add(Protocol.HTTP, port);
+    component.getServers().add(Protocol.HTTP, port);    
     // Create an application (this class).
     Application application = new IHaleServer();
     // Attach the application to the component.

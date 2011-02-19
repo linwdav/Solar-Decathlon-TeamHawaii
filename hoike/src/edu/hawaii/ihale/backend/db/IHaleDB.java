@@ -53,7 +53,8 @@ public class IHaleDB implements SystemStateEntryDB {
   @Override
   public SystemStateEntry getEntry(String arg0, String arg1, long arg2) {
     // TODO Auto-generated method stub
-    return null;
+    SystemStateEntry testEntry = new SystemStateEntry("Aquaponics", "Arduino-23", 111111111);
+    return testEntry;
   }
 
   @Override
