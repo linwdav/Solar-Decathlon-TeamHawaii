@@ -28,8 +28,8 @@ public class TestIHaleDB {
     System.out.println(entry);
     assertEquals("Checking pH", 4.5, entry.getDoubleValue("pH"), 0.01);
     
-    IHaleDB db = new IHaleDB();
     //Currently failing because of SystemStateEntry not supporting persistency attribute.
+    //IHaleDB db = new IHaleDB();
     //db.putEntry(entry);
     
     system = "Aquaponics";

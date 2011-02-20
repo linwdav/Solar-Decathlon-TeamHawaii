@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.List;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
+import com.sleepycat.persist.EntityCursor;
+import com.sleepycat.persist.EntityIndex;
 import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
 import com.sleepycat.persist.SecondaryIndex;
@@ -65,16 +67,42 @@ public class IHaleDB implements SystemStateEntryDB {
    */
   @Override
   public SystemStateEntry getEntry(String systemName, String deviceName, long timestamp) {
-    /** TO-DO: systemName and deviceName, either both or one of them need to be SecondaryKeys
-     *         since there could be records/entities that share the same timestamp (PrimaryKey).
-     *         Need to thus define SecondaryKey and do cusory search for proper entry to be
-     *         returned.
-     */
     
+    // Retrieve an entry from the database with defined timestamp and and compare for 
+    // system name and device name matching.
+    IHaleSystemStateEntry entry = entryIndexPKey.get(timestamp);
+    if (entry.getSystemName().equals(systemName) && entry.getDeviceName().equals(deviceName)) {
+      return (SystemStateEntry) entry;
+    }
+    else {
+      return null;
+    }
+       
+    /*
+    // Retrieve a list of IHaleSystemStateEntry via secondary key.
+    EntityCursor<IHaleSystemStateEntry> cursor = 
+      (EntityCursor<IHaleSystemStateEntry>) entryIndexSKey.subIndex(systemName);
     
-    // Below code is just for testing - Remove later.
-    SystemStateEntry testEntry = new SystemStateEntry("Aquaponics", "Arduino-23", 111111111);
-    return testEntry;
+    // Retrieve the specific entry denoted by its timepstamp and device name.
+    IHaleSystemStateEntry matchedEntry = null;
+    try {
+      for (IHaleSystemStateEntry entry : cursor) {
+        if (entry.getSystemName().equals(systemName) && entry.getDeviceName().equals(deviceName)) {
+          matchedEntry = entry;
+          break;
+        }
+      }
+    } finally {
+      cursor.close();
+    }
+    
+    if (matchedEntry != null) {
+      return matchedEntry;
+    }
+    else {
+      return null;
+    }
+    */
   }
   
   /**
@@ -97,14 +125,19 @@ public class IHaleDB implements SystemStateEntryDB {
    */
   @Override
   public void deleteEntry(String systemName, String deviceName, long timestamp) {
-    /** TO-DO: systemName and deviceName, either both or one of them need to be SecondaryKeys
-     *         since there could be records/entities that share the same timestamp (PrimaryKey).
-     *         Need to thus define SecondaryKey and do cusory search for proper entry to be
-     *         removed.
-     */
-    
-    // Below is simply place holder code - Remove/modify later.
-    entryIndexPKey.delete(timestamp);
+
+    EntityIndex<Long, IHaleSystemStateEntry> subIndex = entryIndexSKey.subIndex(systemName);
+    EntityCursor<IHaleSystemStateEntry> cursor = subIndex.entities();
+    IHaleSystemStateEntry entry = null;
+    try {
+      while ((entry = cursor.next()) != null) {
+        if (entry.getDeviceName().equals(deviceName)) {
+          cursor.delete();
+        }      
+      }
+    } finally {
+      cursor.close();
+    }
   }
 
   /**
