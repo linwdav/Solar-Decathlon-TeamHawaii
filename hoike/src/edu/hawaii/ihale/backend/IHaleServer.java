@@ -2,7 +2,6 @@ package edu.hawaii.ihale.backend;
 
 import org.restlet.Application;
 import org.restlet.Component;
-import org.restlet.Context;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
@@ -24,6 +23,7 @@ public class IHaleServer extends Application {
   // Restlet server properties file name.
   private static String configurationFile = "configuration.properties";
   // Full path to the Restlet server properties file.
+  @SuppressWarnings("unused")
   private static String configFilePath = currentDirectory + "\\" + configurationFile;
   
   /**

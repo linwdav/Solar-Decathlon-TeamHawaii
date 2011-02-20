@@ -4,9 +4,7 @@ import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
-import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
-import org.restlet.routing.VirtualHost;
 import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsResource;
 import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacResource;
 import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingResource;
@@ -28,6 +26,7 @@ public class IHaleServer extends Application {
   // Restlet server properties file name.
   private static String configurationFile = "configuration.properties";
   // Full path to the Restlet server properties file.
+  @SuppressWarnings("unused")
   private static String configFilePath = currentDirectory + "\\" + configurationFile;
   
   /**
@@ -103,7 +102,9 @@ public class IHaleServer extends Application {
       String aquaponicsSystem = "aquaponics";
       String hvacSystem = "hvac";
       String lightingSystem = "lighting";
+      @SuppressWarnings("unused")
       String pvSystem = "";
+      @SuppressWarnings("unused")
       String electricalSystem = "";
       
       // Create a router restlet.

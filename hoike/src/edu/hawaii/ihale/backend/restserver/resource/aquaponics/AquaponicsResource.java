@@ -1,15 +1,10 @@
 package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
-import java.util.Date;
-import java.util.List;
-import org.restlet.data.Method;
-import org.restlet.resource.ClientResource;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
-import edu.hawaii.ihale.api.SystemStateEntryDBException;
 import edu.hawaii.ihale.backend.db.IHaleDB;
 
 /**
@@ -70,15 +65,15 @@ public class AquaponicsResource extends ServerResource {
     */
     
     SystemStateEntry testEntry = db.getEntry("T", "E", 222222);
-    String returnValue = "This is the aquaponics resource!\n " + testEntry.getSystemName();
-    return returnValue;
+    return "This is the aquaponics resource!\n " + testEntry.getSystemName();
   }
   
   /**
    * Commands an aquaponics device to set the temperature to a new value.
+   * @param temperature The temperature.
    */
   @Put
   public void setTemp(Long temperature) {
-     
+    // Empty method
   }
 }
