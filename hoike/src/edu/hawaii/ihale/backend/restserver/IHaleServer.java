@@ -4,7 +4,9 @@ import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
+import org.restlet.routing.Redirector;
 import org.restlet.routing.Router;
+import org.restlet.routing.VirtualHost;
 import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsResource;
 import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacResource;
 import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingResource;
@@ -38,11 +40,34 @@ public class IHaleServer extends Application {
   public static void runServer(int port) throws Exception {
     // Create a new Restlet component and add a HTTP server connector to it.  
     Component component = new Component();
-    component.getServers().add(Protocol.HTTP, port);    
+    String ipAddress = "127.0.0.1";
+    component.getServers().add(Protocol.HTTP, ipAddress, port);   
     // Create an application (this class).
     Application application = new IHaleServer();
+    String contextRoot = "";
     // Attach the application to the component.
-    component.getDefaultHost().attach(application);
+    component.getDefaultHost().attach(contextRoot, application);
+    
+    
+    
+    /*
+    VirtualHost host = new VirtualHost(component.getContext());
+    host.setHostDomain("localhost|" + ipAddress);
+    host.setHostPort(Integer.toString(port));
+    host.attach(contextRoot, application);
+    component.getHosts().add(host);
+    
+    host = new VirtualHost(component.getContext());
+    host.setHostDomain("myName|yourName|hisName|herName");
+    host.setHostPort(Integer.toString(port));
+    String target = "localhost";
+    Redirector redirector = new Redirector(component.getContext(), target, 
+        Redirector.MODE_CLIENT_PERMANENT);
+    host.attach(redirector);
+    host.attach(contextRoot, application);
+    component.getHosts().add(host);
+    */
+    
     component.start();
   }  
   
@@ -82,12 +107,11 @@ public class IHaleServer extends Application {
       String electricalSystem = "";
       
       // Create a router restlet.
-      Router router = new Router();
+      Router router = new Router(getContext());
       // Attach the resources to the router.
       router.attach("/" + aquaponicsSystem + "/{request}", AquaponicsResource.class);
       router.attach("/" + hvacSystem + "/{request}", HvacResource.class);
       router.attach("/" + lightingSystem + "/{request}", LightingResource.class);
-
       /** TO-DO: Need to figure out a solution for PV and Electrical since they share the same
        *         ending URI patterns. 
        *         i.e., PV:

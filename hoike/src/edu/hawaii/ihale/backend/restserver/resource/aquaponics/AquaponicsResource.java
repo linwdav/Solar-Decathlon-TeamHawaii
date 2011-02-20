@@ -44,6 +44,7 @@ public class AquaponicsResource extends ServerResource {
      */
     
     SystemStateEntryDB db = new IHaleDB();
+    /**
     try {
       // Retrieve a list of all aquaponics entries and find the most current entry stored 
       // in the DB.
@@ -58,14 +59,15 @@ public class AquaponicsResource extends ServerResource {
           timestamp = entry.getTimestamp();
         }
       }
-      
+    */  
       /** TO-DO: Return the entry in XML format to the front-end */
+    /*
     }
     catch (SystemStateEntryDBException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    
+    */
     
     SystemStateEntry testEntry = db.getEntry("T", "E", 222222);
     String returnValue = "This is the aquaponics resource!\n " + testEntry.getSystemName();
