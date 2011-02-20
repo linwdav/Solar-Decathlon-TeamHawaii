@@ -138,18 +138,35 @@ public class IHaleDB implements SystemStateEntryDB {
    * Returns a list of IHaleSystemStateEntry instances consisting of all entries between the two
    * timestamps.
    * 
-   * @param arg0 The system name.
-   * @param arg1 The device name.
-   * @param arg2 The start time.
-   * @param arg3 The end time.
+   * @param systemName The system name.
+   * @param deviceName The device name.
+   * @param startTime The start time.
+   * @param endTime The end time. 
    * @return A (possibly empty) list of IHaleSystemStateEntries.
    * @throws SystemStateEntryDBException If startTime is greater than endTime.
    */
   @Override
-  public List<SystemStateEntry> getEntries(String arg0, String arg1, long arg2, long arg3)
+  public List<SystemStateEntry> getEntries(String systemName, String deviceName, long startTime, 
+      long endTime)
       throws SystemStateEntryDBException {
-    // TODO Auto-generated method stub
-    return null;
+
+    List<SystemStateEntry> entryList = new ArrayList<SystemStateEntry>();
+    // Retrieve all entries with timestamp values between startTime and endTime.
+    EntityCursor<IHaleSystemStateEntry> cursor = 
+      entryIndexPKey.entities(startTime, true, endTime, true);
+    
+    // Only return entries matching the specified device and system name.
+    try {
+      for (IHaleSystemStateEntry entry : cursor) {
+        if (entry.getDeviceName().equals(deviceName) && entry.getSystemName().equals(systemName)) {
+          entryList.add((SystemStateEntry) entry);
+        }
+      }       
+    } 
+    finally {
+      cursor.close();
+    }
+    return entryList;
   }
 
   /**
@@ -173,14 +190,7 @@ public class IHaleDB implements SystemStateEntryDB {
           cursor.nextNoDup();
         }
       }
-      
-      /** Leo's previous way to do it resulted in an infinite loop as reported by FindBugs
-      for (IHaleSystemStateEntry entry = cursor.first(); entry != null; cursor.nextNoDup()) {
-        systemNameList.add(entry.getSystemName());
-      }
-      */
     }
-    
     finally {
       cursor.close();
     }
