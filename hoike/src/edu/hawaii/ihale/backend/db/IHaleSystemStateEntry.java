@@ -30,6 +30,9 @@ public class IHaleSystemStateEntry extends SystemStateEntry {
   @SecondaryKey(relate = Relationship.MANY_TO_ONE)
   private String systemName;
   
+  @SecondaryKey(relate = Relationship.MANY_TO_ONE)
+  private String deviceName;
+  
   /**
    * The constructor.
    * 
@@ -41,5 +44,6 @@ public class IHaleSystemStateEntry extends SystemStateEntry {
     super(systemName, deviceName, timestamp);
     this.timestamp = timestamp;
     this.systemName = systemName;
+    this.deviceName = deviceName;
   }
 }

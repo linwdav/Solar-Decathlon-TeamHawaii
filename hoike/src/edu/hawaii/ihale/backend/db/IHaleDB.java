@@ -1,11 +1,13 @@
 package edu.hawaii.ihale.backend.db;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.persist.EntityCursor;
-import com.sleepycat.persist.EntityIndex;
 import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
 import com.sleepycat.persist.SecondaryIndex;
@@ -31,7 +33,10 @@ public class IHaleDB implements SystemStateEntryDB {
   private static PrimaryIndex<Long, IHaleSystemStateEntry> entryIndexPKey;
 
   /** The SecondaryIndex accessor for entries related to its system name. */
-  private static SecondaryIndex<String, Long, IHaleSystemStateEntry> entryIndexSKey;
+  private static SecondaryIndex<String, Long, IHaleSystemStateEntry> entryIndexSKeySystem;
+  
+  /** The SecondaryIndex accessor for entries related to its device name. */
+  private static SecondaryIndex<String, Long, IHaleSystemStateEntry> entryIndexSKeyDevice;
 
   /** Initialize the static variables at class load time to ensure there's only one of them. */
   static {
@@ -50,7 +55,8 @@ public class IHaleDB implements SystemStateEntryDB {
     Environment env = new Environment(dir,  envConfig);
     IHaleDB.store = new EntityStore(env, "EntityStore", storeConfig);
     entryIndexPKey = store.getPrimaryIndex(Long.class, IHaleSystemStateEntry.class);
-    entryIndexSKey = store.getSecondaryIndex(entryIndexPKey, String.class, "timestamp");
+    entryIndexSKeySystem = store.getSecondaryIndex(entryIndexPKey, String.class, "systemName");
+    entryIndexSKeyDevice = store.getSecondaryIndex(entryIndexPKey, String.class, "deviceName");
     // Guarantee that the environment is closed upon system exit.
     DbShutdownHook shutdownHook = new DbShutdownHook(env, store);
     Runtime.getRuntime().addShutdownHook(shutdownHook);
@@ -79,9 +85,9 @@ public class IHaleDB implements SystemStateEntryDB {
     }
        
     /*
-    // Retrieve a list of IHaleSystemStateEntry via secondary key.
+    // Retrieve a list of IHaleSystemStateEntry via secondary key system name values.
     EntityCursor<IHaleSystemStateEntry> cursor = 
-      (EntityCursor<IHaleSystemStateEntry>) entryIndexSKey.subIndex(systemName);
+      (EntityCursor<IHaleSystemStateEntry>) entryIndexSKeySystem.subIndex(systemName);
     
     // Retrieve the specific entry denoted by its timepstamp and device name.
     IHaleSystemStateEntry matchedEntry = null;
@@ -126,7 +132,13 @@ public class IHaleDB implements SystemStateEntryDB {
   @Override
   public void deleteEntry(String systemName, String deviceName, long timestamp) {
 
-    EntityIndex<Long, IHaleSystemStateEntry> subIndex = entryIndexSKey.subIndex(systemName);
+    entryIndexPKey.delete(timestamp);
+    
+    /* RETAINING THIS SNIPPET OF CODE IN THE EVENT TIMESTAMP PROVED TO BE AN INEFFICIENT
+     * PRIMARY KEY.
+     * 
+    // Retrieves a list of entries such that it has systemName and timestamp value.
+    EntityIndex<Long, IHaleSystemStateEntry> subIndex = entryIndexSKeySystem.subIndex(systemName);
     EntityCursor<IHaleSystemStateEntry> cursor = subIndex.entities();
     IHaleSystemStateEntry entry = null;
     try {
@@ -138,6 +150,7 @@ public class IHaleDB implements SystemStateEntryDB {
     } finally {
       cursor.close();
     }
+    */
   }
 
   /**
@@ -165,8 +178,21 @@ public class IHaleDB implements SystemStateEntryDB {
    */
   @Override
   public List<String> getSystemNames() {
-    // TODO Auto-generated method stub
-    return null;
+    
+    List<String> systemNameList = new ArrayList<String>();
+    // Retrieves a list of entries ordered by the secondary key, systemName.
+    EntityCursor<IHaleSystemStateEntry> cursor = entryIndexSKeySystem.entities();
+    
+    try {
+      // Iterate through the list, only looking at the first entry per system name group.
+      // i.e., first occurrence of entry with systemName = Hvac, then Lighting, etc.
+      for(IHaleSystemStateEntry entry = cursor.first(); entry != null; cursor.nextNoDup()) {
+        systemNameList.add(entry.getSystemName());
+      }
+    } finally {
+      cursor.close();
+    }
+    return systemNameList;
   }
   
   /**
@@ -178,8 +204,23 @@ public class IHaleDB implements SystemStateEntryDB {
    */
   @Override
   public List<String> getDeviceNames(String systemName) throws SystemStateEntryDBException {
-    // TODO Auto-generated method stub
-    return null;
+    
+    Set<String> deviceNameSet = new HashSet<String>();
+    // Retrieves a list of entries with systemName.
+    EntityCursor<IHaleSystemStateEntry> cursor = 
+      entryIndexSKeySystem.entities(systemName, true, systemName, true);
+    
+    // Traverse through the list and store each device once associated with the specified system.
+    try {
+      for (IHaleSystemStateEntry entry : cursor) {
+        deviceNameSet.add(entry.getDeviceName());
+      }
+    } finally {
+      cursor.close();
+    }
+    
+    List<String> deviceNameList = new ArrayList<String>(deviceNameSet);
+    return deviceNameList;
   }
   
   /**
@@ -191,7 +232,7 @@ public class IHaleDB implements SystemStateEntryDB {
    * @param listener The listener whose entryAdded method will be called. 
    */
   @Override
-  public void addSystemStateListener(SystemStateListener arg0) {
+  public void addSystemStateListener(SystemStateListener listener) {
     // TODO Auto-generated method stub
     
   }
