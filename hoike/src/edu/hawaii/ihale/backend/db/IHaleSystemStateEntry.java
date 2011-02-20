@@ -2,6 +2,8 @@ package edu.hawaii.ihale.backend.db;
 
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
+import com.sleepycat.persist.model.Relationship;
+import com.sleepycat.persist.model.SecondaryKey;
 import edu.hawaii.ihale.api.SystemStateEntry;
 
 /**
@@ -21,6 +23,14 @@ public class IHaleSystemStateEntry extends SystemStateEntry {
   private long timestamp;
   
   /**
+   * The name of the System. Example: "Aquaponics". This is also the Secondary Key.
+   * There can be many entries with the same system name but must have a unique timestamp 
+   * (the primary key) value.
+   */
+  @SecondaryKey(relate = Relationship.MANY_TO_ONE)
+  private String systemName;
+  
+  /**
    * The constructor.
    * 
    * @param systemName The system name.
@@ -30,5 +40,6 @@ public class IHaleSystemStateEntry extends SystemStateEntry {
   public IHaleSystemStateEntry(String systemName, String deviceName, long timestamp) {
     super(systemName, deviceName, timestamp);
     this.timestamp = timestamp;
+    this.systemName = systemName;
   }
 }

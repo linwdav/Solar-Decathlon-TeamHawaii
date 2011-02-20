@@ -5,7 +5,7 @@
 	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-backend-hoike/lib/restlet/org.restlet.ext.xml.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-backend-hoike/lib/restlet/org.restlet.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-backend-hoike/lib/junit/junit.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-backend-hoike/lib/berkeleydb/berkeley-db-java.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-backend-hoike/lib/berkeleydb/berkeley-db-java.jar" sourcepath="lib/berkeleydb/javadoc.zip"/>
 	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-backend-hoike/lib/berkeleydb/javadoc.zip"/>
 	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-api/ihale-api.jar"/>
 	<classpathentry kind="output" path="bin"/>

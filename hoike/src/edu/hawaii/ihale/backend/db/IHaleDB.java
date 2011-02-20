@@ -6,6 +6,7 @@ import com.sleepycat.je.Environment;
 import com.sleepycat.je.EnvironmentConfig;
 import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
+import com.sleepycat.persist.SecondaryIndex;
 import com.sleepycat.persist.StoreConfig;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
@@ -20,13 +21,16 @@ import edu.hawaii.ihale.api.SystemStateListener;
  * @version Java 1.6.0_21
  */
 public class IHaleDB implements SystemStateEntryDB {
-
+  
   /** The EntityStore for our state entries database. */
   private static EntityStore store;
   
   /** The PrimaryIndex accessor for the entries. */
-  private static PrimaryIndex<Long, IHaleSystemStateEntry> entryIndex;
-  
+  private static PrimaryIndex<Long, IHaleSystemStateEntry> entryIndexPKey;
+
+  /** The SecondaryIndex accessor for entries related to its system name. */
+  private static SecondaryIndex<String, Long, IHaleSystemStateEntry> entryIndexSKey;
+
   /** Initialize the static variables at class load time to ensure there's only one of them. */
   static {
     String databaseName = "iHale";
@@ -43,7 +47,8 @@ public class IHaleDB implements SystemStateEntryDB {
     storeConfig.setAllowCreate(true);
     Environment env = new Environment(dir,  envConfig);
     IHaleDB.store = new EntityStore(env, "EntityStore", storeConfig);
-    entryIndex = store.getPrimaryIndex(Long.class, IHaleSystemStateEntry.class);
+    entryIndexPKey = store.getPrimaryIndex(Long.class, IHaleSystemStateEntry.class);
+    entryIndexSKey = store.getSecondaryIndex(entryIndexPKey, String.class, "timestamp");
     // Guarantee that the environment is closed upon system exit.
     DbShutdownHook shutdownHook = new DbShutdownHook(env, store);
     Runtime.getRuntime().addShutdownHook(shutdownHook);
@@ -79,7 +84,8 @@ public class IHaleDB implements SystemStateEntryDB {
    */
   @Override
   public void putEntry(SystemStateEntry entry) {
-    entryIndex.put((IHaleSystemStateEntry) entry);
+    entryIndexPKey.put((IHaleSystemStateEntry) entry);
+
   }
   
   /**
@@ -98,7 +104,7 @@ public class IHaleDB implements SystemStateEntryDB {
      */
     
     // Below is simply place holder code - Remove/modify later.
-    entryIndex.delete(timestamp);
+    entryIndexPKey.delete(timestamp);
   }
 
   /**

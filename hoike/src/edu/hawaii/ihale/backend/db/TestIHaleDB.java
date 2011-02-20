@@ -28,6 +28,9 @@ public class TestIHaleDB {
     System.out.println(entry);
     assertEquals("Checking pH", 4.5, entry.getDoubleValue("pH"), 0.01);
     
+    IHaleDB db = new IHaleDB();
+    //Currently failing because of SystemStateEntry not supporting persistency attribute.
+    //db.putEntry(entry);
     
     system = "Aquaponics";
     device = "Arduino-48";
@@ -39,5 +42,7 @@ public class TestIHaleDB {
     System.out.println(entry);
     assertEquals("Checking pH", 7.0, entry.getDoubleValue("pH"), 0.01);
     
+    //Currently failing because of SystemStateEntry not supporting persistency attribute.
+    //db.putEntry(entry);
   }
 }
