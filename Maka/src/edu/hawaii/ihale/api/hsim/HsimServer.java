@@ -5,6 +5,7 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
+
 //import edu.hawaii.contactservice.server.resource.contact.ContactResource;
 //import edu.hawaii.contactservice.server.resource.contacts.ContactsResource;
 
@@ -14,10 +15,11 @@ import org.restlet.routing.Router;
  * This class does two things: (1) it sets up and runs a web application (via the main() method), 
  * and (2) it defines how URLs sent to this web application get dispatched to ServerResources that
  * handle them.
- * @author Philip Johnson
+ * @author Philip Johnson, Kurt Teichman
  */
+
 public class HsimServer extends Application {
-  
+  public static int port;
   /**
    * Starts a server running on the specified port.
    * The context root will be "contactserver".
@@ -27,56 +29,106 @@ public class HsimServer extends Application {
    * @param port The port on which this server should run.
    * @throws Exception if problems occur starting up this server. 
    */
-  public static void runServer(int port) throws Exception {
+  public static void runServer(String contextRoot, int port) throws Exception {
     // Create a component.  
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, port);
     // Create an application (this class).
-    Application application = new HsimServer();
-    String contextRoot = null;
+ // Create an application  
+    Application application = null;
+    switch (port) {
+      case 8011:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach("/phMeter/{uniqueID}", DayResource.class);
+            router.attach("/phMeter", DayResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
+      case 8012:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach("/heating/{uniqueID}", DayResource.class);
+            router.attach("/heating", DayResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
+      case 8013:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach("/waterlevels/{uniqueID}", DayResource.class);
+            router.attach("/waterlevels", DayResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
+      case 8014:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach("/kitchen/{uniqueID}", DayResource.class);
+            router.attach("/kitchen", DayResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
+        default:
+          System.out.println("error, no matching port");
+          return;
+    }
+    //String contextRoot = null;
     // Attach the application to the component with a defined contextRoot.
-    if (port == 8111) {
-      contextRoot = "/aquaponics";
-    }
-    else if (port == 8112) {
-      contextRoot = "/hvac";
-    }
-    else if (port == 8113) {
-      contextRoot = "/lighting";
-    }
-    else if (port == 8114) {
-      contextRoot = "/water";
-    }
    
     component.getDefaultHost().attach(contextRoot, application);
-
+    component.getDefaultHost().attach(contextRoot + "/device", DayResource.class);
+    //component.getDefaultHost().attach(new Router(getContext()));
     component.start();
   }
 
+  
   /**
    * This main method starts up a web application that will listen on port 8111.
    * @param args Ignored.
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    runServer(8111);
-    runServer(8112);
-    runServer(8113);
-    runServer(8114);
+    runServer("/aquaponics",8011);
+    runServer("/hvac",8012);
+    runServer("/water",8013);
+    runServer("/lighting",8014);
   }
   
   /**
    * Specify the dispatching restlet that maps URIs to their associated resources for processing.
    * @return A Router restlet that implements dispatching.
    */
+  /*
   @Override
   public Restlet createInboundRoot() {
       // Create a router restlet.
       Router router = new Router(getContext());
       // Attach the resources to the router.
-      router.attach("/contact/{uniqueID}", ContactResource.class);
-      router.attach("/contacts", ContactsResource.class);
+      router.attach("/Aquaponics/{uniqueID}", AquaponicsResource.class);
+      router.attach("/Aquaponics", AquaponicsResource.class);
       // Return the root router
       return router;
   }
+  */
 }
