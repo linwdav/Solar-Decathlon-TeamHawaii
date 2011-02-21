@@ -68,34 +68,36 @@ public class IHaleServer extends Application {
   @Override
   public Restlet createInboundRoot() {
 
-      /** TO-DO: Retrieve the system URIs from the properties file and store in the below
-       *         strings. 
-       */
+    /** TO-DO: Retrieve the system URIs from the properties file and store in the below
+     *         strings. 
+     */
+  
+    // Define the systems that support resource handling by the Restlet HTTP server.
+    String aquaponicsSystem = "aquaponics";
+    String hvacSystem = "hvac";
+    String lightingSystem = "lighting";
+    // Commented out to avoid ant complaints.
+    //String pvSystem = "";
+    //String electricalSystem = "";
     
-      // Define the systems that support resource handling by the Restlet HTTP server.
-      String aquaponicsSystem = "aquaponics";
-      String hvacSystem = "hvac";
-      String lightingSystem = "lighting";
-      // Commented out to avoid ant complaints.
-      //String pvSystem = "";
-      //String electricalSystem = "";
-      
-      // Create a router restlet.
-      Router router = new Router();
-      // Attach the resources to the router.
-      router.attach("/" + aquaponicsSystem + "/{request}", AquaponicsResource.class);
-      router.attach("/" + hvacSystem + "/{request}", HvacResource.class);
-      router.attach("/" + lightingSystem + "/{request}", LightingResource.class);
-
-      /** TO-DO: Need to figure out a solution for PV and Electrical since they share the same
-       *         ending URI patterns. 
-       *         i.e., PV:
-       *               http://egauge-1.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
-       *               Electrical:
-       *               http://egauge-2.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
-       */
-      
-      // Return the root router
-      return router;
+    // Create a router restlet.
+    Router router = new Router();
+    // Attach the resources to the router.
+    router.attach("/" + aquaponicsSystem + "/{request}", AquaponicsResource.class);
+    router.attach("/" + hvacSystem + "/{request}", HvacResource.class);
+    router.attach("/" + lightingSystem + "/{request}", LightingResource.class);
+    //router.attach("/" + pvSystem + "/{request}", PvResource.class);
+    //router.attach("/" + electricalSystem + "/{request}", ElectricalResource.class);
+    
+    /** TO-DO: Need to figure out a solution for PV and Electrical since they share the same
+     *         ending URI patterns. 
+     *         i.e., PV:
+     *               http://egauge-1.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
+     *               Electrical:
+     *               http://egauge-2.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
+     */
+    
+    // Return the root router
+    return router;
   }
 }
