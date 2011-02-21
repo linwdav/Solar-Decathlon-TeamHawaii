@@ -4,8 +4,7 @@ import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 import edu.hawaii.ihale.api.SystemStateEntry;
-import edu.hawaii.ihale.api.SystemStateEntryDB;
-import edu.hawaii.ihale.backend.db.IHaleDB;
+import edu.hawaii.ihale.backend.restserver.IHaleDBRedirector;
 
 /**
  * A server resource that will handle requests for the aquaponics system.
@@ -38,7 +37,7 @@ public class AquaponicsResource extends ServerResource {
      * 
      */
     
-    SystemStateEntryDB db = new IHaleDB();
+    IHaleDBRedirector db = new IHaleDBRedirector();
     /**
     try {
       // Retrieve a list of all aquaponics entries and find the most current entry stored 

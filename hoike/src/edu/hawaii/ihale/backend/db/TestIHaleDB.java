@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend.db;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import java.util.Date;
 import org.junit.Test;
 
@@ -28,21 +29,23 @@ public class TestIHaleDB {
     System.out.println(entry);
     assertEquals("Checking pH", 4.5, entry.getDoubleValue("pH"), 0.01);
     
-    //Currently failing because of SystemStateEntry not supporting persistency attribute.
-    //IHaleDB db = new IHaleDB();
-    //db.putEntry(entry);
+    IHaleDB db = new IHaleDB();
+    db.putEntry(entry);
+    assertNotNull("Checking for entry existence", db.getEntry(system, device, timestamp));
+    assertEquals("Checking timestamp", timestamp, 
+        db.getEntry(system, device, timestamp).getTimestamp());
     
-    system = "Aquaponics";
+    system = "HVAC";
     device = "Arduino-48";
     timestamp = (new Date()).getTime();
     entry = new IHaleSystemStateEntry(system, device, timestamp);
-    entry.putDoubleValue("pH", 7.0);
-    entry.putStringValue("FishType", "Shark");
-    entry.putLongValue("NumFish", 4);
+    entry.putLongValue("Temp", 76);
     System.out.println(entry);
-    assertEquals("Checking pH", 7.0, entry.getDoubleValue("pH"), 0.01);
+    assertEquals("Checking temperature", 76, entry.getLongValue("Temp"), 0.01);
     
-    //Currently failing because of SystemStateEntry not supporting persistency attribute.
-    //db.putEntry(entry);
+    db.putEntry(entry);
+    assertNotNull("Checking for entry existence", db.getEntry(system, device, timestamp));
+    assertEquals("Checking system name", system, 
+        db.getEntry(system, device, timestamp).getSystemName());
   }
 }

@@ -12,8 +12,6 @@ import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
 import com.sleepycat.persist.SecondaryIndex;
 import com.sleepycat.persist.StoreConfig;
-import edu.hawaii.ihale.api.SystemStateEntry;
-import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
 import edu.hawaii.ihale.api.SystemStateListener;
 
@@ -24,7 +22,7 @@ import edu.hawaii.ihale.api.SystemStateListener;
  * @author Leonardo Nguyen
  * @version Java 1.6.0_21
  */
-public class IHaleDB implements SystemStateEntryDB {
+public class IHaleDB {
 
   /** The EntityStore for our state entries database. */
   private static EntityStore store;
@@ -72,19 +70,19 @@ public class IHaleDB implements SystemStateEntryDB {
    * @param timestamp The timestamp.
    * @return The associated IHaleSystemStateEntry, or null if not found.
    */
-  @Override
-  public SystemStateEntry getEntry(String systemName, String deviceName, long timestamp) {
+  public static IHaleSystemStateEntry getEntry(String systemName, String deviceName, 
+      long timestamp) {
 
     // Retrieve an entry from the database with defined timestamp and and compare for
     // system name and device name matching.
     IHaleSystemStateEntry entry = entryIndexPKey.get(timestamp);
     if (entry.getSystemName().equals(systemName) && entry.getDeviceName().equals(deviceName)) {
-      return (SystemStateEntry) entry;
+      return entry;
     }
     else {
       return null;
     }
-
+    
     /*
      * // Retrieve a list of IHaleSystemStateEntry via secondary key system name values.
      * EntityCursor<IHaleSystemStateEntry> cursor = (EntityCursor<IHaleSystemStateEntry>)
@@ -104,9 +102,8 @@ public class IHaleDB implements SystemStateEntryDB {
    * 
    * @param entry The entry instance to store.
    */
-  @Override
-  public void putEntry(SystemStateEntry entry) {
-    // entryIndexPKey.put((IHaleSystemStateEntry) entry);
+  public static void putEntry(IHaleSystemStateEntry entry) {
+    entryIndexPKey.put(entry);
   }
 
   /**
@@ -116,8 +113,7 @@ public class IHaleDB implements SystemStateEntryDB {
    * @param deviceName The device name.
    * @param timestamp The timestamp.
    */
-  @Override
-  public void deleteEntry(String systemName, String deviceName, long timestamp) {
+  public static void deleteEntry(String systemName, String deviceName, long timestamp) {
 
     entryIndexPKey.delete(timestamp);
 
@@ -145,12 +141,10 @@ public class IHaleDB implements SystemStateEntryDB {
    * @return A (possibly empty) list of IHaleSystemStateEntries.
    * @throws SystemStateEntryDBException If startTime is greater than endTime.
    */
-  @Override
-  public List<SystemStateEntry> getEntries(String systemName, String deviceName, long startTime, 
-      long endTime)
-      throws SystemStateEntryDBException {
+  public static List<IHaleSystemStateEntry> getEntries(String systemName, String deviceName, 
+      long startTime, long endTime) throws SystemStateEntryDBException {
 
-    List<SystemStateEntry> entryList = new ArrayList<SystemStateEntry>();
+    List<IHaleSystemStateEntry> entryList = new ArrayList<IHaleSystemStateEntry>();
     // Retrieve all entries with timestamp values between startTime and endTime.
     EntityCursor<IHaleSystemStateEntry> cursor = 
       entryIndexPKey.entities(startTime, true, endTime, true);
@@ -159,7 +153,7 @@ public class IHaleDB implements SystemStateEntryDB {
     try {
       for (IHaleSystemStateEntry entry : cursor) {
         if (entry.getDeviceName().equals(deviceName) && entry.getSystemName().equals(systemName)) {
-          entryList.add((SystemStateEntry) entry);
+          entryList.add(entry);
         }
       }       
     } 
@@ -174,8 +168,7 @@ public class IHaleDB implements SystemStateEntryDB {
    * 
    * @return The list of system names.
    */
-  @Override
-  public List<String> getSystemNames() {
+  public static List<String> getSystemNames() {
 
     List<String> systemNameList = new ArrayList<String>();
     // Retrieves a list of entries ordered by the secondary key, systemName.
@@ -204,8 +197,7 @@ public class IHaleDB implements SystemStateEntryDB {
    * @return A list of device names for this system name.
    * @throws SystemStateEntryDBException if the system name is not known.
    */
-  @Override
-  public List<String> getDeviceNames(String systemName) throws SystemStateEntryDBException {
+  public static List<String> getDeviceNames(String systemName) throws SystemStateEntryDBException {
 
     Set<String> deviceNameSet = new HashSet<String>();
     // Retrieves a list of entries with systemName.
@@ -233,8 +225,7 @@ public class IHaleDB implements SystemStateEntryDB {
    * 
    * @param listener The listener whose entryAdded method will be called.
    */
-  @Override
-  public void addSystemStateListener(SystemStateListener listener) {
+  public static void addSystemStateListener(SystemStateListener listener) {
     // TODO Auto-generated method stub
 
   }
@@ -247,8 +238,8 @@ public class IHaleDB implements SystemStateEntryDB {
    * @param command The command.
    * @param args Any additional arguments required by the command.
    */
-  @Override
-  public void doCommand(String systemName, String deviceName, String command, List<String> args) {
+  public static void doCommand(String systemName, String deviceName, String command, 
+      List<String> args) {
     // TODO Auto-generated method stub
 
   }
