@@ -15,7 +15,7 @@ public class Jetty {
   /** The port used by this webapp. */
   private static int port = 7070;
   /** The context root. */
-  private static String contextPath = "solardecathlon"; 
+  private static String contextPath = "ihale-frontend"; 
   /** The class corresponding to this web application. */
   private static String applicationClass = "edu.hawaii.ihale.SolarDecathlonApplication";
 

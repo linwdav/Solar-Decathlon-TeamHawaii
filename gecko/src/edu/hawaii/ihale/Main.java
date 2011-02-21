@@ -7,8 +7,10 @@ import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.ui.AquaponicsListener;
 import edu.hawaii.ihale.ui.BlackMagic;
+import edu.hawaii.ihale.ui.HVacListener;
 import edu.hawaii.ihale.ui.LightsListener;
 import edu.hawaii.ihale.ui.PhotovoltaicListener;
+import edu.hawaii.ihale.ui.WaterListener;
 
 /**
  * Provides a simple example of a User Interface component. 
@@ -33,6 +35,8 @@ public class Main {
     db.addSystemStateListener(new AquaponicsListener());
     db.addSystemStateListener(new LightsListener());
     db.addSystemStateListener(new PhotovoltaicListener());
+    db.addSystemStateListener(new WaterListener());
+    db.addSystemStateListener(new HVacListener());
     
     // Let's simulate some stuff being received in the system so that our listeners can react.
     new BlackMagic(db);
