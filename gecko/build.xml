@@ -44,7 +44,7 @@
 	</target>
 
 	<!-- Basic properties for this system. -->
-	<property name="system.name" value="ihale.teamGecko" />
+	<property name="system.name" value="ihale-teamGecko" />
 	<property name="system.main.class" value="edu.hawaii.ihale.Jetty" />
 	<property name="majorVersionNumber" value="1" />
 	<property name="minorVersionNumber" value="1" />

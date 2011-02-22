@@ -3,7 +3,7 @@ package edu.hawaii.ihale.ui;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateListener;
 import edu.hawaii.ihale.wicket.ajax.AjaxDatabaseUpdate;
-import edu.hawaii.ihale.wicket.model.ElectricityModel;
+import edu.hawaii.ihale.wicket.model.PhotovoltaicsModel;
 
 /**
  * A listener that the UI uses to learn when the database has changed state. 
@@ -12,7 +12,7 @@ import edu.hawaii.ihale.wicket.model.ElectricityModel;
  */
 public class PhotovoltaicListener extends SystemStateListener {
     private AjaxDatabaseUpdate databaseUpdate;
-    private ElectricityModel model;
+    private PhotovoltaicsModel model;
   
   /**
    * Provide a default constructor that indicates that this listener is for Photovoltaics.
@@ -20,7 +20,7 @@ public class PhotovoltaicListener extends SystemStateListener {
   public PhotovoltaicListener() {
     super("Photovoltaics");
     this.databaseUpdate = new AjaxDatabaseUpdate();
-    this.model = new ElectricityModel();
+    this.model = new PhotovoltaicsModel();
   }
 
   /**
@@ -53,7 +53,7 @@ public class PhotovoltaicListener extends SystemStateListener {
    * 
    * @return PhotovoltaicssModel
    */
-  public ElectricityModel getModel() {
+  public PhotovoltaicsModel getModel() {
     return model;
   }
 }
