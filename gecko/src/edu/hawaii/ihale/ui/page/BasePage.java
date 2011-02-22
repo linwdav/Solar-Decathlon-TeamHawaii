@@ -109,7 +109,7 @@ public abstract class BasePage extends WebPage implements Serializable {
    * @return The session's property map.
    */
   public Map<String, String> getSessionProperties() {
-    return ((SolarDecathlonSession) getSession()).getProperties();
+    return getSession().getProperties();
   }
 
   /**
@@ -140,7 +140,7 @@ public abstract class BasePage extends WebPage implements Serializable {
   public boolean isVisible() {
 
     if (session == null) {
-      session = (SolarDecathlonSession) getSession();
+      session = getSession();
     }
 
     if (this.getClass() != LogInPage.class && !session.isAuthenticated()) {

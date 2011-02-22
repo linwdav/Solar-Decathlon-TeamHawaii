@@ -43,7 +43,7 @@ public class AquaponicsListener extends SystemStateListener {
     try {
       databaseUpdate.onRequest();
     }
-    catch(Exception e) {
+    catch (Exception e) {
       e.printStackTrace();
     }
   }

@@ -6,14 +6,15 @@ import edu.hawaii.ihale.wicket.ajax.AjaxDatabaseUpdate;
 import edu.hawaii.ihale.wicket.model.PhotovoltaicsModel;
 
 /**
- * A listener that the UI uses to learn when the database has changed state. 
+ * A listener that the UI uses to learn when the database has changed state.
+ * 
  * @author Philip Johnson
  * @revised Shoji Bravo
  */
 public class PhotovoltaicListener extends SystemStateListener {
-    private AjaxDatabaseUpdate databaseUpdate;
-    private PhotovoltaicsModel model;
-  
+  private AjaxDatabaseUpdate databaseUpdate;
+  private PhotovoltaicsModel model;
+
   /**
    * Provide a default constructor that indicates that this listener is for Photovoltaics.
    */
@@ -25,6 +26,7 @@ public class PhotovoltaicListener extends SystemStateListener {
 
   /**
    * Invoked whenever a new state entry for PV is received by the system.
+   * 
    * @param entry A SystemStateEntry for the PV system.
    */
   @Override
@@ -38,12 +40,12 @@ public class PhotovoltaicListener extends SystemStateListener {
     try {
       databaseUpdate.onRequest();
     }
-    catch(Exception e) {
+    catch (Exception e) {
       e.printStackTrace();
     }
-    
+
   }
-  
+
   /**
    * Gets this AjaxDatabaseUpdate ajax object.
    * 
@@ -52,7 +54,7 @@ public class PhotovoltaicListener extends SystemStateListener {
   public AjaxDatabaseUpdate getDatabaseUpdate() {
     return databaseUpdate;
   }
-  
+
   /**
    * Gets this Photovoltaics model.
    * 

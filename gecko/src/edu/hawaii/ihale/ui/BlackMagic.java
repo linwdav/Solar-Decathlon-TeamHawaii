@@ -24,6 +24,8 @@ public class BlackMagic {
     long timestamp = (new Date()).getTime();
     SystemStateEntry entry = null;
     
+    String level = "Level";
+    
     //Aquaponics
     entry = new SystemStateEntry("Aquaponics", "Arduino-1", timestamp);
     entry.putDoubleValue("pH", Math.random() * 10);
@@ -38,19 +40,15 @@ public class BlackMagic {
 
     //Lighting
     entry = new SystemStateEntry("Lighting", "Arduino-5", timestamp);
-    entry.putLongValue("Level", (long) (Math.random() * 10));
+    entry.putLongValue(level, (long) (Math.random() * 10));
     db.putEntry(entry);
     
     entry = new SystemStateEntry("Lighting", "Arduino-6", timestamp);
-    entry.putLongValue("Level", (long) (Math.random() * 10));
+    entry.putLongValue(level, (long) (Math.random() * 10));
     db.putEntry(entry);
 
     entry = new SystemStateEntry("Lighting", "Arduino-7", timestamp);
-    entry.putLongValue("Level", (long) (Math.random() * 10));
-    db.putEntry(entry);
-
-    entry = new SystemStateEntry("Lighting", "Arduino-8", timestamp);
-    entry.putLongValue("Level", (long) (Math.random() * 10));
+    entry.putLongValue(level, (long) (Math.random() * 10));
     db.putEntry(entry);
     
     //Photovoltaics

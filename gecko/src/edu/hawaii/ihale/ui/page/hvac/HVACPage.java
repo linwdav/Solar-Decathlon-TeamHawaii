@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
-import edu.hawaii.ihale.ui.HvacListener;
+import edu.hawaii.ihale.ui.HVacListener;
 import edu.hawaii.ihale.ui.page.BasePage;
 import edu.hawaii.ihale.ui.page.Sidebar;
 import edu.hawaii.ihale.ui.page.SidebarPanel;
@@ -34,7 +34,7 @@ public class HVACPage extends BasePage {
   protected void onBeforeRender() {
     super.onBeforeRender();
     
-    HvacListener listener = new HvacListener();
+    HVacListener listener = new HVacListener();
     this.database.addSystemStateListener(listener);
     
     List<Sidebar> list = new ArrayList<Sidebar>();
