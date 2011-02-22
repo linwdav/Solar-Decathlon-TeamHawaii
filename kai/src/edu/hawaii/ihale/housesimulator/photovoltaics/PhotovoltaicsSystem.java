@@ -14,8 +14,7 @@ public class PhotovoltaicsSystem extends Application {
       // Create a router restlet.
       Router router = new Router(getContext());
       // Attach the resources to the router.
-      router.attach("/state", PhotovoltaicsResource.class);
-      router.attach("/contacts", PhotovoltaicsResource.class);
+      router.attach("/egauge", PhotovoltaicsResource.class);
       // Return the root router
       return router;
   }

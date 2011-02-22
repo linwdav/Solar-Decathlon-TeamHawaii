@@ -15,7 +15,7 @@ public class AquaponicsSystem extends Application {
       Router router = new Router(getContext());
       // Attach the resources to the router.
       router.attach("/state", AquaponicsResource.class);
-      router.attach("/contacts", AquaponicsResource.class);
+      router.attach("/temp", AquaponicsResource.class);
       // Return the root router
       return router;
   }

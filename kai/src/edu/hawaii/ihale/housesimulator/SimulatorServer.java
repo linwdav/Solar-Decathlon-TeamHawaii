@@ -27,7 +27,7 @@ public class SimulatorServer extends Application {
    * @param numberOfServers The number of servers to setup on different ports.
    * @throws Exception if problems occur starting up this server.
    */
-  public static void runServers() throws Exception {
+  public static void runServer() throws Exception {
     // Create a component and open several ports.
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, 7001);
@@ -41,12 +41,12 @@ public class SimulatorServer extends Application {
     // ranges 7101+.
     VirtualHost host = new VirtualHost(component.getContext());
     host.setHostPort("7001");
-    host.attach("/photovoltaics", new PhotovoltaicsSystem());
+    host.attach("/cgi-bin", new PhotovoltaicsSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
     host.setHostPort("7002");
-    host.attach("/electrical", new ElectricalSystem());
+    host.attach("/cgi-bin", new ElectricalSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
@@ -79,6 +79,6 @@ public class SimulatorServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    runServers();
+    runServer();
   }
 }

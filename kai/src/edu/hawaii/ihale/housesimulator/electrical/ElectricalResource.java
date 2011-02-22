@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.housesimulator.photovoltaics;
+package edu.hawaii.ihale.housesimulator.electrical;
 
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
@@ -12,7 +12,7 @@ import org.restlet.resource.ServerResource;
  * @author Michael Cera
  * @author Anthony Kinsey
  */
-public class PhotovoltaicsResource extends ServerResource {
+public class ElectricalResource extends ServerResource {
   /**
    * Returns the data requested by the URL.
    * 
