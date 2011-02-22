@@ -6,6 +6,7 @@ import edu.hawaii.ihale.ui.page.BasePanel;
  * The User Privileges Page.
  * 
  * @author Michael Cera
+ * @author Bret K. Ikehara
  */
 public class SettingsUserPrivilegesPanel extends BasePanel {
 

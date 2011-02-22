@@ -18,7 +18,7 @@ import edu.hawaii.ihale.ui.page.waterHeater.WaterHeaterPage;
 /**
  * Creates the log out panel.
  * 
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  * 
  */
 public class BasePageMenuBarPanel extends BasePanel {

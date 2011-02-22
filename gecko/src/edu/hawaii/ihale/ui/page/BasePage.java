@@ -12,13 +12,13 @@ import edu.hawaii.ihale.SolarDecathlonApplication;
 import edu.hawaii.ihale.SolarDecathlonSession;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.ui.page.service.LogInPage;
-import edu.hawaii.ihale.ui.page.style.IEStylesheetHeaderContributor;
+import edu.hawaii.ihale.ui.resources.style.IEStylesheetHeaderContributor;
 
 /**
  * A Base page that serves as the superclass for all pages in this application. All user-related
  * information must be set in the onBeforeRender method.
  * 
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public abstract class BasePage extends WebPage implements Serializable {
   /**
@@ -36,26 +36,23 @@ public abstract class BasePage extends WebPage implements Serializable {
    */
   public BasePage() {
     // Add CSS definitions for use in all pages
-    add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
-        "style/blueprint/screen.css", "screen"));
+    add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.SolarDecathlonApplication.class,
+        "ui/resources/style/blueprint/screen.css", "screen"));
 
-    add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
-        "style/blueprint/print.css", "print"));
+    add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.SolarDecathlonApplication.class,
+        "ui/resources/style/blueprint/print.css", "print"));
 
     add(new IEStylesheetHeaderContributor(new ResourceReference(
-        edu.hawaii.ihale.ui.page.BasePage.class, "style/blueprint/ie.css")));
+        edu.hawaii.ihale.SolarDecathlonApplication.class, "ui/resources/style/blueprint/ie.css")));
 
-    add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
-        "style/basepage.css"));
-
-    add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
-        "style/general.css"));
+    add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.SolarDecathlonApplication.class,
+        "ui/page/style.css"));
 
     add(new Label("title", "Solar Decathlon"));
 
-    add(new Image("basePageImage", new ResourceReference(edu.hawaii.ihale.ui.page.BasePage.class,
-        "logo.png")));
-    
+    add(new Image("basePageImage", new ResourceReference(
+        edu.hawaii.ihale.SolarDecathlonApplication.class, "./ui/resources/images/logo.png")));
+
     database = ((SolarDecathlonApplication) getApplication()).getDatabase();
   }
 

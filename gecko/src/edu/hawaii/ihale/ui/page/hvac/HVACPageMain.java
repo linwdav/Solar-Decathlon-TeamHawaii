@@ -14,8 +14,7 @@ import edu.hawaii.ihale.ui.page.BasePanel;
  * Extends the base page class to create the HVAC page.
  * 
  * @author Michael Cera
- * @author Bret Ikehara
- * 
+ * @author Bret K. Ikehara
  */
 public class HVACPageMain extends BasePanel {
 

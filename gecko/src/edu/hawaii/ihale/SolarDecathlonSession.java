@@ -11,6 +11,7 @@ import org.apache.wicket.protocol.http.WebSession;
  * session should typically store all of the "model" data for a user.
  * 
  * @author Philip Johnson
+ * @author Bret K. Ikehara
  */
 public class SolarDecathlonSession extends WebSession {
   /** Support serialization. */

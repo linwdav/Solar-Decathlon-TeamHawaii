@@ -12,7 +12,7 @@ import edu.hawaii.ihale.ui.page.BasePage;
 /**
  * Settings page.
  * 
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public class SettingsPage extends BasePage {
 

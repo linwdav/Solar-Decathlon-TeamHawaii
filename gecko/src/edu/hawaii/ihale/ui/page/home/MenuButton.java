@@ -3,7 +3,7 @@ package edu.hawaii.ihale.ui.page.home;
 /**
  * Creates the main buttons on the home page.
  * 
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public class MenuButton {
 

@@ -1,30 +1,22 @@
 package edu.hawaii.ihale.ui.page.home;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.behavior.AbstractBehavior;
-import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
+import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.ui.page.BasePage;
 import edu.hawaii.ihale.ui.page.aquaponics.AquaponicsPage;
 import edu.hawaii.ihale.ui.page.electricity.ElectricityPage;
 import edu.hawaii.ihale.ui.page.hvac.HVACPage;
 import edu.hawaii.ihale.ui.page.lights.LightsPage;
 import edu.hawaii.ihale.ui.page.settings.SettingsPage;
-import edu.hawaii.ihale.ui.page.status.OverAllStatus;
-import edu.hawaii.ihale.ui.page.status.OverAllStatusPanel;
 import edu.hawaii.ihale.ui.page.waterHeater.WaterHeaterPage;
 
 /**
  * The application home page. This page illustrates links.
  * 
- * @author Bret I. Ikehara
+ * @author Bret K. Ikehara
  */
 public class HomePage extends BasePage {
-  //TODO : implement a model for the buttons.
   
   /**
    * Serial ID.
@@ -38,26 +30,9 @@ public class HomePage extends BasePage {
    */
   public HomePage() {
 
-    add(CSSPackageResource.getHeaderContribution(HomePage.class, "homePage.css"));
+    add(CSSPackageResource.getHeaderContribution(HomePage.class, "style.css"));
 
-    // Creates the OverAllStatusPanel
-    List<AbstractBehavior> aquaponicsAttr = new ArrayList<AbstractBehavior>();
-    aquaponicsAttr.add(new SimpleAttributeModifier("title", "this is a test."));
-
-    ArrayList<OverAllStatus> list = new ArrayList<OverAllStatus>();
-    list.add(new OverAllStatus("Aquaponics", new ResourceReference(OverAllStatus.class,
-        OverAllStatus.STATUSGOOD), AquaponicsPage.class, aquaponicsAttr));
-
-    list.add(new OverAllStatus("Electricity", new ResourceReference(OverAllStatus.class,
-        OverAllStatus.STATUSGOOD), ElectricityPage.class));
-
-    list.add(new OverAllStatus("HVAC", new ResourceReference(OverAllStatus.class,
-        OverAllStatus.STATUSGOOD), HVACPage.class));
-
-    list.add(new OverAllStatus("Water Heater", new ResourceReference(OverAllStatus.class,
-        OverAllStatus.STATUSGOOD), WaterHeaterPage.class));
-
-    add(new OverAllStatusPanel("HomeStatus", new Model<String>("HomeStatus"), list));
+    add(new Label("Status"));
     
     add(new Link<String>("settingsPage") {      
       /**

@@ -2,8 +2,8 @@ package edu.hawaii.ihale.ui;
 
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateListener;
-import edu.hawaii.ihale.ui.ajax.AjaxDatabaseUpdate;
-import edu.hawaii.ihale.ui.model.AquaponicsModel;
+import edu.hawaii.ihale.wicket.ajax.AjaxDatabaseUpdate;
+import edu.hawaii.ihale.wicket.model.AquaponicsModel;
 
 /**
  * A listener that the UI uses to learn when the database has changed state.

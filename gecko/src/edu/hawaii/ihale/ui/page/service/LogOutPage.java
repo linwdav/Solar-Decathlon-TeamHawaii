@@ -6,7 +6,7 @@ import edu.hawaii.ihale.ui.page.BasePage;
 /**
  * Invalidates the user's session.
  * 
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public class LogOutPage extends BasePage {
   

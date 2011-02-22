@@ -15,7 +15,7 @@ import edu.hawaii.ihale.ui.page.home.HomePage;
 /**
  * Constructor for the Log In page.
  * 
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public class LogInPage extends BasePage {
 

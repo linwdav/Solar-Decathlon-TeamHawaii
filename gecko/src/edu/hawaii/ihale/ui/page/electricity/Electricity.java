@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Holds the details for the constructor.
  * 
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public class Electricity implements Serializable {
 

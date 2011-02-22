@@ -13,7 +13,7 @@ import edu.hawaii.ihale.ui.page.service.LogInPage;
  * This top-level class is required to specify the Wicket WebApplication.
  * 
  * @author Philip Johnson
- * @revised Bret K. Ikehara
+ * @author Bret K. Ikehara
  */
 public class SolarDecathlonApplication extends WebApplication {
 

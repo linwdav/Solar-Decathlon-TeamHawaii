@@ -1,0 +1,158 @@
+html,body {
+	margin: 0px;
+	padding: 0px;
+}
+
+body {
+	background: white url('../resources/images/bg.png') repeat-x;
+}
+
+a {
+	color: #006b99;
+}
+
+a:hover {
+	color: #00a2e8;
+}
+
+.textRight {
+	text-align: right;
+}
+
+.textCenter {
+	text-align: center;
+}
+
+.fontBold {
+	font-weight: bold;
+}
+
+.mLeft5 {
+	margin-left: 5px;
+}
+
+.mLeft10 {
+	margin-left: 10px;
+}
+
+.mRight5 {
+	margin-right: 5px;
+}
+
+.mRight10 {
+	margin-right: 10px;
+}
+
+.mTop5 {
+	margin-Top: 5px;
+}
+
+.mTop10 {
+	margin-Top: 10px;
+}
+
+div.sidebar h6 {
+	padding-left: 5px;
+}
+
+div.sidebar table.overallStatus {
+	margin-bottom: 0px;
+	margin-left: 5px;
+	width: 95%;
+}
+
+div.sidebar table.overallStatus td {
+	padding: 15px 0px 0px;
+	margin: 0px;
+}
+
+div.sidebar table.overallStatus td {
+	border-bottom: 1px solid #777;
+	padding-bottom: 5px;
+	text-align: left;
+	*text-align: expression(this.nextSibling ==   null ?   'right' :   'left');
+}
+
+div.sidebar table.overallStatus td:last-child {
+	text-align: right;
+	padding-right: 5px;
+}
+
+div.containerBorder {
+	background: url('../resources/images/containerBorder.png') repeat-x;
+	margin: 0 auto;
+	width: 1000px;
+}
+
+div.container {
+	margin: 0 1px;
+}
+
+div#page {
+	background: white;
+	height: 100%;
+	min-height 700px:
+}
+
+div#header {
+	margin-top: 1em;
+	margin-bottom: 2em;
+}
+
+div#menubar table {
+	border-top: 1px solid #777;
+	border-bottom: 1px solid #777;
+	margin-bottom: 0em;
+	width: 100%;
+}
+
+div#menubar table td {
+	padding: 0px;
+	text-align: center;
+	width: 14.25%;
+}
+
+div#menubar table td a {
+	text-decoration: none;
+}
+
+div#menubar table td a div {
+	background: url('../resources/images/MenuBarNormal.png');
+	height: 23px;
+	padding-top: 7px;
+}
+
+div#menubar table td a:hover div {
+	background: url('../resources/images/MenuBarHover.png');
+	text-decoration: underline;
+}
+
+div#menubar table td a.selected div {
+	background: url('../resources/images/MenuBarSelected.png');
+	color: white;
+	font-weight: bold;
+}
+
+div#menubar table td a {
+	width: 100%;
+}
+
+div.sidebarBg,div#Main {
+	background: white;
+	padding-top: 2em;
+	height: 100%;
+}
+
+div.sidebar {
+	background: url('../resources/images/sidebarBorder.png') white repeat-x;
+}
+
+div.sidebarBg {
+	height: 100%;
+	width: 199px;
+	background: url('../resources/images/sidebar.png') white repeat-x;
+}
+
+div#Main {
+	background: white;
+}

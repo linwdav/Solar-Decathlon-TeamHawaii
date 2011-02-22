@@ -17,7 +17,7 @@ import edu.hawaii.ihale.ui.page.BasePanel;
  * Extends the base page class to create the lights page.
  * 
  * @author Michael Cera
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public class LightsPageMain extends BasePanel {
 
@@ -95,6 +95,5 @@ public class LightsPageMain extends BasePanel {
 
     // Add the form to this page.
     add(form);
-
   }
 }

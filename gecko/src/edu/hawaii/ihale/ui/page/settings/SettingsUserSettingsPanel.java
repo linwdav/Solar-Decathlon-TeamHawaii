@@ -6,7 +6,7 @@ import edu.hawaii.ihale.ui.page.BasePanel;
  * The User Settings Page.
  * 
  * @author Michael Cera
- * @author Bret Ikehara
+ * @author Bret K. Ikehara
  */
 public class SettingsUserSettingsPanel extends BasePanel {
 

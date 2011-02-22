@@ -1,21 +1,18 @@
 package edu.hawaii.ihale.ui.page.electricity;
 
 import java.util.ArrayList;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
-import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.ui.page.BasePage;
-import edu.hawaii.ihale.ui.page.ExternalImageUrl;
-import edu.hawaii.ihale.ui.page.status.OverAllStatus;
-import edu.hawaii.ihale.ui.page.status.OverAllStatusPanel;
+import edu.hawaii.ihale.wicket.url.ExternalImageUrl;
 
 /**
  * Electricity page.
  * 
- * @author Team 1
+ * @author Shoji Bravo
+ * @author Bret K. Ikehara
  */
 public class ElectricityPage extends BasePage {
 
@@ -26,14 +23,8 @@ public class ElectricityPage extends BasePage {
    * Creates the electricity page.
    */
   public ElectricityPage() {
-
-    ArrayList<OverAllStatus> overAllStatusList = new ArrayList<OverAllStatus>();
-
-    overAllStatusList.add(new OverAllStatus("Production", new ResourceReference(
-        OverAllStatus.class, OverAllStatus.STATUSGOOD)));
-    overAllStatusList.add(new OverAllStatus("Consumption", new ResourceReference(
-        OverAllStatus.class, OverAllStatus.STATUSCAUTION)));
-
+    add(CSSPackageResource.getHeaderContribution(Electricity.class, "style.css"));
+    
     StringBuilder sb = new StringBuilder();
     sb.append("http://chart.apis.google.com/chart?");
     sb.append("chxr=0,0,24|1,5,100");
@@ -61,16 +52,13 @@ public class ElectricityPage extends BasePage {
     sb.append("chls=1|1");
     sb.append('&');
     sb.append("chm=B,EFEFEF,0,0,0,-1");
+    
+    add(new ExternalImageUrl("ElecGraph", sb.toString(), "662", "300"));
 
+    add(new Label("Status"));
+    
     ArrayList<Electricity> electricityList = new ArrayList<Electricity>();
     electricityList.add(new Electricity("Aquaponics", 10, 100, 1000));
-
-    add(CSSPackageResource.getHeaderContribution(Electricity.class, "style.css"));
-
-    add(new OverAllStatusPanel("Status", new Model<String>("ElectricityStatus"),
-        overAllStatusList));
-
-    add(new ExternalImageUrl("ElecGraph", sb.toString(), "662", "300"));
 
     add(new ListView<Electricity>("ElecStatus", electricityList) {
 
