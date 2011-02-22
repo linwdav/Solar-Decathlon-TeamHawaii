@@ -1,7 +1,9 @@
-package edu.hawaii.ihale.backend.db;
+package edu.hawaii.ihale.db;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -57,9 +59,9 @@ public class IHaleEntry {
 
   /**
    * Create an IHaleEntry instance given data values.
-   * @param systemName The system.
-   * @param deviceName The device.
-   * @param timestamp The time.
+   * @param systemName The system name.
+   * @param deviceName The device name.
+   * @param timestamp The timestamp.
    */
   public IHaleEntry(String systemName, String deviceName, long timestamp) {
     this.systemName = systemName;
@@ -69,7 +71,7 @@ public class IHaleEntry {
 
   /**
    * Create a IHaleEntry instance given its representation in XML.
-   * @param doc The doc.
+   * @param doc The XML document.
    */
   public IHaleEntry(Document doc) {
     this.systemName = getAttribute(doc, systemNameAttributeName);
@@ -113,6 +115,94 @@ public class IHaleEntry {
       String value = element.getAttribute("value");
       this.stringData.put(key, value);
     }
+  }
+
+  /**
+   * Returns this contact as an XML Document instance. For example:
+   * 
+   * <pre>
+   * {@code
+   * <state-data system="SystemName" device="DeviceName" timestamp="2345789">
+   *    <state key="key1" value="value1"/>
+   *    <state key="key2" value="value2"/>
+   *    <state key="key3" value="value3"/>
+   * </state-data>
+   * }
+   * </pre>
+   * 
+   * @return This contact as XML.
+   * @throws Exception If problems occur creating the XML.
+   */
+  public Document toXml() throws Exception {
+    // Create the Document instance representing this XML.
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+    // Create and attach the root element <state-data>.
+    Element rootElement = doc.createElement(stateDataElementName);
+    // Set the attributes for system, device, and timestamp.
+    rootElement.setAttribute(systemNameAttributeName, this.systemName);
+    rootElement.setAttribute(deviceNameAttributeName, this.deviceName);
+    rootElement.setAttribute(timestampAttributeName, String.valueOf(this.timestamp));
+    doc.appendChild(rootElement);
+    attachElements(doc, rootElement);
+    return doc;
+  }
+
+  /**
+   * Helper function to attach key-value pairs from all 3 maps.
+   * @param doc The XML document.
+   * @param rootElement The root element.
+   */
+  private void attachElements(Document doc, Element rootElement) {
+    // Create and attach the sub elements <state> for Long values.
+    for (Map.Entry<String, Long> entry : longData.entrySet()) {
+      String key = entry.getKey();
+      Long value = entry.getValue();
+      Element childElement = doc.createElement(stateElementName);
+      childElement.setAttribute(key, String.valueOf(value));
+      rootElement.appendChild(childElement);
+    }
+    // Create and attach the sub elements <state> for String values.
+    for (Map.Entry<String, String> entry : stringData.entrySet()) {
+      String key = entry.getKey();
+      String value = entry.getValue();
+      Element childElement = doc.createElement(stateElementName);
+      childElement.setAttribute(key, value);
+      rootElement.appendChild(childElement);
+    }
+    // Create and attach the sub elements <state> for double values.
+    for (Map.Entry<String, Double> entry : doubleData.entrySet()) {
+      String key = entry.getKey();
+      Double value = entry.getValue();
+      Element childElement = doc.createElement(stateElementName);
+      childElement.setAttribute(key, String.valueOf(value));
+      rootElement.appendChild(childElement);
+    }
+  }
+
+  /**
+   * Returns the timestamp associated with this entry.
+   * @return The timestamp.
+   */
+  public long getTimestamp() {
+    return this.timestamp;
+  }
+  
+  /**
+   * Returns the system name associated with this entry.
+   * @return The system name.
+   */
+  public String getSystemName() {
+    return this.systemName;
+  }
+  
+  /**
+   * Returns the device name associated with this entry.
+   * @return The device name.
+   */
+  public String getDeviceName() {
+    return this.deviceName;
   }
 
   /**
