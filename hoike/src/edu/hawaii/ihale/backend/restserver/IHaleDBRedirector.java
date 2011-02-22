@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend.restserver;
 
 import java.util.List;
+import java.util.Map;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
@@ -37,22 +38,25 @@ public class IHaleDBRedirector implements SystemStateEntryDB {
    */
   public SystemStateEntry getEntry(String systemName, String deviceName, long timestamp) {
     
-    return null;
+    IHaleSystemStateEntry entry = IHaleDB.getEntry(systemName, deviceName, timestamp);
+    CustomSystemStateEntry testEntry = 
+      new CustomSystemStateEntry(entry.getSystemName(), entry.getDeviceName(), entry.getTimestamp(),
+          entry.getLongData(), entry.getStringData(), entry.getDoubleData());
+    return testEntry;
   }
   
   /**
    * Store the passed SystemStateEntry in the database.
    * @param entry The entry instance to store. 
    */
-  public void putEntry(SystemStateEntry entry) {    
-    IHaleSystemStateEntry entryToStore = 
-      new IHaleSystemStateEntry(entry.getSystemName(), entry.getDeviceName(), entry.getTimestamp());
+  public void putEntry(SystemStateEntry entry) {
+    Map<String, Long> longData = ((CustomSystemStateEntry)entry).getLongData();
+    Map<String, String> stringData = ((CustomSystemStateEntry)entry).getStringData();
+    Map<String, Double> doubleData = ((CustomSystemStateEntry)entry).getDoubleData();
     
-    /** TO-DO: Retrieve the 3 Maps and transfer their value from SystemStateEntry object to 
-     *         IHaleStateEntry object. Requires how the data dictionary defines the various
-     *         system names, device names, and their data type. Suggestion, MultiMaps.
-     *         Currently only stores systemName, deviceName, and timestamp information into DB.
-     */
+    IHaleSystemStateEntry entryToStore = 
+      new IHaleSystemStateEntry(entry.getSystemName(), entry.getDeviceName(), entry.getTimestamp(),
+          longData, stringData, doubleData);
     IHaleDB.putEntry(entryToStore);
   }
   

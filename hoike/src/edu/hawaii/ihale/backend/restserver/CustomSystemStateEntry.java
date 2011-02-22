@@ -1,50 +1,39 @@
-package edu.hawaii.ihale.backend.db;
+package edu.hawaii.ihale.backend.restserver;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import com.sleepycat.persist.model.Entity;
-import com.sleepycat.persist.model.PrimaryKey;
-import com.sleepycat.persist.model.Relationship;
-import com.sleepycat.persist.model.SecondaryKey;
+import edu.hawaii.ihale.api.SystemStateEntry;
 
 /**
- * The database entity representation of the SystemStateEntry object specific to the iHale
- * house systems.
+ * Provides data about the state of a specific system in the Solar Decathlon house at a specific
+ * point in time.
+ * <p> 
+ * Every SystemStateEntry consists of: (1) a timestamp (long) specifying when the state data
+ * was collected; (2) a string indicating the name of the system; (3) a string indicating the 
+ * device associated with the system; and (4) a set of key-value pairs that provide the state
+ * data for this system.
+ * <p> 
+ * State data is maintained via key-value pairs where the keys are always strings and the 
+ * values can be either Strings, Longs, or Doubles (i.e. floating point numbers).
+ *
+ * Addition to the SystemStateEntry class features: (1) Accessor to all 3 Map fields (2) Accessor
+ * to each respective Map keys allowing easier XML document creation.
  *
  * @author Leonardo Nguyen
  * @version Java 1.6.0_21
  */
-@Entity
-public class IHaleSystemStateEntry {
-
-  /** The timestamp (UTC format) indicating when this state info was collected. This is
-   *  also the Primary Key.
-   */
-  @PrimaryKey
-  private long timestamp;
-  
-  /**
-   * The name of the System. Example: "Aquaponics". This is also the Secondary Key.
-   * There can be many entries with the same system name but must have a unique timestamp 
-   * (the primary key) value.
-   */
-  @SecondaryKey(relate = Relationship.MANY_TO_ONE)
-  private String systemName;
-  
-  @SecondaryKey(relate = Relationship.MANY_TO_ONE)
-  private String deviceName;
+public class CustomSystemStateEntry extends SystemStateEntry {
   
   private Map<String, Long> longData = new HashMap<String, Long>();
   private Map<String, String> stringData = new HashMap<String, String>();
   private Map<String, Double> doubleData = new HashMap<String, Double>();
   
-  /**
-   * Provide the default constructor required by BerkeleyDB.
-   */
-  public IHaleSystemStateEntry() {
-    // BerkeleyDB requires a default constructor. 
-  }
+  private List<String> longDataKey = new ArrayList<String>();
+  private List<String> stringDataKey = new ArrayList<String>();
+  private List<String> doubleDataKey = new ArrayList<String>();
   
   /**
    * A simple constructor that has no initial Map data.
@@ -53,12 +42,10 @@ public class IHaleSystemStateEntry {
    * @param deviceName The device name.
    * @param timestamp The timestamp.
    */
-  public IHaleSystemStateEntry(String systemName, String deviceName, long timestamp) {
-    this.systemName = systemName;
-    this.deviceName = deviceName;
-    this.timestamp = timestamp;
+  public CustomSystemStateEntry(String systemName, String deviceName, long timestamp) {
+    super(systemName, deviceName, timestamp);
   }
-  
+
   /**
    * A constructor with initial Map data.
    * 
@@ -69,48 +56,12 @@ public class IHaleSystemStateEntry {
    * @param stringData State information associated with this entry that are of String value type.
    * @param doubleData State information associated with this entry that are of Double value type.
    */
-  public IHaleSystemStateEntry(String systemName, String deviceName, long timestamp,
+  public CustomSystemStateEntry(String systemName, String deviceName, long timestamp,
       Map<String, Long> longData, Map<String, String> stringData, Map<String, Double> doubleData) {
-    this.timestamp = timestamp;
-    this.systemName = systemName;
-    this.deviceName = deviceName;
+    super(systemName, deviceName, timestamp);
     this.longData = longData;
     this.stringData = stringData;
     this.doubleData = doubleData;
-  }
-  
-  /**
-   * Purpose of this method is to suppress errors and pass verify.
-   * Delete this method later when the variables are actually used locally.
-   */
-  public void methodToSuppressUnusedVariables() {
-    System.out.println(timestamp);
-    System.out.println(systemName);
-    System.out.println(deviceName);
-  }
-  
-  /**
-   * Returns the system name associated with this contact.
-   * @return The system name.
-   */
-  public String getSystemName() {
-    return this.systemName;
-  }
-  
-  /**
-   * Returns the device name associated with this contact.
-   * @return The device name.
-   */
-  public String getDeviceName() {
-    return this.deviceName;
-  }
-  
-  /**
-   * Returns the timestamp associated with this entry.
-   * @return The timestamp.
-   */
-  public long getTimestamp() {
-    return this.timestamp;
   }
   
   /**
@@ -146,8 +97,10 @@ public class IHaleSystemStateEntry {
    * @param key The string key.
    * @param value The double value. 
    */
+  @Override
   public void putDoubleValue(String key, Double value) {
     this.doubleData.put(key, value);
+    this.doubleDataKey.add(key);
   }
   
   /**
@@ -156,8 +109,10 @@ public class IHaleSystemStateEntry {
    * @param key The string key.
    * @param value The double value. 
    */
+  @Override
   public void putLongValue(String key, long value) {
     this.longData.put(key, value);
+    this.longDataKey.add(key);
   }
   
   /**
@@ -166,9 +121,38 @@ public class IHaleSystemStateEntry {
    * @param key The string key.
    * @param value The double value. 
    */
+  @Override
   public void putStringValue(String key, String value) {
     this.stringData.put(key, value);
-  }  
+    this.stringDataKey.add(key);
+  }
+  
+  /**
+   * Returns the keys associated with value type Long.
+   *
+   * @return The keys.
+   */
+  public List<String> getLongDataKey() {
+    return this.longDataKey;
+  }
+  
+  /**
+   * Returns the keys associated with value type Double.
+   *
+   * @return The keys.
+   */
+  public List<String> getDoubleDataKey() {
+    return this.doubleDataKey;
+  }
+  
+  /**
+   * Returns the keys associated with value type String.
+   *
+   * @return The keys.
+   */
+  public List<String> getStringDataKey() {
+    return this.stringDataKey;
+  }
   
   /**
    * Returns a Map containing Long value types.
@@ -182,7 +166,7 @@ public class IHaleSystemStateEntry {
   /**
    * Returns a Map containing String value types.
    *
-   * @return Map of Long values. 
+   * @return Map of String values.
    */
   public Map<String, String> getStringData() {
     return this.stringData;
@@ -191,7 +175,7 @@ public class IHaleSystemStateEntry {
   /**
    * Returns a Map containing Double value types.
    *
-   * @return Map of Long values. 
+   * @return Map of Double values.
    */
   public Map<String, Double> getDoubleData() {
     return this.doubleData;
@@ -205,7 +189,7 @@ public class IHaleSystemStateEntry {
   public String toString() {
     return String.format(
         "[StateEntry System: %s Device: %s Time: %s (%s) State: %s %s %s]", 
-        this.systemName, this.deviceName, this.timestamp, new Date(this.timestamp), 
-        this.stringData, this.longData, this.doubleData);
+        super.getSystemName(), super.getDeviceName(), super.getTimestamp(), 
+        new Date(super.getTimestamp()), this.stringData, this.longData, this.doubleData);
   }
 }

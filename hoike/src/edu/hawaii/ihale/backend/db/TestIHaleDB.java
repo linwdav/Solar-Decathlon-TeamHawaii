@@ -29,11 +29,10 @@ public class TestIHaleDB {
     System.out.println(entry);
     assertEquals("Checking pH", 4.5, entry.getDoubleValue("pH"), 0.01);
     
-    IHaleDB db = new IHaleDB();
-    db.putEntry(entry);
-    assertNotNull("Checking for entry existence", db.getEntry(system, device, timestamp));
+    IHaleDB.putEntry(entry);
+    assertNotNull("Checking for entry existence", IHaleDB.getEntry(system, device, timestamp));
     assertEquals("Checking timestamp", timestamp, 
-        db.getEntry(system, device, timestamp).getTimestamp());
+        IHaleDB.getEntry(system, device, timestamp).getTimestamp());
     
     system = "HVAC";
     device = "Arduino-48";
@@ -43,9 +42,9 @@ public class TestIHaleDB {
     System.out.println(entry);
     assertEquals("Checking temperature", 76, entry.getLongValue("Temp"), 0.01);
     
-    db.putEntry(entry);
-    assertNotNull("Checking for entry existence", db.getEntry(system, device, timestamp));
+    IHaleDB.putEntry(entry);
+    assertNotNull("Checking for entry existence", IHaleDB.getEntry(system, device, timestamp));
     assertEquals("Checking system name", system, 
-        db.getEntry(system, device, timestamp).getSystemName());
+        IHaleDB.getEntry(system, device, timestamp).getSystemName());
   }
 }

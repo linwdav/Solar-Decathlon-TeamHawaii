@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend.restserver;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -115,7 +116,7 @@ public class IHaleServer extends Application {
 
       is.close();
     }
-    catch (Exception e) {
+    catch (IOException e) {
       System.out.println("failed to read properties file");
       System.out.println(configFilePath);
     }
