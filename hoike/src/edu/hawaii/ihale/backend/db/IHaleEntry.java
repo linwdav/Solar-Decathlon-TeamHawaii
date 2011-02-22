@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.db;
+package edu.hawaii.ihale.backend.db;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,9 +57,9 @@ public class IHaleEntry {
 
   /**
    * Create an IHaleEntry instance given data values.
-   * @param systemName
-   * @param deviceName
-   * @param timestamp
+   * @param systemName The system.
+   * @param deviceName The device.
+   * @param timestamp The time.
    */
   public IHaleEntry(String systemName, String deviceName, long timestamp) {
     this.systemName = systemName;
@@ -69,7 +69,7 @@ public class IHaleEntry {
 
   /**
    * Create a IHaleEntry instance given its representation in XML.
-   * @param doc
+   * @param doc The doc.
    */
   public IHaleEntry(Document doc) {
     this.systemName = getAttribute(doc, systemNameAttributeName);
