@@ -1,9 +1,7 @@
 package edu.hawaii.ihale.backend.restserver;
 
-import java.io.InputStream;
-import java.util.Collection;
+import java.io.FileInputStream;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Properties;
 import org.restlet.Application;
@@ -31,8 +29,7 @@ public class IHaleServer extends Application {
   // Restlet server properties file name.
   private static String configurationFile = "configuration.properties";
   // Full path to the Restlet server properties file.
-  @SuppressWarnings("unused")
-  private static String configFilePath = currentDirectory + "\\" + configurationFile;
+  private static String configFilePath = currentDirectory + "/" + configurationFile;
 
   /**
    * Starts a server running on the specified port. We create a separate runServer method, rather
@@ -100,43 +97,31 @@ public class IHaleServer extends Application {
      */
 
     // --- start ---
-    
+
     try {
-      InputStream is = IHaleServer.class.getResourceAsStream(configFilePath);
+      FileInputStream is = new FileInputStream(configFilePath);
       Properties prop = new Properties();
+
       prop.load(is);
 
       Map<String, String> uris = new HashMap<String, String>();
-      Collection<Object> values = prop.values();
-      // for (Object object : values) {
-      // String key = object.toString();
-      //
-      // }
-      int switcher = 0;
       String key = "";
       String value = "";
-      for (@SuppressWarnings("rawtypes")
-      Iterator iterate = values.iterator(); iterate.hasNext();) {
-        if (switcher == 0) {
-          key = (String) iterate.next();
-          switcher = 1;
-        }
-        if (switcher == 1) {
-          value = (String) iterate.next();
-          uris.put(key, value);
-          switcher = 0;
-        }
+      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
+        key = (String) propItem.getKey();
+        value = (String) propItem.getValue();
+        uris.put(key, value);
       }
 
       is.close();
     }
     catch (Exception e) {
       System.out.println("failed to read properties file");
+      System.out.println(configFilePath);
     }
-    
+
     // --- end ---
-    
-    
+
     // Define the systems that support resource handling by the Restlet HTTP server.
     String aquaponicsSystem = "aquaponics";
     String hvacSystem = "hvac";
