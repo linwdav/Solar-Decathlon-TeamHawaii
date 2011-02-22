@@ -13,15 +13,15 @@ public class PhotovoltaicsModel extends SystemModel {
    */
   private static final long serialVersionUID = -9210475158220196977L;
 
-  private Double power;
-  private Double energy;
+  private Long power;
+  private Long energy;
   
   /**
    * Default Constructor.
    */
   public PhotovoltaicsModel() {
-    this.power = 0.0;
-    this.energy = 0.0;
+    this.power = 0L;
+    this.energy = 0L;
   }
   
   /**
@@ -47,36 +47,36 @@ public class PhotovoltaicsModel extends SystemModel {
   /**
    * Gets this Electricity model power level.
    * 
-   * @return double
+   * @return Long
    */
-  public Double getPower() {
+  public Long getPower() {
     return power;
   }
 
   /**
    * Sets this Electricity model power level.
    * 
-   * @param power Double
+   * @param power Long
    */
-  public void setPower(Double power) {
+  public void setPower(Long power) {
     this.power = power;
   }
 
   /**
    * Gets this Electricity model energy level.
    * 
-   * @return Double
+   * @return Long
    */
-  public Double getEnergy() {
+  public Long getEnergy() {
     return energy;
   }
 
   /**
    * Sets this Electricity model energy level.
    * 
-   * @param energy Double
+   * @param energy Long
    */
-  public void setEnergy(Double energy) {
+  public void setEnergy(Long energy) {
     this.energy = energy;
   }
 }

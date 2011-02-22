@@ -8,7 +8,6 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
-import edu.hawaii.ihale.SolarDecathlonApplication;
 import edu.hawaii.ihale.SolarDecathlonSession;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.ui.page.service.LogInPage;
@@ -26,7 +25,10 @@ public abstract class BasePage extends WebPage implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
+  
   private SolarDecathlonSession session;
+
+  private String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
   protected transient SystemStateEntryDB database;
 
   /**
@@ -53,7 +55,18 @@ public abstract class BasePage extends WebPage implements Serializable {
     add(new Image("basePageImage", new ResourceReference(
         edu.hawaii.ihale.SolarDecathlonApplication.class, "./ui/resources/images/logo.png")));
 
-    database = ((SolarDecathlonApplication) getApplication()).getDatabase();
+    try {
+      database = (SystemStateEntryDB)Class.forName(dbClassName).newInstance();
+    }
+    catch (InstantiationException e1) {
+      e1.printStackTrace();
+    }
+    catch (IllegalAccessException e1) {
+      e1.printStackTrace();
+    }
+    catch (ClassNotFoundException e1) {
+      e1.printStackTrace();
+    }
   }
 
   /**
@@ -79,6 +92,16 @@ public abstract class BasePage extends WebPage implements Serializable {
     }
 
   }
+  
+  /**
+   * Gets the Solar Decathlon Session.
+   * 
+   * @return SolarDecathlonSession
+   */
+  @Override
+  public SolarDecathlonSession getSession() {
+    return ((SolarDecathlonSession) super.getSession());
+  }
 
   /**
    * Returns the property map associated with this user's session.
@@ -97,6 +120,15 @@ public abstract class BasePage extends WebPage implements Serializable {
    */
   public String getSessionProperty(String key) {
     return this.getSessionProperties().get(key);
+  }
+
+  /**
+   * Gets the System State Entry Database.
+   * 
+   * @return SystemStateEntryDB
+   */
+  public SystemStateEntryDB getDatabase() {
+    return database;
   }
 
   /**

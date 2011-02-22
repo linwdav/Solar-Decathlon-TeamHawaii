@@ -1,8 +1,14 @@
 package edu.hawaii.ihale.ui.page.hvac;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
+import edu.hawaii.ihale.ui.HvacListener;
 import edu.hawaii.ihale.ui.page.BasePage;
+import edu.hawaii.ihale.ui.page.Sidebar;
+import edu.hawaii.ihale.ui.page.SidebarPanel;
+
 /**
  * HVAC page.
  * 
@@ -18,7 +24,25 @@ public class HVACPage extends BasePage {
    * Creates the HVAC page.
    */
   public HVACPage() {
-    add(new Label("HVACStatus", "status"));
-    add(new HVACPageMain("HVACMain", new Model<String>("HVACMain")));
+    add(new Label("Main", "status"));
+  }
+  
+  /**
+   * Renders the sidebar with session variables.
+   */
+  @Override
+  protected void onBeforeRender() {
+    super.onBeforeRender();
+    
+    HvacListener listener = new HvacListener();
+    this.database.addSystemStateListener(listener);
+    
+    List<Sidebar> list = new ArrayList<Sidebar>();
+    list.add(new Sidebar(new Label(SidebarPanel.LEFT, "Temperature"), new Label(SidebarPanel.RIGHT,
+        new PropertyModel<Long>(listener.getModel(), "Temp"))));
+
+    SidebarPanel sidebar = new SidebarPanel("Sidebar", list);
+    sidebar.add(listener.getDatabaseUpdate());
+    add(sidebar);
   }
 }

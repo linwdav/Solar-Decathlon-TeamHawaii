@@ -6,7 +6,6 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
-import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.ui.page.service.LogInPage;
 
 /**
@@ -16,27 +15,6 @@ import edu.hawaii.ihale.ui.page.service.LogInPage;
  * @author Bret K. Ikehara
  */
 public class SolarDecathlonApplication extends WebApplication {
-
-  private String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
-  private SystemStateEntryDB database;
-  
-  /**
-   * Default Constructor which instantiates the database connection for this webapp.
-   */
-  public SolarDecathlonApplication() {
-    try {
-      database = (SystemStateEntryDB)Class.forName(dbClassName).newInstance();
-    }
-    catch (InstantiationException e1) {
-      e1.printStackTrace();
-    }
-    catch (IllegalAccessException e1) {
-      e1.printStackTrace();
-    }
-    catch (ClassNotFoundException e1) {
-      e1.printStackTrace();
-    }
-  }
   
   /**
    * Return the home page for this application. 
@@ -71,14 +49,5 @@ public class SolarDecathlonApplication extends WebApplication {
   @Override
   public String getConfigurationType() {
     return Application.DEVELOPMENT;
-  }
-
-  /**
-   * Gets the System State Entry Database.
-   * 
-   * @return SystemStateEntryDB
-   */
-  public SystemStateEntryDB getDatabase() {
-    return database;
   }
 }

@@ -32,10 +32,15 @@ public class PhotovoltaicListener extends SystemStateListener {
     System.out.println("Something just happened in PV: " + entry);
 
     model.setTimestamp(entry.getTimestamp());
-    model.setEnergy(entry.getDoubleValue("power"));
-    model.setPower(entry.getDoubleValue("energy"));
+    model.setEnergy(entry.getLongValue("power"));
+    model.setPower(entry.getLongValue("energy"));
 
-    databaseUpdate.onRequest();
+    try {
+      databaseUpdate.onRequest();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
     
   }
   

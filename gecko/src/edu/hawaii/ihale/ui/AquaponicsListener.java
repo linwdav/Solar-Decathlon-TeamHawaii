@@ -40,7 +40,12 @@ public class AquaponicsListener extends SystemStateListener {
     model.setTemp(entry.getLongValue("Temp"));
     model.setOxygen(entry.getDoubleValue("Oxygen"));
 
-    databaseUpdate.onRequest();
+    try {
+      databaseUpdate.onRequest();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
   }
 
   /**

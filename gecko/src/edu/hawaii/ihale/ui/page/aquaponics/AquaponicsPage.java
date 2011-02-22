@@ -24,13 +24,21 @@ public class AquaponicsPage extends BasePage {
    * Creates the Aquaponics page.
    */
   public AquaponicsPage() {
-
-    AquaponicsListener listener = new AquaponicsListener();
-    this.database.addSystemStateListener(listener);
-
     Label main = new Label("Main", "main");
     add(main);
-
+  }
+  
+  /**
+   * Renders the sidebar.
+   */
+  @Override
+  protected void onBeforeRender() {
+    super.onBeforeRender();
+    
+    
+    AquaponicsListener listener = new AquaponicsListener();
+    this.database.addSystemStateListener(listener);
+    
     // Initiate the sidebar panel
     List<Sidebar> list = new ArrayList<Sidebar>();
     list.add(new Sidebar(new Label(SidebarPanel.LEFT, "Time Stamp"), new Label(SidebarPanel.RIGHT,
@@ -42,9 +50,9 @@ public class AquaponicsPage extends BasePage {
     list.add(new Sidebar(new Label(SidebarPanel.LEFT, "pH"), new Label(SidebarPanel.RIGHT,
         new PropertyModel<Long>(listener.getModel(), "ph"))));
 
-    SidebarPanel sidebar = new SidebarPanel("Status", list);
+    SidebarPanel sidebar = new SidebarPanel("Sidebar", list);
+    sidebar.setOutputMarkupId(true);
     sidebar.add(listener.getDatabaseUpdate());
-    
     add(sidebar);
   }
 }

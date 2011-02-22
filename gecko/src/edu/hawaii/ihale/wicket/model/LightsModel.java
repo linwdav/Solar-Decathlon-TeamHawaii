@@ -13,21 +13,19 @@ public class LightsModel extends SystemModel {
    */
   private static final long serialVersionUID = -9210475158220196977L;
 
-
-  private Long LivingRoom;
-  private Long DiningRoom;
-  private Long KitchenRoom;
-  private Long Bathroom;
+  private Long livingRoom;
+  private Long diningRoom;
+  private Long kitchenRoom;
+  private Long bathroom;
   
   /**
    * Default Constructor.
    */
   public LightsModel() {
-      this.LivingRoom = (long) 0;
-      this.DiningRoom = (long) 0;
-      this.KitchenRoom = (long) 0;
-      this.Bathroom = (long) 0;
-
+      this.livingRoom = 0L;
+      this.diningRoom = 0L;
+      this.kitchenRoom = 0L;
+      this.bathroom = 0L;
   }
   
   /**
@@ -56,7 +54,7 @@ public class LightsModel extends SystemModel {
    * @return long
    */
   public Long getLivingRoom() {
-    return LivingRoom;
+    return livingRoom;
   }
   
   /**
@@ -65,7 +63,7 @@ public class LightsModel extends SystemModel {
    * @param livingRoom Long
    */
   public void setLivingRoom(Long livingRoom) {
-    this.LivingRoom = livingRoom;
+    this.livingRoom = livingRoom;
   }
 
   /**
@@ -74,7 +72,7 @@ public class LightsModel extends SystemModel {
    * @return long
    */
   public Long getDiningRoom() {
-    return DiningRoom;
+    return diningRoom;
   }
   
   /**
@@ -83,7 +81,7 @@ public class LightsModel extends SystemModel {
    * @param diningRoom Long
    */
   public void setDiningRoom(Long diningRoom) {
-    this.DiningRoom = diningRoom;
+    this.diningRoom = diningRoom;
   }
   
   /**
@@ -92,7 +90,7 @@ public class LightsModel extends SystemModel {
    * @return long
    */
   public Long getKitchenRoom() {
-    return KitchenRoom;
+    return kitchenRoom;
   }
   
   /**
@@ -101,7 +99,7 @@ public class LightsModel extends SystemModel {
    * @param kitchenRoom Long
    */
   public void setKitchenRoom(Long kitchenRoom) {
-    this.KitchenRoom = kitchenRoom;
+    this.kitchenRoom = kitchenRoom;
   }
   /**
    * Gets this Lights for BathRoom value.
@@ -109,7 +107,7 @@ public class LightsModel extends SystemModel {
    * @return long
    */
   public Long getBathroom() {
-    return Bathroom;
+    return bathroom;
   }
   
   /**
@@ -118,6 +116,6 @@ public class LightsModel extends SystemModel {
    * @param bathRoom Long
    */
   public void setBathroom(Long bathRoom) {
-    this.Bathroom = bathRoom;
+    this.bathroom = bathRoom;
   }
 }

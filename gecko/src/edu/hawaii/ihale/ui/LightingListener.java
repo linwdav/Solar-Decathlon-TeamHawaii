@@ -13,15 +13,15 @@ import edu.hawaii.ihale.wicket.model.LightsModel;
  * @revised Shoji Bravo
  * @revised Bret Ikehara
  */
-public class LightsListener extends SystemStateListener {
+public class LightingListener extends SystemStateListener {
 
     private AjaxDatabaseUpdate databaseUpdate;
     private LightsModel model;
   /**
    * Provide a default constructor that indicates that this listener is for Aquaponics.
    */
-  public LightsListener() {
-    super("Lights");
+  public LightingListener() {
+    super("Lighting");
     this.databaseUpdate = new AjaxDatabaseUpdate();
     this.model = new LightsModel();
   }
@@ -34,11 +34,25 @@ public class LightsListener extends SystemStateListener {
   public void entryAdded(SystemStateEntry entry) {
     System.out.println("Something just happened in Lights: " + entry);
     
-    model.setLivingRoom(entry.getLongValue("LivingRoom"));
-    model.setDiningRoom(entry.getLongValue("DiningRoom"));
-    model.setKitchenRoom(entry.getLongValue("KitchenRoom"));
-    model.setBathroom(entry.getLongValue("Bathroom"));
-    databaseUpdate.onRequest();
+    if ("Arduino-5".equals(entry.getDeviceName())) {
+      model.setLivingRoom(entry.getLongValue("Living Room"));      
+    }
+    else if ("Arduino-6".equals(entry.getDeviceName())) {
+      model.setDiningRoom(entry.getLongValue("Dining Room"));
+    }
+    else if ("Arduino-7".equals(entry.getDeviceName())) {
+      model.setKitchenRoom(entry.getLongValue("Kitchen Room"));
+    }
+    else if ("Arduino-8".equals(entry.getDeviceName())) {
+      model.setBathroom(entry.getLongValue("Bathroom"));      
+    }
+    
+    try {
+      databaseUpdate.onRequest();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
   }
   
   /**

@@ -10,14 +10,15 @@ import edu.hawaii.ihale.wicket.model.HVacModel;
  * @author Philip Johnson
  * @revised Shoji Bravo
  */
-public class HVacListener extends SystemStateListener {
+public class HvacListener extends SystemStateListener {
+  
     private AjaxDatabaseUpdate databaseUpdate;
     private HVacModel model;
   /**
    * Provide a default constructor that indicates that this listener is for HVac.
    */
-  public HVacListener() {
-    super("HVac");
+  public HvacListener() {
+    super("HVAC");
     this.databaseUpdate = new AjaxDatabaseUpdate();
     this.model = new HVacModel();
   }
@@ -31,8 +32,13 @@ public class HVacListener extends SystemStateListener {
     System.out.println("Something just happened in HVac: " + entry);
     model.setTimestamp(entry.getTimestamp());
     model.setTemp(entry.getLongValue("Temp"));
-    
-    databaseUpdate.onRequest();
+
+    try {
+      databaseUpdate.onRequest();
+    }
+    catch(Exception e) {
+      e.printStackTrace();
+    }
   }
   
   /**

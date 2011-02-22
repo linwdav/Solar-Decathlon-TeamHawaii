@@ -25,11 +25,44 @@ public class BlackMagic {
     SystemStateEntry entry = null;
     
     //Aquaponics
-    timestamp++;
     entry = new SystemStateEntry("Aquaponics", "Arduino-1", timestamp);
     entry.putDoubleValue("pH", Math.random() * 10);
     entry.putDoubleValue("Oxygen", Math.random() * 10);
     entry.putLongValue("Temp", (long) (Math.random() * 10));
     db.putEntry(entry);
+    
+    //HVAC
+    entry = new SystemStateEntry("HVAC", "Arduino-3", timestamp);
+    entry.putLongValue("Temp", (long) (Math.random() * 10));
+    db.putEntry(entry);
+
+    //Lighting
+    entry = new SystemStateEntry("Lighting", "Arduino-5", timestamp);
+    entry.putLongValue("Level", (long) (Math.random() * 10));
+    db.putEntry(entry);
+    
+    entry = new SystemStateEntry("Lighting", "Arduino-6", timestamp);
+    entry.putLongValue("Level", (long) (Math.random() * 10));
+    db.putEntry(entry);
+
+    entry = new SystemStateEntry("Lighting", "Arduino-7", timestamp);
+    entry.putLongValue("Level", (long) (Math.random() * 10));
+    db.putEntry(entry);
+
+    entry = new SystemStateEntry("Lighting", "Arduino-8", timestamp);
+    entry.putLongValue("Level", (long) (Math.random() * 10));
+    db.putEntry(entry);
+    
+    //Photovoltaics
+    entry = new SystemStateEntry("Photovoltaics", "egauge-1", timestamp);
+    entry.putLongValue("power", (long) (Math.random() * 10));
+    entry.putLongValue("energy", (long) (Math.random() * 10));
+    db.putEntry(entry);
+    
+    //Electricity consumption
+    entry = new SystemStateEntry("Electrical", "egauge-2", timestamp);
+    entry.putLongValue("power", (long) (Math.random() * 10));
+    entry.putLongValue("energy", (long) (Math.random() * 10));
+    db.putEntry(entry); 
   }
 }
