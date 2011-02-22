@@ -14,19 +14,16 @@ import edu.hawaii.ihale.wicket.model.AquaponicsModel;
  */
 public class AquaponicsListener extends SystemStateListener {
 
-  private AjaxDatabaseUpdate ajax;
+  private AjaxDatabaseUpdate databaseUpdate;
   private AquaponicsModel model;
 
   /**
    * Provide a default constructor that indicates that this listener is for Aquaponics.
-   * 
-   * @param ajax AjaxDatabaseUpdate
-   * @param model AquaponicsModel
    */
-  public AquaponicsListener(AjaxDatabaseUpdate ajax, AquaponicsModel model) {
+  public AquaponicsListener() {
     super("Aquaponics");
-    this.ajax = ajax;
-    this.model = model;
+    this.databaseUpdate = new AjaxDatabaseUpdate();
+    this.model = new AquaponicsModel();
   }
 
   /**
@@ -40,9 +37,27 @@ public class AquaponicsListener extends SystemStateListener {
 
     model.setTimestamp(entry.getTimestamp());
     model.setPh(entry.getDoubleValue("pH"));
-    //model.setTemp(entry.getLongValue("Temp"));
-    //model.setOxygen(entry.getDoubleValue("Oxygen"));
+    model.setTemp(entry.getLongValue("Temp"));
+    model.setOxygen(entry.getDoubleValue("Oxygen"));
 
-    ajax.onRequest();
+    databaseUpdate.onRequest();
+  }
+
+  /**
+   * Gets this AjaxDatabaseUpdate ajax object.
+   * 
+   * @return AjaxDatabaseUpdate
+   */
+  public AjaxDatabaseUpdate getDatabaseUpdate() {
+    return databaseUpdate;
+  }
+
+  /**
+   * Gets this Aquaponics model.
+   * 
+   * @return AquaponicsModel
+   */
+  public AquaponicsModel getModel() {
+    return model;
   }
 }
