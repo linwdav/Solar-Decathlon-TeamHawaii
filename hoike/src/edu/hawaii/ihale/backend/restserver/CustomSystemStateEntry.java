@@ -5,6 +5,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.SystemStateEntry;
 
 /**
@@ -35,6 +38,21 @@ public class CustomSystemStateEntry extends SystemStateEntry {
   private List<String> stringDataKey = new ArrayList<String>();
   private List<String> doubleDataKey = new ArrayList<String>();
   
+  /** The state-data element name. */
+  private static final String stateDataElementName = "state-data";
+
+  /** The state element name. */
+  private static final String stateElementName = "state";
+
+  /** The timestamp attribute name. */
+  private static final String timestampAttributeName = "timestamp";
+
+  /** The system name attribute name. */
+  private static final String systemNameAttributeName = "system";
+
+  /** The device name attribute name. */
+  private static final String deviceNameAttributeName = "device";
+  
   /**
    * A simple constructor that has no initial Map data.
    * 
@@ -62,6 +80,16 @@ public class CustomSystemStateEntry extends SystemStateEntry {
     this.longData = longData;
     this.stringData = stringData;
     this.doubleData = doubleData;
+  }
+  
+  /**
+   * Create a IHaleEntry instance given its representation in XML.
+   * @param doc XML document.
+   */
+  public CustomSystemStateEntry(Document doc) {
+    super(getAttribute(doc, systemNameAttributeName), getAttribute(doc, deviceNameAttributeName),
+        Long.valueOf(getAttribute(doc, timestampAttributeName)));
+    putKeyValuePair(doc);
   }
   
   /**
@@ -192,4 +220,42 @@ public class CustomSystemStateEntry extends SystemStateEntry {
         super.getSystemName(), super.getDeviceName(), super.getTimestamp(), 
         new Date(super.getTimestamp()), this.stringData, this.longData, this.doubleData);
   }
+
+  /**
+   * Helper method that returns the attribute of the root element of this XML document.
+   * @param doc The XML document.
+   * @param attributeName The attribute to return... system, device, or timestamp.
+   * @return The attribute.
+   */
+  private static String getAttribute(Document doc, String attributeName) {
+    Element element = (Element) doc.getElementsByTagName(stateDataElementName).item(0);
+    if (systemNameAttributeName.equals(attributeName)) {
+      return element.getAttribute(systemNameAttributeName);
+    }
+    else if (deviceNameAttributeName.equals(attributeName)) {
+      return element.getAttribute(deviceNameAttributeName);
+    }
+    else if (timestampAttributeName.equals(attributeName)) {
+      return element.getAttribute(timestampAttributeName);
+    }
+    else {
+      // Will never reach here.
+      return null;
+    }
+  }
+
+  /**
+   * Places all key-value pairs into a map.
+   * @param doc The XML document.
+   */
+  private void putKeyValuePair(Document doc) {
+    NodeList keyValueList = doc.getElementsByTagName(stateElementName);
+    for (int i = 0; i < keyValueList.getLength(); i++) {
+      Element element = (Element) doc.getElementsByTagName(stateElementName).item(i);
+      String key = element.getAttribute("key");
+      String value = element.getAttribute("value");
+      this.stringData.put(key, value);
+    }
+  }
+
 }
