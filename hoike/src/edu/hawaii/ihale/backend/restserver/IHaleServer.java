@@ -2,6 +2,7 @@ package edu.hawaii.ihale.backend.restserver;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -25,6 +26,8 @@ import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingResource;
  */
 public class IHaleServer extends Application {
 
+  private static Map<String, String> keyTypePairMap = new HashMap<String, String>();
+  
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
   // Restlet server properties file name.
@@ -75,6 +78,9 @@ public class IHaleServer extends Application {
    */
   public static void main(String[] args) throws Exception {
 
+    DataDictionary dd = new DataDictionary();
+    keyTypePairMap = dd.getTypeList("Aquaponics", "Arduino-1");
+    System.out.println(keyTypePairMap);
     /**
      * TO-DO: Retrieve the port number from the properties file
      * 
