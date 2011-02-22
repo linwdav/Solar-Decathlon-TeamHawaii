@@ -17,6 +17,15 @@ public class AquaponicsModel extends SystemModel {
   private Double oxygen;
   
   /**
+   * Default Constructor.
+   */
+  public AquaponicsModel() {
+    this.temp = 0L;
+    this.ph = 0.0;
+    this.oxygen = 0.0;
+  }
+  
+  /**
    * Gets this Aquaponics model time stamp.
    * 
    * @return String

@@ -38,6 +38,12 @@ public class AquaponicsPage extends BasePage {
     List<Sidebar> list = new ArrayList<Sidebar>();
     list.add(new Sidebar(new Label(SidebarPanel.LEFT, "Time Stamp"), new Label(SidebarPanel.RIGHT,
         new PropertyModel<Long>(model, "timestamp"))));
+    list.add(new Sidebar(new Label(SidebarPanel.LEFT, "Oxygen"), new Label(SidebarPanel.RIGHT,
+        new PropertyModel<Long>(model, "oxygen"))));
+    list.add(new Sidebar(new Label(SidebarPanel.LEFT, "Temp"), new Label(SidebarPanel.RIGHT,
+        new PropertyModel<Long>(model, "temp"))));
+    list.add(new Sidebar(new Label(SidebarPanel.LEFT, "pH"), new Label(SidebarPanel.RIGHT,
+        new PropertyModel<Long>(model, "ph"))));
 
     SidebarPanel sidebar = new SidebarPanel("Status", list);
     sidebar.add(databaseUpdate);

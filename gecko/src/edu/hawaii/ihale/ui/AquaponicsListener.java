@@ -39,6 +39,9 @@ public class AquaponicsListener extends SystemStateListener {
     System.out.println("Something just happened in Aquaponics: " + entry);
 
     model.setTimestamp(entry.getTimestamp());
+    model.setPh(entry.getDoubleValue("pH"));
+    //model.setTemp(entry.getLongValue("Temp"));
+    //model.setOxygen(entry.getDoubleValue("Oxygen"));
 
     ajax.onRequest();
   }
