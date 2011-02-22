@@ -5,6 +5,8 @@ import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.ListView;
+
+import edu.hawaii.ihale.ui.PhotovoltaicListener;
 import edu.hawaii.ihale.ui.page.BasePage;
 import edu.hawaii.ihale.wicket.url.ExternalImageUrl;
 
@@ -23,6 +25,12 @@ public class ElectricityPage extends BasePage {
    * Creates the electricity page.
    */
   public ElectricityPage() {
+      PhotovoltaicListener listener = new PhotovoltaicListener();
+      this.database.addSystemStateListener(listener);
+      Label main = new Label("Main", "main");
+      add(main);
+      
+      
     add(CSSPackageResource.getHeaderContribution(Electricity.class, "style.css"));
     
     StringBuilder sb = new StringBuilder();

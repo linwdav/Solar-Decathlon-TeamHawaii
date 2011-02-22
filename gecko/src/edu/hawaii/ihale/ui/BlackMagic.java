@@ -26,7 +26,7 @@ public class BlackMagic {
     
     //Aquaponics
     timestamp++;
-    entry = new SystemStateEntry("Aquaponics", "Arduino-23", timestamp);
+    entry = new SystemStateEntry("Aquaponics", "Arduino-1", timestamp);
     entry.putDoubleValue("pH", Math.random() * 10);
     entry.putDoubleValue("Oxygen", Math.random() * 10);
     entry.putLongValue("Temp", (long) (Math.random() * 10));
