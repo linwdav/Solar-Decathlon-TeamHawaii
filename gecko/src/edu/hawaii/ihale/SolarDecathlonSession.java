@@ -29,8 +29,8 @@ public class SolarDecathlonSession extends WebSession {
     super(request);
 
     this.properties.put("Page", "homePage");
-    this.properties.put("user.name", "Guest");
-    this.properties.put("user.authenticated", "false");
+    this.properties.put("UserName", "Guest");
+    this.properties.put("UserAuthenticated", "false");
   }
 
   /**
@@ -50,8 +50,7 @@ public class SolarDecathlonSession extends WebSession {
    * @return boolean
    */
   public boolean authenticate(String username, String passwd) {
-    // TODO Implement the authetication system.
-    this.properties.put("user.authenticated", "true");
+    this.properties.put("UserAuthenticated", "true");
 
     return true;
   }
@@ -62,7 +61,7 @@ public class SolarDecathlonSession extends WebSession {
    * @return boolean
    */
   public boolean isAuthenticated() {
-    String auth = properties.get("user.authenticated");
+    String auth = properties.get("UserAuthenticated");
 
     if (auth != null) {
       return Boolean.valueOf(auth);

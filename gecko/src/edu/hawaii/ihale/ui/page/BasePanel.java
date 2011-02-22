@@ -17,6 +17,8 @@ public class BasePanel extends Panel {
    * Serial ID.
    */
   private static final long serialVersionUID = 1L;
+  
+  protected SolarDecathlonSession session;
 
   /**
    * Handles the content for main portion of the Main page.
@@ -36,6 +38,18 @@ public class BasePanel extends Panel {
    */
   public BasePanel(String name) {
     super(name);
+  }
+  
+  /**
+   * Sets up the session variable.
+   */
+  @Override
+  protected void onBeforeRender() {
+    super.onBeforeRender();
+    
+    if (session == null) {
+      session = (SolarDecathlonSession) getSession();
+    }
   }
 
   /**

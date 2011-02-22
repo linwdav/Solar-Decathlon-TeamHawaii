@@ -8,7 +8,9 @@ import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
+import edu.hawaii.ihale.SolarDecathlonApplication;
 import edu.hawaii.ihale.SolarDecathlonSession;
+import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.ui.page.service.LogInPage;
 import edu.hawaii.ihale.ui.page.style.IEStylesheetHeaderContributor;
 
@@ -24,29 +26,37 @@ public abstract class BasePage extends WebPage implements Serializable {
    */
   private static final long serialVersionUID = 1L;
 
-  protected SolarDecathlonSession session;
+  private SolarDecathlonSession session;
+  protected transient SystemStateEntryDB database;
 
   /**
    * The base page layout used by all pages. This includes a title and the links that appear in the
    * tabbed menu.
+   * 
    */
   public BasePage() {
     // Add CSS definitions for use in all pages
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
         "style/blueprint/screen.css", "screen"));
+
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
         "style/blueprint/print.css", "print"));
+
     add(new IEStylesheetHeaderContributor(new ResourceReference(
         edu.hawaii.ihale.ui.page.BasePage.class, "style/blueprint/ie.css")));
+
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
         "style/basepage.css"));
+
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.ui.page.BasePage.class,
         "style/general.css"));
 
     add(new Label("title", "Solar Decathlon"));
 
-    add(new Image("basePageImage", new ResourceReference(
-        edu.hawaii.ihale.ui.page.BasePage.class, "logo.png")));
+    add(new Image("basePageImage", new ResourceReference(edu.hawaii.ihale.ui.page.BasePage.class,
+        "logo.png")));
+    
+    database = ((SolarDecathlonApplication) getApplication()).getDatabase();
   }
 
   /**
@@ -60,6 +70,7 @@ public abstract class BasePage extends WebPage implements Serializable {
   @Override
   protected void onBeforeRender() {
     super.onBeforeRender();
+
     if (session.isAuthenticated()) {
       add(new BasePageLogOutPanel("BaseLogOutPanel", new Model<String>("BaseLogOutPanel")));
       add(new BasePageMenuBarPanel("BasePageMenuBar", new Model<String>("BasePageMenuBar"),
@@ -69,6 +80,7 @@ public abstract class BasePage extends WebPage implements Serializable {
       add(new Label("BaseLogOutPanel"));
       add(new Label("BasePageMenuBar"));
     }
+
   }
 
   /**
@@ -101,9 +113,8 @@ public abstract class BasePage extends WebPage implements Serializable {
     if (session == null) {
       session = (SolarDecathlonSession) getSession();
     }
-    
-    if (this.getClass() != LogInPage.class &&
-        !session.isAuthenticated()) {
+
+    if (this.getClass() != LogInPage.class && !session.isAuthenticated()) {
       setResponsePage(LogInPage.class);
       return false;
     }

@@ -1,4 +1,11 @@
-p
-{
-  padding-left : 10px;	
+p {
+	padding-left: 10px;
+}
+
+div.LogInDiv ul {
+	list-style-type: none;
+}
+
+div.LogInDiv ul li.pBottom {
+	padding-bottom: 1em;
 }

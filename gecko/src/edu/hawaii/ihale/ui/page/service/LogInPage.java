@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.ui.page.service;
 
 import java.util.Properties;
+import org.apache.wicket.RestartResponseAtInterceptPageException;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.PasswordTextField;
@@ -76,4 +77,18 @@ public class LogInPage extends BasePage {
     add(new FeedbackPanel("feedback"));
     add(form);
   }
+
+  /**
+   * Redirects to the home page when in development mode.
+   */
+  @Override
+  protected void onBeforeRender() {
+    super.onBeforeRender();
+
+    if (this.getSessionProperty("ConfigType").equalsIgnoreCase("development")) {
+      this.getSessionProperties().put("UserAuthenticated", "true");
+      throw new RestartResponseAtInterceptPageException(HomePage.class);
+    }
+  }
+
 }

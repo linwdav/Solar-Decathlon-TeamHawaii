@@ -4,6 +4,7 @@ import org.apache.wicket.behavior.AttributeAppender;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
+import edu.hawaii.ihale.SolarDecathlonSession;
 import edu.hawaii.ihale.ui.page.aquaponics.AquaponicsPage;
 import edu.hawaii.ihale.ui.page.electricity.ElectricityPage;
 import edu.hawaii.ihale.ui.page.home.HomePage;
@@ -156,5 +157,20 @@ public class BasePageMenuBarPanel extends BasePanel {
     add(lightsPageLink);
     add(waterHeaterPageLink);
     add(settingsPageLink);
+  }
+  
+  /**
+   * Only visible when authenticated.
+   * 
+   * @return boolean
+   */
+  @Override
+  public boolean isVisible() {
+    
+    if (session == null) {
+      session = (SolarDecathlonSession) getSession();
+    }
+    
+    return session.isAuthenticated();
   }
 }

@@ -23,14 +23,11 @@ div#header
 	margin-bottom : 2em;
 }
 
-div#menubar
-{
-  margin-bottom : 1em;
-}
 div#menubar table
 {
   border-top : 1px solid #777;
   border-bottom : 1px solid #777;
+  margin-bottom : 0em;
   width : 100%;	
 }
 
@@ -66,8 +63,25 @@ div#menubar table td a.selected div
   font-weight : bold;
 }
 
-
 div#menubar table td a
 {
   width : 100%;
+}
+
+div#Status,
+div#Main
+{
+	background : white;
+	padding-top : 2em;
+	height : 100%;
+}
+
+div#Status
+{
+  background : url('../images/sidebar.png') white repeat-x;
+}
+
+div#Main
+{
+  background : white;	
 }
