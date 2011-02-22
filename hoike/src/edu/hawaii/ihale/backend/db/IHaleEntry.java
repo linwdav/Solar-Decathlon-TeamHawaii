@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.db;
+package edu.hawaii.ihale.backend.db;
 
 import java.util.HashMap;
 import java.util.Map;
