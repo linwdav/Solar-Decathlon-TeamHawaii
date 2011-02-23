@@ -4,6 +4,12 @@ import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
+/**
+ * Provides access to the Lighting system.
+ * 
+ * @author Michael Cera
+ * @author Anthony Kinsey
+ */
 public class LightingSystem extends Application {
   /**
    * Specify the dispatching restlet that maps URIs to their associated resources for processing.

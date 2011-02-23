@@ -9,7 +9,6 @@ import edu.hawaii.ihale.housesimulator.electrical.ElectricalSystem;
 import edu.hawaii.ihale.housesimulator.hvac.HVACSystem;
 import edu.hawaii.ihale.housesimulator.lighting.LightingSystem;
 import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsSystem;
-import edu.hawaii.ihale.housesimulator.water.WaterSystem;
 
 /**
  * An HTTP server that provides access to simulator data via a REST interface.
@@ -35,18 +34,17 @@ public class SimulatorServer extends Application {
     component.getServers().add(Protocol.HTTP, 7101);
     component.getServers().add(Protocol.HTTP, 7102);
     component.getServers().add(Protocol.HTTP, 7103);
-    component.getServers().add(Protocol.HTTP, 7104);
 
     // Create virtual hosts. E-Gauge boards will be on port ranges 7001-7100, Arduino boards on port
     // ranges 7101+.
     VirtualHost host = new VirtualHost(component.getContext());
     host.setHostPort("7001");
-    host.attach("/cgi-bin", new PhotovoltaicsSystem());
+    host.attach("/photovoltaics", new PhotovoltaicsSystem());
     component.getHosts().add(host);
-
+   
     host = new VirtualHost(component.getContext());
     host.setHostPort("7002");
-    host.attach("/cgi-bin", new ElectricalSystem());
+    host.attach("/electrical", new ElectricalSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
@@ -62,11 +60,6 @@ public class SimulatorServer extends Application {
     host = new VirtualHost(component.getContext());
     host.setHostPort("7103");
     host.attach("/lighting", new LightingSystem());
-    component.getHosts().add(host);
-
-    host = new VirtualHost(component.getContext());
-    host.setHostPort("7104");
-    host.attach("/water", new WaterSystem());
     component.getHosts().add(host);
 
     component.start();
