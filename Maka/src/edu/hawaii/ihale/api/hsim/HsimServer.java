@@ -5,6 +5,10 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
+import edu.hawaii.ihale.aquaponics.AquaponicsResource;
+import edu.hawaii.ihale.hvac.HvacResource;
+import edu.hawaii.ihale.lighting.LightingResource;
+import edu.hawaii.ihale.water.WaterResource;
 
 //import edu.hawaii.contactservice.server.resource.contact.ContactResource;
 //import edu.hawaii.contactservice.server.resource.contacts.ContactsResource;
@@ -44,8 +48,9 @@ public class HsimServer extends Application {
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach("/phMeter/{uniqueID}", DayResource.class);
-            router.attach("/phMeter", DayResource.class);
+            //router.attach("/phMeter/{uniqueID}", DayResource.class);
+            router.attach("/state", AquaponicsResource.class);
+            router.attach("/{key}", AquaponicsResource.class);
             // Return the root router
             return router;  
           }   
@@ -57,8 +62,8 @@ public class HsimServer extends Application {
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach("/heating/{uniqueID}", DayResource.class);
-            router.attach("/heating", DayResource.class);
+            router.attach("/state", HvacResource.class);
+            router.attach("/{key}", HvacResource.class);
             // Return the root router
             return router;  
           }   
@@ -70,8 +75,8 @@ public class HsimServer extends Application {
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach("/waterlevels/{uniqueID}", DayResource.class);
-            router.attach("/waterlevels", DayResource.class);
+            router.attach("/state", WaterResource.class);
+            router.attach("/{key}", WaterResource.class);
             // Return the root router
             return router;  
           }   
@@ -83,8 +88,9 @@ public class HsimServer extends Application {
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach("/kitchen/{uniqueID}", DayResource.class);
-            router.attach("/kitchen", DayResource.class);
+            router.attach("/state", LightingResource.class);
+            router.attach("/{key}", LightingResource.class);
+            //router.attach("/kitchen", LivingRoomResource.class);
             // Return the root router
             return router;  
           }   
@@ -93,12 +99,8 @@ public class HsimServer extends Application {
           System.out.println("error, no matching port");
           return;
     }
-    //String contextRoot = null;
     // Attach the application to the component with a defined contextRoot.
-   
     component.getDefaultHost().attach(contextRoot, application);
-    component.getDefaultHost().attach(contextRoot + "/device", DayResource.class);
-    //component.getDefaultHost().attach(new Router(getContext()));
     component.start();
   }
 
@@ -111,8 +113,9 @@ public class HsimServer extends Application {
   public static void main(String[] args) throws Exception {
     runServer("/aquaponics",8011);
     runServer("/hvac",8012);
-    runServer("/water",8013);
-    runServer("/lighting",8014);
+    runServer("/lighting",8013);
+    runServer("/photovoltaics",8014);
+    runServer("/electrical",8015);
   }
   
   /**
