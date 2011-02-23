@@ -6,78 +6,125 @@ import java.util.HashMap;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Simulates the Aquaponics System, holds values for temperature (temp), 
+ * pH (pH), and dissolved oxygen (oxygen).
+ * @author Team Maka
+ *
+ */
 public class Aquaponics {
-  MT mt = new MT();
+  MT mt;
   Map <String,String> data;
-  //Array of known keys
-  double PH = 7, Temp = 78.6, DO = .5;
-  String[] keys = {"Temp", "PH", "DO"};
+  //These hold the goal state defined by the user.
+  double goalPH = 7, goalTemp = 78., goalDO = .5;
+  String[] keys;
+  String temp = "temp", pH = "pH", oxygen = "oxygen";
+  String[] localKeys = {"temp", "pH", "oxygen"};
   List<String> list;
   
+  /**
+   * Constructor.
+   */
   public Aquaponics() {
+    keys = localKeys;
+    mt = new MT(Calendar.MILLISECOND);
     //initialize all lights to "off"
     data = new HashMap<String,String>();
-    list = Arrays.asList(keys);
-    data.put("Temp", "" + Temp);
-    data.put("PH", "" + PH);
-    data.put("DO", "" + DO);
+    //list = Arrays.asList(keys);
+    data.put(temp, "" + goalTemp);
+    data.put(pH, "" + goalPH);
+    data.put(oxygen, "" + goalDO);
   }
   
-  public Map<String,String> getState() {
-    data.put("Temp", "" + getTemp());
-    data.put("PH", "" + getPH());
-    data.put("DO", "" + getDO());
-    return data;
+  /**
+   * Refreshes data.
+   */
+  public void poll() {
+    data.put(temp, "" + getTemp());
+    data.put(pH, "" + getPH());
+    data.put(oxygen, "" + getOxygen());
   }
   
+  /**
+   * Adds a value to the map.
+   * @param key Item's key.
+   * @param val Item's value.
+   */
   public void set(String key, String val) {
     double v = sToD(val);
-    if(key.equals("Temp")) {
-      Temp = v;
+    if (key.equals(temp)) {
+      goalTemp = v;
     }
-    else if (key.equals("PH")) {
-      PH = v;
+    else if (key.equals(pH)) {
+      goalPH = v;
     }
-    else if (key.equals("DO")) {
-      DO = v;
+    else if (key.equals(oxygen)) {
+      goalDO = v;
     }
   }
   
+  /**
+   * Converts a String to a double.
+   * @param val String to convert.
+   * @return The double represented by the String.
+   */
   private Double sToD(String val) {
     double v = 0;
     try {
       v = Double.valueOf(val).doubleValue();
-   } catch (NumberFormatException e) {
+   } 
+    catch (NumberFormatException e) {
       System.out.println(e);
    }
    return v;
   }
 
+  /**
+   * Simulates the pH changing slowly over time towards the goal state.
+   * @return An updated pH value.
+   */
   private double getPH() {
-    double currentPH = sToD(data.get("PH"));
-    return currentPH + (currentPH - PH) / 100 + mt.nextDouble(-.1,.1);
+    double currentPH = sToD(data.get(pH));
+    return currentPH + (currentPH - goalPH) / 100 + mt.nextDouble(-.1,.1);
   }
 
-  private double getDO() {
-    double currentDO = sToD(data.get("DO"));
-    return currentDO + (currentDO - DO) / 100 + mt.nextDouble(-.01,.01);
+  /**
+   * Simulates the dissolved Oxygen changing slowly over time towards
+   * the goal state.
+   * @return An updated oxygen value.
+   */
+  private double getOxygen() {
+    double currentDO = sToD(data.get(oxygen));
+    return currentDO + (currentDO - goalDO) / 100 + mt.nextDouble(-.01,.01);
   }
   
-  
+  /**
+   * Simulates the temperature changing slowly over time.
+   * @return An updated temp value.
+   */
   private double getTemp() {
+    double currentTemp = sToD(data.get(temp));
+    return (currentTemp + goalTemp) / 2 + mt.nextDouble(-.05,.05);
+  }
+  
+  /**
+   * Simulates the outdoor temperature changing slowly over time based on
+   * the time of day.
+   * @return An updated temp value.
+   */
+  private double getOutdoorTemp() {
     double hour = Calendar.HOUR_OF_DAY;
     double min = Calendar.MINUTE / 60;
     hour += min;
     double baseTemp = 78.5;
     double rate = 2.5 / 12.0 + mt.nextDouble(0,.05);
-    double currentTemp = sToD(data.get("DO"));
     //night
     if (hour <= 6 || hour >= 18) {
-      return (currentTemp + (baseTemp - (hour % 18) * rate)) / 2;
+      return (baseTemp - (hour % 18) * rate);
     }
     //day
     else {
-      return (currentTemp + (baseTemp + (hour - 6) * rate)) /2;
+      return (baseTemp + (hour - 6) * rate);
     }
   }
 }

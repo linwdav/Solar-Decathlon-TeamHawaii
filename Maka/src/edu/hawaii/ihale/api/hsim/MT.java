@@ -25,6 +25,7 @@
 package edu.hawaii.ihale.api.hsim;
 
 import java.util.Date;
+import edu.umd.cs.findbugs.annotations.SuppressWarnings;
 
 /**
  * This is a Java version of the GMP C-program "randmt.c" which implements the Mersenne Twister.
@@ -55,7 +56,6 @@ import java.util.Date;
  * @author Kurt Teichman
  * 
  */
-
 public class MT {
 	private static final int MATRIX_A = 0x9908b0df;   // private static final * constant vector a
 	private static final int MASK_1 = 0x9d2c5680; // 2636928640
@@ -64,7 +64,7 @@ public class MT {
 	private static final int M = 397;
 	private static final int WARM_UP = 2000;
 	@SuppressWarnings("unused")
-	private static final int DEFAULT_SEED = 5489; 	// Just for documentation purposes
+	//private static final int DEFAULT_SEED = 5489; 	// Just for documentation purposes
 	private boolean haveSecondGaussian;
 	private double secondGaussian;
 	// the array for the state vector
@@ -202,6 +202,9 @@ public class MT {
 	*
 	* @param seed from constructor
 	*/
+	@edu.umd.cs.findbugs.annotations.SuppressWarnings(     
+	    value="EQ_COMPARETO_USE_OBJECT_EQUALS",      
+	    justification="because I know better")
 	private void randint_mt(int seed) {
 		mt = new int[N];
 		mt[0]= seed & 0xffffffff;   // replace initial value with seed\
@@ -250,7 +253,7 @@ public class MT {
 			}
 			for (; kk < N - 1; kk++) {
 				y = (mt[kk] & 0x80000000) | (mt[kk+1] & 0x7FFFFFFF);
-				mt[kk] = mt[kk+(M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
+				mt[kk] = mt[kk + (M - N)] ^ (y >>> 1) ^ mag01[y & 0x1];
 			}
 			y = (mt[N - 1] & 0x80000000) | (mt[0] & 0x7FFFFFFF);
 			mt[N - 1] = mt[M - 1] ^ (y >>> 1) ^ mag01[y & 0x1];
@@ -259,7 +262,7 @@ public class MT {
 		}
   
 		// the twist?
-		y = mt[mti++];
+		y = mt[mti ++];
 		y ^= y >>> 11;
 		y ^= (y << 7) & MASK_1;
 		y ^= (y << 15) & MASK_2;
@@ -301,18 +304,20 @@ public class MT {
 	/**
 	 * The method <code>nextGaussian(mean,variance)</code> allows for the creation of
 	 * a normally distributed random number within the bound [0,1]. It should be noted that if
-	 * the normalized random number generated is outside the bounds [0,1], the method will recursively
-	 * call itself to generate another normalized random number. This method was
-	 * inspired by <url>http://download.oracle.com/javase/1.4.2/docs/api/java/util/Random.html#nextGaussian()<url>.
+	 * the normalized random number generated is outside the bounds [0,1], the method will 
+	 * recursively call itself to generate another normalized random number. This method was
+	 * inspired by <url>http://download.oracle.com/javase/1.4.2/docs/api/java/
+	 * util/Random.html#nextGaussian()<url>.
 	 *   
-	 * @param mean
-	 * @param variance
+	 * @param mean mean value.
+	 * @param variance variance value.
 	 * @return randomnumber within the bound [0,1].
 	 */
 	public double nextGaussian(double mean, double variance) {
 		if (haveSecondGaussian) {
             haveSecondGaussian = false;
-            return (validGaussian(secondGaussian,0,1) ? secondGaussian : nextGaussian(mean,variance));
+            return (validGaussian(secondGaussian,0,1) ? 
+                secondGaussian : nextGaussian(mean,variance));
 		}
 		else {
 			double v1, v2, s;
@@ -322,11 +327,12 @@ public class MT {
 				s = v1 * v1 + v2 * v2;
 			} while (s >= 1.0 || s == 0.0);
 			
-			double multiplier = Math.sqrt(-2.0 * Math.log(s)/s);
+			double multiplier = Math.sqrt( -2.0 * Math.log(s) / s);
 			secondGaussian = mean + v2 * multiplier * Math.sqrt(variance);
 			haveSecondGaussian = true;
 			double firstGaussian = mean + v1 * multiplier * Math.sqrt(variance);
-			return (validGaussian(firstGaussian,0,1) ? firstGaussian : nextGaussian(mean,variance));
+			return (validGaussian(firstGaussian,0,1) ? 
+			    firstGaussian : nextGaussian(mean,variance));
 		}
 	}
 	
@@ -334,9 +340,9 @@ public class MT {
 	 * The method <code>validGaussian(gaussian,lower,upper)</code> checks to see if the
 	 * random gaussian number generated is within the range [lower,upper].
 	 * 
-	 * @param gaussian
-	 * @param lower
-	 * @param upper
+	 * @param gaussian gaussian value.
+	 * @param lower lower value.
+	 * @param upper upper value.
 	 * @return boolean indicating whether the gaussian number is lower <= number <= upper.
 	 */
 	public boolean validGaussian(double gaussian, int lower, int upper) {
@@ -354,11 +360,11 @@ public class MT {
 	public void testNormalDistribution(MT mt) {
 		double x;
 		double[] testArray = new double[100];
-		for (int i = 0; i < 100000; i++) {
-			x = mt.nextGaussian(.5, .05)*100;
-			testArray[(int)(Math.floor(x))]++;
+		for (int i = 0; i < 100000; i ++) {
+			x = mt.nextGaussian(.5, .05) * 100;
+			testArray[(int)(Math.floor(x))] ++;
 		}
-		for (int z = 0; z < testArray.length; z++) {
+		for (int z = 0; z < testArray.length; z ++) {
 			System.out.println(z + ',' + testArray[z]);
 		}
 	}
@@ -374,12 +380,12 @@ public class MT {
 	public void testUniformDistribution(MT mt) {
 		double x;
 		double[] testArray = new double[100];
-		for (int i = 0; i < 100000; i++) {
+		for (int i = 0; i < 100000; i ++) {
 			x = Math.floor(mt.nextDouble(0, 100));
-			testArray[(int)(x)]++;
+			testArray[(int)(x)] ++;
 		}
 		
-		for (int z = 0; z < testArray.length; z++) {
+		for (int z = 0; z < testArray.length; z ++) {
 			System.out.println(z + ',' + testArray[z]);
 		}
 	}
