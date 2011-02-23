@@ -1,45 +1,41 @@
 package edu.hawaii.ihale.api.aquaponics;
 
 import java.util.Calendar;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Arrays;
-import java.util.List;
 import edu.hawaii.ihale.api.hsim.MT;
-
+import edu.hawaii.ihale.api.hsim.Arduino;
 /**
  * Simulates the Aquaponics System, holds values for temperature (temp), 
  * pH (pH), and dissolved oxygen (oxygen).
  * @author Team Maka
  *
  */
-public class AquaponicsResource {
+public class AquaponicsResource extends Arduino{
   MT mt;
-  Map <String,String> data;
   //These hold the goal state defined by the user.
   double goalPH = 7, goalTemp = 78., goalDO = .5;
-  String[] keys;
-  String temp = "temp", pH = "pH", oxygen = "oxygen";
-  String[] localKeys = {"temp", "pH", "oxygen"};
-  List<String> list;
+  String temp = "aqtemp", pH = "aqpH", oxygen = "aqoxygen";
+  String[] localKeys = {temp, pH, oxygen};
   
   /**
    * Constructor.
    */
   public AquaponicsResource() {
+    super("aquaPonics","arduino-1");
     keys = localKeys;
     mt = new MT(Calendar.MILLISECOND);
     //initialize all lights to "off"
-    data = new HashMap<String,String>();
-    //list = Arrays.asList(keys);
+    list = Arrays.asList(keys);
     data.put(temp, "" + goalTemp);
     data.put(pH, "" + goalPH);
     data.put(oxygen, "" + goalDO);
+    
   }
   
   /**
    * Refreshes data.
    */
+  @Override
   public void poll() {
     data.put(temp, "" + getTemp());
     data.put(pH, "" + getPH());
@@ -113,7 +109,7 @@ public class AquaponicsResource {
    * the time of day.
    * @return An updated temp value.
    */
-  private double getOutdoorTemp() {
+ /* private double getOutdoorTemp() {
     double hour = Calendar.HOUR_OF_DAY;
     double min = Calendar.MINUTE / 60;
     hour += min;
@@ -127,5 +123,5 @@ public class AquaponicsResource {
     else {
       return (baseTemp + (hour - 6) * rate);
     }
-  }
+  }*/
 }
