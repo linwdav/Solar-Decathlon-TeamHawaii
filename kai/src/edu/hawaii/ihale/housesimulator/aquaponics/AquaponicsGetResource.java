@@ -12,7 +12,7 @@ import org.restlet.resource.ServerResource;
  * @author Michael Cera
  * @author Anthony Kinsey
  */
-public class AquaponicsResource extends ServerResource {
+public class AquaponicsGetResource extends ServerResource {
   /**
    * Returns the data requested by the URL.
    * 

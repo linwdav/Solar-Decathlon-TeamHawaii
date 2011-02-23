@@ -7,8 +7,8 @@ import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 
 /**
- * A server resource that will handle requests regarding the Lighting system. Supported
- * operations: GET, PUT. Supported representations: XML.
+ * A server resource that will handle requests regarding the Lighting system. Supported operations:
+ * GET, PUT. Supported representations: XML.
  * 
  * @author Michael Cera
  * @author Anthony Kinsey

@@ -54,7 +54,7 @@ public class AquaponicsData {
    * @param doc The XML document.
    */
   public AquaponicsData(Document doc) {
-    this.systemName = getElementTextContent (doc, systemNameElementName);
+    this.systemName = getElementTextContent(doc, systemNameElementName);
     this.temperature = getElementTextContent(doc, temperatureElementName);
     this.ph = getElementTextContent(doc, phElementName);
     this.dissolvedOxygen = getElementTextContent(doc, dissolvedOxygenElementName);
@@ -68,8 +68,9 @@ public class AquaponicsData {
    */
   @Override
   public String toString() {
-    return String.format("[System Name: %s Temperature: %s pH: %s Dissolved Oxygen: %s Timestamp: %s]", this.systemName,
-        this.temperature, this.ph, this.dissolvedOxygen, this.timestamp);
+    return String.format(
+        "[System Name: %s Temperature: %s pH: %s Dissolved Oxygen: %s Timestamp: %s]",
+        this.systemName, this.temperature, this.ph, this.dissolvedOxygen, this.timestamp);
   }
 
   /**

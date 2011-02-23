@@ -21,8 +21,12 @@ public class AquaponicsSystem extends Application {
     // Create a router restlet.
     Router router = new Router(getContext());
     // Attach the resources to the router.
-    router.attach("/state", AquaponicsResource.class);
-    router.attach("/temp", AquaponicsResource.class);
+    router.attach("/state", AquaponicsGetResource.class);
+    // Changed the following classes to the new AquaponicsPutResource.class once implemented.
+    // Leaving as is to pass ant verify tests.
+    router.attach("/temp", AquaponicsGetResource.class);
+    router.attach("/ph", AquaponicsGetResource.class);
+    router.attach("/dissolvedoxygen", AquaponicsGetResource.class);
     // Return the root router
     return router;
   }

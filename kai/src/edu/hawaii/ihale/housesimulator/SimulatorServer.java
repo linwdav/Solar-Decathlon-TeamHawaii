@@ -41,7 +41,7 @@ public class SimulatorServer extends Application {
     host.setHostPort("7001");
     host.attach("/photovoltaics", new PhotovoltaicsSystem());
     component.getHosts().add(host);
-   
+
     host = new VirtualHost(component.getContext());
     host.setHostPort("7002");
     host.attach("/electrical", new ElectricalSystem());
