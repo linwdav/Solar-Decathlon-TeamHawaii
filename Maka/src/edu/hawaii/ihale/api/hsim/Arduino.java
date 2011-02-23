@@ -1,7 +1,11 @@
 package edu.hawaii.ihale.api.hsim;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
@@ -9,9 +13,9 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
-import edu.hawaii.contactservice.common.contact.Contact;
-import edu.hawaii.contactservice.server.db.Contacts;
 
 /**
  * Simulates the Arduino boards used by Team Hawaii's Solar Decathlon entry.
@@ -20,19 +24,34 @@ import edu.hawaii.contactservice.server.db.Contacts;
  * @author Team Maka
  */
 public class Arduino extends ServerResource {
-
-  public static Map<String, String> buffer = new ConcurrentHashMap<String, String>();
+  String systemName, deviceName;
+  Date date = new Date();
+  public static Map<String, String> data = new ConcurrentHashMap<String, String>();
   public String[] keys;
+  public List<String> list;
   
+  /**
+   * Initializes the object.
+   * @param systemName  SubSystem name.
+   * @param deviceName  Arduino device name.
+   */
+  public Arduino(String systemName, String deviceName) {
+    this.systemName = systemName;
+    this.deviceName = deviceName;
+  }
   /**
    * Updates the buffer.
    */
-  public void getState() {
+  public void poll() {
     //  Get's overridden.
-    //  Should throw an error if not implemented.
   }
-  public void set(String key, String value) {
-    //  Implement 
+  
+  /**
+   * Adds an item to the map.
+   * @param key the item's key.
+   * @param value the item's value.
+   */
+  public void set(String key, String value) { 
   }
   
   /**
@@ -44,23 +63,28 @@ public class Arduino extends ServerResource {
    */
   @Get
   public Representation getResource() throws Exception {
+    //refresh values
     // Create an empty XML representation.
     DomRepresentation result = new DomRepresentation();
-    // Get the contact's uniqueID from the URL.
-    String uniqueID = (String)this.getRequestAttributes().get("uniqueID");
-    // Look for it in the Contacts database.
-    Contact contact = ContactDAO.getContact(uniqueID);
-    if (contact == null) {
-      // The requested contact was not found, so set the Status to indicate this.
-      getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
-    } 
-    else {
-      // The requested contact was found, so add the Contact's XML representation to the response.
-      result.setDocument(contact.toXml());
-      // Status code defaults to 200 if we don't set it.
-      }
-    // Return the representation.  The Status code tells the client if the representation is valid.
-    return result;
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+    //create root element
+    Element rootElement = doc.createElement("state-data");
+    rootElement.setAttribute("system", systemName);
+    rootElement.setAttribute("deviceName", deviceName);
+    rootElement.setAttribute("timeStamp", ""+date.getTime());
+    //refresh data
+    poll();
+    //loop through states and attach
+    for (String s : list) {
+      Element e = doc.createElement("state");
+      e.setAttribute(s.substring(2),data.get(s));
+      rootElement.appendChild(e);
+    }
+    doc.appendChild(rootElement);
+    result.setDocument(doc);
+    return  result;
   }
   
   /**
@@ -70,14 +94,17 @@ public class Arduino extends ServerResource {
    * @throws Exception If problems occur unpacking the representation.
    */
   @Put
-  public Representation putContact(Representation representation) throws Exception {
+  public void putVal(Representation representation) throws Exception {
     // Get the XML representation of the Contact.
+    String key = (String)this.getRequestAttributes().get("key");
+    if(!list.contains(key)) {
+      getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
+    }
     DomRepresentation domRepresentation = new DomRepresentation(representation);
-    // Convert the XML representation to the Java representation.
-    Contact contact = new Contact(domRepresentation.getDocument());
-    // Add the Contact to our repository.
-    Contacts.getInstance().addContact(contact);
-    // No need to return a representation to the client.
-    return null;
+    Document doc = domRepresentation.getDocument();
+    String value = doc.getFirstChild().getFirstChild().getAttributes().getNamedItem("value").getNodeValue();
+    //calls overridden set method to set local variables in children.
+    set(key,value);
+    data.put(key, value);
   }
 }
