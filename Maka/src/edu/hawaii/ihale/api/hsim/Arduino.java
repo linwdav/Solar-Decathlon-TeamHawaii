@@ -47,11 +47,12 @@ public class Arduino extends ServerResource {
   }
   
   /**
-   * Adds an item to the map.
+   * Updates a child's local variable.
    * @param key the item's key.
    * @param value the item's value.
    */
   public void set(String key, String value) { 
+    //should be overridden
   }
   
   /**
@@ -73,7 +74,8 @@ public class Arduino extends ServerResource {
     Element rootElement = doc.createElement("state-data");
     rootElement.setAttribute("system", systemName);
     rootElement.setAttribute("deviceName", deviceName);
-    rootElement.setAttribute("timeStamp", ""+date.getTime());
+    rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
+    
     //refresh data
     poll();
     //loop through states and attach

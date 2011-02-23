@@ -1,10 +1,8 @@
 package edu.hawaii.ihale.api.hvac;
 
-import java.util.Calendar;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Calendar; 
+import java.util.Arrays; 
+import edu.hawaii.ihale.api.hsim.Arduino;
 import edu.hawaii.ihale.api.hsim.MT;
 
 /**
@@ -12,32 +10,31 @@ import edu.hawaii.ihale.api.hsim.MT;
  * @author Team Maka.
  *
  */
-public class HVACResource {
-  MT mt = new MT();
-  Map <String,String> data;
+public class HVACResource extends Arduino{
+  MT mt = new MT(); 
   //These hold the goal state defined by the user.
-  double Temp = 79.4;
-  //Array of known keys
-  String[] keys;
-  String[] localKeys = {"temp"};
-  List<String> list;
+  double goalTemp = 79.4;
+  String temp = "hvtemp";
+  //Array of known keys 
+  String[] localKeys = {temp}; 
   
   /**
    * Constructor.
    */
   public HVACResource() {
+    super("hvac","arduino-3");
     keys = localKeys;
-    mt = new MT(Calendar.MILLISECOND);
-    //initialize all lights to "off"
-    data = new HashMap<String,String>();
-    //list = Arrays.asList(keys);
+    mt = new MT(Calendar.MILLISECOND); 
+    list = Arrays.asList(keys);
+    data.put(temp, "" + goalTemp);
   }
   
   /**
    * Refreshes the data.
    */
+  @Override
   public void poll() {
-    data.put("temp", "" + getTemp());
+    data.put(temp, "" + getTemp());
   }
   
   /**
@@ -45,9 +42,10 @@ public class HVACResource {
    * @param key Item's key.
    * @param val Item's value.
    */
+  @Override
   public void set(String key, String val) {
     double v = sToD(val);
-      Temp = v;
+      goalTemp = v;
   }
   
   /**
@@ -72,7 +70,7 @@ public class HVACResource {
    */
   private double getTemp() {
     double currentTemp = sToD(data.get("temp"));
-    return (currentTemp + Temp) / 2 + mt.nextDouble(-.05,.05); 
+    return (currentTemp + goalTemp) / 2 + mt.nextDouble(-.05,.05); 
   }
   
   /**
@@ -80,6 +78,7 @@ public class HVACResource {
    * the time of day.
    * @return An updated temp value.
    */
+  /*
   private double getOutdoorTemp() {
     double hour = Calendar.HOUR_OF_DAY;
     double min = Calendar.MINUTE / 60;
@@ -95,4 +94,5 @@ public class HVACResource {
       return (baseTemp + (hour - 6) * rate);
     }
   }
+  */
 }

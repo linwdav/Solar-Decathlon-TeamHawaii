@@ -47,6 +47,7 @@ public class AquaponicsResource extends Arduino{
    * @param key Item's key.
    * @param val Item's value.
    */
+  @Override
   public void set(String key, String val) {
     double v = sToD(val);
     if (key.equals(temp)) {
