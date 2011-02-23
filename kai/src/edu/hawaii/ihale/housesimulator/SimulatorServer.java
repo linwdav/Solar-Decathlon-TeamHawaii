@@ -23,7 +23,6 @@ public class SimulatorServer extends Application {
    * specified in their respective classes. Make the the amount of servers added matches the amount
    * of applications to be attached.
    * 
-   * @param numberOfServers The number of servers to setup on different ports.
    * @throws Exception if problems occur starting up this server.
    */
   public static void runServer() throws Exception {
