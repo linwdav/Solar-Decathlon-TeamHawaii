@@ -45,9 +45,10 @@
       <sourcePath>
         <fileset dir="${src.dir}">
           <include name="**/*.java" />
+          <exclude name="**/*MT**/*"/>
         </fileset>
       </sourcePath>
-      <class location="${build.dir}/classes" />
+      <class location="${build.dir}/classes"/>
     </findbugs>
   </target>
 

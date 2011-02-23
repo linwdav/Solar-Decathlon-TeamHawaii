@@ -40,7 +40,7 @@
     <checkstyle config="${checkstyle.config.file.path}"
                 failOnViolation="${checkstyle.failOnViolation}" 
                 classpathref="checkstyle.classpath">
-      <fileset dir="${src.dir}" includes="**/*.java" />
+      <fileset dir="${src.dir}" includes="**/*.java" excludes="**/*MT.java"/>
       <formatter type="plain"/>
       <formatter type="xml" tofile="${checkstyle.dir}/checkstyle.xml" />
     </checkstyle>
