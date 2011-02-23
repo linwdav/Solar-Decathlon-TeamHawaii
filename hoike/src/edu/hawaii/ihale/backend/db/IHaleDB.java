@@ -82,19 +82,6 @@ public class IHaleDB {
     else {
       return null;
     }
-    
-    /*
-     * // Retrieve a list of IHaleSystemStateEntry via secondary key system name values.
-     * EntityCursor<IHaleSystemStateEntry> cursor = (EntityCursor<IHaleSystemStateEntry>)
-     * entryIndexSKeySystem.subIndex(systemName);
-     * 
-     * // Retrieve the specific entry denoted by its timepstamp and device name.
-     * IHaleSystemStateEntry matchedEntry = null; try { for (IHaleSystemStateEntry entry : cursor) {
-     * if (entry.getSystemName().equals(systemName) && entry.getDeviceName().equals(deviceName)) {
-     * matchedEntry = entry; break; } } } finally { cursor.close(); }
-     * 
-     * if (matchedEntry != null) { return matchedEntry; } else { return null; }
-     */
   }
 
   /**
@@ -114,20 +101,7 @@ public class IHaleDB {
    * @param timestamp The timestamp.
    */
   public static void deleteEntry(String systemName, String deviceName, long timestamp) {
-
     entryIndexPKey.delete(timestamp);
-
-    /*
-     * RETAINING THIS SNIPPET OF CODE IN THE EVENT TIMESTAMP PROVED TO BE AN INEFFICIENT PRIMARY
-     * KEY.
-     * 
-     * // Retrieves a list of entries such that it has systemName and timestamp value.
-     * EntityIndex<Long, IHaleSystemStateEntry> subIndex =
-     * entryIndexSKeySystem.subIndex(systemName); EntityCursor<IHaleSystemStateEntry> cursor =
-     * subIndex.entities(); IHaleSystemStateEntry entry = null; try { while ((entry = cursor.next())
-     * != null) { if (entry.getDeviceName().equals(deviceName)) { cursor.delete(); } } } finally {
-     * cursor.close(); }
-     */
   }
 
   /**
@@ -177,11 +151,9 @@ public class IHaleDB {
     try {
       // Iterate through the list, only looking at the first entry per system name group.
       // i.e., first occurrence of entry with systemName = Hvac, then Lighting, etc.
-      for (IHaleSystemStateEntry entry : cursor) {
-        if (entry != null) {
-          systemNameList.add(entry.getSystemName());
-          cursor.nextNoDup();
-        }
+      for (IHaleSystemStateEntry entry = cursor.first(); entry != null; 
+              entry = cursor.nextNoDup()) {
+        systemNameList.add(entry.getSystemName());
       }
     }
     finally {
@@ -213,7 +185,6 @@ public class IHaleDB {
     finally {
       cursor.close();
     }
-
     return new ArrayList<String>(deviceNameSet);
   }
 

@@ -76,10 +76,11 @@ public class IHaleServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
+    
+    //keyTypePairMap = dd.getTypeList("Lighting", "Arduino-7");
+    //System.out.println(keyTypePairMap);
 
-    DataDictionary dd = new DataDictionary();
-    keyTypePairMap = dd.getTypeList("Aquaponics", "Arduino-1");
-    System.out.println(keyTypePairMap);
+
     /**
      * TO-DO: Retrieve the port number from the properties file
      * 

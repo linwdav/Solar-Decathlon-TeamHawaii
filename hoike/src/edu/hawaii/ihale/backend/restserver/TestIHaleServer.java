@@ -1,18 +1,15 @@
 package edu.hawaii.ihale.backend.restserver;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+/*
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.junit.Test;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import edu.hawaii.ihale.backend.db.IHaleDB;
-import edu.hawaii.ihale.backend.db.IHaleSystemStateEntry;
+*/
+
+import org.junit.Test;
 
 /**
  * Unit test of the IHale HTTP server's processing ability.
@@ -21,16 +18,14 @@ import edu.hawaii.ihale.backend.db.IHaleSystemStateEntry;
  * @version Java 1.6.0_21
  */
 public class TestIHaleServer {
-
-  String systemNameAquaponics = "Aquaponics";
   
   /**
    * Test XML parsing and creating an instance of IHaleSystemStateEntryRepresentation.
    */
   @Test
   public void testXML() {
-    // To Remove PMD complaints.
-    System.out.println("");
+    
+    /*
     
     try {
       // Create the Document instance representing this XML.
@@ -47,7 +42,7 @@ public class TestIHaleServer {
       rootElement.setAttributeNode(attribute);
       
       attribute = doc.createAttribute("device");
-      attribute.setValue("Arduino-1000");
+      attribute.setValue("Arduino-1");
       rootElement.setAttributeNode(attribute);
       
       attribute = doc.createAttribute("timestamp");
@@ -77,10 +72,10 @@ public class TestIHaleServer {
       CustomSystemStateEntry entryViaXML = new CustomSystemStateEntry(doc);
       System.out.println("THIS IS BY XML:\n" + entryViaXML);
       
-      IHaleDBRedirector dbRedirector = new IHaleDBRedirector();
-      dbRedirector.putEntry(entryViaXML);
+      IHaleDAO dao = new IHaleDAO();
+      dao.putEntry(entryViaXML);
       CustomSystemStateEntry testEntry = 
-        (CustomSystemStateEntry) dbRedirector.getEntry(systemNameAquaponics, "Arduino-1000", 
+        (CustomSystemStateEntry) dao.getEntry(systemNameAquaponics, "Arduino-1", 
             Long.parseLong("1297446335"));
       
       System.out.println("From XML TO DB AND BACK:\n" + testEntry);
@@ -90,57 +85,6 @@ public class TestIHaleServer {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-  }
-  
-  /**
-   * Test the redirection from IHaleDBDirector to IHaleDB.
-   */
-  @Test
-  public void testRedirector() {
-    IHaleDBRedirector dbRedirector = new IHaleDBRedirector();
-    
-    String system = "Aquaponics";
-    String device = "Arduino-80";
-    long timestamp = (new Date()).getTime();
-    CustomSystemStateEntry entry = new CustomSystemStateEntry(system, device, timestamp);
-    entry.putDoubleValue("pH", 7.5);
-    entry.putStringValue("FishType", "Goldfish");
-    entry.putLongValue("NumFish", 8);
-    System.out.println(entry);
-    
-    dbRedirector.putEntry(entry);
-    
-    IHaleSystemStateEntry iHaleEntry = IHaleDB.getEntry(system, device, timestamp);
-    
-    System.out.println(iHaleEntry);
-    
-    
-    /* Start - Ignore the below code, not a true Junit assert style, for testing a concept. */
-    /* Author - Leonardo Nguyen */
-    system = "Aquaponics";
-    device = "Arduino-10";
-    timestamp = (new Date()).getTime();
-    
-    CustomSystemStateEntry myEntryA = new CustomSystemStateEntry(system, device, timestamp);
-    myEntryA.putDoubleValue("pH", 10.5);
-    myEntryA.putDoubleValue("Oxygen", 6.2);
-    myEntryA.putStringValue("FishType", "Dead");
-    myEntryA.putLongValue("NumFish", 0);
-    myEntryA.putLongValue("Temp", 25);
-    
-    dbRedirector.putEntry(myEntryA);
-    System.out.println("\nThe following is information regarding myEntryA\n\n" + myEntryA);
-    
-    List<String> myLongKeys = myEntryA.getLongDataKey();
-    Map<String, Long> myLongMap = new HashMap<String, Long>();
-    String key = "";
-    for (int i = 0; i < myLongKeys.size(); i++) {
-      key = myLongKeys.get(i);
-      myLongMap.put(key, myEntryA.getLongValue(key));
-    }
-    System.out.println(myLongMap);
-    myEntryA = (CustomSystemStateEntry) dbRedirector.getEntry(system, device, timestamp);
-    System.out.println("After retrieval from IHaleDB and conversion process:\n" + myEntryA);
-    /* End */
+    */
   }
 }
