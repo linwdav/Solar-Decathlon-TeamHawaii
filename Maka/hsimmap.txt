@@ -1,0 +1,16 @@
+arduino-1.halepilihonua.hawaii.edu/aquaponics/state=localhost:7101/aquaponics/state
+arduino-2.halepilihonua.hawaii.edu/squaponics/temp=localhost:7102/aquaponics/temp
+arduino-2.halepilihonua.hawaii.edu/aquaponics/ph=localhost:7102/aquaponics/ph
+arduino-2.halepilihonua.hawaii.edu/aquaponics/oxygen=localhost:7102/aquaponics/oxygen
+arduino-3.halepilihonua.hawaii.edu/hvac/state=localhost:7103/hvac/state
+arduino-4.halepilihonua.hawaii.edu/hvac/temp=localhost:7104/hvac/temp
+arduino-5.halepilihonua.hawaii.edu/lighting/living/state=localhost:7105/lighting/living/state
+arduino-5.halepilihonua.hawaii.edu/lighting/dining/state=localhost:7106/lighting/dining/state
+arduino-6.halepilihonua.hawaii.edu/lighting/kitchen/state=localhost:7107/lighting/kitchen/state
+arduino-6.halepilihonua.hawaii.edu/lighting/bath/state=localhost:7108/lighting/bath/state
+arduino-7.halepilihonua.hawaii.edu/lighting/living/level=localhost:7105/lighting/living/level
+arduino-7.halepilihonua.hawaii.edu/lighting/dining/level=localhost:7106/lighting/dining/level
+arduino-8.halepilihonua.hawaii.edu/lighting/kitchen/level=localhost:7107/lighting/kitchen/level
+arduino-8.halepilihonua.hawaii.edu/lighting/bath/level=localhost:7108/lighting/bath/level
+http://egauge-1.halepilihonua.hawaii.edu/cgi-bin/egauge?tot=localhost:7009/photovoltaics/state
+http://egauge-2.halepilihonua.hawaii.edu/cgi-bin/egauge?tot=localhost:7010/electrical/state
