@@ -5,10 +5,9 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import edu.hawaii.ihale.aquaponics.AquaponicsResource;
-import edu.hawaii.ihale.hvac.HvacResource;
-import edu.hawaii.ihale.lighting.LightingResource;
-import edu.hawaii.ihale.water.WaterResource;
+import edu.hawaii.ihale.api.aquaponics.AquaponicsResource;
+import edu.hawaii.ihale.api.hvac.HVACResource;
+import edu.hawaii.ihale.api.lights.*;
 
 //import edu.hawaii.contactservice.server.resource.contact.ContactResource;
 //import edu.hawaii.contactservice.server.resource.contacts.ContactsResource;
@@ -41,7 +40,7 @@ public class HsimServer extends Application {
  // Create an application  
     Application application = null;
     switch (port) {
-      case 8011:
+      case 8001:
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
@@ -55,41 +54,70 @@ public class HsimServer extends Application {
             return router;  
           }   
         }; break;
-      case 8012:
+      case 8002:
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach("/state", HvacResource.class);
-            router.attach("/{key}", HvacResource.class);
+            router.attach("/state", HVACResource.class);
+            router.attach("/{key}", HVACResource.class);
             // Return the root router
             return router;  
           }   
         }; break;
-      case 8013:
+      case 8005:
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach("/state", WaterResource.class);
-            router.attach("/{key}", WaterResource.class);
+            router.attach("/state", LivingroomLightsResource.class);
+            router.attach("/{key}", LivingroomLightsResource.class);
+            //router.attach("/kitchen", LivingRoomResource.class);
             // Return the root router
             return router;  
           }   
         }; break;
-      case 8014:
+      case 8006:
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach("/state", LightingResource.class);
-            router.attach("/{key}", LightingResource.class);
+            router.attach("/state", DiningroomLightsResource.class);
+            router.attach("/{key}", DiningroomLightsResource.class);
+            //router.attach("/kitchen", LivingRoomResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
+      case 8007:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach("/state", KitchenLightsResource.class);
+            router.attach("/{key}", KitchenLightsResource.class);
+            //router.attach("/kitchen", LivingRoomResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
+      case 8008:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach("/state", BathroomLightsResource.class);
+            router.attach("/{key}", BathroomLightsResource.class);
             //router.attach("/kitchen", LivingRoomResource.class);
             // Return the root router
             return router;  
@@ -114,8 +142,8 @@ public class HsimServer extends Application {
     runServer("/aquaponics",8011);
     runServer("/hvac",8012);
     runServer("/lighting",8013);
-    runServer("/photovoltaics",8014);
-    runServer("/electrical",8015);
+    //runServer("/photovoltaics",8014);
+    //runServer("/electrical",8015);
   }
   
   /**

@@ -204,7 +204,7 @@ public class MT {
 	*/
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(     
 	    value="EQ_COMPARETO_USE_OBJECT_EQUALS",      
-	    justification="because I know better")
+	    justification="")
 	private void randint_mt(int seed) {
 		mt = new int[N];
 		mt[0]= seed & 0xffffffff;   // replace initial value with seed\
