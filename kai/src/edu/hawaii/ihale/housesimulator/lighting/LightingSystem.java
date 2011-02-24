@@ -21,8 +21,8 @@ public class LightingSystem extends Application {
     // Create a router restlet.
     Router router = new Router(getContext());
     // Attach the resources to the router.
-    router.attach("/state", LightingResource.class);
-    router.attach("/level", LightingResource.class);
+    router.attach("/{room}/state", LightingGetResource.class);
+    router.attach("/{room}/level", LightingPutResource.class);
     // Return the root router
     return router;
   }
