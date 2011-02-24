@@ -9,7 +9,7 @@ import edu.hawaii.ihale.ui.ElectricalListener;
 import edu.hawaii.ihale.ui.page.BasePage;
 import edu.hawaii.ihale.ui.page.Sidebar;
 import edu.hawaii.ihale.ui.page.SidebarPanel;
-import edu.hawaii.ihale.ui.page.ExternalImageUrl;
+import edu.hawaii.ihale.wicket.url.ExternalImageUrl;
 
 /**
  * Electricity page.

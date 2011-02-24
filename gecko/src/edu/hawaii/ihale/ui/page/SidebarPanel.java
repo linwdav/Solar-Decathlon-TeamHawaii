@@ -28,6 +28,15 @@ public class SidebarPanel extends BasePanel {
   public static final String RIGHT = "OverAllStatusRight";
 
   /**
+   * Constructor to show empty sidebar.
+   * 
+   * @param name String
+   */
+  public SidebarPanel(String name) {
+    super(name);
+  }
+  
+  /**
    * Constructor to create the list.
    * 
    * @param name String

@@ -51,6 +51,14 @@ a:hover {
 	margin-Top: 10px;
 }
 
+.mBottom5 {
+	margin-bottom: 5px;
+}
+
+.mBottom10 {
+	margin-bottom: 5px;
+}
+
 div.sidebar h6 {
 	padding-left: 5px;
 }
@@ -70,7 +78,7 @@ div.sidebar table.overallStatus td {
 	border-bottom: 1px solid #777;
 	padding-bottom: 5px;
 	text-align: left;
-	*text-align: expression(this.nextSibling ==   null ?   'right' :   'left');
+	*text-align: expression(this.nextSibling ==     null ?     'right' :     'left');
 }
 
 div.sidebar table.overallStatus td:last-child {
@@ -91,7 +99,7 @@ div.container {
 div#page {
 	background: white;
 	height: 100%;
-	min-height 700px:
+	min-height 700px: 
 }
 
 div#header {

@@ -7,10 +7,10 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
 import edu.hawaii.ihale.ui.PhotovoltaicListener;
 import edu.hawaii.ihale.ui.page.BasePage;
-import edu.hawaii.ihale.ui.page.ExternalImageUrl;
 import edu.hawaii.ihale.ui.page.Sidebar;
 import edu.hawaii.ihale.ui.page.SidebarPanel;
 import edu.hawaii.ihale.ui.page.electrical.ElectricalPage;
+import edu.hawaii.ihale.wicket.url.ExternalImageUrl;
 
 /**
  * Electricity page.
