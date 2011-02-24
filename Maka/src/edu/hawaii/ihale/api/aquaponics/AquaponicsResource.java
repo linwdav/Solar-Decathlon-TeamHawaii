@@ -13,7 +13,7 @@ import edu.hawaii.ihale.api.hsim.Arduino;
 public class AquaponicsResource extends Arduino{
   MT mt;
   //These hold the goal state defined by the user.
-  double goalPH = 7, goalTemp = 78., goalDO = .5;
+  double goalPH = 7, goalTemp = 78., goalOxygen = .5;
   String temp = "aqtemp", pH = "aqpH", oxygen = "aqoxygen";
   String[] localKeys = {temp, pH, oxygen};
   
@@ -28,7 +28,7 @@ public class AquaponicsResource extends Arduino{
     list = Arrays.asList(keys);
     data.put(temp, "" + goalTemp);
     data.put(pH, "" + goalPH);
-    data.put(oxygen, "" + goalDO);
+    data.put(oxygen, "" + goalOxygen);
     
   }
   
@@ -40,6 +40,7 @@ public class AquaponicsResource extends Arduino{
     data.put(temp, "" + getTemp());
     data.put(pH, "" + getPH());
     data.put(oxygen, "" + getOxygen());
+    System.out.println("Polled");
   }
   
   /**
@@ -50,14 +51,17 @@ public class AquaponicsResource extends Arduino{
   @Override
   public void set(String key, String val) {
     double v = sToD(val);
-    if (key.equals(temp)) {
+    if (key.toLowerCase().equals(temp.substring(2))) {
       goalTemp = v;
+      System.out.println("Temp set to" + goalTemp);
     }
-    else if (key.equals(pH)) {
+    else if (key.toLowerCase().equals(pH.substring(2))) {
       goalPH = v;
+      System.out.println("pH set to" + goalPH);
     }
-    else if (key.equals(oxygen)) {
-      goalDO = v;
+    else if (key.toLowerCase().equals(oxygen.substring(2))) {
+      goalOxygen = v;
+      System.out.println("Oxygen set to" + goalOxygen);
     }
   }
   
@@ -83,7 +87,7 @@ public class AquaponicsResource extends Arduino{
    */
   private double getPH() {
     double currentPH = sToD(data.get(pH));
-    return currentPH + (currentPH - goalPH) / 100 + mt.nextDouble(-.1,.1);
+    return currentPH + (currentPH - goalPH) / 10 + mt.nextDouble(-.05,.05);
   }
 
   /**
@@ -93,7 +97,7 @@ public class AquaponicsResource extends Arduino{
    */
   private double getOxygen() {
     double currentDO = sToD(data.get(oxygen));
-    return currentDO + (currentDO - goalDO) / 100 + mt.nextDouble(-.01,.01);
+    return currentDO + (currentDO - goalOxygen) / 10 + mt.nextDouble(-.01,.01);
   }
   
   /**
@@ -102,7 +106,7 @@ public class AquaponicsResource extends Arduino{
    */
   private double getTemp() {
     double currentTemp = sToD(data.get(temp));
-    return (currentTemp + goalTemp) / 2 + mt.nextDouble(-.05,.05);
+    return (currentTemp + goalTemp) / 10 + mt.nextDouble(-.05,.05);
   }
   
   /**
