@@ -1,8 +1,10 @@
 package edu.hawaii.ihale.api.hsim;
-
+ 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
 import java.util.concurrent.ConcurrentHashMap;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -25,11 +27,15 @@ import org.w3c.dom.Element;
  */
 public abstract class Arduino extends ServerResource {
   String systemName, deviceName;
+  /** The random number generator.*/
+  public static MT mt;
   Date date = new Date();
+  /** Magic map that holds all the data.*/
   public static Map<String, String> data = new ConcurrentHashMap<String, String>();
+  /** The array of keys for use in the system.*/
   public String[] keys;
-  public List<String> list;
-  
+  /** A list of all the keys for use in the system. */
+  public List<String> list; 
   /**
    * Initializes the object.
    * @param systemName  SubSystem name.
@@ -37,7 +43,10 @@ public abstract class Arduino extends ServerResource {
    */
   public Arduino(String systemName, String deviceName) {
     this.systemName = systemName;
-    this.deviceName = deviceName;
+    this.deviceName = deviceName; 
+    if (mt == null) {
+      mt = new MT(Calendar.MILLISECOND);
+    }
   }
   /**
    * Updates the buffer.
@@ -89,19 +98,19 @@ public abstract class Arduino extends ServerResource {
   /**
    * Adds the passed Contact to our internal database of Contacts.
    * @param representation The XML representation of the new Contact to add.
-   * @return null.
    * @throws Exception If problems occur unpacking the representation.
    */
   @Put
   public void putVal(Representation representation) throws Exception {
     // Get the XML representation of the Contact.
     String key = (String)this.getRequestAttributes().get("key");
-    if(!list.contains(systemName.substring(0,2) + key)) {
+    if (!list.contains(systemName.substring(0,2) + key)) {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
     DomRepresentation domRepresentation = new DomRepresentation(representation);
     Document doc = domRepresentation.getDocument();
-    String value = doc.getFirstChild().getFirstChild().getAttributes().getNamedItem("value").getNodeValue();
+    String value = doc.getFirstChild().getFirstChild().
+        getAttributes().getNamedItem("value").getNodeValue();
     //calls overridden set method to set local variables in children.
     set(key,value);
   }

@@ -1,9 +1,7 @@
 package edu.hawaii.ihale.api.lights;
-
-import java.util.Calendar; 
+ 
 import java.util.Arrays; 
-import edu.hawaii.ihale.api.hsim.Arduino;
-import edu.hawaii.ihale.api.hsim.MT;
+import edu.hawaii.ihale.api.hsim.Arduino; 
 
 /**
  * Simulates the lighting in a room of the solar decathlon house.
@@ -13,8 +11,7 @@ import edu.hawaii.ihale.api.hsim.MT;
  * @author Team Maka
  *
  */
-public class DiningroomLightsResource extends Arduino {
-  MT mt = new MT();
+public class DiningroomLightsResource extends Arduino { 
   //Array of known keys 
   String[] localKeys = {"dilevel"}; 
   
@@ -23,13 +20,14 @@ public class DiningroomLightsResource extends Arduino {
    */
   public DiningroomLightsResource() {
     super("lighting","arduino-6");
-    keys = localKeys;
-    mt = new MT(Calendar.MILLISECOND);
+    keys = localKeys; 
     //initialize all lights to "off" 
     list = Arrays.asList(keys);
-    for (String s : list) { 
-      int val = (int) mt.nextDouble(0, 100);
-      data.put(s , "" + val);
+    if (data.get(localKeys[0]) == null) {
+      for (String s : list) { 
+        int val = (int) mt.nextDouble(0, 100);
+        data.put(s , "" + val);
+      }
     }
   }
   

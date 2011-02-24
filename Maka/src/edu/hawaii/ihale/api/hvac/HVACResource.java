@@ -1,19 +1,16 @@
 package edu.hawaii.ihale.api.hvac;
-
-import java.util.Calendar; 
+ 
 import java.util.Arrays; 
-import edu.hawaii.ihale.api.hsim.Arduino;
-import edu.hawaii.ihale.api.hsim.MT;
+import edu.hawaii.ihale.api.hsim.Arduino; 
 
 /**
  * Simulates the HVAC System, holds values for the inside temperature.
  * @author Team Maka.
  *
  */
-public class HVACResource extends Arduino{
-  MT mt = new MT(); 
+public class HVACResource extends Arduino { 
   //These hold the goal state defined by the user.
-  double goalTemp = 79.4;
+  static double goalTemp = 79.4;
   String temp = "hvtemp";
   //Array of known keys 
   String[] localKeys = {temp}; 
@@ -23,10 +20,12 @@ public class HVACResource extends Arduino{
    */
   public HVACResource() {
     super("hvac","arduino-3");
-    keys = localKeys;
-    mt = new MT(Calendar.MILLISECOND); 
+    keys = localKeys; 
     list = Arrays.asList(keys);
-    data.put(temp, "" + goalTemp);
+    if (data.get(temp) == null) {
+      data.put(temp, "" + goalTemp);
+    }
+
   }
   
   /**
@@ -35,6 +34,7 @@ public class HVACResource extends Arduino{
   @Override
   public void poll() {
     data.put(temp, "" + getTemp());
+
   }
   
   /**
@@ -69,7 +69,7 @@ public class HVACResource extends Arduino{
    * @return An updated temp value.
    */
   private double getTemp() {
-    double currentTemp = sToD(data.get("temp"));
+    double currentTemp = sToD(data.get(temp));
     return (currentTemp + goalTemp) / 2 + mt.nextDouble(-.05,.05); 
   }
   

@@ -1,9 +1,7 @@
 package edu.hawaii.ihale.api.lights;
-
-import java.util.Calendar; 
+ 
 import java.util.Arrays;
-import edu.hawaii.ihale.api.hsim.Arduino;
-import edu.hawaii.ihale.api.hsim.MT;
+import edu.hawaii.ihale.api.hsim.Arduino; 
 /**
  * Simulates the lighting in a room of the solar decathlon house.
  * Each class is titled after the room it represents.
@@ -12,8 +10,7 @@ import edu.hawaii.ihale.api.hsim.MT;
  * @author Team Maka
  *
  */
-public class BathroomLightsResource extends Arduino {
-  MT mt = new MT();
+public class BathroomLightsResource extends Arduino { 
   String[] localKeys = {"balevel"};
 
   
@@ -22,13 +19,14 @@ public class BathroomLightsResource extends Arduino {
    */
   public BathroomLightsResource() {
     super("lighting","arduino-8");
-    keys = localKeys;
-    mt = new MT(Calendar.MILLISECOND);
+    keys = localKeys; 
     //initialize all lights to "off"
     list = Arrays.asList(keys);
-    for (String s : list) { 
-      int val = (int) mt.nextDouble(0, 100);
-      data.put(s , "" + val);
+    if (data.get(localKeys[0]) == null) {
+      for (String s : list) { 
+        int val = (int) mt.nextDouble(0, 100);
+        data.put(s , "" + val);
+      }
     }
   }
   
