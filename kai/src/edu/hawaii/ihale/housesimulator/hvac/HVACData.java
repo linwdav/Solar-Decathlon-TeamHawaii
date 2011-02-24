@@ -67,5 +67,4 @@ public class HVACData {
     // Return the XML in DomRepresentation form.
     return result;
   }
-
 }
