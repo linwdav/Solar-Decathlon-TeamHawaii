@@ -10,6 +10,7 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
+import org.restlet.routing.VirtualHost;
 
 /**
  * A HTTP server that continously send GET requests to system devices for their current state and
@@ -30,6 +31,13 @@ public class IHaleServer extends Application {
   // Contains the mapping of device urls to port numbers as defined in the properties file.
   private static final Map<String, String> uris = new HashMap<String, String>();
   
+  /**
+   * Runs the server.
+   * 
+   * @param contextRoot The root.
+   * @param port The port.
+   * @throws Exception For errors.
+   */
   public static void runServer(String contextRoot, int port) throws Exception {
     // Create a component.
     Component component = new Component();
@@ -68,6 +76,10 @@ public class IHaleServer extends Application {
      */
   }
   
+  /**
+   * Reads the config file properties.
+   * 
+   */
   public static void readProperties() {
     try {
       FileInputStream is = new FileInputStream(configFilePath);
@@ -100,6 +112,9 @@ public class IHaleServer extends Application {
     Router router = new Router(getContext());
     // Attach the resources to the router.
     router.attach("/aquaponics/{request}", AquaponicsResource.class);
+    
+    VirtualHost host = new VirtualHost(getContext());
+    host.setHostDomain("");
     /**
      * TO-DO: Need to figure out a solution for PV and Electrical since they share the same ending
      * URI patterns. i.e., PV: http://egauge-1.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
