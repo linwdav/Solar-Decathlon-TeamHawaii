@@ -12,14 +12,15 @@ import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
 import com.sleepycat.persist.SecondaryIndex;
 import com.sleepycat.persist.StoreConfig;
+import edu.hawaii.ihale.api.SystemStateEntry;
 
 /**
- * A thread safe data access object to store and retrieve Contact instances.
+ * A thread safe data access object to store and retrieve System State instances.
  * 
  * @author Philip Johnson
  */
 public class SystemStateEntryRecordDAO {
-  /** The EntityStore for our Contact database. */
+  /** The EntityStore for our System State database. */
   private static EntityStore store;
 
   /** The PrimaryIndex accessor for System States. */
@@ -125,7 +126,7 @@ public class SystemStateEntryRecordDAO {
         secondarySystemName.subIndex(systemName).entities();
 
     // Look through database and only add unique names to the set
-    while ((record = cursor.nextNoDup()) != null) {
+    while ((record = cursor.next()) != null) {
       set.add(record.getAttributes().getDeviceName());
     }
 
@@ -137,5 +138,44 @@ public class SystemStateEntryRecordDAO {
     return list;
 
   } // End getSystemNames
+  
+  /**
+   * Searches the database for all entries on a particular system and device that
+   * falls within the given time parameters.
+   * 
+   * @param systemName The system name.
+   * @param deviceName The device name.
+   * @param startTime The start time.
+   * @param endTime The end time.
+   * @return a list of all system state entrie's that fit the criteria
+   */
+  public static List<SystemStateEntry> getEntries(String systemName, 
+      String deviceName, long startTime, long endTime) {
+    
+    List<SystemStateEntry> list = new ArrayList<SystemStateEntry>();
+    
+    // Holds current entity while we iterate through the collection
+    SystemStateEntryRecord record;
+
+    // Cursor to allow us to iterate through the database
+    EntityCursor<SystemStateEntryRecord> cursor =
+        secondarySystemName.subIndex(systemName).entities();
+
+    // Look through database and only add those records that fit
+    // the criteria.
+    while ((record = cursor.next()) != null) {
+      if (record.getAttributes().getDeviceName().equals(deviceName)) {
+        long timestamp = record.getAttributes().getTimestamp();
+        if (timestamp <= endTime && timestamp >= startTime) {
+          
+          // Convert from entity to entry
+          list.add(record.convertToEntry());
+        }
+      }
+    } // End while
+
+    cursor.close();
+    return list;
+  }
 
 } // End DAO class

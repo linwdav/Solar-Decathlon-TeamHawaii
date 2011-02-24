@@ -1,8 +1,13 @@
 package edu.hawaii.ihale.backend;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.resource.ClientResource;
+import org.w3c.dom.Document;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
@@ -31,12 +36,23 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
 
   // Lighting
   static List<String> LightingLong = Arrays.asList("Level");
+  
+  // Photovoltaics
+  static List<String> PVLong = Arrays.asList("Power", "Energy");
+
+  // Electricity Consumption
+  static List<String> ECLong = Arrays.asList("Power", "Energy");
 
   // Holds an in-memory list of system state listeners.
-  private List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
-
+  static List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
+  
   /**
    * Sets the device.
+   * 
+   * Device numbers for arduino's are 1-1 correspondence.
+   * 
+   * egauge-1 is device 9
+   * egauge-2 is device 10
    * 
    * @param i The device number.
    */
@@ -54,7 +70,7 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
    */
   @Override
   public void addSystemStateListener(SystemStateListener listener) {
-    this.listeners.add(listener);
+    listeners.add(listener);
   }
 
   @Override
@@ -67,21 +83,47 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
   }
 
   @Override
-  public void doCommand(String systemName, String deviceName, String command, List<String> arg3) {
-    // TODO Auto-generated method stub
-
-  }
+  public void doCommand(String systemName, String deviceName, String command, List<String> value) {
+    Document doc = XmlMethods.createXml(deviceName, command, value);
+    
+    // Final portion of the URL
+    String valueTitle;
+    if (("setLevel").equalsIgnoreCase(command)) {
+      valueTitle = "level";      
+    }
+    else {
+      valueTitle = "temp";
+    }
+    
+    // Construct the correct uri to send the command to
+    String key = "http://" + deviceName + ".halepilihonua.hawaii.edu/"; 
+    String host = SimulatorInterface.getHosts().get(key) + 
+              systemName.toLowerCase(Locale.US) + "/" + valueTitle;
+        
+    try {
+      // Send the XML representation of the command to the appropriate device 
+      ClientResource  client = new ClientResource(host);
+      DomRepresentation representation;
+      representation = new DomRepresentation();
+      representation.setDocument(doc);
+      client.put(representation);
+    }
+    catch (IOException e) {
+      e.printStackTrace();
+    }
+    
+  } // End Do Command
 
   @Override
   public List<String> getDeviceNames(String systemName) throws SystemStateEntryDBException {
     return SystemStateEntryRecordDAO.getDeviceNames(systemName);
+    
   }
 
   @Override
   public List<SystemStateEntry> getEntries(String systemName, String deviceName, long startTime,
       long endTime) throws SystemStateEntryDBException {
-    // TODO Auto-generated method stub
-    return null;
+    return SystemStateEntryRecordDAO.getEntries(systemName, deviceName, startTime, endTime);
   }
 
   @Override
@@ -147,6 +189,10 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
     case 8:
       return new SystemStateEntryRecord(entry, LightingLong, null, null);
 
+    case 9:
+      return new SystemStateEntryRecord(entry, PVLong, null, null);
+    case 10: 
+      return new SystemStateEntryRecord(entry, ECLong, null, null);
       // If no applicable devices are given, then set boolean value to false
     default:
       validDevice = false;
@@ -159,7 +205,6 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
         throw new SystemStateEntryDBException("Not a valid device");
       }
       catch (SystemStateEntryDBException e) {
-        // TODO Auto-generated catch block
         System.out.println(e.getMessage());
         e.printStackTrace();
       }

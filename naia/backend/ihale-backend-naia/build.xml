@@ -38,7 +38,6 @@
 
   <!-- Basic properties for this system. -->
   <property name="system.name" value="ihale-backend-naia" />
-  <property name="system.main.class" value="edu.hawaii.ihale.backend.BackendApplication" />
   <property name="majorVersionNumber" value="1" />
   <property name="minorVersionNumber" value="0" />
   <tstamp>
@@ -76,11 +75,7 @@
   <path id="run.classpath">
     <path refid="compile.classpath" />
     <pathelement path="${build.classes.dir}" />
-  </path>
-
-  <target name="run" depends="compile">
-    <java classpathref="run.classpath" classname="${system.main.class}" fork="true" />
-  </target>
+  </path>  
 
 </project>
 
