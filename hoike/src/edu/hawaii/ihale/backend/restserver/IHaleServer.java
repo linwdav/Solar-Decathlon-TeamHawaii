@@ -44,7 +44,6 @@ public class IHaleServer extends Application {
   public static void main(String[] args) throws Exception {
     // Create a component.
     Component component = new Component();
-    component.getServers().add(Protocol.HTTP, port);
     // Create an application (this class).
     Application application = null;
     
@@ -65,9 +64,9 @@ public class IHaleServer extends Application {
           router.attach(contextRoot, AquaponicsResource.class);
           // Return the root router
           return router;  
-        }   
+        }
       };
-      
+      component.getServers().add(Protocol.HTTP, port);
       // Attach the application to the component with a defined contextRoot.
       component.getDefaultHost().attach(contextRoot, application);
     }
