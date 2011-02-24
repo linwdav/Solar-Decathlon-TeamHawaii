@@ -38,8 +38,10 @@
   </path>
 
   <!-- Basic properties for this system. -->
-  <property name="system.name" value="ihale-api-backend-example" />
-  <property name="system.main.class" value="edu.hawaii.ihale.db.Main" />
+  <property name="system.name" value="ihale-api-backend-hoike" />
+  <!--   <property name="system.main.class" value="edu.hawaii.ihale.db.Main" />
+  -->
+  <property name="system.main.class" value="edu.hawaii.ihale.backend.restserver.Main" />
   <property name="majorVersionNumber" value="1" />
   <property name="minorVersionNumber" value="0" />
   <tstamp>

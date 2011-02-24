@@ -6,23 +6,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import org.restlet.Application;
-import org.restlet.Component;
 import org.restlet.Restlet;
-import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 
 /**
- * A HTTP server that provides access to iHale's home system database via a REST interface. This
- * class does two things: (1) it sets up and runs a web application (via the main() method), and (2)
- * it defines how URLs sent to this web application get dispatched to ServerResources that handle
- * them.
+ * A HTTP server that continously send GET requests to system devices for their current state and
+ * store their information into the iHale's database repository.
  * 
  * @author Leonardo Nguyen, David Lin, Nathan Dorman
  * @version Java 1.6.0_21
  */
 public class IHaleServer extends Application {
-
-  //private static Map<String, String> keyTypePairMap = new HashMap<String, String>();
   
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
@@ -31,88 +25,25 @@ public class IHaleServer extends Application {
   // Full path to the Restlet server properties file.
   private static String configFilePath = currentDirectory + "/" + configurationFile;
 
+  // Contains the mapping of device urls to port numbers as defined in the properties file.
+  private static final Map<String, String> uris = new HashMap<String, String>();
+  
   /**
-   * Starts a server running on the specified port. We create a separate runServer method, rather
-   * than putting this code into the main() method, so that we can run tests on a separate port.
-   * 
-   * @param port The port on which this server should run.
-   * @throws Exception if problems occur starting up this server.
-   */
-  public static void runServer(int port) throws Exception {
-    // Create a new Restlet component and add a HTTP server connector to it.
-    Component component = new Component();
-    
-    // PMD recommends not to hardcode IP address.
-    //String ipAddress = "127.0.0.1";
-    
-    String ipAddress = "ihale.halepilihonua.hawaii.edu";
-    component.getServers().add(Protocol.HTTP, ipAddress, port);
-    // Create an application (this class).
-    Application application = new IHaleServer();
-    String contextRoot = "";
-    // Attach the application to the component.
-    component.getDefaultHost().attach(contextRoot, application);
-
-    /*
-     * VirtualHost host = new VirtualHost(component.getContext()); host.setHostDomain("localhost|" +
-     * ipAddress); host.setHostPort(Integer.toString(port)); host.attach(contextRoot, application);
-     * component.getHosts().add(host);
-     * 
-     * host = new VirtualHost(component.getContext());
-     * host.setHostDomain("myName|yourName|hisName|herName");
-     * host.setHostPort(Integer.toString(port)); String target = "localhost"; Redirector redirector
-     * = new Redirector(component.getContext(), target, Redirector.MODE_CLIENT_PERMANENT);
-     * host.attach(redirector); host.attach(contextRoot, application);
-     * component.getHosts().add(host);
-     */
-
-    component.start();
-  }
-
-  /**
-   * This main method starts up a web application that will listen on port number provided from a
-   * properties file.
+   * This main method starts up a web application that will on timed intervals send GET HTTP
+   * requests to each system device defined in the properties and on the port connection 
+   * mapped to those device URLs.
    * 
    * @param args Ignored.
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
     
-    //keyTypePairMap = dd.getTypeList("Lighting", "Arduino-7");
-    //System.out.println(keyTypePairMap);
-
-
-    /**
-     * TO-DO: Retrieve the port number from the properties file
-     * 
-     */
-
-    // The port number Restlet HTTP server is listening on for incoming requests.
-    int port = 8000;
-    runServer(port);
-  }
-
-  /**
-   * Specify the dispatching restlet that maps URIs to their associated resources for processing.
-   * 
-   * @return A Router restlet that implements dispatching.
-   */
-  @Override
-  public Restlet createInboundRoot() {
-
-    /**
-     * TO-DO: Retrieve the system URIs from the properties file and store in the below strings.
-     */
-
-    // --- start ---
-
     try {
       FileInputStream is = new FileInputStream(configFilePath);
       Properties prop = new Properties();
 
       prop.load(is);
 
-      Map<String, String> uris = new HashMap<String, String>();
       String key = "";
       String value = "";
       for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
@@ -127,8 +58,27 @@ public class IHaleServer extends Application {
       System.out.println("failed to read properties file");
       System.out.println(configFilePath);
     }
+    
+    System.out.println(uris);
 
-    // --- end ---
+    /** TO-DO: Now that we have the mappings we must create a timer method that will at
+     *         intervals send GET requests to each system device on that port connection.
+     *         (i.e., arduino-1.halepilihonua.hawaii.edu/aquaponics/state=7000 was mapped
+     *          as so in the properties file, http://localhost:7000 is representative of
+     *          the URL to Aquaponics system device, Arduino-1.)
+     */
+  }
+  
+  // NOTE: Since we aren't running a server the overridden method createInboundRoot below
+  //       is no longer necessary.
+  
+  /**
+   * Specify the dispatching restlet that maps URIs to their associated resources for processing.
+   * 
+   * @return A Router restlet that implements dispatching.
+   */
+  @Override
+  public Restlet createInboundRoot() {
 
     // Define the systems that support resource handling by the Restlet HTTP server.
     String aquaponicsSystem = "aquaponics";

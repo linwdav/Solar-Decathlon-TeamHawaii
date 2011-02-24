@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -35,6 +38,9 @@ public class IHaleDAO implements SystemStateEntryDB {
   
   private static final Map<String, ArrayList<String>> systemToFieldMap = 
     new HashMap<String, ArrayList<String>>();
+  
+  // List of system state listeners.
+  private List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
   
   // PMD complains about use of String literals.
   private String longString = "Long";
@@ -139,6 +145,13 @@ public class IHaleDAO implements SystemStateEntryDB {
       new IHaleSystemStateEntry(entry.getSystemName(), entry.getDeviceName(), entry.getTimestamp(),
           longData, stringData, doubleData);
     IHaleDB.putEntry(entryToStore);
+    
+    // Entry has been stored and if any system listener is interested will be notified.
+    for (SystemStateListener listener : listeners) {
+      if (entry.getSystemName().equalsIgnoreCase(listener.getSystemName())) {
+        listener.entryAdded(entry);
+      }
+    }
   }
   
   /**
@@ -236,7 +249,7 @@ public class IHaleDAO implements SystemStateEntryDB {
    * @param listener The listener whose entryAdded method will be called. 
    */
   public void addSystemStateListener(SystemStateListener listener) {
-    // TO-DO: . . .
+    this.listeners.add(listener);
   }
   
   /**
@@ -247,7 +260,40 @@ public class IHaleDAO implements SystemStateEntryDB {
    * @param args Any additional arguments required by the command. 
    */
   public void doCommand(String systemName, String deviceName, String command, List<String> args) {
-    // TO-DO: . . .
+    
+    try {
+      // Create the Document instance representing the XML that will be sent to the device to 
+      // enact the requested command.
+      DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+      DocumentBuilder builder = factory.newDocumentBuilder();
+      Document doc = builder.newDocument();
+  
+      // Create and attach the root element <command>.
+      Element rootElement = doc.createElement("command");
+      doc.appendChild(rootElement);
+      
+      // The name attribute of element <command>, representing the command name.
+      Attr commandAttribute = doc.createAttribute("name");
+      commandAttribute.setValue(command);
+      rootElement.setAttributeNode(commandAttribute);
+      
+      // Create each arg element and append to <command> element as a child.
+      for (int i = 0; i < args.size(); i++) {
+        Element argElement = doc.createElement("arg");
+        rootElement.appendChild(argElement);
+        
+        Attr valueAttribute = doc.createAttribute("value");
+        valueAttribute.setValue(args.get(i));
+        argElement.setAttributeNode(valueAttribute);
+      }
+
+      // TO-DO: Need to send the Document doc to the specified device. Requires the knowledge
+      //        of what the URL to the device (Arduino) is. This information is retrieved from
+      //        the properties file which maps
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
   }
   
   /**
