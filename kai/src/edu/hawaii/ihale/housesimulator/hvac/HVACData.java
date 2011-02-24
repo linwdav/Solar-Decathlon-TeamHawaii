@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.housesimulator.aquaponics;
+package edu.hawaii.ihale.housesimulator.hvac;
 
 import java.util.Date;
 import javax.xml.parsers.DocumentBuilder;
@@ -8,18 +8,14 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Provides data on the Aquaponics system, as well as an XML representation.
+ * Provides data on the HVAC system, as well as an XML representation.
  * 
  * @author Michael Cera
  * @author Anthony Kinsey
  */
-public class AquaponicsData {
+public class HVACData {
   /** The current temperature. */
   private static double temperature;
-  /** The current pH. */
-  private static double ph;
-  /** The current oxygen. */
-  private static double oxygen;
 
   /**
    * Accessor for temperature.
@@ -31,48 +27,12 @@ public class AquaponicsData {
   }
 
   /**
-   * Accessor for ph.
-   * 
-   * @return ph
-   */
-  public static double getPh() {
-    return ph;
-  }
-
-  /**
-   * Accessor for oxygen.
-   * 
-   * @return oxygen
-   */
-  public static double getOxygen() {
-    return oxygen;
-  }
-
-  /**
    * Sets the temperature.
    * 
    * @param newTemperature the temperature
    */
   public static void setTemperature(double newTemperature) {
     temperature = newTemperature;
-  }
-
-  /**
-   * Sets the pH.
-   * 
-   * @param newPh the ph
-   */
-  public static void setPh(double newPh) {
-    ph = newPh;
-  }
-
-  /**
-   * Sets the oxygen.
-   * 
-   * @param newOxygen the oxygen
-   */
-  public static void setOxygen(double newOxygen) {
-    oxygen = newOxygen;
   }
 
   /**
@@ -89,8 +49,8 @@ public class AquaponicsData {
 
     // Create root tag
     Element root = doc.createElement("state-data");
-    root.setAttribute("system", "aquaponics");
-    root.setAttribute("device", "arduino-1");
+    root.setAttribute("system", "hvac");
+    root.setAttribute("device", "arduino-3");
     root.setAttribute("timestamp", String.valueOf(new Date().getTime()));
     doc.appendChild(root);
 
@@ -99,18 +59,6 @@ public class AquaponicsData {
     tempState.setAttribute("key", "temp");
     tempState.setAttribute("value", String.valueOf(getTemperature()));
     root.appendChild(tempState);
-
-    // Create state tag.
-    Element oxygenState = doc.createElement("state");
-    oxygenState.setAttribute("key", "oxygen");
-    oxygenState.setAttribute("value", String.valueOf(getOxygen()));
-    root.appendChild(oxygenState);
-
-    // Create state tag.
-    Element phState = doc.createElement("state");
-    phState.setAttribute("key", "pH");
-    phState.setAttribute("value", String.valueOf(getPh()));
-    root.appendChild(phState);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();

@@ -22,8 +22,8 @@ public class HVACSystem extends Application {
     // Create a router restlet.
     Router router = new Router(getContext());
     // Attach the resources to the router.
-    router.attach("/state", HVACResource.class);
-    router.attach("/temp", HVACResource.class);
+    router.attach("/state", HVACGetResource.class);
+    router.attach("/temp", HVACGetResource.class);
     // Return the root router
     return router;
   }
