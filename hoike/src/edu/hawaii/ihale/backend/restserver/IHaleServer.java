@@ -10,9 +10,7 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsResource;
-import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacResource;
-import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingResource;
+import edu.hawaii.ihale.backend.restserver.resources.AquaponicsResource;
 
 /**
  * A HTTP server that provides access to iHale's home system database via a REST interface. This
@@ -25,7 +23,7 @@ import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingResource;
  */
 public class IHaleServer extends Application {
 
-  private static Map<String, String> keyTypePairMap = new HashMap<String, String>();
+  //private static Map<String, String> keyTypePairMap = new HashMap<String, String>();
   
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
@@ -44,7 +42,11 @@ public class IHaleServer extends Application {
   public static void runServer(int port) throws Exception {
     // Create a new Restlet component and add a HTTP server connector to it.
     Component component = new Component();
-    String ipAddress = "127.0.0.1";
+    
+    // PMD recommends not to hardcode IP address.
+    //String ipAddress = "127.0.0.1";
+    
+    String ipAddress = "ihale.halepilihonua.hawaii.edu";
     component.getServers().add(Protocol.HTTP, ipAddress, port);
     // Create an application (this class).
     Application application = new IHaleServer();
@@ -131,19 +133,11 @@ public class IHaleServer extends Application {
 
     // Define the systems that support resource handling by the Restlet HTTP server.
     String aquaponicsSystem = "aquaponics";
-    String hvacSystem = "hvac";
-    String lightingSystem = "lighting";
-    @SuppressWarnings("unused")
-    String pvSystem = "";
-    @SuppressWarnings("unused")
-    String electricalSystem = "";
 
     // Create a router restlet.
     Router router = new Router(getContext());
     // Attach the resources to the router.
     router.attach("/" + aquaponicsSystem + "/{request}", AquaponicsResource.class);
-    router.attach("/" + hvacSystem + "/{request}", HvacResource.class);
-    router.attach("/" + lightingSystem + "/{request}", LightingResource.class);
     /**
      * TO-DO: Need to figure out a solution for PV and Electrical since they share the same ending
      * URI patterns. i.e., PV: http://egauge-1.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
