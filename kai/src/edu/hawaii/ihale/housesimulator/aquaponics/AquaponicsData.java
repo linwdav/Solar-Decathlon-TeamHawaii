@@ -22,6 +22,66 @@ public class AquaponicsData {
   private static double oxygen = 1 + (Math.random() * ((10 - 1) + 1));
 
   /**
+   * Modifies the state of the system.
+   */
+  public static void modifySystemState() {
+
+    // Temp will change by random value between -1 and 1.
+    double curTemp = getTemperature();
+    if (curTemp > 60 && curTemp < 70) {
+      setTemperature(curTemp + (Math.random() * 2) - 1);
+    }
+    else if (curTemp < 60) {
+      setTemperature(curTemp + (Math.random() * 1));
+    }
+    else {
+      setTemperature(curTemp - (Math.random() * 1));
+    }
+
+    // pH will change randomly between 6.5 and 9.5
+    double curPh = getPh();
+    if (curPh > 6.5 && curPh < 9.5) {
+      double plusOrMinus = Math.random();
+      if (plusOrMinus > 0.5) {
+        setPh(curPh + Math.random());
+      }
+      else {
+        setPh(curPh - Math.random());
+      }
+    }
+    else if (curPh < 6.5) {
+      setPh(curPh + Math.random());
+    }
+    else {
+      setPh(curPh - Math.random());
+    }
+
+    // Oxygen will change randomly between 1 and 10
+    double curOxygen = getOxygen();
+    if (curOxygen > 1 && curOxygen < 10) {
+      double plusOrMinus = Math.random();
+      if (plusOrMinus > 0.5) {
+        setOxygen(curOxygen + Math.random());
+      }
+      else {
+        setOxygen(curOxygen - Math.random());
+      }
+    }
+    else if (curOxygen < 1) {
+      setOxygen(curOxygen + Math.random());
+    }
+    else {
+      setOxygen(curOxygen - Math.random());
+    }
+
+    System.out.println("----------------------");
+    System.out.println("System: Aquaponics");
+    System.out.println("Temp: " + getTemperature());
+    System.out.println("pH: " + getPh());
+    System.out.println("Oxygen: " + getOxygen());
+  }
+
+  /**
    * Accessor for temperature.
    * 
    * @return temperature
@@ -47,7 +107,7 @@ public class AquaponicsData {
    * @return oxygen
    */
   public static double getOxygen() {
-    int tempValue = (int) (oxygen);
+    int tempValue = (int) (oxygen * 100);
     return ((double) tempValue) / 100.0;
   }
 

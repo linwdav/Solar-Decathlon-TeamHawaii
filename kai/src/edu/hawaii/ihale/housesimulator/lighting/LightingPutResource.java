@@ -41,17 +41,18 @@ public class LightingPutResource extends ServerResource {
 
     String room = (String) this.getRequestAttributes().get("room");
 
+    String setLevel = "setLevel";
     // Call mutator corresponding to room.
-    if ("living".equalsIgnoreCase(room) && "setLevel".equalsIgnoreCase(command)) {
+    if ("living".equalsIgnoreCase(room) && setLevel.equalsIgnoreCase(command)) {
       LightingData.setLivingLevel(Integer.parseInt(arg));
     }
-    else if ("dining".equalsIgnoreCase(room) && "setLevel".equalsIgnoreCase(command)) {
+    else if ("dining".equalsIgnoreCase(room) && setLevel.equalsIgnoreCase(command)) {
       LightingData.setDiningLevel(Integer.parseInt(arg));
     }
-    else if ("kitchen".equalsIgnoreCase(room) && "setLevel".equalsIgnoreCase(command)) {
+    else if ("kitchen".equalsIgnoreCase(room) && setLevel.equalsIgnoreCase(command)) {
       LightingData.setKitchenLevel(Integer.parseInt(arg));
     }
-    else if ("bathroom".equalsIgnoreCase(room) && "setLevel".equalsIgnoreCase(command)) {
+    else if ("bathroom".equalsIgnoreCase(room) && setLevel.equalsIgnoreCase(command)) {
       LightingData.setBathroomLevel(Integer.parseInt(arg));
     }
     else {

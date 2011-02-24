@@ -9,6 +9,7 @@ import edu.hawaii.ihale.housesimulator.electrical.ElectricalSystem;
 import edu.hawaii.ihale.housesimulator.hvac.HVACSystem;
 import edu.hawaii.ihale.housesimulator.lighting.LightingSystem;
 import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsSystem;
+import edu.hawaii.ihale.housesimulator.simulationtimer.SimulationTimer;
 
 /**
  * An HTTP server that provides access to simulator data via a REST interface.
@@ -72,5 +73,6 @@ public class SimulatorServer extends Application {
    */
   public static void main(String[] args) throws Exception {
     runServer();
+    SimulationTimer.startTimer(Integer.parseInt(args[0]));
   }
 }

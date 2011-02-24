@@ -7,7 +7,6 @@ import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-
 /**
  * Provides data on the Photovoltaics system, as well as an XML representation.
  * 
@@ -19,6 +18,41 @@ public class PhotovoltaicsData {
   private static double energy = 5000 + (Math.random() * ((6500 - 5000) + 1));
   /** The current power. */
   private static double power = -(Math.random() * 101);
+
+  /**
+   * Modifies the state of the system.
+   */
+  public static void modifySystemState() {
+
+    // Energy will change by random value between 200 and -200.
+    double curEnergy = getEnergy();
+    if (curEnergy > 5000 && curEnergy < 6500) {
+      setEnergy(curEnergy + (Math.random() * 201) - 200);
+    }
+    else if (curEnergy < 5000) {
+      setEnergy(curEnergy + (Math.random() * 200));
+    }
+    else {
+      setEnergy(curEnergy - (Math.random() * 200));
+    }
+
+    // Power will change by random value between 20 and -20.
+    double curPower = getPower();
+    if (curPower < 0 && curPower > -100) {
+      setPower(curPower + (Math.random() * 41) - 20);
+    }
+    else if (curPower < -100) {
+      setPower(curPower + (Math.random() * 20));
+    }
+    else {
+      setPower(curPower - (Math.random() * 50));
+    }
+
+    System.out.println("----------------------");
+    System.out.println("System: Photovoltaics");
+    System.out.println("Energy: " + getEnergy());
+    System.out.println("Power: " + getPower());
+  }
 
   /**
    * Accessor for energy.
@@ -69,7 +103,7 @@ public class PhotovoltaicsData {
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
     Document doc = docBuilder.newDocument();
-    
+
     // Create root tag.
     Element root = doc.createElement("measurements");
     doc.appendChild(root);
@@ -94,18 +128,18 @@ public class PhotovoltaicsData {
     Element energy = doc.createElement("energy");
     energy.setTextContent(String.valueOf(getEnergy()));
     meter.appendChild(energy);
-    
+
     // Create energyWs tag.
     Element energyWs = doc.createElement("energyWs");
     double conversionRatio = 2.7777777777778E-7;
-    energyWs.setTextContent(String.valueOf(getEnergy()/conversionRatio));
+    energyWs.setTextContent(String.valueOf(getEnergy() / conversionRatio));
     meter.appendChild(energyWs);
-    
+
     // Create power tag.
     Element power = doc.createElement("power");
     power.setTextContent(String.valueOf(getPower()));
     meter.appendChild(power);
-    
+
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
     result.setDocument(doc);

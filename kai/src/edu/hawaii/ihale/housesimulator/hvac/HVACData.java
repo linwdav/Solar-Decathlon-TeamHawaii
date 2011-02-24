@@ -18,6 +18,28 @@ public class HVACData {
   private static double temperature = 60 + (Math.random() * ((100 - 60) + 1));
 
   /**
+   * Modifies the state of the system.
+   */
+  public static void modifySystemState() {
+
+    // Temp will change by random value between -3 and 3.
+    double curTemp = getTemperature();
+    if (curTemp > 60 && curTemp < 100) {
+      setTemperature(curTemp + (Math.random() * 7) - 3);
+    }
+    else if (curTemp < 60) {
+      setTemperature(curTemp + (Math.random() * 3));
+    }
+    else {
+      setTemperature(curTemp - (Math.random() * 3));
+    }
+
+    System.out.println("----------------------");
+    System.out.println("System: HVAC");
+    System.out.println("Temp: " + getTemperature());
+  }
+
+  /**
    * Accessor for temperature.
    * 
    * @return temperature
