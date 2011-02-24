@@ -72,6 +72,10 @@ public class SimulatorServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
+    if (args.length == 0) {
+      System.out.println("Must supply an integer as an argument.");
+      System.exit(0);
+    }
     runServer();
     SimulationTimer.startTimer(Integer.parseInt(args[0]));
   }

@@ -22,7 +22,7 @@
   </target>
 
   <!-- Basic properties for this system. -->
-  <property name="system.name" value="ihale-housesimulator" />
+  <property name="system.name" value="ihale-housesimulator-kai" />
   <property name="system.main.class" value="edu.hawaii.ihale.housesimulator.SimulatorServer" />
   <property name="majorVersionNumber" value="1" />
   <property name="minorVersionNumber" value="0" />
