@@ -1,0 +1,49 @@
+<html>
+
+
+<body>
+<wicket:panel>
+	This is the the Lights Page.
+	<br>
+	<br>
+
+	<script type="text/javascript" src="ns.js"></script>
+	<form wicket:id="form">
+	<table>
+		<tr>
+			<td>Set Level in Living Room :</td>
+			<td><input wicket:id="LivingRoomLevel" type="text" /> <span
+				class="numeric-stepper">
+			</span></td>
+		</tr>
+				<tr>
+			<td>Set Level in Dining Room :</td>
+			<td><input wicket:id="DiningRoomLevel" type="text" /> <span
+				class="numeric-stepper">
+			</span></td>
+		</tr>
+				<tr>
+			<td>Set Level in Kitchen :</td>
+			<td><input wicket:id="KitchenRoomLevel" type="text" /> <span
+				class="numeric-stepper">
+			</span></td>
+		</tr>
+				<tr>
+			<td>Set Level in Bathroom :</td>
+			<td><input wicket:id="BathroomLevel" type="text" /> <span
+				class="numeric-stepper">
+			</span></td>
+		</tr>
+	</table>
+	<p><input wicket:id="cancel" type="submit" value="Cancel" /> <input
+		wicket:id="save" type="submit" value="Save" /></p>
+
+	</form>
+
+
+</wicket:panel>
+
+
+</body>
+</html>
+
