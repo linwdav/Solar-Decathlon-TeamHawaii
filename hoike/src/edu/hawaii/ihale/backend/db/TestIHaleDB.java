@@ -1,14 +1,11 @@
 package edu.hawaii.ihale.backend.db;
 
 import static org.junit.Assert.assertEquals;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import org.junit.Test;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
 import edu.hawaii.ihale.backend.restserver.IHaleDAO;
-import edu.hawaii.ihale.backend.restserver.IHaleServer;
 
 /**
  * Unit test of the IHale database functionality. 
