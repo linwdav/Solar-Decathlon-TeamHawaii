@@ -27,7 +27,8 @@ public class AquaponicsData {
    * @return temperature
    */
   public static double getTemperature() {
-    return temperature;
+    int tempValue = (int) (temperature * 100.0);
+    return ((double) tempValue) / 100.0;
   }
 
   /**
@@ -36,7 +37,8 @@ public class AquaponicsData {
    * @return ph
    */
   public static double getPh() {
-    return ph;
+    int tempValue = (int) (ph * 100.0);
+    return ((double) tempValue) / 100.0;
   }
 
   /**
@@ -45,7 +47,8 @@ public class AquaponicsData {
    * @return oxygen
    */
   public static double getOxygen() {
-    return oxygen;
+    int tempValue = (int) (oxygen);
+    return ((double) tempValue) / 100.0;
   }
 
   /**

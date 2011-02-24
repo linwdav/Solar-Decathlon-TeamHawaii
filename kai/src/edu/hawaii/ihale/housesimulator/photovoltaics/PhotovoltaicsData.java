@@ -26,7 +26,8 @@ public class PhotovoltaicsData {
    * @return energy
    */
   public static double getEnergy() {
-    return energy;
+    int tempValue = (int) (energy * 100.0);
+    return ((double) tempValue) / 100.0;
   }
 
   /**
@@ -35,7 +36,8 @@ public class PhotovoltaicsData {
    * @return power
    */
   public static double getPower() {
-    return power;
+    int tempValue = (int) (power * 100.0);
+    return ((double) tempValue) / 100.0;
   }
 
   /**

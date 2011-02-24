@@ -23,7 +23,8 @@ public class HVACData {
    * @return temperature
    */
   public static double getTemperature() {
-    return temperature;
+    int tempValue = (int) (temperature * 100.0);
+    return ((double) tempValue) / 100.0;
   }
 
   /**

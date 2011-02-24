@@ -16,13 +16,13 @@ import org.w3c.dom.Element;
 public class LightingData {
 
   /** The living room lighting level. */
-  private static int livingLevel = 10;
+  private static int livingLevel = (int) (1 + (Math.random() * ((10 - 1) + 1)));
   /** The dining room lighting level. */
-  private static int diningLevel = 5;
+  private static int diningLevel = (int) (1 + (Math.random() * ((10 - 1) + 1)));
   /** The kitchen lighting level. */
-  private static int kitchenLevel = 8;
+  private static int kitchenLevel = (int) (1 + (Math.random() * ((10 - 1) + 1)));
   /** The bathroom lighting level. */
-  private static int bathroomLevel = 6;
+  private static int bathroomLevel = (int) (1 + (Math.random() * ((10 - 1) + 1)));
 
   /**
    * Accessor for the living room lighting level.
