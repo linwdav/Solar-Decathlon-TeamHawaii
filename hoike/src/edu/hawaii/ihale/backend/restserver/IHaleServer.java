@@ -27,10 +27,21 @@ public class IHaleServer extends Application {
   private static String configurationFile = "configuration.properties";
   // Full path to the Restlet server properties file.
   private static String configFilePath = currentDirectory + "/" + configurationFile;
+  
+  // The interval in milliseconds to send GET requests.
+  private static Long delay = (long) 30000;
 
   // Contains the mapping of device urls to port numbers as defined in the properties file.
   private static final Map<String, String> uris = new HashMap<String, String>();
   
+<<<<<<< .mine
+  /**
+   * Runs the server.
+   * @param contextRoot The contextRoot.
+   * @param port The port.
+   * @throws Exception For errors.
+   */
+=======
   /**
    * Runs the server.
    * 
@@ -38,13 +49,23 @@ public class IHaleServer extends Application {
    * @param port The port.
    * @throws Exception For errors.
    */
+>>>>>>> .r449
   public static void runServer(String contextRoot, int port) throws Exception {
     // Create a component.
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, port);
     // Create an application (this class).
-    Application application = new IHaleServer();
+    Application application = new Application();
     
+//    @Override
+//    public Restlet createInboundRoot() {
+//      // Create a router restlet.
+//      Router router = new Router(getContext());
+//      // Attach the resources to the router.
+//      router.attach("/aquaponics/{request}", AquaponicsResource.class);
+//      // Return the root router
+//      return router;
+//    }
     
     // Attach the application to the component with a defined contextRoot.
     component.getDefaultHost().attach(contextRoot, application);
@@ -60,26 +81,29 @@ public class IHaleServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    readProperties();
-    for (Map.Entry<String, String> entry : uris.entrySet()) {
-      String key = entry.getKey();
-      String contextRoot = "/" + key.split("/")[1] + "/" + key.split("/")[2];
-      System.out.println(contextRoot);
-      //runServer(contextRoot, Integer.valueOf(entry.getValue()));
+    // Run this for 5 minutes
+    for (int i = 0; i < 10; i++) {
+      readProperties();
+      for (Map.Entry<String, String> entry : uris.entrySet()) {
+        String key = entry.getKey();
+        String contextRoot = "/" + key.split("/")[1] + "/" + key.split("/")[2];
+        System.out.println(contextRoot);
+        runServer(contextRoot, Integer.valueOf(entry.getValue()));
+      }
+      Thread.sleep(delay);
     }
-
-    /** TO-DO: Now that we have the mappings we must create a timer method that will at
-     *         intervals send GET requests to each system device on that port connection.
-     *         (i.e., arduino-1.halepilihonua.hawaii.edu/aquaponics/state=7000 was mapped
-     *          as so in the properties file, http://localhost:7000 is representative of
-     *          the URL to Aquaponics system device, Arduino-1.)
-     */
   }
   
+<<<<<<< .mine
+  /**
+   * Reads the config file properties.
+   */
+=======
   /**
    * Reads the config file properties.
    * 
    */
+>>>>>>> .r449
   public static void readProperties() {
     try {
       FileInputStream is = new FileInputStream(configFilePath);
@@ -112,6 +136,8 @@ public class IHaleServer extends Application {
     Router router = new Router(getContext());
     // Attach the resources to the router.
     router.attach("/aquaponics/{request}", AquaponicsResource.class);
+<<<<<<< .mine
+=======
     
     VirtualHost host = new VirtualHost(getContext());
     host.setHostDomain("");
@@ -121,6 +147,7 @@ public class IHaleServer extends Application {
      * Electrical: http://egauge-2.halepilihonua.hawaii.edu/cgi-bin/egauge?tot
      */
 
+>>>>>>> .r449
     // Return the root router
     return router;
   }
