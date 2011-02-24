@@ -13,6 +13,17 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.ui.page.service.LogInPage;
 import edu.hawaii.ihale.ui.resources.style.IEStylesheetHeaderContributor;
 
+//TODO add blackmagic to in on after render
+//TODO add main and side style to each pages div
+//TODO add form for all components
+//TODO add graphs for certain pages
+//TODO add more discription to java doc
+//TODO overall status - timestamp as human readable
+//TODO rename overall status 
+//TODO fix setting page - low priority
+
+
+
 /**
  * A Base page that serves as the superclass for all pages in this application. All user-related
  * information must be set in the onBeforeRender method.

@@ -6,11 +6,11 @@ import org.apache.wicket.model.IModel;
 import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.SolarDecathlonSession;
 import edu.hawaii.ihale.ui.page.aquaponics.AquaponicsPage;
+import edu.hawaii.ihale.ui.page.electricity.ElectricalPage;
 import edu.hawaii.ihale.ui.page.electricity.ElectricityPage;
 import edu.hawaii.ihale.ui.page.home.HomePage;
 import edu.hawaii.ihale.ui.page.hvac.HVACPage;
 import edu.hawaii.ihale.ui.page.lights.LightsPage;
-import edu.hawaii.ihale.ui.page.photovoltaics.PhotovoltaicsPage;
 import edu.hawaii.ihale.ui.page.settings.SettingsPage;
 import edu.hawaii.ihale.ui.page.settings.SettingsUserPrivilegesPanel;
 import edu.hawaii.ihale.ui.page.settings.SettingsUserSettingsPanel;
@@ -108,7 +108,7 @@ public class BasePageMenuBarPanel extends BasePanel {
        */
       @Override
       public void onClick() {
-        setResponsePage(PhotovoltaicsPage.class);
+        setResponsePage(ElectricalPage.class);
       }
     };
 
@@ -142,7 +142,7 @@ public class BasePageMenuBarPanel extends BasePanel {
     else if (page == LightsPage.class) {
       lightsPageLink.add(aaSelected);
     }
-    else if (page == PhotovoltaicsPage.class) {
+    else if (page == ElectricalPage.class) {
       waterHeaterPageLink.add(aaSelected);
     }
     else if (page == SettingsPage.class || page == SettingsUserPrivilegesPanel.class

@@ -3,11 +3,13 @@ package edu.hawaii.ihale.ui.page.hvac;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import edu.hawaii.ihale.ui.HVacListener;
 import edu.hawaii.ihale.ui.page.BasePage;
 import edu.hawaii.ihale.ui.page.Sidebar;
 import edu.hawaii.ihale.ui.page.SidebarPanel;
+
 
 /**
  * HVAC page.
@@ -24,7 +26,8 @@ public class HVACPage extends BasePage {
    * Creates the HVAC page.
    */
   public HVACPage() {
-    add(new Label("Main", "status"));
+      add(new HVACPageMain("HVACPageMain",
+              new Model<String>("HVACPageMain")));
   }
   
   /**
