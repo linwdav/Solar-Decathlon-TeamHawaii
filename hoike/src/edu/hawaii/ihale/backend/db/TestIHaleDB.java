@@ -5,7 +5,7 @@ import java.util.Date;
 import org.junit.Test;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
-import edu.hawaii.ihale.backend.restserver.IHaleDAO;
+import edu.hawaii.ihale.backend.rest.IHaleDAO;
 
 /**
  * Unit test of the IHale database functionality. 
