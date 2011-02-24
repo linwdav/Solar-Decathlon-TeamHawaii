@@ -12,7 +12,6 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.resource.ClientResource;
-import org.restlet.resource.ResourceException;
 import org.restlet.routing.Router;
 
 /**
