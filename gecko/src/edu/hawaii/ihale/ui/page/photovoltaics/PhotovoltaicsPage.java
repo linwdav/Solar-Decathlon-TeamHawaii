@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.model.PropertyModel;
-import edu.hawaii.ihale.ui.ElectricalListener;
+import edu.hawaii.ihale.ui.PhotovoltaicListener;
 import edu.hawaii.ihale.ui.page.BasePage;
 import edu.hawaii.ihale.ui.page.Sidebar;
 import edu.hawaii.ihale.ui.page.SidebarPanel;
@@ -27,19 +27,19 @@ public class PhotovoltaicsPage extends BasePage {
   public PhotovoltaicsPage() {
     add(CSSPackageResource.getHeaderContribution(PhotovoltaicsPage.class, "style.css"));
 
-    add(new Label("Main", "main"));
+    add(new Label("Main"));
   }
 
   /**
-   * Renders the sidebar with session.
+   * Renders the sidebar.
    */
   @Override
   protected void onBeforeRender() {
     super.onBeforeRender();
     
-    ElectricalListener listener = new ElectricalListener();
+    PhotovoltaicListener listener = new PhotovoltaicListener();
     this.database.addSystemStateListener(listener);
-
+    
     List<Sidebar> list = new ArrayList<Sidebar>();
     list.add(new Sidebar(new Label(SidebarPanel.LEFT, "Power"), new Label(SidebarPanel.RIGHT,
         new PropertyModel<Long>(listener.getModel(), "power"))));
