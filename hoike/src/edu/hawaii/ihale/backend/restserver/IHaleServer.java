@@ -10,7 +10,7 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import edu.hawaii.ihale.backend.restserver.resources.AquaponicsResource;
+import edu.hawaii.ihale.backend.restserver.AquaponicsResource;
 
 /**
  * A HTTP server that provides access to iHale's home system database via a REST interface. This

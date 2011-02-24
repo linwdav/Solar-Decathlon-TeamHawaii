@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.resources;
+package edu.hawaii.ihale.backend.restserver;
 
 import org.restlet.resource.Get;
 import org.restlet.resource.Put;
