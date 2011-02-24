@@ -3,7 +3,6 @@ package edu.hawaii.ihale.ui.page.lights;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import edu.hawaii.ihale.ui.LightingListener;
 import edu.hawaii.ihale.ui.page.BasePage;
@@ -26,8 +25,7 @@ public class LightsPage extends BasePage {
    * Creates the lights page.
    */
   public LightsPage() {
-      add(new LightsPageMain("LightsPageMain",
-              new Model<String>("LightsPageMain")));
+      add(new Label("Main"));
   }
 
   /**

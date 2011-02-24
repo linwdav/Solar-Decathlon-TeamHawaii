@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.ui.page.electricity;
+package edu.hawaii.ihale.ui.page.electrical;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import edu.hawaii.ihale.ui.page.SidebarPanel;
  * @author Shoji Bravo
  * @author Bret K. Ikehara
  */
-public class ElectricityPage extends BasePage {
+public class ElectricalPage extends BasePage {
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
@@ -24,8 +24,8 @@ public class ElectricityPage extends BasePage {
   /**
    * Creates the electricity page.
    */
-  public ElectricityPage() {
-    add(CSSPackageResource.getHeaderContribution(ElectricityPage.class, "style.css"));
+  public ElectricalPage() {
+    add(CSSPackageResource.getHeaderContribution(ElectricalPage.class, "style.css"));
 
     add(new Label("Main", "main"));
   }

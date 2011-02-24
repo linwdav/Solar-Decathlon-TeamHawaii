@@ -5,8 +5,8 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import edu.hawaii.ihale.ui.page.BasePage;
 import edu.hawaii.ihale.ui.page.aquaponics.AquaponicsPage;
-import edu.hawaii.ihale.ui.page.electricity.ElectricalPage;
-import edu.hawaii.ihale.ui.page.electricity.ElectricityPage;
+import edu.hawaii.ihale.ui.page.electrical.ElectricalPage;
+import edu.hawaii.ihale.ui.page.photovoltaics.PhotovoltaicsPage;
 import edu.hawaii.ihale.ui.page.hvac.HVACPage;
 import edu.hawaii.ihale.ui.page.lights.LightsPage;
 import edu.hawaii.ihale.ui.page.settings.SettingsPage;
@@ -75,7 +75,7 @@ public class HomePage extends BasePage {
        */
       @Override
       public void onClick() {
-        setResponsePage(ElectricityPage.class);
+        setResponsePage(ElectricalPage.class);
       }
     });
     
@@ -120,7 +120,7 @@ public class HomePage extends BasePage {
        */
       @Override
       public void onClick() {
-        setResponsePage(ElectricalPage.class);
+        setResponsePage(PhotovoltaicsPage.class);
       }
     });
     

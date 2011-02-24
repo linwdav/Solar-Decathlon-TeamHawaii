@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import edu.hawaii.ihale.ui.page.Sidebar;
 import edu.hawaii.ihale.ui.page.SidebarPanel;
@@ -28,8 +27,7 @@ public class AquaponicsPage extends BasePage {
    * Creates the Aquaponics page.
    */
   public AquaponicsPage() {
-    add(new AquaponicsPageMain("AquaponicsPageMain",
-            new Model<String>("AquaponicsPageMain")));
+    add(new Label("Main"));
 
   }
 
