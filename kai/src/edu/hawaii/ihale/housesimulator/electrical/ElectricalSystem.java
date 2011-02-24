@@ -5,7 +5,7 @@ import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
 /**
- * Provides access to the Electrical system.
+ * Provides access to the Lighting system.
  * 
  * @author Michael Cera
  * @author Anthony Kinsey
@@ -21,7 +21,7 @@ public class ElectricalSystem extends Application {
     // Create a router restlet.
     Router router = new Router(getContext());
     // Attach the resources to the router.
-    router.attach("/state", ElectricalResource.class);
+    router.attach("/state", ElectricalGetResource.class);
     // Return the root router
     return router;
   }

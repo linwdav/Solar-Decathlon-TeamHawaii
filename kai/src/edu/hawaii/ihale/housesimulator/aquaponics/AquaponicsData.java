@@ -15,11 +15,11 @@ import org.w3c.dom.Element;
  */
 public class AquaponicsData {
   /** The current temperature. */
-  private static double temperature;
+  private static double temperature = 60 + (Math.random() * ((70 - 60) + 1));
   /** The current pH. */
-  private static double ph;
+  private static double ph = 1 + (Math.random() * ((14 - 1) + 1));
   /** The current oxygen. */
-  private static double oxygen;
+  private static double oxygen = 1 + (Math.random() * ((10 - 1) + 1));
 
   /**
    * Accessor for temperature.
