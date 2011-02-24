@@ -1,0 +1,98 @@
+<html>
+<wicket:extend>
+
+<script>
+	$(function() {
+		$( "#datepicker" ).datepicker();
+	});
+ 
+	$(function(){			
+
+		// Slider for Air
+		$('#sliderTime').slider({
+			orientation: "horizontal",
+			range: "min",
+			min: 1,
+			max: 100,
+			value: 25,
+			slide: function( event, ui ) {	}
+		});
+		
+	});	
+</script>
+<div class="top-links">
+
+  <a class="gray-button" href="#" wicket:id="SecurityPageLink">Security Main</a>
+  <a class="gray-button" href="#" wicket:id="SecurityCamPageLink">Camera Feed</a>
+  <a class="green-button" href="#" wicket:id="SecurityRecPageLink">View Recordings</a>
+
+  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
+  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
+  <div class="clear"></div>
+</div>
+
+<h1>Security View Recordings</h1>
+
+<div class="column-three">
+  <div class="inner">
+    <div class="box">
+    	<form>
+      <h2>Select Recording</h2>  
+      <label class="required" for="room">Room:</label>
+      <select name="room" id="room" style="width:100%">
+        <option value="1">Front Door</option>
+        <option value="2">Back Yard</option>
+        <option value="3" selected="selected">Side</option>
+        <option value="4">Common Room</option>
+      </select>  
+      <div class="clear"></div>
+      <label class="required" for="date">Date:</label>
+      <input type="text" class="text" name="date" value="12/25/2010" id="datepicker">
+      <div class="clear"></div>
+			<div class="column-two">
+        <label class="required" for="timer">Start Time:</label>
+        <input type="text" class="text" id="timer" value="00:00" />	
+      </div>
+      <div class="column-two">
+        <label class="required" for="timer2">End Time:</label>
+        <input type="text" class="text" id="timer2" value="01:00" />	
+      </div>	
+      <div class="clear"></div>
+			</form>
+			<script> $("#timer").timePicker(); $("#timer2").timePicker();</script>	
+			<div class="clear"></div>
+		</div>
+    
+    <div class="box">
+      <h2>Video Control</h2>
+      <div class="clear"></div>
+      <div class="inner">
+      	<center><img wicket:id="control" /></center>
+      </div>
+      <div class="left">00:15:55</div>
+      <div class="right">01:00:00</div>
+      <div class="clear"></div>
+      <center><div style="margin:auto;" id="sliderTime"></div></center>
+      <div class="clear"></div>
+    </div>	
+    
+  </div>  
+</div>
+
+<div class="column-three-two">
+  <div class="inner">
+    <div class="box">
+    <h2>Video Recording</h2>  
+	  <center>
+		<div style="width:550px; height:410px; overflow:hidden!important; text-align:center;">
+			<object width="580" height="485"><param name="movie" value="http://www.youtube.com/v/Cf_UGGBTWcY?fs=1&amp;hl=en_US&autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/Cf_UGGBTWcY?fs=1&amp;hl=en_US&autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="580" height="485"></embed></object>
+		</div>
+	  </center>  
+	</div>
+  </div>
+</div>
+
+</wicket:extend>
+</html>
+

@@ -1,0 +1,109 @@
+<html>
+<wicket:extend>
+<div class="top-links">
+
+  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
+  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
+  <div class="clear"></div>
+</div>
+
+<h1>Reports</h1>
+
+<div class="inner">
+	<div class="column-two">
+    <div class="inner">
+    	<div class="box">
+      	<h2>Quick Reports</h2>			
+      	<p class="info">The following pre-configured reports have been built for your convenience. You may view or download them by clicking on the appropriate links.</p>
+      
+        <div class="column-two" style="line-height:20px;">
+          <a href="#">Today's Energy Usage By Area</a><br />
+          <a href="#">Today's Energy Usage By Type</a><br />
+          <a href="#">Yesterday's Energy Usage By Area</a><br />
+          <a href="#">Yesterday's Energy Usage By Type</a><br />
+          <a href="#">Today's Temperature</a><br />
+          <a href="#">Yesterday's Temperature</a><br />
+        </div>
+        
+        <div class="column-two" style="line-height:20px;">
+          <a href="#">Today's Temperature</a><br />
+          <a href="#">Yesterday's Temperature</a><br />
+          <a href="#">Today's Charge Capacity</a><br />
+          <a href="#">Yesterday's Charge Capacity</a><br />
+          <a href="#">Today's Charge Production</a><br />
+          <a href="#">Yesterday's Charge Production</a><br />
+          <a href="#">This Week's Charge Production</a><br />
+        </div>
+        <div class="clear"></div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="column-two">
+    <div class="inner">
+    	<div class="box">
+      	<h2>Custom Reports</h2>
+        <form>
+        	<div class="column-two">
+            <label class="required" for="selectbox">Report Type</label>
+            <select>
+              <option>Energy By Type</option>
+              <option>Lighting</option>
+              <option>Temperature</option>
+              <option>System Logs</option>
+              <option>...more...</option>
+            </select>
+            <div class="clear"></div>
+          </div>
+          <div class="column-two">
+            <label class="required" for="radiobuttons">Report Sub-Type</label>
+            <div class="radio-wrapper">
+              <label for="radio"><input class="radiobutton" type="radio" name="subtype" /><span>Usage</span></label>
+              <label for="radio"><input class="radiobutton" type="radio" name="subtype" /><span>Energy Charge</span></label>
+            </div>
+            <div class="clear"></div>
+          </div>
+          <label class="required" for="checkboxes">Style</label>
+          <div class="radio-wrapper">
+            <label for="checkbox"><input class="checkbox" type="checkbox" /><span>Include Charts</span></label>
+          </div>
+          <label class="required" for="daterange">Date Range</label><div class="clear"></div>
+          <div class="column-two">
+            <label for="timer">From</label>
+            <input type="text" class="text" name="date1" id="date1" />	
+          </div>
+          <div class="column-two">
+            <label for="timer2">To</label>
+            <input type="text" class="text" name="date2" id="date2" />	
+          </div>	
+          <div class="clear"></div>
+      		<label class="required" for="radiobuttons">Output Format</label>
+          <div class="radio-wrapper">
+            <label for="radio"><input class="radiobutton" type="radio" name="outputtype" /><span>Adobe PDF</span></label>
+            <label for="radio"><input class="radiobutton" type="radio" name="outputtype" /><span>Microsoft Excel</span></label>
+            <label for="radio"><input class="radiobutton" type="radio" name="outputtype" /><span>CSV</span></label>
+          </div>
+          <div class="clear"></div>
+          
+          <div style="border-top: 1px solid #ccc;margin-top:20px;padding-top:20px;">
+          	<input class="green-button" type="submit" value="Generate Report" />
+          </div>
+          
+          <div class="clear"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+	$(function() {
+		$( "#date1" ).datepicker();
+		$( "#date2" ).datepicker();
+	});
+</script>
+
+</wicket:extend>
+</html>
+

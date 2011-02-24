@@ -1,0 +1,193 @@
+<html>
+<wicket:extend>
+	<script>
+	function toggleHVAC(x) {
+
+		if (x == 1) {
+			document.getElementById("hvac").setAttribute("class",
+					"red-button right");
+			document.getElementById("hvac").setAttribute("onclick",
+					"toggleHVAC(0)");
+			document.getElementById("hvac").innerHTML = "Deactivate HVAC";
+			document.getElementById("onoroff2").innerHTML = "ON";
+			document.getElementById("onoroff2").style.color = "green";
+		} else {
+			document.getElementById("hvac").setAttribute("class",
+					"green-button right");
+			document.getElementById("hvac").setAttribute("onclick",
+					"toggleHVAC(1)");
+			document.getElementById("hvac").innerHTML = "Activate HVAC";
+			document.getElementById("onoroff2").innerHTML = "OFF";
+			document.getElementById("onoroff2").style.color = "red";
+		}
+
+	}
+
+	$(function() {
+
+		// Slider for Air
+		$('#sliderAir').slider({
+			orientation : "vertical",
+			range : "min",
+			min : 45,
+			max : 85,
+			value : 73,
+			slide : function(event, ui) {
+				$("#amountAir").html(ui.value + "&deg;F");
+			}
+		});
+		$("#amountAir").html($("#sliderAir").slider("value") + "&deg;F");
+
+		// Slider for Water
+		$('#sliderWater').slider({
+			orientation : "vertical",
+			range : "min",
+			min : 45,
+			max : 85,
+			value : 60,
+			slide : function(event, ui) {
+				$("#amountWater").html(ui.value + "&deg;F");
+			}
+		});
+		$("#amountWater").html($("#sliderWater").slider("value") + "&deg;F");
+
+	});
+</script>
+	<div class="top-links"><a class="icon-right" href="#"
+		onClick="helpPopUp();return false;"><img wicket:id="help" /></a> <a
+		class="icon-right" href="#"
+		onClick="window.location.reload();return false;"><img
+		wicket:id="refresh" /></a> <a class="icon-right" href="#"
+		onClick="window.print();return false;"><img wicket:id="printer" /></a>
+	<div class="clear"></div>
+	</div>
+
+	<h1>Temperature</h1>
+
+	<div class="column-two">
+	<div class="inner">
+	<div class="box">
+	<h2>Temperature Settings</h2>
+	<div
+		style="border-bottom: 1px solid #ccc; margin-bottom: 20px; padding-bottom: 20px;">
+	<div class="column-two"><a wicket:id="button"
+		class="green-button right"
+		style="width: 185px; margin-right: 10px; cursor: pointer;"><span
+		wicket:id="buttonLabel"></span></a></div>
+	<div class="column-two"><span class="medium black left"
+		style="margin-left: 10px; line-height: 28px;">The HVAC is
+	currently <span wicket:id="hvacState" style="color: #FF0000;">OFF</span></span>
+	</div>
+	<div class="clear"></div>
+	</div>
+
+	<div class="column-two">
+	<div class="inner" style="margin-left: 0;">
+	<h4 class="dark-purple" style="text-align: center;">Current
+	Conditions</h4>
+	<div class="clear"></div>
+	<div class="box">
+	<div class="column-two" style="line-height: 20px;">Inside:<br />
+	<br />
+	Outside:<br />
+	<br />
+	
+	</div>
+	<div class="column-two" style="line-height: 20px; font-size: 20px;">
+	<span wicket:id="InsideTemperature"></span><br />
+	<br />
+	<span wicket:id="OutsideTemperature"></span><br />
+	<br />
+	
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	</div>
+
+	<div class="column-two">
+
+	<h4 class="dark-purple" style="text-align: center;">Temperature
+	Control</h4>
+	<div class="clear"></div>
+	<!-- Air TEMP -->
+	<div class="box">
+
+	<center>
+	<form wicket:id="form">
+	<p><font size="3">Set House Temperature: </font></p>
+	<p><input wicket:id="SetTemp" type="text"
+		style="background-color:#E0E0E0;border: 1px solid black;height:25px;" value="Input value here"/>
+	<a wicket:id="SubmitTemp" type="button" >Change</a></p>
+	</form>
+	</center>
+
+
+	</div>
+
+
+	<div class="clear"></div>
+
+
+	</div>
+	<div class="clear"></div>
+	</div>
+	</div>
+	</div>
+
+	<div class="column-two">
+	<div class="inner">
+	<div class="tab-wrapper" id="tabset-1">
+	<ul class="tabs">
+		<li class="tab-1"><a href="#">Day</a></li>
+		<li class="tab-2"><a href="#">Week</a></li>
+		<li class="tab-3"><a href="#">Month</a></li>
+		<li class="tab-4"><a href="#">Year</a></li>
+	</ul>
+	<ul class="tab-content">
+		<li class="content-1">
+		<h5 class="left">Statistics (Day)</h5>
+		<div class="right medium-large dark-purple">38.7 kWh/day</div>
+		<div class="clear"></div>
+		<p class="info" style="margin-top: 10px;">You are currently using
+		<strong>38.7 kWh/day</strong> or roughly <strong>$10.01/day</strong>.
+		Your average Daily Energy Usage is <strong>35.2 kWh/day</strong>.</p>
+		<center><img wicket:id="tempD" /></center>
+		</li>
+		<li class="content-2">
+		<h5 class="left">Statistics (Week)</h5>
+		<div class="right medium-large dark-purple">270.9 kWh/week</div>
+		<div class="clear"></div>
+		<p class="info" style="margin-top: 10px;">You are currently using
+		<strong>270.9 kWh/week</strong> or roughly <strong>$70.07/week</strong>.
+		Your average Weekly Energy Usage is <strong>246.4 kWh/week</strong>.</p>
+		<center><img wicket:id="tempW" /></center>
+		</li>
+		<li class="content-3">
+		<h5 class="left">Statistics (Month)</h5>
+		<div class="right medium-large dark-purple">1161 kWh/month</div>
+		<div class="clear"></div>
+		<p class="info" style="margin-top: 10px;">You are currently using
+		<strong>1161 kWh/month</strong> or roughly <strong>$300.30/month</strong>.
+		Your average Monthly Energy Usage is <strong>1056 kWh/month</strong>.</p>
+		<center><img wicket:id="tempM" /></center>
+		</li>
+		<li class="content-4">
+		<h5 class="left">Statistics (Year)</h5>
+		<div class="right medium-large dark-purple">14125.5 kWh/year</div>
+		<div class="clear"></div>
+		<p class="info" style="margin-top: 10px;">You are currently using
+		<strong>14125.5 kWh/year</strong> or roughly <strong>$3653.65/year</strong>.
+		Your average Yearly Energy Usage is <strong>12848 kWh/year</strong>.</p>
+		<center><img wicket:id="tempY" /></center>
+		</li>
+	</ul>
+	<div class="clear"></div>
+	</div>
+	</div>
+	</div>
+
+</wicket:extend>
+</html>
+
