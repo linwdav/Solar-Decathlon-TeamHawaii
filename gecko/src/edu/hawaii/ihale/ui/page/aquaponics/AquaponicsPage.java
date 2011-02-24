@@ -41,14 +41,6 @@ public class AquaponicsPage extends BasePage {
     listener = new AquaponicsListener();
     this.database.addSystemStateListener(listener);
 
-    Form<String> form = new Form<String>("form");
-
-    String tempID = "Temp";
-    form.add(new Label("tempLabel", "Temperature:").setMarkupId(tempID));
-
-    form.add(new TextField<Long>("temp", new PropertyModel<Long>(listener.getModel(), "temp"))
-        .setMarkupId(tempID));
-
     AjaxSubmitLink submit = new AjaxSubmitLink("submit") {
 
       /**
@@ -62,13 +54,14 @@ public class AquaponicsPage extends BasePage {
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
 
+        // Send command to the backend
         String temp = listener.getModel().getTemp().toString();
-
         List<String> args = new ArrayList<String>();
         args.add(temp);
 
         database.doCommand("Aquaponics", "Arduino-2", "setTemp", args);
 
+        // Update the side panel
         listener.getDatabaseUpdate().onRequest();
 
         // Should show feedback, but nothing is showing.
@@ -86,8 +79,14 @@ public class AquaponicsPage extends BasePage {
       }
     };
     submit.add(new SimpleAttributeModifier("value", "Update"));
-    form.add(submit);
 
+    String tempID = "Temp";
+    
+    Form<String> form = new Form<String>("form");
+    form.add(new Label("tempLabel", "Temperature:").setMarkupId(tempID));
+    form.add(new TextField<Long>("temp", new PropertyModel<Long>(listener.getModel(), "temp"))
+        .setMarkupId(tempID));
+    form.add(submit);
     add(form);
 
     String url =

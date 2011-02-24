@@ -3,7 +3,26 @@
 <wicket:extend>
   <div id="Sidebar" wicket:id="Sidebar" class="span-5 sidebar">
   </div>
-  <div id="Main" wicket:id="HVACPageMain" class="span-19 last">
+  <div id="Main" class="span-19 last main">
+	  This is the HVAC page.
+	  <br>
+	  <br>
+	
+	  <script type="text/javascript" src="ns.js"></script>
+	  <form wicket:id="form">
+	  <table>
+	    <tr>
+	      <td>Change Temperature:</td>
+	      <td><input wicket:id="temp" type="text" /> <span
+	        class="numeric-stepper">
+	      </span></td>
+	    </tr>
+	  </table>
+	  <p>
+	   <input wicket:id="save" type="submit" value="Save" /></p>
+	
+	  </form>
+	  <div wicket:id="feedback"></div>
   </div>
 </wicket:extend>
 

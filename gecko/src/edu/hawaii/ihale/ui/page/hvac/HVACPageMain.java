@@ -36,20 +36,18 @@ public class HVACPageMain extends BasePanel {
 
     Form<String> form = new Form<String>("form");
 
-
-    form.add(new TextField<String>("hvac_t", new PropertyModel<String>(
-            settings, "hvac_t")).setType(String.class));
-
+    form.add(new TextField<String>("hvac_t", new PropertyModel<String>(settings, "hvac_t"))
+        .setType(String.class));
 
     // Cancel button to refresh the page without processing the form.
     Button cancel = new Button("cancel") {
-        private static final long serialVersionUID = 1L;
+      private static final long serialVersionUID = 1L;
 
-        /** Refresh the page */
-        @Override
-        public void onSubmit() {
-            setResponsePage(HVACPage.class);
-        }
+      /** Refresh the page */
+      @Override
+      public void onSubmit() {
+        setResponsePage(HVACPage.class);
+      }
     };
     // Disable processing of form.
     cancel.setDefaultFormProcessing(false);
@@ -57,17 +55,16 @@ public class HVACPageMain extends BasePanel {
 
     // Save button, currently does not process the form.
     Button save = new Button("save") {
-        private static final long serialVersionUID = 1L;
+      private static final long serialVersionUID = 1L;
 
-        /**
-         * Display the page again, now with the updated values of field1 and
-         * field2.
-         */
-        @Override
-        public void onSubmit() {
-            setResponsePage(HVACPage.class);
+      /**
+       * Display the page again, now with the updated values of field1 and field2.
+       */
+      @Override
+      public void onSubmit() {
+        setResponsePage(HVACPage.class);
 
-        }
+      }
     };
     // Disable processing of form.
     save.setDefaultFormProcessing(false);
@@ -76,5 +73,5 @@ public class HVACPageMain extends BasePanel {
     // Add the form to this page.
     add(form);
 
-}
+  }
 }
