@@ -139,9 +139,8 @@ public class HsimServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    runServer("/aquaponics",8011);
-    runServer("/hvac",8012);
-    runServer("/lighting",8013);
+    runServer("/aquaponics",8001);
+    runServer("/hvac",8002);
     //runServer("/photovoltaics",8014);
     //runServer("/electrical",8015);
   }

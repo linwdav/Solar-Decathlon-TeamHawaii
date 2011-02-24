@@ -23,7 +23,7 @@ import org.w3c.dom.Element;
  * Supported representations: XML.
  * @author Team Maka
  */
-public class Arduino extends ServerResource {
+public abstract class Arduino extends ServerResource {
   String systemName, deviceName;
   Date date = new Date();
   public static Map<String, String> data = new ConcurrentHashMap<String, String>();
@@ -42,18 +42,14 @@ public class Arduino extends ServerResource {
   /**
    * Updates the buffer.
    */
-  public void poll() {
-    //  Get's overridden.
-  }
+  public abstract void poll();
   
   /**
    * Updates a child's local variable.
    * @param key the item's key.
    * @param value the item's value.
    */
-  public void set(String key, String value) { 
-    //should be overridden
-  }
+  public abstract void set(String key, String value);
   
   /**
    * Returns the Contact instance requested by the URL. 
@@ -81,7 +77,8 @@ public class Arduino extends ServerResource {
     //loop through states and attach
     for (String s : list) {
       Element e = doc.createElement("state");
-      e.setAttribute(s.substring(2),data.get(s));
+      e.setAttribute("key",s.substring(2));
+      e.setAttribute("value", data.get(s));
       rootElement.appendChild(e);
     }
     doc.appendChild(rootElement);
@@ -99,7 +96,7 @@ public class Arduino extends ServerResource {
   public void putVal(Representation representation) throws Exception {
     // Get the XML representation of the Contact.
     String key = (String)this.getRequestAttributes().get("key");
-    if(!list.contains(key)) {
+    if(!list.contains(systemName.substring(0,2) + key)) {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
     DomRepresentation domRepresentation = new DomRepresentation(representation);
@@ -107,6 +104,5 @@ public class Arduino extends ServerResource {
     String value = doc.getFirstChild().getFirstChild().getAttributes().getNamedItem("value").getNodeValue();
     //calls overridden set method to set local variables in children.
     set(key,value);
-    data.put(key, value);
   }
 }
