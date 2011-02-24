@@ -23,7 +23,7 @@ public class HVACSystem extends Application {
     Router router = new Router(getContext());
     // Attach the resources to the router.
     router.attach("/state", HVACGetResource.class);
-    router.attach("/temp", HVACGetResource.class);
+    router.attach("/{putcommand}", HVACPutResource.class);
     // Return the root router
     return router;
   }

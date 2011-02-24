@@ -15,7 +15,7 @@ import org.w3c.dom.Element;
  */
 public class HVACData {
   /** The current temperature. */
-  private static double temperature;
+  private static double temperature = 60 + (Math.random() * ((100 - 60) + 1));
 
   /**
    * Accessor for temperature.
