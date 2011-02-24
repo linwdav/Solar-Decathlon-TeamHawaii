@@ -15,7 +15,7 @@ import edu.hawaii.ihale.api.hsim.MT;
 public class KitchenLightsResource extends Arduino{
   MT mt = new MT();
   //Array of known keys
-  String[] localKeys = {"kllevel"};
+  String[] localKeys = {"kilevel"};
   
   /**
    * Constructor.
@@ -38,7 +38,12 @@ public class KitchenLightsResource extends Arduino{
    */
   @Override
   public void set(String key, String val) {
-    data.put(key, val);
+    data.put(list.get(0), val);
+  }
+  @Override
+  public void poll() {
+    // TODO Auto-generated method stub
+    
   }
   
   /**

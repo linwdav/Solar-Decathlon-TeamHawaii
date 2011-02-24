@@ -14,7 +14,7 @@ import edu.hawaii.ihale.api.hsim.MT;
  */
 public class BathroomLightsResource extends Arduino {
   MT mt = new MT();
-  String[] localKeys = {"bllevel"};
+  String[] localKeys = {"balevel"};
 
   
   /**
@@ -39,7 +39,14 @@ public class BathroomLightsResource extends Arduino {
    */
   @Override
   public void set(String key, String val) {
-    data.put(key,val);
+    data.put(list.get(0),val);
+  }
+
+  /**
+   * Does nothing, because this never changes!
+   */
+  @Override
+  public void poll() {
   }
   
   /**
