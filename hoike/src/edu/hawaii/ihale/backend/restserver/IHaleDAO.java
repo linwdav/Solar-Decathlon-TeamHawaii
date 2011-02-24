@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.restlet.data.Method;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -305,7 +306,7 @@ public class IHaleDAO implements SystemStateEntryDB {
       Map<String, String> deviceToPortMap = uris;
 
       Iterator<Entry<String, String>> iterator = deviceToPortMap.entrySet().iterator();
-      while(iterator.hasNext()) {
+      while (iterator.hasNext()) {
         Map.Entry<String, String> mapEntry = iterator.next();
         String key = mapEntry.getKey().toString();
         if (key.contains(systemName) && key.contains(deviceName)) {
@@ -320,8 +321,11 @@ public class IHaleDAO implements SystemStateEntryDB {
       // Send the xml representation to the device. 
       client.put(representation);      
     }
-    catch (Exception e) {
-      e.printStackTrace();
+    catch (ParserConfigurationException pce) {
+      pce.printStackTrace();
+    }
+    catch (IOException ioe) {
+      ioe.printStackTrace();
     }
   }
   
@@ -458,7 +462,6 @@ public class IHaleDAO implements SystemStateEntryDB {
    * Create a mapping mapping of device ip address to port number from a properties file.
    * (i.e., arduino-7.halepilihonua.hawaii.edu/lighting/state=7006 may be a line in the file)
    *
-   * @return Map from device ip address to port number.
    */
   public static void createDeviceToPortMap() {
    
