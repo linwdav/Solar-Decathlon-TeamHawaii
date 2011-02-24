@@ -2,13 +2,17 @@ package edu.hawaii.ihale.backend.restserver;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
+import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
 import org.restlet.routing.Router;
 
 /**
@@ -26,9 +30,6 @@ public class IHaleServer extends Application {
   private static String configurationFile = "configuration.properties";
   // Full path to the Restlet server properties file.
   private static String configFilePath = currentDirectory + "/" + configurationFile;
-  
-  // The interval in milliseconds to send GET requests.
-  private static Long delay = (long) 30000;
 
   // Contains the mapping of device urls to port numbers as defined in the properties file.
   private static final Map<String, String> uris = new HashMap<String, String>();
@@ -46,6 +47,7 @@ public class IHaleServer extends Application {
     Component component = new Component();
     // Create an application (this class).
     Application application = null;
+    List<String> urls = new ArrayList<String>();
     
     readProperties();
     for (Map.Entry<String, String> entry : uris.entrySet()) {
@@ -54,16 +56,17 @@ public class IHaleServer extends Application {
       int port = Integer.valueOf(entry.getValue());
       //System.out.println(contextRoot);
       //System.out.println(port);
+      urls.add("http://localhost:" + entry.getValue() + contextRoot);      
       
       application = new Application() {  
         @Override
-        public Restlet createInboundRoot() {  
+        public Restlet createInboundRoot() {
           // Create a router restlet.
           Router router = new Router(getContext());
           // Attach the resources to the router.
           router.attach(contextRoot, AquaponicsResource.class);
           // Return the root router
-          return router;  
+          return router;
         }
       };
       component.getServers().add(Protocol.HTTP, port);
@@ -71,6 +74,12 @@ public class IHaleServer extends Application {
       component.getDefaultHost().attach(contextRoot, application);
     }
     component.start();
+    
+    // Perform GETS on all devices.
+    for (int i = 0; i < urls.size(); i++) {
+      ClientResource client = new ClientResource(urls.get(i));
+      System.out.format("GET %s: %s%n", urls.get(i), client.get());
+    }
   }
   
   /**
