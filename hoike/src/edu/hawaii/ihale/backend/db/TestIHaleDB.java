@@ -1,11 +1,14 @@
 package edu.hawaii.ihale.backend.db;
 
 import static org.junit.Assert.assertEquals;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import org.junit.Test;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
 import edu.hawaii.ihale.backend.restserver.IHaleDAO;
+import edu.hawaii.ihale.backend.restserver.IHaleServer;
 
 /**
  * Unit test of the IHale database functionality. 
@@ -84,7 +87,7 @@ public class TestIHaleDB {
     entry7.putLongValue("energy", 15000);
     dao.putEntry(entry7);
     
-    System.out.println(dao.getSystemNames());
+    //System.out.println(dao.getSystemNames());
     
     // An assertion.
     assertEquals("Checking for number of systems, should be 5: ", 5, dao.getSystemNames().size());
@@ -118,5 +121,11 @@ public class TestIHaleDB {
     catch (SystemStateEntryDBException e) {
       e.printStackTrace();
     }
+    
+    //List<String> args = new ArrayList<String>();
+    //args.add("27");
+    //dao.doCommand("aquaponics", "arduino-1", "setTemp", args);
+    
+    
   }
 }
