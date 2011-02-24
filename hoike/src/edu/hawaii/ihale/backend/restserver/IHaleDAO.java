@@ -305,6 +305,10 @@ public class IHaleDAO implements SystemStateEntryDB {
       String port = "";
       Map<String, String> deviceToPortMap = uris;
 
+      // Figure out which port is mapped to the system and device we want to send the doCommand
+      // operation for. Iterate through the keys which are the device URIs and if it contains
+      // portions of the system name and device name then it is a URI match and retrieve the port
+      // value mapped to the device URI.
       Iterator<Entry<String, String>> iterator = deviceToPortMap.entrySet().iterator();
       while (iterator.hasNext()) {
         Map.Entry<String, String> mapEntry = iterator.next();
@@ -314,7 +318,6 @@ public class IHaleDAO implements SystemStateEntryDB {
         }
       }
       String url = host + port;
-      System.out.println(url);
       ClientResource client = new ClientResource(Method.PUT, url);
       DomRepresentation representation = new DomRepresentation();
       representation.setDocument(doc);
