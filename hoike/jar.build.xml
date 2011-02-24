@@ -16,6 +16,19 @@
      <copy todir="${tmp.dir}">
        <fileset dir="${basedir}/build/classes/"/>
      </copy>
+  	
+    <!-- Copy over the required libraries. --> 
+    <unjar dest="${tmp.dir}">
+      <fileset dir="${lib.dir}/restlet">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="${lib.dir}/berkeleydb">
+        <include name="*.jar" />
+      </fileset>
+      <fileset dir="${basedir}/ihale-api">
+        <include name="*.jar" />
+      </fileset>
+    </unjar>
 
     <jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">
        <manifest>
