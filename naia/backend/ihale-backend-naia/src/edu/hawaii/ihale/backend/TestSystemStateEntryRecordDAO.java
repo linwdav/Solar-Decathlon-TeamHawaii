@@ -22,7 +22,7 @@ public class TestSystemStateEntryRecordDAO {
 
     String temp = "Temp";
     String check = "Check Conversion";
-    
+
     // Create list of keys based on Java API Data Dictionary
     List<String> aquaponicsDouble = Arrays.asList("pH", "Oxygen");
     List<String> aquaponicsLong = Arrays.asList(temp);

@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.backend;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import edu.hawaii.ihale.api.SystemStateEntry;
@@ -20,6 +21,7 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
   int device = 0;
 
   // Hard Coding of the Java API Data Dictionary
+
   // Aquaponics
   static List<String> aquaponicsDouble = Arrays.asList("pH", "Oxygen");
   static List<String> aquaponicsLong = Arrays.asList("Temp");
@@ -30,6 +32,9 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
   // Lighting
   static List<String> LightingLong = Arrays.asList("Level");
 
+  // Holds an in-memory list of system state listeners.
+  private List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
+
   /**
    * Sets the device.
    * 
@@ -39,10 +44,17 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
     this.device = i;
   }
 
+  /**
+   * Adds a listener to this repository whose entryAdded method will be invoked whenever an entry is
+   * added to the database for the system name associated with this listener. This method provides a
+   * way for the user interface (for example, Wicket) to update itself whenever new data comes in to
+   * the repository.
+   * 
+   * @param listener The listener whose entryAdded method will be called.
+   */
   @Override
-  public void addSystemStateListener(SystemStateListener arg0) {
-    // TODO Auto-generated method stub
-
+  public void addSystemStateListener(SystemStateListener listener) {
+    this.listeners.add(listener);
   }
 
   @Override
@@ -55,15 +67,14 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
   }
 
   @Override
-  public void doCommand(String arg0, String arg1, String arg2, List<String> arg3) {
+  public void doCommand(String systemName, String deviceName, String command, List<String> arg3) {
     // TODO Auto-generated method stub
 
   }
 
   @Override
-  public List<String> getDeviceNames(String deviceNames) throws SystemStateEntryDBException {
-    // TODO Auto-generated method stub
-    return null;
+  public List<String> getDeviceNames(String systemName) throws SystemStateEntryDBException {
+    return SystemStateEntryRecordDAO.getDeviceNames(systemName);
   }
 
   @Override
@@ -87,8 +98,7 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
 
   @Override
   public List<String> getSystemNames() {
-    // TODO Auto-generated method stub
-    return null;
+    return SystemStateEntryRecordDAO.getSystemNames();
   }
 
   @Override
@@ -99,6 +109,14 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
 
     // Insert into database
     SystemStateEntryRecordDAO.putSystemStateEntryRecord(record);
+
+    // Here is where the listeners get invoked if they are interested in this systemName.
+    for (SystemStateListener listener : listeners) {
+      if (entry.getSystemName().equals(listener.getSystemName())) {
+        listener.entryAdded(entry);
+      }
+    } // End for each
+
   } // End putEntry
 
   /**
@@ -108,9 +126,9 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
    * @return Berkeley DB-Friendly SystemStateEntryRecord Entity
    */
   public SystemStateEntryRecord convertEntry(SystemStateEntry entry) {
-    
+
     boolean validDevice = true;
-    
+
     // Converts the entry to an Entity object
     switch (device) {
 
@@ -129,10 +147,10 @@ public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
     case 8:
       return new SystemStateEntryRecord(entry, LightingLong, null, null);
 
-    // If no applicable devices are given, then set boolean value to false
+      // If no applicable devices are given, then set boolean value to false
     default:
       validDevice = false;
-      break;   
+      break;
     } // End Switch
 
     // If it's not a valid device, throw a database exception

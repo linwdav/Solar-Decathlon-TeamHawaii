@@ -7,6 +7,8 @@ import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.KeyField;
 import com.sleepycat.persist.model.Persistent;
 import com.sleepycat.persist.model.PrimaryKey;
+import com.sleepycat.persist.model.Relationship;
+import com.sleepycat.persist.model.SecondaryKey;
 import edu.hawaii.ihale.api.SystemStateEntry;
 
 /**
@@ -24,6 +26,13 @@ public class SystemStateEntryRecord {
   private Map<String, String> stringData;
   private Map<String, Double> doubleData;
 
+  @SecondaryKey(relate = Relationship.MANY_TO_ONE)
+  String systemName;
+
+  // The name of the device. This is strictly for retrieving data
+  @SecondaryKey(relate = Relationship.MANY_TO_ONE)
+  String deviceName;
+
   /**
    * Provide the default constructor required by BerkeleyDB.
    */
@@ -33,7 +42,7 @@ public class SystemStateEntryRecord {
 
   /**
    * Creates an instance of a SystemStateEntry Object.
-   *
+   * 
    * @param entry The API entry to convert.
    * @param longList A list of long data keys.
    * @param doubleList A list of double data keys.
@@ -41,6 +50,9 @@ public class SystemStateEntryRecord {
    */
   public SystemStateEntryRecord(SystemStateEntry entry, List<String> longList,
       List<String> doubleList, List<String> stringList) {
+
+    this.systemName = entry.getSystemName();
+    this.deviceName = entry.getDeviceName();
 
     // Transfer all system state attributes.
     this.attributes =
@@ -157,26 +169,26 @@ public class SystemStateEntryRecord {
 } // End SystemStateRecord class
 
 /**
- * An attribute class to hold the composite key for the database.
- * Consists of the System Name, Device Name, and Timestamp. 
- *
+ * An attribute class to hold the composite key for the database. Consists of the System Name,
+ * Device Name, and Timestamp.
+ * 
  * @author Team Nai'a
- *
+ * 
  */
 @Persistent
-class SystemStateAttributes implements Comparable<Object> {
+class SystemStateAttributes {
 
   /** The name of the System. Example: "Aquaponics". */
   @KeyField(1)
   private String systemName;
 
-  /** The timestamp (UTC format) indicating when this state info was collected. */
-  @KeyField(2)
-  private long timestamp;
-
   /** The name of the Device. Example: "Arduino-23". */
-  @KeyField(3)
+  @KeyField(2)
   private String deviceName;
+
+  /** The timestamp (UTC format) indicating when this state info was collected. */
+  @KeyField(3)
+  private long timestamp;
 
   /**
    * Provide the default constructor required by BerkeleyDB.
@@ -237,83 +249,5 @@ class SystemStateAttributes implements Comparable<Object> {
         this.systemName, this.deviceName, this.timestamp);
   }
 
-  /**
-   * Compares two attribute objects based on whether their three field variables match.
-   * @param obj The attribute object being compared.
-   * @return result of comparison.
-   */
-  @Override
-  public int compareTo(Object obj) {
-    SystemStateAttributes attributes = (SystemStateAttributes) obj;
-
-    // Check to see if all fiels are equal. if so, return 0.
-    if (attributes.getDeviceName().equalsIgnoreCase(this.deviceName)
-        && attributes.getSystemName().equalsIgnoreCase(this.systemName)
-        && (attributes.getTimestamp() == this.timestamp)) {
-      return 0;
-    }
-    // If timestamp is later but all other fields are equal, return 1
-    if (attributes.getDeviceName().equalsIgnoreCase(this.deviceName)
-        && attributes.getSystemName().equalsIgnoreCase(this.systemName)
-        && (attributes.getTimestamp() > this.timestamp)) {
-      return 1;
-    }
-
-    // If timestamp is earlier but all other fields are equal, return -1
-    if (attributes.getDeviceName().equalsIgnoreCase(this.deviceName)
-        && attributes.getSystemName().equalsIgnoreCase(this.systemName)
-        && (attributes.getTimestamp() < this.timestamp)) {
-      return -1;
-    }
-    // If first two fields don't match, return -2
-    else {
-      return -2;
-    }
-  } // End compareTo
-
-  @Override
-  public int hashCode() {
-    final int prime = 31;
-    int result = 1;
-    result = prime * result + ((deviceName == null) ? 0 : deviceName.hashCode());
-    result = prime * result + ((systemName == null) ? 0 : systemName.hashCode());
-    result = prime * result + (int) (timestamp ^ (timestamp >>> 32));
-    return result;
-  }
-  // Implemented in order to pass findbugs test (due to compareTo method being overidden)
-  @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (obj == null) {
-      return false;
-    }
-    if (getClass() != obj.getClass()) {
-      return false;
-    }
-    SystemStateAttributes other = (SystemStateAttributes) obj;
-    if (deviceName == null) {
-      if (other.deviceName != null) {
-        return false;
-      }
-    }
-    else if (!deviceName.equals(other.deviceName)) {
-      return false;
-    }
-    if (systemName == null) {
-      if (other.systemName != null) {
-        return false;
-      }
-    }
-    else if (!systemName.equals(other.systemName)) {
-      return false;
-    }
-    if (timestamp != other.timestamp) {
-      return false;
-    }
-    return true;
-  }
-  
 } // End Composite Key Class
 
