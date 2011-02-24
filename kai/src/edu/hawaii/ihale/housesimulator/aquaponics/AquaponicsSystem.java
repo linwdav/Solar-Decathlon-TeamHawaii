@@ -24,9 +24,7 @@ public class AquaponicsSystem extends Application {
     router.attach("/state", AquaponicsGetResource.class);
     // Changed the following classes to the new AquaponicsPutResource.class once implemented.
     // Leaving as is to pass ant verify tests.
-    router.attach("/temp", AquaponicsGetResource.class);
-    router.attach("/ph", AquaponicsGetResource.class);
-    router.attach("/dissolvedoxygen", AquaponicsGetResource.class);
+    router.attach("/{putcommand}", AquaponicsPutResource.class);
     // Return the root router
     return router;
   }

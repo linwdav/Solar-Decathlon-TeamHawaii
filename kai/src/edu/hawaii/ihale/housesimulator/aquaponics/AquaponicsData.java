@@ -1,9 +1,16 @@
 package edu.hawaii.ihale.housesimulator.aquaponics;
 
+import java.util.Date;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+//import javax.xml.parsers.DocumentBuilder;
+//import javax.xml.parsers.DocumentBuilderFactory;
+//import org.w3c.dom.Document;
+//import org.w3c.dom.Element;
 
 /**
  * Provides data on the Aquaponics system, as well as an XML representation.
@@ -12,65 +19,65 @@ import org.w3c.dom.Element;
  * @author Anthony Kinsey
  */
 public class AquaponicsData {
-  /** The system name. */
-  private String systemName = "Aquaponics";
   /** The current temperature. */
-  private String temperature;
+  private static double temperature;
   /** The current pH. */
-  private String ph;
-  /** The current dissolved oxygen. */
-  private String dissolvedOxygen;
-  /** This data's timestamp. */
-  private String timestamp;
-  /** The temperature element name. */
-  private static final String systemNameElementName = "system-name";
-  /** The temperature element name. */
-  private static final String temperatureElementName = "temperature";
-  /** The pH element name. */
-  private static final String phElementName = "pH";
-  /** The dissolved oxygen element name. */
-  private static final String dissolvedOxygenElementName = "dissolved-oxygen";
-  /** The timestamp element name. */
-  private static final String timestampElementName = "timestamp";
+  private static double ph;
+  /** The current oxygen. */
+  private static double oxygen;
 
   /**
-   * Creates a AquaponicsData instance given its field values as strings.
+   * Accessor for temperature.
    * 
-   * @param temperature The temperature.
-   * @param ph The pH.
-   * @param dissolvedOxygen The dissolved oxygen.
-   * @param timestamp The timestamp.
+   * @return temperature
    */
-  public AquaponicsData(String temperature, String ph, String dissolvedOxygen, String timestamp) {
-    this.temperature = temperature;
-    this.ph = ph;
-    this.dissolvedOxygen = dissolvedOxygen;
-    this.timestamp = timestamp;
+  public static double getTemperature() {
+    return temperature;
   }
 
   /**
-   * Creates a AquaponicsData instance given its representation in XML.
+   * Accessor for ph.
    * 
-   * @param doc The XML document.
+   * @return ph
    */
-  public AquaponicsData(Document doc) {
-    this.systemName = getElementTextContent(doc, systemNameElementName);
-    this.temperature = getElementTextContent(doc, temperatureElementName);
-    this.ph = getElementTextContent(doc, phElementName);
-    this.dissolvedOxygen = getElementTextContent(doc, dissolvedOxygenElementName);
-    this.timestamp = getElementTextContent(doc, timestampElementName);
+  public static double getPh() {
+    return ph;
   }
 
   /**
-   * Return the data as a formatted string.
+   * Accessor for oxygen.
    * 
-   * @return The data as a string.
+   * @return oxygen
    */
-  @Override
-  public String toString() {
-    return String.format(
-        "[System Name: %s Temperature: %s pH: %s Dissolved Oxygen: %s Timestamp: %s]",
-        this.systemName, this.temperature, this.ph, this.dissolvedOxygen, this.timestamp);
+  public static double getOxygen() {
+    return oxygen;
+  }
+
+  /**
+   * Sets the temperature.
+   * 
+   * @param newTemperature the temperature
+   */
+  public static void setTemperature(double newTemperature) {
+    temperature = newTemperature;
+  }
+
+  /**
+   * Sets the pH.
+   * 
+   * @param newPh the ph
+   */
+  public static void setPh(double newPh) {
+    ph = newPh;
+  }
+
+  /**
+   * Sets the oxygen.
+   * 
+   * @param newOxygen the oxygen
+   */
+  public static void setOxygen(double newOxygen) {
+    oxygen = newOxygen;
   }
 
   /**
@@ -79,45 +86,43 @@ public class AquaponicsData {
    * @return The data as XML.
    * @throws Exception If problems occur creating the XML.
    */
-  public Document toXml() throws Exception {
-    // Create the Document instance representing this XML.
+  public static DomRepresentation toXml() throws Exception {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder builder = factory.newDocumentBuilder();
-    Document doc = builder.newDocument();
-    // Create and attach the root element <contact>.
-    Element rootElement = doc.createElement(systemName);
-    doc.appendChild(rootElement);
-    // Now create and attach the fields for this contact.
-    attachElement(doc, rootElement, temperatureElementName, this.temperature);
-    attachElement(doc, rootElement, phElementName, this.ph);
-    attachElement(doc, rootElement, dissolvedOxygenElementName, this.dissolvedOxygen);
-    attachElement(doc, rootElement, timestampElementName, this.timestamp);
-    return doc;
+    DocumentBuilder docBuilder = null;
+    docBuilder = factory.newDocumentBuilder();
+    Document doc = docBuilder.newDocument();
+
+    // Create root tag
+    Element root = doc.createElement("state-data");
+    root.setAttribute("system", "aquaponics");
+    root.setAttribute("device", "arduino-1");
+    root.setAttribute("timestamp", String.valueOf(new Date().getTime()));
+    doc.appendChild(root);
+
+    // Create state tag.
+    Element tempState = doc.createElement("state");
+    tempState.setAttribute("key", "temp");
+    tempState.setAttribute("value", String.valueOf(getTemperature()));
+    root.appendChild(tempState);
+
+    // Create state tag.
+    Element oxygenState = doc.createElement("state");
+    oxygenState.setAttribute("key", "oxygen");
+    oxygenState.setAttribute("value", String.valueOf(getOxygen()));
+    root.appendChild(oxygenState);
+
+    // Create state tag.
+    Element phState = doc.createElement("state");
+    phState.setAttribute("key", "pH");
+    phState.setAttribute("value", String.valueOf(getPh()));
+    root.appendChild(phState);
+
+    // Convert Document to DomRepresentation.
+    DomRepresentation result = new DomRepresentation();
+    result.setDocument(doc);
+
+    // Return the XML in DomRepresentation form.
+    return result;
   }
 
-  /**
-   * Helper function that creates a child element and attaches it to the passed parent element.
-   * 
-   * @param doc The document for creating elements.
-   * @param parent The parent element.
-   * @param childName The name of the child element.
-   * @param childValue The text value for the child element.
-   */
-  private void attachElement(Document doc, Element parent, String childName, String childValue) {
-    Element childElement = doc.createElement(childName);
-    childElement.setTextContent(childValue);
-    parent.appendChild(childElement);
-  }
-
-  /**
-   * Helper method that returns the text content of an interior element of this XML document.
-   * 
-   * @param doc The XML document.
-   * @param elementName The element name whose text content is to be retrieved.
-   * @return The text content
-   */
-  private String getElementTextContent(Document doc, String elementName) {
-    Element element = (Element) doc.getElementsByTagName(elementName).item(0);
-    return element.getTextContent();
-  }
 }

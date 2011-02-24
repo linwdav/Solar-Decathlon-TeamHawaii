@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.housesimulator.aquaponics;
 
-import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
@@ -21,9 +20,7 @@ public class AquaponicsGetResource extends ServerResource {
    */
   @Get
   public Representation getState() throws Exception {
-    // Create an empty XML representation.
-    DomRepresentation result = new DomRepresentation();
-    // Return the representation. The Status code tells the client if the representation is valid.
-    return result;
+    // Return the representation.
+    return AquaponicsData.toXml();
   }
 }
