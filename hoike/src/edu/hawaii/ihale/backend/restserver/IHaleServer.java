@@ -56,7 +56,8 @@ public class IHaleServer extends Application {
       //System.out.println(contextRoot);
       //System.out.println(port);
       urls.add("http://localhost:" + entry.getValue() + contextRoot);      
-      
+      System.out.println(contextRoot);
+      System.out.println(port);
       application = new Application() {  
         @Override
         public Restlet createInboundRoot() {
@@ -64,6 +65,7 @@ public class IHaleServer extends Application {
           Router router = new Router(getContext());
           // Attach the resources to the router.
           router.attach(contextRoot, AquaponicsResource.class);
+          router.attach("", AquaponicsResource.class);
           // Return the root router
           return router;
         }
@@ -77,7 +79,7 @@ public class IHaleServer extends Application {
     // Perform GETS on all devices.
     for (int i = 0; i < urls.size(); i++) {
       ClientResource client = new ClientResource(urls.get(i));
-      System.out.format("GET %s: %s%n", urls.get(i), client.get());
+      System.out.format("GET %s: %s%n", urls.get(i), client.get().getText());
     }
   }
   
