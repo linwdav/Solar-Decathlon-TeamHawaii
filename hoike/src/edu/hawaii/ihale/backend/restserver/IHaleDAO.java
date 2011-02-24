@@ -1,13 +1,19 @@
 package edu.hawaii.ihale.backend.restserver;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import org.restlet.data.Method;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.resource.ClientResource;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -36,6 +42,9 @@ import edu.hawaii.ihale.backend.db.IHaleSystemStateEntry;
  */
 public class IHaleDAO implements SystemStateEntryDB {
   
+  // Map from a system to its associated field values that would be returned by a system.
+  // (i.e., Aquaponics system has fields Oxygen, Temp, pH). Refer to createSystemToKeyMap
+  // method for its use.
   private static final Map<String, ArrayList<String>> systemToFieldMap = 
     new HashMap<String, ArrayList<String>>();
   
@@ -47,6 +56,9 @@ public class IHaleDAO implements SystemStateEntryDB {
   private String stringString = "String";
   private String doubleString = "Double";
   
+  // Contains the mapping of device ip addresses to port numbers as defined in the properties file.
+  private static Map<String, String> uris = new HashMap<String, String>();
+  
   /**
    * Default constructor.
    */
@@ -56,6 +68,7 @@ public class IHaleDAO implements SystemStateEntryDB {
   
   static {
     createSystemToKeyMap();
+    createDeviceToPortMap();
   }
 
   /**
@@ -286,10 +299,26 @@ public class IHaleDAO implements SystemStateEntryDB {
         valueAttribute.setValue(args.get(i));
         argElement.setAttributeNode(valueAttribute);
       }
+            
+      String host = "http://localhost:";
+      String port = "";
+      Map<String, String> deviceToPortMap = uris;
 
-      // TO-DO: Need to send the Document doc to the specified device. Requires the knowledge
-      //        of what the URL to the device (Arduino) is. This information is retrieved from
-      //        the properties file which maps
+      Iterator<Entry<String, String>> iterator = deviceToPortMap.entrySet().iterator();
+      while(iterator.hasNext()) {
+        Map.Entry<String, String> mapEntry = iterator.next();
+        String key = mapEntry.getKey().toString();
+        if (key.contains(systemName) && key.contains(deviceName)) {
+          port = mapEntry.getValue().toString();
+        }
+      }
+      String url = host + port;
+      System.out.println(url);
+      ClientResource client = new ClientResource(Method.PUT, url);
+      DomRepresentation representation = new DomRepresentation();
+      representation.setDocument(doc);
+      // Send the xml representation to the device. 
+      client.put(representation);      
     }
     catch (Exception e) {
       e.printStackTrace();
@@ -341,87 +370,122 @@ public class IHaleDAO implements SystemStateEntryDB {
    * @param systemName The system name.
    * @return The key type pair map.
    */
- public Map<String, String> getTypeList(String systemName) {
+  public Map<String, String> getTypeList(String systemName) {
 
-   ArrayList<String> keyTypePairList = IHaleDAO.systemToFieldMap.get(systemName);
+    ArrayList<String> keyTypePairList = IHaleDAO.systemToFieldMap.get(systemName);
 
-   Map<String, String> keyTypePairMap = new HashMap<String, String>();
-   //String[] temp = new String[2];
-   for (int i = 0; i < keyTypePairList.size(); i++) {
-     // Character | are special, need to be escaped with \\
-     String[] temp = keyTypePairList.get(i).split("\\|\\|");
-     keyTypePairMap.put(temp[0], temp[1]);
-   }
-   return keyTypePairMap;
- }
+    Map<String, String> keyTypePairMap = new HashMap<String, String>();
+    //String[] temp = new String[2];
+    for (int i = 0; i < keyTypePairList.size(); i++) {
+      // Character | are special, need to be escaped with \\
+      String[] temp = keyTypePairList.get(i).split("\\|\\|");
+      keyTypePairMap.put(temp[0], temp[1]);
+    }
+    return keyTypePairMap;
+  }
  
- /**
-  * Parses XML information and creates a SystemStateEntry object.
-  * 
-  * @param doc The XML document from a system device response to a GET method for its
-  *            current state. Format of XML document below.
-  *            <pre>
-  *            {@code
-  *            <state-data system="aquaponics" device="arduino-1" timestamp="1297446335">
-  *              <state key="temp" value="25"/>
-  *              <state key="oxygen" value="4.5"/>
-  *              <state key="pH" value="7"/>
-  *            </state-data>
-  *            }
-  *            </pre>
-  * @return Returns a SystemStateEntry object.
-  */
- public SystemStateEntry xmlToSystemStateEntry(Document doc) {
+  /**
+   * Parses XML information and creates a SystemStateEntry object.
+   * 
+   * @param doc The XML document from a system device response to a GET method for its
+   *            current state. Format of XML document below.
+   *            <pre>
+   *            {@code
+   *            <state-data system="aquaponics" device="arduino-1" timestamp="1297446335">
+   *              <state key="temp" value="25"/>
+   *              <state key="oxygen" value="4.5"/>
+   *              <state key="pH" value="7"/>
+   *            </state-data>
+   *            }
+   *            </pre>
+   * @return Returns a SystemStateEntry object.
+   */
+  public SystemStateEntry xmlToSystemStateEntry(Document doc) {
    
-   /** The system name attribute name. */
-   String systemNameAttributeName = "system";
-   /** The device name attribute name. */
-   String deviceNameAttributeName = "device";
-   /** The timestamp attribute name. */
-   String timestampAttributeName = "timestamp";
-   /** The state element name. */
-   String stateElementName = "state";
-   /** The key attribute name */
-   String keyAttributeName = "key";
-   /** The value attribute name */
-   String valueAttributeName = "value";
+    /** The system name attribute name. */
+    String systemNameAttributeName = "system";
+    /** The device name attribute name. */
+    String deviceNameAttributeName = "device";
+    /** The timestamp attribute name. */
+    String timestampAttributeName = "timestamp";
+    /** The state element name. */
+    String stateElementName = "state";
+    /** The key attribute name */
+    String keyAttributeName = "key";
+    /** The value attribute name */
+    String valueAttributeName = "value";
       
-   // Get the root element, in this case would be state-data element.
-   Element stateData = doc.getDocumentElement();
-   // Retrieve the attributes from state-data element, the system name, device name, and timestamp.
-   String systemName = stateData.getAttribute(systemNameAttributeName);
-   String deviceName = stateData.getAttribute(deviceNameAttributeName);
-   long timestamp = Long.parseLong(stateData.getAttribute(timestampAttributeName));
+    // Get the root element, in this case would be state-data element.
+    Element stateData = doc.getDocumentElement();
+    // Retrieve the attributes from state-data element, the system name, device name, and timestamp.
+    String systemName = stateData.getAttribute(systemNameAttributeName);
+    String deviceName = stateData.getAttribute(deviceNameAttributeName);
+    long timestamp = Long.parseLong(stateData.getAttribute(timestampAttributeName));
    
-   // Create a SystemStateEntry but it still requires its Maps to be filled.
-   SystemStateEntry entry = new SystemStateEntry(systemName, deviceName, timestamp);
+    // Create a SystemStateEntry but it still requires its Maps to be filled.
+    SystemStateEntry entry = new SystemStateEntry(systemName, deviceName, timestamp);
    
-   // Retrieve the list of nodes representing the state elements of state-data element.
-   NodeList stateList = stateData.getElementsByTagName(stateElementName);
+    // Retrieve the list of nodes representing the state elements of state-data element.
+    NodeList stateList = stateData.getElementsByTagName(stateElementName);
 
-   // Retrieve a helper Map to determine the key value types for use in corresponding
-   // putLongDataValue, putStringDataValue, or putDoubleValue methods when a state element
-   // has a certain key (i.e., pH should be a Double, Temp should be a Long).
-   Map<String, String> keyTypePairMap = getTypeList(systemName);
+    // Retrieve a helper Map to determine the key value types for use in corresponding
+    // putLongDataValue, putStringDataValue, or putDoubleValue methods when a state element
+    // has a certain key (i.e., pH should be a Double, Temp should be a Long).
+    Map<String, String> keyTypePairMap = getTypeList(systemName);
    
-   // For each state element, retrieve the value of the attribute key, and the value of attribute
-   // value. Then dependent on the keyTypePairMap when passed the value of the key, should denote
-   // its value type. Based on the value type, then the value of the value attribute should be
-   // parsed corresponding to its proper type and placed into one of the Map fields of the
-   // SystemStateEntry.
-   for (int i = 0; i < stateList.getLength(); i++) {
-     String key = ((Element) stateList.item(i)).getAttribute(keyAttributeName);
-     String value = ((Element) stateList.item(i)).getAttribute(valueAttributeName);
-     if (keyTypePairMap.get(key).equalsIgnoreCase(longString)) {
-       entry.putLongValue(key, Long.parseLong(value));
-     }
-     else if (keyTypePairMap.get(key).equalsIgnoreCase(stringString)) {
-       entry.putStringValue(key, value);
-     }
-     else if (keyTypePairMap.get(key).equalsIgnoreCase(doubleString)) {
-       entry.putDoubleValue(key, Double.parseDouble(value));
-     }
-   }
-   return entry;
- }
+    // For each state element, retrieve the value of the attribute key, and the value of attribute
+    // value. Then dependent on the keyTypePairMap when passed the value of the key, should denote
+    // its value type. Based on the value type, then the value of the value attribute should be
+    // parsed corresponding to its proper type and placed into one of the Map fields of the
+    // SystemStateEntry.
+    for (int i = 0; i < stateList.getLength(); i++) {
+      String key = ((Element) stateList.item(i)).getAttribute(keyAttributeName);
+      String value = ((Element) stateList.item(i)).getAttribute(valueAttributeName);
+      if (keyTypePairMap.get(key).equalsIgnoreCase(longString)) {
+        entry.putLongValue(key, Long.parseLong(value));
+      }
+      else if (keyTypePairMap.get(key).equalsIgnoreCase(stringString)) {
+        entry.putStringValue(key, value);
+      }
+      else if (keyTypePairMap.get(key).equalsIgnoreCase(doubleString)) {
+        entry.putDoubleValue(key, Double.parseDouble(value));
+      }
+    }
+    return entry;
+  }
+ 
+  /**
+   * Create a mapping mapping of device ip address to port number from a properties file.
+   * (i.e., arduino-7.halepilihonua.hawaii.edu/lighting/state=7006 may be a line in the file)
+   *
+   * @return Map from device ip address to port number.
+   */
+  public static void createDeviceToPortMap() {
+   
+    // Path to where the Restlet server properties file.
+    String currentDirectory = System.getProperty("user.dir");
+    // Restlet server properties file name.
+    String configurationFile = "configuration.properties";
+    // Full path to the Restlet server properties file.
+    String configFilePath = currentDirectory + "/" + configurationFile;
+   
+    try {
+     
+      FileInputStream is = new FileInputStream(configFilePath);
+      Properties prop = new Properties();
+      prop.load(is);
+      String key = "";
+      String value = "";
+      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
+        key = (String) propItem.getKey();
+        value = (String) propItem.getValue();
+        uris.put(key, value);
+      }
+      is.close();
+    }
+    catch (IOException e) {
+     System.out.println("failed to read properties file");
+     System.out.println(configFilePath);
+    }
+  }
 }
