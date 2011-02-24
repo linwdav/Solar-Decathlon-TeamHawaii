@@ -60,7 +60,7 @@ public class HVACPage extends BasePage {
         List<String> args = new ArrayList<String>();
         args.add(temp);
 
-        database.doCommand("Aquaponics", "Arduino-2", "setTemp", args);
+        database.doCommand("Hvac", "Arduino-2", "setTemp", args);
 
         // Update the side panel
         listener.getDatabaseUpdate().onRequest();
