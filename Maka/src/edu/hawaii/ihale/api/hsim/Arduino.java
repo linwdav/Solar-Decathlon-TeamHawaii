@@ -25,10 +25,14 @@ import org.w3c.dom.Element;
  * Supported representations: XML.
  * @author Team Maka
  */
+
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
+  "MS_SHOULD_BE_FINAL", 
+  justification = "data Map should definately not be final...")
 public abstract class Arduino extends ServerResource {
   String systemName, deviceName;
   /** The random number generator.*/
-  public static MT mt;
+  public static final MT mt = new MT(Calendar.MILLISECOND);;
   Date date = new Date();
   /** Magic map that holds all the data.*/
   public static Map<String, String> data = new ConcurrentHashMap<String, String>();
@@ -44,9 +48,6 @@ public abstract class Arduino extends ServerResource {
   public Arduino(String systemName, String deviceName) {
     this.systemName = systemName;
     this.deviceName = deviceName; 
-    if (mt == null) {
-      mt = new MT(Calendar.MILLISECOND);
-    }
   }
   /**
    * Updates the buffer.

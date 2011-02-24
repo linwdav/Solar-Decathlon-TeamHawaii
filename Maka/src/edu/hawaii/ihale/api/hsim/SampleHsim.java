@@ -7,9 +7,7 @@ import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import javax.xml.transform.stream.StreamResult; 
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
@@ -19,23 +17,16 @@ import org.w3c.dom.Element;
  * Tests the operations supported for the Hsim simulator.
  * @author TeamMaka
  */
-public class TestHsim {
+public class SampleHsim {
 
-  /**
-   * Start up a test server before testing any of the operations on this resource.
-   * @throws Exception If problems occur starting up the server. 
-   */
-  @BeforeClass
-  public static void startServer () throws Exception {
-    HsimServer.main(null);
-  }
+
   
   /**
    * Test if you can retrieve the key attatched to the end of the aquaponics URI.
    * @throws Exception If problems occur.
+   * @param args arguments.
    */
-  @Test
-  public void testGetPut() throws Exception {
+  public static void main (String[] args) throws Exception {
      
     //TEST PUT
     String tUrl = String.format("http://localhost:%s/aquaponics/%s", 8001,

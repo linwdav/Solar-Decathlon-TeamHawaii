@@ -39,9 +39,8 @@ public class KitchenLightsResource extends Arduino {
     data.put(list.get(0), val);
   }
   @Override
-  public void poll() {
-    // TODO Auto-generated method stub
-    
+  public void poll() { 
+  //does nothing
   }
   
   /**

@@ -45,6 +45,7 @@ public class BathroomLightsResource extends Arduino {
    */
   @Override
   public void poll() {
+    //does nothing
   }
   
   /**

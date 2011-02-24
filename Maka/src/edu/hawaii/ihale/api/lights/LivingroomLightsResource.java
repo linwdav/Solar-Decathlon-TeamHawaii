@@ -42,11 +42,8 @@ public class LivingroomLightsResource extends Arduino {
 
   @Override
   public void poll() { 
+  //does nothing
   }
   
-  /**
-   * Refreshes the data.
-   */
-  //public void poll() {
-  //}
+
 }

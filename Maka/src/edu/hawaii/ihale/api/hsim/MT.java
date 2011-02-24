@@ -56,6 +56,9 @@ import edu.umd.cs.findbugs.annotations.SuppressWarnings;
  * @author Kurt Teichman
  * 
  */
+
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
+      "INT_VACUOUS_BIT_OPERATION", justification = "shortens the seed.")
 public class MT {
 	private static final int MATRIX_A = 0x9908b0df;   // private static final * constant vector a
 	private static final int MASK_1 = 0x9d2c5680; // 2636928640
@@ -205,6 +208,9 @@ public class MT {
 	@edu.umd.cs.findbugs.annotations.SuppressWarnings(     
 	    value="EQ_COMPARETO_USE_OBJECT_EQUALS",      
 	    justification="")
+	    
+	 
+    
 	private void randint_mt(int seed) {
 		mt = new int[N];
 		mt[0]= seed & 0xffffffff;   // replace initial value with seed\

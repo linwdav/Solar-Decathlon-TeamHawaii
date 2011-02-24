@@ -8,6 +8,11 @@ import edu.hawaii.ihale.api.hsim.Arduino;
  * @author Team Maka
  *
  */
+
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
+      "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
+       justification = "Restlet makes multiple instances of this class, so " +
+        "nonstatic variables are lost.")
 public class AquaponicsResource extends Arduino {
   //These hold the goal state defined by the user.
   static double goalPH = 7, goalTemp = 78, goalOxygen = .5;
