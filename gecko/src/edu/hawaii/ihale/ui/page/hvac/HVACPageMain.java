@@ -36,6 +36,7 @@ public class HVACPageMain extends BasePanel {
 
     Form<String> form = new Form<String>("form");
 
+
     form.add(new TextField<String>("hvac_t", new PropertyModel<String>(
             settings, "hvac_t")).setType(String.class));
 
@@ -65,6 +66,7 @@ public class HVACPageMain extends BasePanel {
         @Override
         public void onSubmit() {
             setResponsePage(HVACPage.class);
+
         }
     };
     // Disable processing of form.

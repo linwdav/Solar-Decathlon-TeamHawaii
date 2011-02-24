@@ -12,7 +12,6 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
  * 
  */
 public class BlackMagic {
-
   /**
    * Public constructor adds 10 state entries to the passed database at 1 second intervals.
    * 
@@ -63,4 +62,6 @@ public class BlackMagic {
     entry.putLongValue("energy", (long) (Math.random() * 10));
     db.putEntry(entry); 
   }
+  
+  
 }
