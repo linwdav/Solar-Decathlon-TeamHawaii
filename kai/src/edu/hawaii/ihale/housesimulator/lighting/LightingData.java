@@ -16,13 +16,13 @@ import org.w3c.dom.Element;
 public class LightingData {
 
   /** The living room lighting level. */
-  private static int livingLevel;
+  private static int livingLevel = 10;
   /** The dining room lighting level. */
-  private static int diningLevel;
+  private static int diningLevel = 5;
   /** The kitchen lighting level. */
-  private static int kitchenLevel;
+  private static int kitchenLevel = 8;
   /** The bathroom lighting level. */
-  private static int bathroomLevel;
+  private static int bathroomLevel = 6;
 
   /**
    * Accessor for the living room lighting level.
