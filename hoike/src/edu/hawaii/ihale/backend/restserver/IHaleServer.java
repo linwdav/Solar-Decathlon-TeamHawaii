@@ -34,34 +34,6 @@ public class IHaleServer extends Application {
   private static final Map<String, String> uris = new HashMap<String, String>();
   
   /**
-   * Runs the server.
-   * @param contextRoot The contextRoot.
-   * @param port The port.
-   * @throws Exception For errors.
-   */
-  public static void runServer(String contextRoot, int port) throws Exception {
-    // Create a component.
-    Component component = new Component();
-    component.getServers().add(Protocol.HTTP, port);
-    // Create an application (this class).
-    Application application = new Application();
-    
-//    @Override
-//    public Restlet createInboundRoot() {
-//      // Create a router restlet.
-//      Router router = new Router(getContext());
-//      // Attach the resources to the router.
-//      router.attach("/aquaponics/{request}", AquaponicsResource.class);
-//      // Return the root router
-//      return router;
-//    }
-    
-    // Attach the application to the component with a defined contextRoot.
-    component.getDefaultHost().attach(contextRoot, application);
-    component.start();
-  }
-  
-  /**
    * This main method starts up a web application that will on timed intervals send GET HTTP
    * requests to each system device defined in the properties and on the port connection 
    * mapped to those device URLs.
@@ -70,17 +42,36 @@ public class IHaleServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    // Run this for 5 minutes
-    for (int i = 0; i < 10; i++) {
-      readProperties();
-      for (Map.Entry<String, String> entry : uris.entrySet()) {
-        String key = entry.getKey();
-        String contextRoot = "/" + key.split("/")[1] + "/" + key.split("/")[2];
-        System.out.println(contextRoot);
-        runServer(contextRoot, Integer.valueOf(entry.getValue()));
-      }
-      Thread.sleep(delay);
+    // Create a component.
+    Component component = new Component();
+    component.getServers().add(Protocol.HTTP, port);
+    // Create an application (this class).
+    Application application = null;
+    
+    readProperties();
+    for (Map.Entry<String, String> entry : uris.entrySet()) {
+      String key = entry.getKey();
+      final String contextRoot = "/" + key.split("/")[1] + "/" + key.split("/")[2];
+      int port = Integer.valueOf(entry.getValue());
+      //System.out.println(contextRoot);
+      //System.out.println(port);
+      
+      application = new Application() {  
+        @Override
+        public Restlet createInboundRoot() {  
+          // Create a router restlet.
+          Router router = new Router(getContext());
+          // Attach the resources to the router.
+          router.attach(contextRoot, AquaponicsResource.class);
+          // Return the root router
+          return router;  
+        }   
+      };
+      
+      // Attach the application to the component with a defined contextRoot.
+      component.getDefaultHost().attach(contextRoot, application);
     }
+    component.start();
   }
   
   /**
