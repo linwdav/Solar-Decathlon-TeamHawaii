@@ -29,10 +29,10 @@
         	</fileset>
         	</path>
   	 
-        <ivy:retrieve organisation="org.restlet" module="restlet" revision="${restlet.version}" pattern="${lib.dir}/restlet/[artifact].[ext]" sync="true" inline="true" conf="default,xml" log="download-only" transitive="true" type="jar,javadoc" />
-        <path id="restlet.path">
-          <fileset dir="${lib.dir}/restlet">
-            <include name="*.jar" />
+    <ivy:retrieve organisation="org.restlet" module="restlet" revision="${restlet.version}" pattern="${lib.dir}/restlet/[artifact].[ext]" sync="true" inline="true" conf="default,xml" log="download-only" transitive="true" type="jar,javadoc" />
+    <path id="restlet.path">
+      <fileset dir="${lib.dir}/restlet">
+        <include name="*.jar" />
       	
       </fileset>
     </path>
@@ -40,9 +40,9 @@
 
   <!-- Basic properties for this system. -->
   <property name="system.name" value="iHale-API-Maka" />
-  <property name="system.main.class" value="edu.hawaii.contactdb.client.ContactClient" />
+  <property name="system.main.class" value="edu.hawaii.ihale.api.hsim.HsimServer" />
   <property name="majorVersionNumber" value="1" />
-  <property name="minorVersionNumber" value="0" />
+  <property name="minorVersionNumber" value="1" />
   <tstamp>
     <format property="DAYSTAMP" pattern="Mdd" />
     <format property="TSTAMP" pattern="HH:mm:ss" />

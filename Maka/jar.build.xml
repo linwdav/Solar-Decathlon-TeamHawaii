@@ -19,8 +19,8 @@
     
     <!-- Copy over the required libraries. --> 
     <unjar dest="${tmp.dir}">
-      <fileset dir="${lib.dir}/berkeleydb">
-        <include name="berkeley-db-java.jar" />
+      <fileset dir="${lib.dir}/restlet">
+        <include name="*.jar" />
       </fileset>
     </unjar>
 
