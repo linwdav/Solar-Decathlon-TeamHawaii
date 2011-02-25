@@ -22,6 +22,12 @@
       <fileset dir="${lib.dir}/berkeleydb">
         <include name="berkeley-db-java.jar" />
       </fileset>
+      <fileset dir="${lib.dir}/restlet">
+        <include name="org.restlet.ext.xml.jar" />
+      </fileset>
+      <fileset dir="${lib.dir}/restlet">
+        <include name="org.restlet.jar" />
+      </fileset>
     </unjar>
 
     <jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">
