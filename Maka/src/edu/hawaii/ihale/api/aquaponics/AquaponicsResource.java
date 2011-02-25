@@ -22,7 +22,7 @@ public class AquaponicsResource extends Arduino {
    * Constructor.
    */
   public AquaponicsResource() {
-    super("aquaPonics","arduino-1");
+    super("aquaponics","arduino-1");
     keys = localKeys;
     //initialize all lights to "off"
     list = Arrays.asList(keys);
