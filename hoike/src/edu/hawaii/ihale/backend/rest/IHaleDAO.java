@@ -145,13 +145,14 @@ public class IHaleDAO implements SystemStateEntryDB {
       String key = mapEntry.getKey().toString();
       String value = keyTypePairMap.get(key);
       if (value.equalsIgnoreCase(longString)) {
-        longData.put(key, entry.getLongValue(key));
+        Long longValue = (Long) entry.getLongValue(key);
+        longData.put(key, longValue);
       }
       else if (value.equalsIgnoreCase(stringString)) {
         stringData.put(key, entry.getStringValue(key));
       }
       else if (value.equalsIgnoreCase(doubleString)) {
-        doubleData.put(key, entry.getDoubleValue(key));
+        doubleData.put(key, (Double) entry.getDoubleValue(key));
       }
     }
 
@@ -301,27 +302,29 @@ public class IHaleDAO implements SystemStateEntryDB {
         argElement.setAttributeNode(valueAttribute);
       }
             
-      String host = "http://localhost:";
-      String port = "";
+      String url = "";
       Map<String, String> deviceToPortMap = uris;
 
       // Figure out which port is mapped to the system and device we want to send the doCommand
       // operation for. Iterate through the keys which are the device URIs and if it contains
-      // portions of the system name and device name then it is a URI match and retrieve the port
-      // value mapped to the device URI.
+      // portions of the system name and device name then it is a URI match and retrieve the URL
+      // mapped to the device URI.
       Iterator<Entry<String, String>> iterator = deviceToPortMap.entrySet().iterator();
       while (iterator.hasNext()) {
         Map.Entry<String, String> mapEntry = iterator.next();
         String key = mapEntry.getKey().toString();
-        if (key.contains(systemName) && key.contains(deviceName)) {
-          port = mapEntry.getValue().toString();
+        if (key.contains(systemName) && key.contains(deviceName) && (!(key.contains("/state")))) {
+          url = mapEntry.getValue().toString();
         }
       }
-      String url = host + port;
       ClientResource client = new ClientResource(Method.PUT, url);
       DomRepresentation representation = new DomRepresentation();
       representation.setDocument(doc);
       // Send the xml representation to the device. 
+      
+      System.out.println(url);
+      
+      
       client.put(representation);      
     }
     catch (ParserConfigurationException pce) {
@@ -336,6 +339,9 @@ public class IHaleDAO implements SystemStateEntryDB {
    * Create a Map from a system to its associated field values that would be returned by a system
    * device. The key to a field and its value type is concatenated into a single string separated 
    * by ||.
+   * 
+   * Note: Ensure that the field keys and system names begin with a lower-case letter. (i.e., temp).
+   *       The value type of the key can have its first letter upper-case. (i.e., Double, Long).
    */
   public static void createSystemToKeyMap() {
     
@@ -343,31 +349,31 @@ public class IHaleDAO implements SystemStateEntryDB {
     
     /** Aquaponics System **/
     keyTypePairList.add("pH||Double");
-    keyTypePairList.add("Oxygen||Double");
-    keyTypePairList.add("Temp||Long");
-    IHaleDAO.systemToFieldMap.put("Aquaponics", keyTypePairList);
+    keyTypePairList.add("oxygen||Double");
+    keyTypePairList.add("temp||Long");
+    IHaleDAO.systemToFieldMap.put("aquaponics", keyTypePairList);
     
     /** HVAC System **/
     keyTypePairList = new ArrayList<String>();
-    keyTypePairList.add("Temp||Long");
-    IHaleDAO.systemToFieldMap.put("HVAC", keyTypePairList);
+    keyTypePairList.add("temp||Long");
+    IHaleDAO.systemToFieldMap.put("hvac", keyTypePairList);
     
     /** Lighting System **/
     keyTypePairList = new ArrayList<String>();
-    keyTypePairList.add("Level||Long");
-    IHaleDAO.systemToFieldMap.put("Lighting", keyTypePairList);
+    keyTypePairList.add("level||Long");
+    IHaleDAO.systemToFieldMap.put("lighting", keyTypePairList);
     
     /** Photovoltaics System **/
     keyTypePairList = new ArrayList<String>();
     keyTypePairList.add("power||Long");
     keyTypePairList.add("energy||Long");
-    IHaleDAO.systemToFieldMap.put("Photovoltaics", keyTypePairList);
+    IHaleDAO.systemToFieldMap.put("photovoltaics", keyTypePairList);
     
     /** Electrical System **/
     keyTypePairList = new ArrayList<String>();
     keyTypePairList.add("power||Long");
     keyTypePairList.add("energy||Long");
-    IHaleDAO.systemToFieldMap.put("Electrical", keyTypePairList);
+    IHaleDAO.systemToFieldMap.put("electrical", keyTypePairList);
   }
   
   /**
@@ -378,13 +384,13 @@ public class IHaleDAO implements SystemStateEntryDB {
    * @return The key type pair map.
    */
   public Map<String, String> getTypeList(String systemName) {
-
+    
     ArrayList<String> keyTypePairList = IHaleDAO.systemToFieldMap.get(systemName);
 
     Map<String, String> keyTypePairMap = new HashMap<String, String>();
-    //String[] temp = new String[2];
+    
     for (int i = 0; i < keyTypePairList.size(); i++) {
-      // Character | are special, need to be escaped with \\
+      // Character | are special, need to be escaped with \\      
       String[] temp = keyTypePairList.get(i).split("\\|\\|");
       keyTypePairMap.put(temp[0], temp[1]);
     }
@@ -438,16 +444,19 @@ public class IHaleDAO implements SystemStateEntryDB {
     // Retrieve a helper Map to determine the key value types for use in corresponding
     // putLongDataValue, putStringDataValue, or putDoubleValue methods when a state element
     // has a certain key (i.e., pH should be a Double, Temp should be a Long).
+    
     Map<String, String> keyTypePairMap = getTypeList(systemName);
-   
+       
     // For each state element, retrieve the value of the attribute key, and the value of attribute
     // value. Then dependent on the keyTypePairMap when passed the value of the key, should denote
     // its value type. Based on the value type, then the value of the value attribute should be
     // parsed corresponding to its proper type and placed into one of the Map fields of the
     // SystemStateEntry.
     for (int i = 0; i < stateList.getLength(); i++) {
+      
       String key = ((Element) stateList.item(i)).getAttribute(keyAttributeName);
       String value = ((Element) stateList.item(i)).getAttribute(valueAttributeName);
+      
       if (keyTypePairMap.get(key).equalsIgnoreCase(longString)) {
         entry.putLongValue(key, Long.parseLong(value));
       }
@@ -471,7 +480,7 @@ public class IHaleDAO implements SystemStateEntryDB {
     // Path to where the Restlet server properties file.
     String currentDirectory = System.getProperty("user.dir");
     // Restlet server properties file name.
-    String configurationFile = "configuration.properties";
+    String configurationFile = "configuration-kai.properties";
     // Full path to the Restlet server properties file.
     String configFilePath = currentDirectory + "/" + configurationFile;
    

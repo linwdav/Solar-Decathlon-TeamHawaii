@@ -36,11 +36,11 @@ public class TestIHaleServer {
       doc.appendChild(rootElement);
       
       Attr attribute = doc.createAttribute("system");
-      attribute.setValue("Aquaponics");
+      attribute.setValue("aquaponics");
       rootElement.setAttributeNode(attribute);
       
       attribute = doc.createAttribute("device");
-      attribute.setValue("Arduino-1");
+      attribute.setValue("arduino-1");
       rootElement.setAttributeNode(attribute);
       
       attribute = doc.createAttribute("timestamp");
@@ -51,7 +51,7 @@ public class TestIHaleServer {
       Element stateElement1 = doc.createElement("state");
       rootElement.appendChild(stateElement1);
       attribute = doc.createAttribute("key");
-      attribute.setValue("Temp");
+      attribute.setValue("temp");
       stateElement1.setAttributeNode(attribute);
       attribute = doc.createAttribute("value");
       attribute.setValue("25");
@@ -61,7 +61,7 @@ public class TestIHaleServer {
       Element stateElement2 = doc.createElement("state");
       rootElement.appendChild(stateElement2);
       attribute = doc.createAttribute("key");
-      attribute.setValue("Oxygen");
+      attribute.setValue("oxygen");
       stateElement2.setAttributeNode(attribute);
       attribute = doc.createAttribute("value");
       attribute.setValue("100");
@@ -81,7 +81,7 @@ public class TestIHaleServer {
       SystemStateEntry xmlEntry = dao.xmlToSystemStateEntry(doc);
       dao.putEntry(xmlEntry);
       
-      SystemStateEntry returnedEntry = dao.getEntry("Aquaponics", "Arduino-1", 1297446335);
+      SystemStateEntry returnedEntry = dao.getEntry("aquaponics", "arduino-1", 1297446335);
       
       assertEquals("Checking for storing an entry created from a XML document and retrieving" +
           "it from the database repository.", xmlEntry.toString(), returnedEntry.toString());
