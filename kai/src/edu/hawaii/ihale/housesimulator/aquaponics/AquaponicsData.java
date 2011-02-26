@@ -1,6 +1,8 @@
 package edu.hawaii.ihale.housesimulator.aquaponics;
 
+import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
@@ -14,71 +16,72 @@ import org.w3c.dom.Element;
  * @author Anthony Kinsey
  */
 public class AquaponicsData {
+
+  // Create variables with "random" values.
+  private static Random randomGenerator = new Random();
   /** The current temperature. */
-  private static double temperature = 60 + (Math.random() * ((70 - 60) + 1));
+  private static long temperature = randomGenerator.nextInt(11) + 60;
   /** The current pH. */
-  private static double ph = 1 + (Math.random() * ((14 - 1) + 1));
+  private static double ph = 1 + (randomGenerator.nextDouble() * ((14 - 1) + 1));
   /** The current oxygen. */
-  private static double oxygen = 1 + (Math.random() * ((10 - 1) + 1));
+  private static double oxygen = 1 + (randomGenerator.nextDouble() * ((10 - 1) + 1));
 
   /**
    * Modifies the state of the system.
    */
   public static void modifySystemState() {
 
-    // Temp will change by random value between -1 and 1.
-    double curTemp = getTemperature();
-    if (curTemp > 60 && curTemp < 70) {
-      setTemperature(curTemp + (Math.random() * 2) - 1);
+    // Temperature will change by random value between -1 and 1.
+    long currentTemperature = getTemperature();
+    if (currentTemperature > 60 && currentTemperature < 70) {
+      setTemperature(currentTemperature + (randomGenerator.nextInt(2) * 2) - 1);
     }
-    else if (curTemp < 60) {
-      setTemperature(curTemp + (Math.random() * 1));
+    else if (currentTemperature < 60) {
+      setTemperature(currentTemperature + randomGenerator.nextInt(2));
     }
     else {
-      setTemperature(curTemp - (Math.random() * 1));
+      setTemperature(currentTemperature - (randomGenerator.nextInt(2)));
     }
 
     // pH will change randomly between 6.5 and 9.5
-    double curPh = getPh();
-    if (curPh > 6.5 && curPh < 9.5) {
-      double plusOrMinus = Math.random();
-      if (plusOrMinus > 0.5) {
-        setPh(curPh + Math.random());
+    double currentPh = getPh();
+    if (currentPh > 6.5 && currentPh < 9.5) {
+      if (randomGenerator.nextBoolean()) {
+        setPh(currentPh + randomGenerator.nextDouble());
       }
       else {
-        setPh(curPh - Math.random());
+        setPh(currentPh - randomGenerator.nextDouble());
       }
     }
-    else if (curPh < 6.5) {
-      setPh(curPh + Math.random());
+    else if (currentPh < 6.5) {
+      setPh(currentPh + randomGenerator.nextDouble());
     }
     else {
-      setPh(curPh - Math.random());
+      setPh(currentPh - randomGenerator.nextDouble());
     }
 
     // Oxygen will change randomly between 1 and 10
-    double curOxygen = getOxygen();
-    if (curOxygen > 1 && curOxygen < 10) {
-      double plusOrMinus = Math.random();
-      if (plusOrMinus > 0.5) {
-        setOxygen(curOxygen + Math.random());
+    double currentOxygen = getOxygen();
+    if (currentOxygen > 1 && currentOxygen < 10) {
+      if (randomGenerator.nextBoolean()) {
+        setOxygen(currentOxygen + randomGenerator.nextDouble());
       }
       else {
-        setOxygen(curOxygen - Math.random());
+        setOxygen(currentOxygen - randomGenerator.nextDouble());
       }
     }
-    else if (curOxygen < 1) {
-      setOxygen(curOxygen + Math.random());
+    else if (currentOxygen < 1) {
+      setOxygen(currentOxygen + randomGenerator.nextDouble());
     }
     else {
-      setOxygen(curOxygen - Math.random());
+      setOxygen(currentOxygen - randomGenerator.nextDouble());
     }
 
     System.out.println("----------------------");
     System.out.println("System: Aquaponics");
-    System.out.println("Temp: " + getTemperature());
-    System.out.println("pH: " + getPh());
-    System.out.println("Oxygen: " + getOxygen());
+    System.out.println("Temperature: " + getTemperature());
+    System.out.println("pH: " + roundSingleDecimal(getPh()));
+    System.out.println("Oxygen: " + roundSingleDecimal(getOxygen()));
   }
 
   /**
@@ -86,9 +89,8 @@ public class AquaponicsData {
    * 
    * @return temperature
    */
-  public static double getTemperature() {
-    int tempValue = (int) (temperature * 100.0);
-    return ((double) tempValue) / 100.0;
+  public static long getTemperature() {
+    return temperature;
   }
 
   /**
@@ -97,8 +99,7 @@ public class AquaponicsData {
    * @return ph
    */
   public static double getPh() {
-    int tempValue = (int) (ph * 100.0);
-    return ((double) tempValue) / 100.0;
+    return ph;
   }
 
   /**
@@ -107,8 +108,7 @@ public class AquaponicsData {
    * @return oxygen
    */
   public static double getOxygen() {
-    int tempValue = (int) (oxygen * 100);
-    return ((double) tempValue) / 100.0;
+    return oxygen;
   }
 
   /**
@@ -116,7 +116,7 @@ public class AquaponicsData {
    * 
    * @param newTemperature the temperature
    */
-  public static void setTemperature(double newTemperature) {
+  public static void setTemperature(long newTemperature) {
     temperature = newTemperature;
   }
 
@@ -136,6 +136,17 @@ public class AquaponicsData {
    */
   public static void setOxygen(double newOxygen) {
     oxygen = newOxygen;
+  }
+
+  /**
+   * Rounds double value to a single decimal place.
+   * 
+   * @param doubleValue A double value
+   * @return Rounded value
+   */
+  static double roundSingleDecimal(double doubleValue) {
+    DecimalFormat singleDecimal = new DecimalFormat("#.#");
+    return Double.valueOf(singleDecimal.format(doubleValue));
   }
 
   /**
@@ -166,13 +177,13 @@ public class AquaponicsData {
     // Create state tag.
     Element oxygenState = doc.createElement("state");
     oxygenState.setAttribute("key", "oxygen");
-    oxygenState.setAttribute("value", String.valueOf(getOxygen()));
+    oxygenState.setAttribute("value", String.valueOf(roundSingleDecimal(getOxygen())));
     root.appendChild(oxygenState);
 
     // Create state tag.
     Element phState = doc.createElement("state");
     phState.setAttribute("key", "pH");
-    phState.setAttribute("value", String.valueOf(getPh()));
+    phState.setAttribute("value", String.valueOf(roundSingleDecimal(getPh())));
     root.appendChild(phState);
 
     // Convert Document to DomRepresentation.
