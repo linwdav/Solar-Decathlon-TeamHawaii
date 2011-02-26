@@ -16,5 +16,6 @@ public class TestSimulatorInterface {
   @Test
   public void testParsePropertiesFile() {
     SimulatorInterface.parsePropertiesFile();
+    //SimulatorInterface.readFromDevices();
   }  
 }

@@ -30,6 +30,8 @@ public class XmlMethods {
     String system = ""; 
     String device = "";
     long timestamp = 0;
+    String key = "";
+    String value = "";
     
     try {
       
@@ -38,62 +40,76 @@ public class XmlMethods {
 
       // Get root element name of the xml document
       Node root = doc.getDocumentElement();
-      //System.out.println("Root element is " + root.getNodeName());
+      System.out.println("Root element is " + root.getNodeName());
 
       // Get attributes of root element <state-data>
       NamedNodeMap rootAttributes = root.getAttributes();
       for (int i = 0; i < rootAttributes.getLength(); i++) {
         Node rootAttribute = rootAttributes.item(i);
-        //System.out.println("AttributeName: " + rootAttribute.getNodeName() + ", attributeValue: "
-          //  + rootAttribute.getNodeValue());
+        
         String label = rootAttribute.getNodeName();
-        String value = rootAttribute.getNodeValue();
+        String val = rootAttribute.getNodeValue();
         
         
-        // Checks the label and store 
+        // Checks the label and store
         if ("system".equals(label)) {
-          system = value;
+          system = val;
         }
-        
+
         if ("device".equals(label)) {
-          device = value;
+          device = val;
         }
-        
+
         if ("timestamp".equals(label)) {
-          timestamp = Long.parseLong(value.trim());
+          timestamp = Long.parseLong(val.trim());
         }
-        
+
       }
-      
+
+      System.out.println("System: " + system + "\nDevice: " + device + "\nTimestamp: " + timestamp);
+
       // Create new SystemStateEntry object
       SystemStateEntry entry = new SystemStateEntry(system, device, timestamp);
-      
+
       // Get list of child elements
       NodeList children = root.getChildNodes();
 
       // Iterate through the child elements
       for (int i = 0; i < children.getLength(); i++) {
         Node child = children.item(i);
-     
+
         if (child.getNodeType() == Node.ELEMENT_NODE) {
+          // System.out.println(" Child element is "
+          // + child.getNodeName());
 
           // Get attributes of child element <state>
           NamedNodeMap childAttributes = child.getAttributes();
           for (int x = 0; x < childAttributes.getLength(); x++) {
             Node childAttribute = childAttributes.item(x);
-            
-            String key = childAttribute.getNodeName();
-            String value = childAttribute.getNodeValue();
-            
-            if ("pH".equals(key) || "Oxygen".equals(key) ) {
-              // Then set double
-              entry.putDoubleValue(key, Double.parseDouble(value));
+
+            String name = childAttribute.getNodeName();
+            String val = childAttribute.getNodeValue();
+
+            if ("key".equals(name)) {
+              key = val;
             }
             else {
-              // Set long
-              entry.putLongValue(key, Long.parseLong(value.trim()));
+              value = val;
             }
-            
+
+          }
+
+          if ("ph".equals(key) || "oxygen".equals(key)) {
+            // Then set double
+            entry.putDoubleValue(key, Double.parseDouble(value));
+            System.out.println("Key: " + key + ", Double: " + value);
+          }
+          else {
+            // Set long
+            // Double dvalue = Double.parseDouble(value);
+            // entry.putLongValue(key, (long) dvalue.doubleValue());
+            entry.putLongValue(key, Long.parseLong(value.trim()));
+            System.out.println("Key: " + key + ", Long: " + value);
           }
         }
       }
@@ -103,9 +119,7 @@ public class XmlMethods {
       e.printStackTrace();
       return null;
     }
-    
-    
-    
+
   } // end of method
   
   /**
