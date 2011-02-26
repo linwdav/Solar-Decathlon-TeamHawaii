@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.housesimulator.hvac;
 
 import java.util.Date;
+import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
@@ -14,29 +15,32 @@ import org.w3c.dom.Element;
  * @author Anthony Kinsey
  */
 public class HVACData {
+
+  // Create variables with "random" values.
+  private static Random randomGenerator = new Random();
   /** The current temperature. */
-  private static double temperature = 60 + (Math.random() * ((100 - 60) + 1));
+  private static long temperature = randomGenerator.nextInt(41) + 60;
 
   /**
    * Modifies the state of the system.
    */
   public static void modifySystemState() {
 
-    // Temp will change by random value between -3 and 3.
-    double curTemp = getTemperature();
-    if (curTemp > 60 && curTemp < 100) {
-      setTemperature(curTemp + (Math.random() * 7) - 3);
+    // Temperature will change by random value between -3 and 3.
+    long currentTemperature = getTemperature();
+    if (currentTemperature > 60 && currentTemperature < 100) {
+      setTemperature(currentTemperature + (randomGenerator.nextInt(7) - 3));
     }
-    else if (curTemp < 60) {
-      setTemperature(curTemp + (Math.random() * 3));
+    else if (currentTemperature < 60) {
+      setTemperature(currentTemperature + (randomGenerator.nextInt(4)));
     }
     else {
-      setTemperature(curTemp - (Math.random() * 3));
+      setTemperature(currentTemperature - (randomGenerator.nextInt(4)));
     }
 
     System.out.println("----------------------");
     System.out.println("System: HVAC");
-    System.out.println("Temp: " + getTemperature());
+    System.out.println("Temperature: " + getTemperature());
   }
 
   /**
@@ -44,9 +48,8 @@ public class HVACData {
    * 
    * @return temperature
    */
-  public static double getTemperature() {
-    int tempValue = (int) (temperature * 100.0);
-    return ((double) tempValue) / 100.0;
+  public static long getTemperature() {
+    return temperature;
   }
 
   /**
@@ -54,7 +57,7 @@ public class HVACData {
    * 
    * @param newTemperature the temperature
    */
-  public static void setTemperature(double newTemperature) {
+  public static void setTemperature(long newTemperature) {
     temperature = newTemperature;
   }
 

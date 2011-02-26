@@ -42,7 +42,7 @@ public class HVACPutResource extends ServerResource {
     String putCommand = (String) this.getRequestAttributes().get("putcommand");
 
     if ("temp".equalsIgnoreCase(putCommand) && "setTemp".equalsIgnoreCase(command)) {
-      HVACData.setTemperature(Double.parseDouble(arg));
+      HVACData.setTemperature(Long.parseLong(arg));
     }
     else {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
