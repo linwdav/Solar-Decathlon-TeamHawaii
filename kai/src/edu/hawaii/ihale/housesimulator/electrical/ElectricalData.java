@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.housesimulator.electrical;
 
 import java.util.Date;
+import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
@@ -14,10 +15,13 @@ import org.w3c.dom.Element;
  * @author Anthony Kinsey
  */
 public class ElectricalData {
+
+  /** Random generator. */
+  private static final Random randomGenerator = new Random();
   /** The current energy. */
-  private static double energy = 1000 + (Math.random() * ((2000 - 1000) + 1));
+  private static long energy = randomGenerator.nextInt(1001) + 1000;
   /** The current power. */
-  private static double power = 1000 + (Math.random() * ((2000 - 1000) + 1));
+  private static long power = randomGenerator.nextInt(1001) + 1000;
 
   /**
    * Modifies the state of the system.
@@ -25,29 +29,29 @@ public class ElectricalData {
   public static void modifySystemState() {
 
     // Energy will change by random value between 50 and -50.
-    double curEnergy = getEnergy();
-    if (curEnergy > 1000 && curEnergy < 2000) {
-      setEnergy(curEnergy + (Math.random() * 101) - 50);
+    long currentEnergy = getEnergy();
+    if (currentEnergy > 1000 && currentEnergy < 2000) {
+      setEnergy(currentEnergy + (randomGenerator.nextInt(101) - 50));
     }
-    else if (curEnergy < 1000) {
-      setEnergy(curEnergy + (Math.random() * 50));
+    else if (currentEnergy < 1000) {
+      setEnergy(currentEnergy + randomGenerator.nextInt(51));
     }
     else {
-      setEnergy(curEnergy - (Math.random() * 50));
+      setEnergy(currentEnergy - randomGenerator.nextInt(51));
     }
 
     // Power will change by random value between 50 and -50.
-    double curPower = getPower();
-    if (curPower > 1000 && curPower < 2000) {
-      setPower(curPower + (Math.random() * 101) - 50);
+    long currentPower = getPower();
+    if (currentPower > 1000 && currentPower < 2000) {
+      setPower(currentPower + (randomGenerator.nextInt(101) - 50));
     }
-    else if (curPower < 1000) {
-      setPower(curPower + (Math.random() * 50));
+    else if (currentPower < 1000) {
+      setPower(currentPower + randomGenerator.nextInt(51));
     }
     else {
-      setPower(curPower - (Math.random() * 50));
+      setPower(currentPower - randomGenerator.nextInt(51));
     }
-    
+
     System.out.println("----------------------");
     System.out.println("System: Electrical");
     System.out.println("Energy: " + getEnergy());
@@ -59,9 +63,8 @@ public class ElectricalData {
    * 
    * @return energy
    */
-  public static double getEnergy() {
-    int tempValue = (int) (energy * 100.0);
-    return ((double) tempValue) / 100.0;
+  public static long getEnergy() {
+    return energy;
   }
 
   /**
@@ -69,9 +72,8 @@ public class ElectricalData {
    * 
    * @return power
    */
-  public static double getPower() {
-    int tempValue = (int) (power * 100.0);
-    return ((double) tempValue) / 100.0;
+  public static long getPower() {
+    return power;
   }
 
   /**
@@ -79,7 +81,7 @@ public class ElectricalData {
    * 
    * @param newEnergy the energy
    */
-  public static void setEnergy(double newEnergy) {
+  public static void setEnergy(long newEnergy) {
     energy = newEnergy;
   }
 
@@ -88,7 +90,7 @@ public class ElectricalData {
    * 
    * @param newPower the power
    */
-  public static void setPower(double newPower) {
+  public static void setPower(long newPower) {
     power = newPower;
   }
 
@@ -113,11 +115,11 @@ public class ElectricalData {
     timestamp.setTextContent(String.valueOf(new Date().getTime()));
     root.appendChild(timestamp);
 
-    // Create cpower tag.
-    Element cpower = doc.createElement("cpower");
-    double calcCpower = 1000 + (Math.random() * ((2000 - 1000) + 1));
-    cpower.setTextContent(String.valueOf(calcCpower));
-    root.appendChild(cpower);
+    // // Create cpower tag.
+    // Element cpower = doc.createElement("cpower");
+    // long calcCpower = 1000 + (Math.random() * ((2000 - 1000) + 1));
+    // cpower.setTextContent(String.valueOf(calcCpower));
+    // root.appendChild(cpower);
 
     // Create meter tag.
     Element meter = doc.createElement("meter");
@@ -129,11 +131,11 @@ public class ElectricalData {
     energy.setTextContent(String.valueOf(getEnergy()));
     meter.appendChild(energy);
 
-    // Create energyWs tag.
-    Element energyWs = doc.createElement("energyWs");
-    double conversionRatio = 2.7777777777778E-7;
-    energyWs.setTextContent(String.valueOf(getEnergy() / conversionRatio));
-    meter.appendChild(energyWs);
+    // // Create energyWs tag.
+    // Element energyWs = doc.createElement("energyWs");
+    // long conversionRatio = 2.7777777777778E-7;
+    // energyWs.setTextContent(String.valueOf(getEnergy() / conversionRatio));
+    // meter.appendChild(energyWs);
 
     // Create power tag.
     Element power = doc.createElement("power");

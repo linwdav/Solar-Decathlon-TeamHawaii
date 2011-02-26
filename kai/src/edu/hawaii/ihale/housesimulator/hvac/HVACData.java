@@ -16,8 +16,8 @@ import org.w3c.dom.Element;
  */
 public class HVACData {
 
-  // Create variables with "random" values.
-  private static Random randomGenerator = new Random();
+  /** Random generator. */
+  private static final Random randomGenerator = new Random();
   /** The current temperature. */
   private static long temperature = randomGenerator.nextInt(41) + 60;
 

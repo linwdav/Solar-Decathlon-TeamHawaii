@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.housesimulator.photovoltaics;
 
 import java.util.Date;
+import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
@@ -14,10 +15,13 @@ import org.w3c.dom.Element;
  * @author Anthony Kinsey
  */
 public class PhotovoltaicsData {
+
+  /** Random generator. */
+  private static final Random randomGenerator = new Random();
   /** The current energy. */
-  private static double energy = 5000 + (Math.random() * ((6500 - 5000) + 1));
+  private static double energy = randomGenerator.nextInt(1501) + 5000;
   /** The current power. */
-  private static double power = -(Math.random() * 101);
+  private static double power = randomGenerator.nextInt(101) - 100;
 
   /**
    * Modifies the state of the system.
@@ -25,27 +29,27 @@ public class PhotovoltaicsData {
   public static void modifySystemState() {
 
     // Energy will change by random value between 200 and -200.
-    double curEnergy = getEnergy();
-    if (curEnergy > 5000 && curEnergy < 6500) {
-      setEnergy(curEnergy + (Math.random() * 201) - 200);
+    double currentEnergy = getEnergy();
+    if (currentEnergy > 5000 && currentEnergy < 6500) {
+      setEnergy(currentEnergy + (randomGenerator.nextInt(401) - 200));
     }
-    else if (curEnergy < 5000) {
-      setEnergy(curEnergy + (Math.random() * 200));
+    else if (currentEnergy < 5000) {
+      setEnergy(currentEnergy + randomGenerator.nextInt(201));
     }
     else {
-      setEnergy(curEnergy - (Math.random() * 200));
+      setEnergy(currentEnergy - randomGenerator.nextInt(201));
     }
 
     // Power will change by random value between 20 and -20.
-    double curPower = getPower();
-    if (curPower < 0 && curPower > -100) {
-      setPower(curPower + (Math.random() * 41) - 20);
+    double currentPower = getPower();
+    if (currentPower < 0 && currentPower > -100) {
+      setPower(currentPower + (randomGenerator.nextInt(41) - 20));
     }
-    else if (curPower < -100) {
-      setPower(curPower + (Math.random() * 20));
+    else if (currentPower < -100) {
+      setPower(currentPower + randomGenerator.nextInt(21));
     }
     else {
-      setPower(curPower - (Math.random() * 50));
+      setPower(currentPower - randomGenerator.nextInt(21));
     }
 
     System.out.println("----------------------");
@@ -60,8 +64,7 @@ public class PhotovoltaicsData {
    * @return energy
    */
   public static double getEnergy() {
-    int tempValue = (int) (energy * 100.0);
-    return ((double) tempValue) / 100.0;
+    return energy;
   }
 
   /**
@@ -70,8 +73,7 @@ public class PhotovoltaicsData {
    * @return power
    */
   public static double getPower() {
-    int tempValue = (int) (power * 100.0);
-    return ((double) tempValue) / 100.0;
+    return power;
   }
 
   /**
@@ -113,11 +115,11 @@ public class PhotovoltaicsData {
     timestamp.setTextContent(String.valueOf(new Date().getTime()));
     root.appendChild(timestamp);
 
-    // Create cpower tag.
-    Element cpower = doc.createElement("cpower");
-    double calcCpower = -(Math.random() * 101);
-    cpower.setTextContent(String.valueOf(calcCpower));
-    root.appendChild(cpower);
+    // // Create cpower tag.
+    // Element cpower = doc.createElement("cpower");
+    // double calcCpower = -(Math.random() * 101);
+    // cpower.setTextContent(String.valueOf(calcCpower));
+    // root.appendChild(cpower);
 
     // Create meter tag.
     Element meter = doc.createElement("meter");
@@ -129,11 +131,11 @@ public class PhotovoltaicsData {
     energy.setTextContent(String.valueOf(getEnergy()));
     meter.appendChild(energy);
 
-    // Create energyWs tag.
-    Element energyWs = doc.createElement("energyWs");
-    double conversionRatio = 2.7777777777778E-7;
-    energyWs.setTextContent(String.valueOf(getEnergy() / conversionRatio));
-    meter.appendChild(energyWs);
+    // // Create energyWs tag.
+    // Element energyWs = doc.createElement("energyWs");
+    // double conversionRatio = 2.7777777777778E-7;
+    // energyWs.setTextContent(String.valueOf(getEnergy() / conversionRatio));
+    // meter.appendChild(energyWs);
 
     // Create power tag.
     Element power = doc.createElement("power");

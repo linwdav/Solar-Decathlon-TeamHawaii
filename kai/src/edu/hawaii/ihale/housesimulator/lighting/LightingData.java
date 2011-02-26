@@ -17,25 +17,28 @@ import org.w3c.dom.Element;
 public class LightingData {
 
   /** The living room lighting level. */
-  private static int livingLevel = 100;
+  private static long livingLevel = 100;
   /** The dining room lighting level. */
-  private static int diningLevel = 80;
+  private static long diningLevel = 80;
   /** The kitchen lighting level. */
-  private static int kitchenLevel = 0;
+  private static long kitchenLevel = 0;
   /** The bathroom lighting level. */
-  private static int bathroomLevel = 0;
+  private static long bathroomLevel = 0;
 
   /**
    * Modifies the state of the system.
    */
   public static void modifySystemState() {
+    final Random randomGenerator = new Random();
 
     // Living Room lights will be on ~60% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randLivingLevel = Math.random();
+    double randLivingLevel = randomGenerator.nextDouble();
     if (randLivingLevel > 0.4) {
-      setLivingLevel(new Random().nextInt(100));
+      if (randomGenerator.nextBoolean()) {
+        setLivingLevel(new Random().nextInt(100));
+      }
     }
     else {
       setLivingLevel(0);
@@ -44,31 +47,37 @@ public class LightingData {
     // Living Room lights will be on ~20% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randDiningLevel = Math.random();
+    double randDiningLevel = randomGenerator.nextDouble();
     if (randDiningLevel > 0.8) {
-      setDiningLevel(new Random().nextInt(100));
+      if (randomGenerator.nextBoolean()) {
+        setDiningLevel(randomGenerator.nextInt(101));
+      }
     }
     else {
       setDiningLevel(0);
     }
-    
+
     // Kitchen lights will be on ~15% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randKitchenLevel = Math.random();
+    double randKitchenLevel = randomGenerator.nextDouble();
     if (randKitchenLevel > 0.85) {
-      setKitchenLevel(new Random().nextInt(100));
+      if (randomGenerator.nextBoolean()) {
+        setDiningLevel(randomGenerator.nextInt(101));
+      }
     }
     else {
       setKitchenLevel(0);
     }
-    
+
     // Bathroom lights will be on ~15% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randBathroomLevel = Math.random();
+    double randBathroomLevel = randomGenerator.nextDouble();
     if (randBathroomLevel > 0.85) {
-      setBathroomLevel(new Random().nextInt(100));
+      if (randomGenerator.nextBoolean()) {
+        setDiningLevel(randomGenerator.nextInt(101));
+      }
     }
     else {
       setBathroomLevel(0);
@@ -87,7 +96,7 @@ public class LightingData {
    * 
    * @return livingLevel
    */
-  public static int getLivingLevel() {
+  public static long getLivingLevel() {
     return livingLevel;
   }
 
@@ -96,7 +105,7 @@ public class LightingData {
    * 
    * @return diningLevel
    */
-  public static int getDiningLevel() {
+  public static long getDiningLevel() {
     return diningLevel;
   }
 
@@ -105,7 +114,7 @@ public class LightingData {
    * 
    * @return kitchenLevel
    */
-  public static int getKitchenLevel() {
+  public static long getKitchenLevel() {
     return kitchenLevel;
   }
 
@@ -114,7 +123,7 @@ public class LightingData {
    * 
    * @return bathroomLevel
    */
-  public static int getBathroomLevel() {
+  public static long getBathroomLevel() {
     return bathroomLevel;
   }
 
@@ -123,7 +132,7 @@ public class LightingData {
    * 
    * @param newLivingLevel the level
    */
-  public static void setLivingLevel(int newLivingLevel) {
+  public static void setLivingLevel(long newLivingLevel) {
     livingLevel = newLivingLevel;
   }
 
@@ -133,7 +142,7 @@ public class LightingData {
    * @param newDiningLevel the level
    */
 
-  public static void setDiningLevel(int newDiningLevel) {
+  public static void setDiningLevel(long newDiningLevel) {
     diningLevel = newDiningLevel;
   }
 
@@ -143,7 +152,7 @@ public class LightingData {
    * @param newKitchenLevel the level
    */
 
-  public static void setKitchenLevel(int newKitchenLevel) {
+  public static void setKitchenLevel(long newKitchenLevel) {
     kitchenLevel = newKitchenLevel;
   }
 
@@ -152,7 +161,7 @@ public class LightingData {
    * 
    * @param newBathroomLevel the level
    */
-  public static void setBathroomLevel(int newBathroomLevel) {
+  public static void setBathroomLevel(long newBathroomLevel) {
     bathroomLevel = newBathroomLevel;
   }
 

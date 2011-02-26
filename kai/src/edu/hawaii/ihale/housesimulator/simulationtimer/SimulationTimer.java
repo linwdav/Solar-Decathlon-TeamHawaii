@@ -27,11 +27,12 @@ public class SimulationTimer {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    //startTimer(3);
+    // startTimer(3);
   }
 
   /**
    * Starts the timer to modify the system's states.
+   * 
    * @param stepValue how often the systems should change state
    */
   public static void startTimer(int stepValue) {
@@ -43,10 +44,10 @@ public class SimulationTimer {
         System.out.println("**********************");
         System.out.println(dateFormat.format(date));
         AquaponicsData.modifySystemState();
-        ElectricalData.modifySystemState();
         HVACData.modifySystemState();
         LightingData.modifySystemState();
         PhotovoltaicsData.modifySystemState();
+        ElectricalData.modifySystemState();
       }
     }, 0, stepValue * 1000);
 

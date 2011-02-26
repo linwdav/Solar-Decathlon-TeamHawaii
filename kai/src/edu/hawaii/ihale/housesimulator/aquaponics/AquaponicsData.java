@@ -17,14 +17,14 @@ import org.w3c.dom.Element;
  */
 public class AquaponicsData {
 
-  // Create variables with "random" values.
-  private static Random randomGenerator = new Random();
+  /** Random generator. */
+  private static final Random randomGenerator = new Random();
   /** The current temperature. */
   private static long temperature = randomGenerator.nextInt(11) + 60;
   /** The current pH. */
-  private static double ph = 1 + (randomGenerator.nextDouble() * ((14 - 1) + 1));
+  private static double ph = (randomGenerator.nextDouble() * 3) + 6.5;
   /** The current oxygen. */
-  private static double oxygen = 1 + (randomGenerator.nextDouble() * ((10 - 1) + 1));
+  private static double oxygen = (randomGenerator.nextDouble() * 9) + 1;
 
   /**
    * Modifies the state of the system.

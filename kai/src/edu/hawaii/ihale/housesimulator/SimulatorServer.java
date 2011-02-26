@@ -73,7 +73,8 @@ public class SimulatorServer extends Application {
    */
   public static void main(String[] args) throws Exception {
     if (args.length == 0) {
-      System.out.println("Must supply an integer as an argument.");
+      System.out.println("Must enter an integer as a valid argument.");
+      System.out.println("New sensor data will be updated according to argument.");
       System.exit(0);
     }
     runServer();
