@@ -34,97 +34,57 @@ public class LightingData {
     // Living Room lights will be on ~60% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randLivingLevel = randomGenerator.nextDouble();
-    if (randLivingLevel > 0.4) {
+    if (randomGenerator.nextDouble() > 0.4) {
       if (randomGenerator.nextBoolean()) {
-        setLivingLevel(new Random().nextInt(100));
+        livingLevel = randomGenerator.nextInt(101);
       }
     }
     else {
-      setLivingLevel(0);
+      livingLevel = 0;
     }
 
-    // Living Room lights will be on ~20% of the time
+    // Dining Room lights will be on ~20% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randDiningLevel = randomGenerator.nextDouble();
-    if (randDiningLevel > 0.8) {
+    if (randomGenerator.nextDouble() > 0.8) {
       if (randomGenerator.nextBoolean()) {
-        setDiningLevel(randomGenerator.nextInt(101));
+        diningLevel = randomGenerator.nextInt(101);
       }
     }
     else {
-      setDiningLevel(0);
+      diningLevel = 0;
     }
 
     // Kitchen lights will be on ~15% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randKitchenLevel = randomGenerator.nextDouble();
-    if (randKitchenLevel > 0.85) {
+    if (randomGenerator.nextDouble() > 0.85) {
       if (randomGenerator.nextBoolean()) {
-        setDiningLevel(randomGenerator.nextInt(101));
+        kitchenLevel = randomGenerator.nextInt(101);
       }
     }
     else {
-      setKitchenLevel(0);
+      kitchenLevel = 0;
     }
 
     // Bathroom lights will be on ~15% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
-    double randBathroomLevel = randomGenerator.nextDouble();
-    if (randBathroomLevel > 0.85) {
+    if (randomGenerator.nextDouble() > 0.85) {
       if (randomGenerator.nextBoolean()) {
-        setDiningLevel(randomGenerator.nextInt(101));
+        bathroomLevel = randomGenerator.nextInt(101);
       }
     }
     else {
-      setBathroomLevel(0);
+      bathroomLevel = 0;
     }
 
     System.out.println("----------------------");
     System.out.println("System: Lighting");
-    System.out.println("Living Room Level: " + getLivingLevel());
-    System.out.println("Dining Room Level: " + getDiningLevel());
-    System.out.println("Kitchen Room Level: " + getKitchenLevel());
-    System.out.println("Bathroom Level: " + getBathroomLevel());
-  }
-
-  /**
-   * Accessor for the living room lighting level.
-   * 
-   * @return livingLevel
-   */
-  public static long getLivingLevel() {
-    return livingLevel;
-  }
-
-  /**
-   * Accessor for the dining room lighting level.
-   * 
-   * @return diningLevel
-   */
-  public static long getDiningLevel() {
-    return diningLevel;
-  }
-
-  /**
-   * Accessor for the kitchen lighting level.
-   * 
-   * @return kitchenLevel
-   */
-  public static long getKitchenLevel() {
-    return kitchenLevel;
-  }
-
-  /**
-   * Accessor for the bathroom lighting level.
-   * 
-   * @return bathroomLevel
-   */
-  public static long getBathroomLevel() {
-    return bathroomLevel;
+    System.out.println("Living Room Level: " + livingLevel);
+    System.out.println("Dining Room Level: " + diningLevel);
+    System.out.println("Kitchen Room Level: " + kitchenLevel);
+    System.out.println("Bathroom Level: " + bathroomLevel);
   }
 
   /**
@@ -183,7 +143,7 @@ public class LightingData {
     root.setAttribute("system", "lighting");
 
     String device = "device";
-    
+
     // Set attribute according to room.
     if ("living".equalsIgnoreCase(room)) {
       root.setAttribute(device, "arduino-5");
@@ -208,16 +168,16 @@ public class LightingData {
     String value = "value";
     // Retrieve lighting level according to room.
     if ("living".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(getLivingLevel()));
+      levelState.setAttribute(value, String.valueOf(livingLevel));
     }
     else if ("dining".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(getDiningLevel()));
+      levelState.setAttribute(value, String.valueOf(diningLevel));
     }
     else if ("kitchen".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(getKitchenLevel()));
+      levelState.setAttribute(value, String.valueOf(kitchenLevel));
     }
     else if ("bathroom".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(getBathroomLevel()));
+      levelState.setAttribute(value, String.valueOf(bathroomLevel));
     }
 
     root.appendChild(levelState);
