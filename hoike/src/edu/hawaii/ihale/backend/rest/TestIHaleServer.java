@@ -26,6 +26,17 @@ public class TestIHaleServer {
         
     try {
       
+      /** The device name attribute name. */
+      String deviceNameAttributeName = "device";
+      /** The timestamp attribute name. */
+      String timestampAttributeName = "timestamp";
+      /** The state element name. */
+      String stateElementName = "state";
+      /** The key attribute name */
+      String keyAttributeName = "key";
+      /** The value attribute name */
+      String valueAttributeName = "value";
+      
       // Create the Document instance representing this XML.
       DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
       DocumentBuilder builder = factory.newDocumentBuilder();
@@ -39,26 +50,26 @@ public class TestIHaleServer {
       attribute.setValue("aquaponics");
       rootElement.setAttributeNode(attribute);
       
-      attribute = doc.createAttribute("device");
+      attribute = doc.createAttribute(deviceNameAttributeName);
       attribute.setValue("arduino-1");
       rootElement.setAttributeNode(attribute);
       
-      attribute = doc.createAttribute("timestamp");
+      attribute = doc.createAttribute(timestampAttributeName);
       attribute.setValue("1297446335");
       rootElement.setAttributeNode(attribute);
       
-      // Attach the first state element (Temp field) to state-data parent
-      Element stateElement1 = doc.createElement("state");
+      // Attach the first state element (temp field) to state-data parent
+      Element stateElement1 = doc.createElement(stateElementName);
       rootElement.appendChild(stateElement1);
-      attribute = doc.createAttribute("key");
+      attribute = doc.createAttribute(keyAttributeName);
       attribute.setValue("temp");
       stateElement1.setAttributeNode(attribute);
-      attribute = doc.createAttribute("value");
+      attribute = doc.createAttribute(valueAttributeName);
       attribute.setValue("25");
       stateElement1.setAttributeNode(attribute);
       
-      // Attach the second state element (Oxygen field) to state-data parent
-      Element stateElement2 = doc.createElement("state");
+      // Attach the second state element (oxygen field) to state-data parent
+      Element stateElement2 = doc.createElement(stateElementName);
       rootElement.appendChild(stateElement2);
       attribute = doc.createAttribute("key");
       attribute.setValue("oxygen");
@@ -68,7 +79,7 @@ public class TestIHaleServer {
       stateElement2.setAttributeNode(attribute);
       
       // Attach the third state element (pH field) to state-data parent.
-      Element stateElement3 = doc.createElement("state");
+      Element stateElement3 = doc.createElement(stateElementName);
       rootElement.appendChild(stateElement3);
       attribute = doc.createAttribute("key");
       attribute.setValue("pH");

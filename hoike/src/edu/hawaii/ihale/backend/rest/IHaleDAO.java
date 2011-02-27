@@ -1,13 +1,12 @@
 package edu.hawaii.ihale.backend.rest;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Properties;
 import java.util.Map.Entry;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -70,8 +69,15 @@ public class IHaleDAO implements SystemStateEntryDB {
   }
   
   static {
+    // Create a Map from a system to its associated field values that would be returned by a system
+    // device. The key to a field and its value type is concatenated into a single string separated 
+    // by ||. 
+    // i.e., key = aquaponics , value = ArrayList<String> ->
+    //       with items pH||Double , oxygen||Double , temp||Long
     createSystemToKeyMap();
-    createDeviceToPortMap();
+    // Retrieve the mapping of device ip addresses to port numbers as defined in the properties 
+    // file.
+    uris = IHaleServer.getUris();
   }
 
   /**
@@ -305,7 +311,11 @@ public class IHaleDAO implements SystemStateEntryDB {
             
       String url = "";
       Map<String, String> deviceToPortMap = uris;
-
+      // A String used for assist matching to a URL that contains the field to be affected,
+      // i.e., /lighting/living/level or /aquaponics/temp whereas the command String is
+      // setLevel or setTemp.
+      String fieldToAffect = lowerCaseFirstLetter(command.substring(3));
+      
       // Figure out which port is mapped to the system and device we want to send the doCommand
       // operation for. Iterate through the keys which are the device URIs and if it contains
       // portions of the system name and device name then it is a URI match and retrieve the URL
@@ -314,7 +324,8 @@ public class IHaleDAO implements SystemStateEntryDB {
       while (iterator.hasNext()) {
         Map.Entry<String, String> mapEntry = iterator.next();
         String key = mapEntry.getKey().toString();
-        if (key.contains(systemName) && key.contains(deviceName) && (!(key.contains("/state")))) {
+        if (key.contains(systemName) && key.contains(deviceName) && (!(key.contains("/state")))
+            && key.contains(fieldToAffect)) {
           url = mapEntry.getValue().toString();
         }
       }
@@ -474,40 +485,6 @@ public class IHaleDAO implements SystemStateEntryDB {
     }
     return entry;
   }
- 
-  /**
-   * Create a mapping mapping of device ip address to port number from a properties file.
-   * (i.e., arduino-7.halepilihonua.hawaii.edu/lighting/state=7006 may be a line in the file)
-   *
-   */
-  public static void createDeviceToPortMap() {
-   
-    // Path to where the Restlet server properties file.
-    String currentDirectory = System.getProperty("user.dir");
-    // Restlet server properties file name.
-    String configurationFile = "configuration-kai.properties";
-    // Full path to the Restlet server properties file.
-    String configFilePath = currentDirectory + "/" + configurationFile;
-   
-    try {
-     
-      FileInputStream is = new FileInputStream(configFilePath);
-      Properties prop = new Properties();
-      prop.load(is);
-      String key = "";
-      String value = "";
-      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
-        key = (String) propItem.getKey();
-        value = (String) propItem.getValue();
-        uris.put(key, value);
-      }
-      is.close();
-    }
-    catch (IOException e) {
-     System.out.println("failed to read properties file");
-     System.out.println(configFilePath);
-    }
-  }
   
   /**
    * Lower-cases the first letter of a word, used to keep incoming XML information consistent
@@ -519,6 +496,6 @@ public class IHaleDAO implements SystemStateEntryDB {
   public String lowerCaseFirstLetter(String word) {
     String s1 = word.substring(0, 1);
     String s2 = word.substring(1);
-    return word = s1.toLowerCase() + s2;
+    return s1.toLowerCase(Locale.US) + s2;
   }
 }

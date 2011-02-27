@@ -28,7 +28,8 @@ public class IHaleServer {
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
   // Restlet server properties file name.
-  private static String configurationFile = "configuration-kai.properties";
+  private static String configurationFile = "configuration-maka.properties";
+  //private static String configurationFile = "configuration-kai.properties";
   //private static String configurationFile = "configuration.properties";
 
   // Full path to the Restlet server properties file.
@@ -38,6 +39,8 @@ public class IHaleServer {
   private static final long interval = 5000;
   
   // Contains the mapping of device urls to port numbers as defined in the properties file.
+  // i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
+  //       value = http://localhost:8001/aquaponics/state
   private static final Map<String, String> uris = new HashMap<String, String>();
   
   /**
@@ -56,30 +59,42 @@ public class IHaleServer {
       // a string phrase /state (indication to a GET URL to a system device) send a HTTP GET
       // on that URL.
       for (Map.Entry<String, String> entry : uris.entrySet()) {
-        if (entry.getValue().contains("/state")) {
+        // Currently doesn't support eguage API XML keys and value types.
+        if (entry.getValue().contains("/state") && (!(entry.getKey().contains("egauge")))) {
           String url = entry.getValue();
+          // Some configuration properties mapped devices to URLs that look like
+          // localhost:7103/lighting/living/state without the protocol name.
+          if (!(url.contains("http://"))) {
+            url = "http://" + url;
+          }
           
-          
+          // For console debugging.
+          System.out.println(url);
           
           ClientResource client = new ClientResource(url);
           // client.get should return a Representation of a xmlDocument.
           DomRepresentation representation = new DomRepresentation(client.get());
+            
+          // For console debugging.
+          System.out.println(getStringFromDocument(representation.getDocument()));
           
-          // Currently doesn't support eguage API XML keys and value types.
-          if (!(entry.getKey().contains("egauge"))) {
-            // For console debugging.
-            System.out.println(url);
-            System.out.println(getStringFromDocument(representation.getDocument()));
-          
-            // From the XML information returned regarding the state of the system device,
-            // create an entry and put it into the database repository.
-            IHaleDAO dao = new IHaleDAO();
-            SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
-            dao.putEntry(entryFromGet);
+          // From the XML information returned regarding the state of the system device,
+          // create an entry and put it into the database repository.
+          IHaleDAO dao = new IHaleDAO();
+          SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
+          dao.putEntry(entryFromGet);
          
-            // Finite amount of connections and transactions allowed, must release.
-            client.release();
-          }
+          // Test Case: Retrieve the entry that was stored in the database repository.
+          /*
+          SystemStateEntry returnedEntry = 
+            dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
+                entryFromGet.getTimestamp());
+          System.out.println(entryFromGet.getSystemName() + "\t" + entryFromGet.getDeviceName() 
+              + "\t" + entryFromGet.getTimestamp());
+          */
+            
+          // Finite amount of connections and transactions allowed, must release.
+          client.release();
         }
       }
       Thread.sleep(interval);
@@ -130,5 +145,16 @@ public class IHaleServer {
       ex.printStackTrace();
       return null;
     }
-  } 
+  }
+  
+  /**
+   * Returns the mapping of device urls to port numbers as defined in the properties file.
+   *  i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
+   *        value = http://localhost:8001/aquaponics/state
+   *
+   * @return Map of devices to port.
+   */
+  public static Map<String, String> getUris() {
+    return uris;
+  }
 }
