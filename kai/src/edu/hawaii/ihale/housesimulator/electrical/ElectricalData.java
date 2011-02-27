@@ -18,80 +18,48 @@ public class ElectricalData {
 
   /** Random generator. */
   private static final Random randomGenerator = new Random();
+
   /** The current energy. */
   private static long energy = randomGenerator.nextInt(1001) + 1000;
   /** The current power. */
   private static long power = randomGenerator.nextInt(1001) + 1000;
+
+  /** The max value energy will increment by. */
+  private static final long energyIncrement = 50;
+  /** The max value power will increment by. */
+  private static final long powerIncrement = 50;
 
   /**
    * Modifies the state of the system.
    */
   public static void modifySystemState() {
 
-    // Energy will change by random value between 50 and -50.
-    long currentEnergy = getEnergy();
-    if (currentEnergy > 1000 && currentEnergy < 2000) {
-      setEnergy(currentEnergy + (randomGenerator.nextInt(101) - 50));
+    // Increments energy randomly
+    if (energy > 1000 && energy < 2000) {
+      energy += (randomGenerator.nextInt((int) energyIncrement * 2) - energyIncrement);
     }
-    else if (currentEnergy < 1000) {
-      setEnergy(currentEnergy + randomGenerator.nextInt(51));
+    else if (energy < 1000) {
+      energy += randomGenerator.nextInt((int) energyIncrement + 1);
     }
     else {
-      setEnergy(currentEnergy - randomGenerator.nextInt(51));
+      energy -= randomGenerator.nextInt((int) energyIncrement + 1);
     }
 
-    // Power will change by random value between 50 and -50.
-    long currentPower = getPower();
-    if (currentPower > 1000 && currentPower < 2000) {
-      setPower(currentPower + (randomGenerator.nextInt(101) - 50));
+    // Increments power randomly
+    if (power > 1000 && power < 2000) {
+      power += randomGenerator.nextInt((int) powerIncrement * 2) - powerIncrement;
     }
-    else if (currentPower < 1000) {
-      setPower(currentPower + randomGenerator.nextInt(51));
+    else if (power < 1000) {
+      power = power + randomGenerator.nextInt((int) powerIncrement + 1);
     }
     else {
-      setPower(currentPower - randomGenerator.nextInt(51));
+      power = power - randomGenerator.nextInt((int) powerIncrement + 1);
     }
 
     System.out.println("----------------------");
     System.out.println("System: Electrical");
-    System.out.println("Energy: " + getEnergy());
-    System.out.println("Power: " + getPower());
-  }
-
-  /**
-   * Accessor for energy.
-   * 
-   * @return energy
-   */
-  public static long getEnergy() {
-    return energy;
-  }
-
-  /**
-   * Accessor for power.
-   * 
-   * @return power
-   */
-  public static long getPower() {
-    return power;
-  }
-
-  /**
-   * Sets the energy.
-   * 
-   * @param newEnergy the energy
-   */
-  public static void setEnergy(long newEnergy) {
-    energy = newEnergy;
-  }
-
-  /**
-   * Sets the power.
-   * 
-   * @param newPower the power
-   */
-  public static void setPower(long newPower) {
-    power = newPower;
+    System.out.println("Energy: " + energy);
+    System.out.println("Power: " + power);
   }
 
   /**
@@ -128,18 +96,18 @@ public class ElectricalData {
 
     // Create energy tag.
     Element energy = doc.createElement("energy");
-    energy.setTextContent(String.valueOf(getEnergy()));
+    energy.setTextContent(String.valueOf(energy));
     meter.appendChild(energy);
 
     // // Create energyWs tag.
     // Element energyWs = doc.createElement("energyWs");
     // long conversionRatio = 2.7777777777778E-7;
-    // energyWs.setTextContent(String.valueOf(getEnergy() / conversionRatio));
+    // energyWs.setTextContent(String.valueOf(energy / conversionRatio));
     // meter.appendChild(energyWs);
 
     // Create power tag.
     Element power = doc.createElement("power");
-    power.setTextContent(String.valueOf(getPower()));
+    power.setTextContent(String.valueOf(power));
     meter.appendChild(power);
 
     // Convert Document to DomRepresentation.

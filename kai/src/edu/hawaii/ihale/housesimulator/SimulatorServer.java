@@ -20,9 +20,8 @@ import edu.hawaii.ihale.housesimulator.simulationtimer.SimulationTimer;
 public class SimulatorServer extends Application {
 
   /**
-   * Start servers running beginning on the specified port. Applications and their resources are
-   * specified in their respective classes. Make the the amount of servers added matches the amount
-   * of applications to be attached.
+   * Start servers running beginning on ports. Applications and their resources are specified in
+   * their respective classes.
    * 
    * @throws Exception if problems occur starting up this server.
    */

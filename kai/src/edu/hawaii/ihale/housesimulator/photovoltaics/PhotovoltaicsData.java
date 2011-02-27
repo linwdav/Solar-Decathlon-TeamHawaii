@@ -18,10 +18,16 @@ public class PhotovoltaicsData {
 
   /** Random generator. */
   private static final Random randomGenerator = new Random();
+
   /** The current energy. */
-  private static double energy = randomGenerator.nextInt(1501) + 5000;
+  private static long energy = randomGenerator.nextInt(1501) + 5000;
   /** The current power. */
-  private static double power = randomGenerator.nextInt(101) - 100;
+  private static long power = randomGenerator.nextInt(101) - 100;
+
+  /** The max value energy will increment by. */
+  private static final long energyIncrement = 200;
+  /** The max value power will increment by. */
+  private static final long powerIncrement = 20;
 
   /**
    * Modifies the state of the system.
@@ -29,69 +35,32 @@ public class PhotovoltaicsData {
   public static void modifySystemState() {
 
     // Energy will change by random value between 200 and -200.
-    double currentEnergy = getEnergy();
-    if (currentEnergy > 5000 && currentEnergy < 6500) {
-      setEnergy(currentEnergy + (randomGenerator.nextInt(401) - 200));
+    // Increments energy randomly
+    if (energy > 5000 && energy < 6500) {
+      energy += (randomGenerator.nextInt((int) energyIncrement * 2) - energyIncrement);
     }
-    else if (currentEnergy < 5000) {
-      setEnergy(currentEnergy + randomGenerator.nextInt(201));
+    else if (energy < 5000) {
+      energy += randomGenerator.nextInt((int) energyIncrement + 1);
     }
     else {
-      setEnergy(currentEnergy - randomGenerator.nextInt(201));
+      energy -= randomGenerator.nextInt((int) energyIncrement + 1);
     }
 
-    // Power will change by random value between 20 and -20.
-    double currentPower = getPower();
-    if (currentPower < 0 && currentPower > -100) {
-      setPower(currentPower + (randomGenerator.nextInt(41) - 20));
+    // Increments power randomly
+    if (power > -100 && power < 0) {
+      power += randomGenerator.nextInt((int) powerIncrement * 2) - powerIncrement;
     }
-    else if (currentPower < -100) {
-      setPower(currentPower + randomGenerator.nextInt(21));
+    else if (power < -100) {
+      power = power + randomGenerator.nextInt((int) powerIncrement + 1);
     }
     else {
-      setPower(currentPower - randomGenerator.nextInt(21));
+      power = power - randomGenerator.nextInt((int) powerIncrement + 1);
     }
 
     System.out.println("----------------------");
     System.out.println("System: Photovoltaics");
-    System.out.println("Energy: " + getEnergy());
-    System.out.println("Power: " + getPower());
-  }
-
-  /**
-   * Accessor for energy.
-   * 
-   * @return energy
-   */
-  public static double getEnergy() {
-    return energy;
-  }
-
-  /**
-   * Accessor for power.
-   * 
-   * @return power
-   */
-  public static double getPower() {
-    return power;
-  }
-
-  /**
-   * Sets the energy.
-   * 
-   * @param newEnergy the energy
-   */
-  public static void setEnergy(double newEnergy) {
-    energy = newEnergy;
-  }
-
-  /**
-   * Sets the power.
-   * 
-   * @param newPower the power
-   */
-  public static void setPower(double newPower) {
-    power = newPower;
+    System.out.println("Energy: " + energy);
+    System.out.println("Power: " + power);
   }
 
   /**
@@ -128,18 +97,18 @@ public class PhotovoltaicsData {
 
     // Create energy tag.
     Element energy = doc.createElement("energy");
-    energy.setTextContent(String.valueOf(getEnergy()));
+    energy.setTextContent(String.valueOf(energy));
     meter.appendChild(energy);
 
     // // Create energyWs tag.
     // Element energyWs = doc.createElement("energyWs");
     // double conversionRatio = 2.7777777777778E-7;
-    // energyWs.setTextContent(String.valueOf(getEnergy() / conversionRatio));
+    // energyWs.setTextContent(String.valueOf(energy / conversionRatio));
     // meter.appendChild(energyWs);
 
     // Create power tag.
     Element power = doc.createElement("power");
-    power.setTextContent(String.valueOf(getPower()));
+    power.setTextContent(String.valueOf(power));
     meter.appendChild(power);
 
     // Convert Document to DomRepresentation.
