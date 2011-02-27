@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.api.hsim;
  
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -26,14 +27,15 @@ import org.w3c.dom.Element;
  * @author Team Maka
  */
 public abstract class Arduino extends ServerResource {
-  String systemName, deviceName;
+  public String systemName, deviceName, room;
   /** The random number generator.*/
   public static final MT mt = new MT(Calendar.MILLISECOND);
   Date date = new Date();
   /** Magic map that holds all the data.*/
   @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "MS_SHOULD_BE_FINAL", 
     justification = "data Map should definately not be final...")
-  public static Map<String, String> data = new ConcurrentHashMap<String, String>();
+  public static Map<String, String> data = new ConcurrentHashMap<String,String>();
+  public static Map<String, Map<String,String>> data2 = new ConcurrentHashMap<String, Map<String,String>>();
   /** The array of keys for use in the system.*/
   public String[] keys;
   /** A list of all the keys for use in the system. */
@@ -77,21 +79,32 @@ public abstract class Arduino extends ServerResource {
     //create root element
     Element rootElement = doc.createElement("state-data");
     rootElement.setAttribute("system", systemName);
-    rootElement.setAttribute("deviceName", deviceName);
+    rootElement.setAttribute("device", deviceName);
     rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
     
+    //System.out.println("string: temp");
+    //System.out.println("map: " + data2.get("aquaponics").get("temp"));
     //refresh data
     poll();
     //loop through states and attach
+    //System.out.println(Arrays.toString(list.toArray()));
     for (String s : list) {
       Element e = doc.createElement("state");
-      e.setAttribute("key",s.substring(2));
-      e.setAttribute("value", data.get(s));
+      e.setAttribute("key", s);
+      //System.out.println("string: " + s);
+      //System.out.println("map: " + data2.get("aquaponics").get(s));
+      if (systemName.equalsIgnoreCase("lighting")) {
+        e.setAttribute("value", data2.get(room).get(s));
+      }
+      else {
+        e.setAttribute("value", data2.get(systemName).get(s));
+      }
       rootElement.appendChild(e);
     }
+    
     doc.appendChild(rootElement);
     result.setDocument(doc);
-    return  result;
+    return result;
   }
   
   /**
@@ -103,7 +116,7 @@ public abstract class Arduino extends ServerResource {
   public void putVal(Representation representation) throws Exception {
     // Get the XML representation of the Contact.
     String key = (String)this.getRequestAttributes().get("key");
-    if (!list.contains(systemName.substring(0,2) + key)) {
+    if (!list.contains(key)) {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
     DomRepresentation domRepresentation = new DomRepresentation(representation);

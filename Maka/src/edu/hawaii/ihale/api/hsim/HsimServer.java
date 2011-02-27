@@ -165,10 +165,11 @@ public class HsimServer extends Application {
     runServer("/hvac",8002);
     //runServer("/photovoltaics",8003);
     //runServer("/electrical",8004;
-    runServer("/living",8005);
-    runServer("/dining",8006);
-    runServer("/kitchen",8007);
-    runServer("/bath",8008);
+    runServer("/lighting",8005);
+    runServer("/lighting",8006);
+    runServer("/lighting",8007);
+    runServer("/lighting",8008);
+    
     long delay = 5000; //milliseconds
     long period = 5000;
     time = new Timer();
@@ -186,25 +187,6 @@ public class HsimServer extends Application {
           client.get();
         }
       }
+    }, delay, period);
   }
-    , delay, period);
-// */
-  }
-  
-  /**
-   * Specify the dispatching restlet that maps URIs to their associated resources for processing.
-   * @return A Router restlet that implements dispatching.
-   */
-  /*
-  @Override
-  public Restlet createInboundRoot() {
-      // Create a router restlet.
-      Router router = new Router(getContext());
-      // Attach the resources to the router.
-      router.attach("/Aquaponics/{uniqueID}", AquaponicsResource.class);
-      router.attach("/Aquaponics", AquaponicsResource.class);
-      // Return the root router
-      return router;
-  }
-  */
 }
