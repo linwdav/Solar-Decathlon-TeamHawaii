@@ -44,10 +44,10 @@ public class AquaponicsPutResource extends ServerResource {
     if ("temp".equalsIgnoreCase(putCommand) && "setTemp".equalsIgnoreCase(command)) {
       AquaponicsData.setDesiredTemperature(Long.parseLong(arg));
     }
-    if ("oxygen".equalsIgnoreCase(putCommand) && "setOxygen".equalsIgnoreCase(command)) {
+    else if ("oxygen".equalsIgnoreCase(putCommand) && "setOxygen".equalsIgnoreCase(command)) {
       AquaponicsData.setDesiredOxygen(Double.parseDouble(arg));
     }
-    if ("ph".equalsIgnoreCase(putCommand) && "setPh".equalsIgnoreCase(command)) {
+    else if ("ph".equalsIgnoreCase(putCommand) && "setPh".equalsIgnoreCase(command)) {
       AquaponicsData.setDesiredPh(Double.parseDouble(arg));
     }
     else {
