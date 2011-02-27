@@ -182,18 +182,20 @@ public class LightingData {
     Element root = doc.createElement("state-data");
     root.setAttribute("system", "lighting");
 
+    String device = "device";
+    
     // Set attribute according to room.
     if ("living".equalsIgnoreCase(room)) {
-      root.setAttribute("device", "arduino-5");
+      root.setAttribute(device, "arduino-5");
     }
     else if ("dining".equalsIgnoreCase(room)) {
-      root.setAttribute("device", "arduino-6");
+      root.setAttribute(device, "arduino-6");
     }
     else if ("kitchen".equalsIgnoreCase(room)) {
-      root.setAttribute("device", "arduino-7");
+      root.setAttribute(device, "arduino-7");
     }
     else if ("bathroom".equalsIgnoreCase(room)) {
-      root.setAttribute("device", "arduino-8");
+      root.setAttribute(device, "arduino-8");
     }
 
     root.setAttribute("timestamp", String.valueOf(new Date().getTime()));
