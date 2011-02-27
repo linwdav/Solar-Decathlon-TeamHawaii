@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.api.hsim;
  
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -34,7 +33,7 @@ public abstract class Arduino extends ServerResource {
   /** Magic map that holds all the data.*/
   @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "MS_SHOULD_BE_FINAL", 
     justification = "data Map should definately not be final...")
-  public static Map<String, String> data = new ConcurrentHashMap<String,String>();
+  //public static Map<String, String> data = new ConcurrentHashMap<String,String>();
   public static Map<String, Map<String,String>> data2 = new ConcurrentHashMap<String, Map<String,String>>();
   /** The array of keys for use in the system.*/
   public String[] keys;
