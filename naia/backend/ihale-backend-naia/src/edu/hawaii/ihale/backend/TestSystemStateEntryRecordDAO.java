@@ -51,8 +51,8 @@ public class TestSystemStateEntryRecordDAO {
     assertEquals(check, stateRecord2.getLongData().get(temp) == 72, true);
 
     // Insert into database
-    SystemStateEntryRecordDAO.putSystemStateEntryRecord(stateRecord1);
-    SystemStateEntryRecordDAO.putSystemStateEntryRecord(stateRecord2);
+    SystemStateEntryBerkeleyDB.putSystemStateEntryRecord(stateRecord1);
+    SystemStateEntryBerkeleyDB.putSystemStateEntryRecord(stateRecord2);
 
     // Create Composite Keys
     SystemStateAttributes attributes1 =
@@ -61,17 +61,17 @@ public class TestSystemStateEntryRecordDAO {
 
     // Grab records from database
     SystemStateEntryRecord stateRecord1a =
-        SystemStateEntryRecordDAO.getSystemStateEntryRecord(attributes1);
+        SystemStateEntryBerkeleyDB.getSystemStateEntryRecord(attributes1);
     SystemStateEntryRecord stateRecord2a =
-        SystemStateEntryRecordDAO.getSystemStateEntryRecord(attributes2);
+        SystemStateEntryBerkeleyDB.getSystemStateEntryRecord(attributes2);
 
     // Check to ensure records inserted correctly
     assertEquals("Check state1", stateRecord1.toString(), stateRecord1a.toString());
     assertEquals("Check state2", stateRecord2.toString(), stateRecord2a.toString());
 
     // Check to ensure deletion works properly
-    SystemStateEntryRecordDAO.deleteSystemStateEntryRecord(attributes1);
-    assertNull("Check deletion", SystemStateEntryRecordDAO.getSystemStateEntryRecord(attributes1));
+    SystemStateEntryBerkeleyDB.deleteSystemStateEntryRecord(attributes1);
+    assertNull("Check deletion", SystemStateEntryBerkeleyDB.getSystemStateEntryRecord(attributes1));
 
   } // Test method
 

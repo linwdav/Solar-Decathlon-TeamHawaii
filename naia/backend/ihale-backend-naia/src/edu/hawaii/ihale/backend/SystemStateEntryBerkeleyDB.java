@@ -1,215 +1,181 @@
 package edu.hawaii.ihale.backend;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import org.restlet.ext.xml.DomRepresentation;
-import org.restlet.resource.ClientResource;
-import org.w3c.dom.Document;
+import java.util.Set;
+import com.sleepycat.je.Environment;
+import com.sleepycat.je.EnvironmentConfig;
+import com.sleepycat.persist.EntityCursor;
+import com.sleepycat.persist.EntityStore;
+import com.sleepycat.persist.PrimaryIndex;
+import com.sleepycat.persist.SecondaryIndex;
+import com.sleepycat.persist.StoreConfig;
 import edu.hawaii.ihale.api.SystemStateEntry;
-import edu.hawaii.ihale.api.SystemStateEntryDB;
-import edu.hawaii.ihale.api.SystemStateEntryDBException;
-import edu.hawaii.ihale.api.SystemStateListener;
 
 /**
- * This class acts as an interface between the Berkeley database and the Java API for the iHale
- * Back-End System.
+ * A thread safe data access object to store and retrieve System State instances.
  * 
- * @author Team Nai'a
- * 
+ * @author Philip Johnson
  */
-public class SystemStateEntryBerkeleyDB implements SystemStateEntryDB {
+public class SystemStateEntryBerkeleyDB {
+  /** The EntityStore for our System State database. */
+  private static EntityStore store;
 
-  // Variable to store the device identifier
-  int device = 0;
+  /** The PrimaryIndex accessor for System States. */
+  private static PrimaryIndex<SystemStateAttributes, SystemStateEntryRecord> primaryIndexAttributes;
 
-  // Hard Coding of the Java API Data Dictionary
+  // Secondary Index accessors for system and device names
+  private static SecondaryIndex<String, SystemStateAttributes, 
+    SystemStateEntryRecord> secondarySystemName;
 
-  // Aquaponics
-  static List<String> aquaponicsDouble = Arrays.asList("pH", "Oxygen");
-  static List<String> aquaponicsLong = Arrays.asList("Temp");
-
-  // HVAC
-  static List<String> HVACLong = Arrays.asList("Temp");
-
-  // Lighting
-  static List<String> LightingLong = Arrays.asList("Level");
-  
-  // Photovoltaics
-  static List<String> PVLong = Arrays.asList("Power", "Energy");
-
-  // Electricity Consumption
-  static List<String> ECLong = Arrays.asList("Power", "Energy");
-
-  // Holds an in-memory list of system state listeners.
-  static List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
-  
-  /**
-   * Sets the device.
-   * 
-   * Device numbers for arduino's are 1-1 correspondence.
-   * 
-   * egauge-1 is device 9
-   * egauge-2 is device 10
-   * 
-   * @param i The device number.
-   */
-  public void setDevice(int i) {
-    this.device = i;
+  /** Initialize the static variables at class load time to ensure there's only one of them. */
+  static {
+    // Create the directory in which this store will live.
+    String currDir = System.getProperty("user.dir");
+    File dir = new File(currDir, "SystemState");
+    boolean success = dir.mkdirs();
+    if (success) {
+      System.out.println("Created the System State DB directory.");
+    }
+    EnvironmentConfig envConfig = new EnvironmentConfig();
+    StoreConfig storeConfig = new StoreConfig();
+    envConfig.setAllowCreate(true);
+    storeConfig.setAllowCreate(true);
+    Environment env = new Environment(dir, envConfig);
+    SystemStateEntryBerkeleyDB.store = new EntityStore(env, "EntityStore", storeConfig);
+    primaryIndexAttributes =
+        store.getPrimaryIndex(SystemStateAttributes.class, SystemStateEntryRecord.class);
+    secondarySystemName =
+        store.getSecondaryIndex(primaryIndexAttributes, String.class, "systemName");
+    // Guarantee that the environment is closed upon system exit.
+    DbShutdownHook shutdownHook = new DbShutdownHook(env, store);
+    Runtime.getRuntime().addShutdownHook(shutdownHook);
   }
 
   /**
-   * Adds a listener to this repository whose entryAdded method will be invoked whenever an entry is
-   * added to the database for the system name associated with this listener. This method provides a
-   * way for the user interface (for example, Wicket) to update itself whenever new data comes in to
-   * the repository.
+   * Store the passed record in the database.
    * 
-   * @param listener The listener whose entryAdded method will be called.
+   * @param record The record to store.
    */
-  @Override
-  public void addSystemStateListener(SystemStateListener listener) {
-    listeners.add(listener);
+  public static void putSystemStateEntryRecord(SystemStateEntryRecord record) {
+    primaryIndexAttributes.put(record);
   }
-
-  @Override
-  public void deleteEntry(String systemName, String deviceName, long timestamp) {
-    // Create lookup object for database
-    SystemStateAttributes attributes = new SystemStateAttributes(systemName, deviceName, timestamp);
-
-    // Delete entry
-    SystemStateEntryRecordDAO.deleteSystemStateEntryRecord(attributes);
-  }
-
-  @Override
-  public void doCommand(String systemName, String deviceName, String command, List<String> value) {
-    Document doc = XmlMethods.createXml(deviceName, command, value);
-    
-    // Final portion of the URL
-    String valueTitle;
-    if (("setLevel").equalsIgnoreCase(command)) {
-      valueTitle = "level";      
-    }
-    else {
-      valueTitle = "temp";
-    }
-    
-    // Construct the correct uri to send the command to
-    String key = "http://" + deviceName + ".halepilihonua.hawaii.edu/"; 
-    String host = SimulatorInterface.getHosts().get(key) + 
-              systemName.toLowerCase(Locale.US) + "/" + valueTitle;
-        
-    try {
-      // Send the XML representation of the command to the appropriate device 
-      ClientResource  client = new ClientResource(host);
-      DomRepresentation representation;
-      representation = new DomRepresentation();
-      representation.setDocument(doc);
-      client.put(representation);
-    }
-    catch (IOException e) {
-      e.printStackTrace();
-    }
-    
-  } // End Do Command
-
-  @Override
-  public List<String> getDeviceNames(String systemName) throws SystemStateEntryDBException {
-    return SystemStateEntryRecordDAO.getDeviceNames(systemName);
-    
-  }
-
-  @Override
-  public List<SystemStateEntry> getEntries(String systemName, String deviceName, long startTime,
-      long endTime) throws SystemStateEntryDBException {
-    return SystemStateEntryRecordDAO.getEntries(systemName, deviceName, startTime, endTime);
-  }
-
-  @Override
-  public SystemStateEntry getEntry(String systemName, String deviceName, long timestamp) {
-
-    // Create an attributes object (this is the composite key)
-    SystemStateAttributes attributes = new SystemStateAttributes(systemName, deviceName, timestamp);
-
-    // Get the database entity associated with the given parameters
-    SystemStateEntryRecordDAO.getSystemStateEntryRecord(attributes);
-
-    return null;
-  }
-
-  @Override
-  public List<String> getSystemNames() {
-    return SystemStateEntryRecordDAO.getSystemNames();
-  }
-
-  @Override
-  public void putEntry(SystemStateEntry entry) {
-
-    // Create BerkeleyDB-Friendly Entity object
-    SystemStateEntryRecord record = convertEntry(entry);
-
-    // Insert into database
-    SystemStateEntryRecordDAO.putSystemStateEntryRecord(record);
-
-    // Here is where the listeners get invoked if they are interested in this systemName.
-    for (SystemStateListener listener : listeners) {
-      if (entry.getSystemName().equals(listener.getSystemName())) {
-        listener.entryAdded(entry);
-      }
-    } // End for each
-
-  } // End putEntry
 
   /**
-   * Converts the SystemStateEntry into a Berkeley DB friendly object.
+   * Retrieve a System State record from the database given its key.
    * 
-   * @param entry The SystemStateEntry to convert
-   * @return Berkeley DB-Friendly SystemStateEntryRecord Entity
+   * @param attributes The composite primary key for the Contact.
+   * @return The System State instance.
    */
-  public SystemStateEntryRecord convertEntry(SystemStateEntry entry) {
+  public static SystemStateEntryRecord getSystemStateEntryRecord(SystemStateAttributes attributes) {
+    return primaryIndexAttributes.get(attributes);
+  }
 
-    boolean validDevice = true;
+  /**
+   * Removes the System State instance with the specified attributes.
+   * 
+   * @param attributes The unique ID for the instance to be deleted.
+   */
+  public static void deleteSystemStateEntryRecord(SystemStateAttributes attributes) {
+    primaryIndexAttributes.delete(attributes);
+  }
 
-    // Converts the entry to an Entity object
-    switch (device) {
+  /**
+   * Gets a list of all system names in the database.
+   * 
+   * @return The list of system names
+   */
+  public static List<String> getSystemNames() {
 
-    // Aquaponics Device (Arduino-1)
-    case 1:
-      return new SystemStateEntryRecord(entry, aquaponicsLong, aquaponicsDouble, null);
+    // List of names to return
+    List<String> list = new ArrayList<String>();
 
-      // HVAC Device (Arduino-3)
-    case 3:
-      return new SystemStateEntryRecord(entry, HVACLong, null, null);
+    // Holds current entity while we iterate through the collection
+    SystemStateEntryRecord record;
 
-      // Lighting Devices (Arudino 5-8)
-    case 5:
-    case 6:
-    case 7:
-    case 8:
-      return new SystemStateEntryRecord(entry, LightingLong, null, null);
+    // Cursor to allow us to iterate through the database
+    EntityCursor<SystemStateEntryRecord> cursor = secondarySystemName.entities();
 
-    case 9:
-      return new SystemStateEntryRecord(entry, PVLong, null, null);
-    case 10: 
-      return new SystemStateEntryRecord(entry, ECLong, null, null);
-      // If no applicable devices are given, then set boolean value to false
-    default:
-      validDevice = false;
-      break;
-    } // End Switch
-
-    // If it's not a valid device, throw a database exception
-    if (!validDevice) {
-      try {
-        throw new SystemStateEntryDBException("Not a valid device");
-      }
-      catch (SystemStateEntryDBException e) {
-        System.out.println(e.getMessage());
-        e.printStackTrace();
-      }
+    // Look through database and only add unique names to the list
+    while ((record = cursor.nextNoDup()) != null) {
+      list.add(record.getAttributes().getSystemName());
     }
-    return null;
-  } // End convertEntry
+    cursor.close();
+    return list;
+  } // End getSystemNames
 
-} // End DB Class
+  /**
+   * Gets a list of all device names in the database for a given system.
+   * 
+   * @param systemName The system to retrieve devices for
+   * @return The list of device names
+   */
+  public static List<String> getDeviceNames(String systemName) {
+
+    // List of names to return
+    Set<String> set = new HashSet<String>();
+    List<String> list = new ArrayList<String>();
+
+    // Holds current entity while we iterate through the collection
+    SystemStateEntryRecord record;
+
+    // Cursor to allow us to iterate through the database
+    EntityCursor<SystemStateEntryRecord> cursor =
+        secondarySystemName.subIndex(systemName).entities();
+
+    // Look through database and only add unique names to the set
+    while ((record = cursor.next()) != null) {
+      set.add(record.getAttributes().getDeviceName());
+    }
+
+    // Transfer all entries to the list (so no duplicates)
+    for (String s : set) {
+      list.add(s);
+    }
+    cursor.close();
+    return list;
+
+  } // End getSystemNames
+
+  /**
+   * Searches the database for all entries on a particular system and device that falls within the
+   * given time parameters.
+   * 
+   * @param systemName The system name.
+   * @param deviceName The device name.
+   * @param startTime The start time.
+   * @param endTime The end time.
+   * @return a list of all system state entrie's that fit the criteria
+   */
+  public static List<SystemStateEntry> getEntries(String systemName, String deviceName,
+      long startTime, long endTime) {
+
+    List<SystemStateEntry> list = new ArrayList<SystemStateEntry>();
+
+    // Holds current entity while we iterate through the collection
+    SystemStateEntryRecord record;
+
+    // Cursor to allow us to iterate through the database
+    EntityCursor<SystemStateEntryRecord> cursor =
+        secondarySystemName.subIndex(systemName).entities();
+
+    // Look through database and only add those records that fit
+    // the criteria.
+    while ((record = cursor.next()) != null) {
+      if (record.getAttributes().getDeviceName().equals(deviceName)) {
+        long timestamp = record.getAttributes().getTimestamp();
+        if (timestamp <= endTime && timestamp >= startTime) {
+
+          // Convert from entity to entry
+          list.add(record.convertToEntry());
+        }
+      }
+    } // End while
+
+    cursor.close();
+    return list;
+  }
+
+} // End DAO class
