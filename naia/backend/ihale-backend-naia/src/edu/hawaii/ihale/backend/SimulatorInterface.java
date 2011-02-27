@@ -159,7 +159,7 @@ public class SimulatorInterface {
     catch (IOException e) {
       e.printStackTrace();
     }
-  }
+  } // End parse properties file
 
   /**
    * Accessor method for hosts key-value pairs.
@@ -169,5 +169,19 @@ public class SimulatorInterface {
   public static Map<String, String> getHosts() {
     return host;
   }
-
+  
+  /**
+   * Prints out the hosts HashMap.
+   */
+  public static void printHosts() {
+    
+    // Loop through the hash map and print key-value pairs
+    for (Map.Entry<String, String> entry : host.entrySet()) {
+      System.out.print(entry.getKey() + "  ||  ");
+      System.out.println(entry.getValue());
+    }
+    System.out.println();
+    
+  } // End printHosts
+  
 } // End Simulator Interface

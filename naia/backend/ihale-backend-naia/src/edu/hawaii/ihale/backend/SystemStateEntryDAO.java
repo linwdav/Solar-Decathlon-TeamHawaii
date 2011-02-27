@@ -186,7 +186,7 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     }
 
     // Lighting Device (Arduino 5-8)
-    else if ("hvac".equalsIgnoreCase(device)) {
+    else if ("lighting".equalsIgnoreCase(device)) {
       return new SystemStateEntryRecord(entry, LightingLong, null, null);
     }
 
