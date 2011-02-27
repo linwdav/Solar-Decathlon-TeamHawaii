@@ -1,6 +1,8 @@
 package edu.hawaii.ihale.api.hvac;
  
 import java.util.Arrays; 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import edu.hawaii.ihale.api.hsim.Arduino; 
 
 /**
@@ -13,9 +15,10 @@ import edu.hawaii.ihale.api.hsim.Arduino;
   justification = "Restlet makes multiple instances of this class, so " +
   "nonstatic variables are lost.")
 public class HVACResource extends Arduino { 
+  static Map<String, String> hvacData;
   //These hold the goal state defined by the user.
   static double goalTemp = 79.4;
-  String temp = "hvtemp";
+  String temp = "temp";
   //Array of known keys 
   String[] localKeys = {temp}; 
   
@@ -24,11 +27,19 @@ public class HVACResource extends Arduino {
    */
   public HVACResource() {
     super("hvac","arduino-3");
+    if (hvacData == null) {
+      hvacData = new ConcurrentHashMap<String, String>();
+      hvacData.put(temp, String.valueOf(goalTemp));
+      data2.put("hvac", hvacData);
+
+    }
     keys = localKeys; 
     list = Arrays.asList(keys);
+    /*
     if (data.get(temp) == null) {
       data.put(temp, "" + goalTemp);
     }
+    */
 
   }
   
@@ -37,7 +48,7 @@ public class HVACResource extends Arduino {
    */
   @Override
   public void poll() {
-    data.put(temp, "" + getTemp());
+    hvacData.put(temp, String.valueOf(getTemp()));
 
   }
   
@@ -73,7 +84,7 @@ public class HVACResource extends Arduino {
    * @return An updated temp value.
    */
   private double getTemp() {
-    double currentTemp = sToD(data.get(temp));
+    double currentTemp = sToD(hvacData.get(temp));
     return (currentTemp + goalTemp) / 2 + mt.nextDouble(-.05,.05); 
   }
   
