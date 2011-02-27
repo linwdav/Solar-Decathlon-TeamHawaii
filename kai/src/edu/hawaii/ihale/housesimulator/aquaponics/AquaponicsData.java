@@ -20,122 +20,100 @@ public class AquaponicsData {
   /** Random generator. */
   private static final Random randomGenerator = new Random();
   /** The current temperature. */
-  private static long temperature = randomGenerator.nextInt(11) + 60;
+  private static long temperature = (long) randomGenerator.nextInt(11) + 60;
   /** The current pH. */
   private static double ph = (randomGenerator.nextDouble() * 3) + 6.5;
   /** The current oxygen. */
   private static double oxygen = (randomGenerator.nextDouble() * 9) + 1;
+
+  /** The desired temperature. */
+  private static long desiredTemperature = (long) randomGenerator.nextInt(11) + 60;
+  /** The desired pH. */
+  private static double desiredPh = (randomGenerator.nextDouble() * 3) + 6.5;
+  /** The desired oxygen. */
+  private static double desiredOxygen = (randomGenerator.nextDouble() * 9) + 1;
+
+  /** The max value temperature will increment by. */
+  private static final long temperatureIncrement = 1;
+  /** The max value pH will increment by. */
+  private static double phIncrement = 0.2;
+  /** The max value oxygen will increment by. */
+  private static double oxygenIncrement = 0.3;
 
   /**
    * Modifies the state of the system.
    */
   public static void modifySystemState() {
 
-    // Temperature will change by random value between -1 and 1.
-    long currentTemperature = getTemperature();
-    if (currentTemperature > 60 && currentTemperature < 70) {
-      setTemperature(currentTemperature + (randomGenerator.nextInt(2) * 2) - 1);
+    // Increments temperature within range of the desired temperature.
+    if (temperature > (desiredTemperature - temperatureIncrement)
+        && temperature < (desiredTemperature + temperatureIncrement)) {
+      temperature +=
+          randomGenerator.nextInt(((int) temperatureIncrement * 2) + 1) - temperatureIncrement;
     }
-    else if (currentTemperature < 60) {
-      setTemperature(currentTemperature + randomGenerator.nextInt(2));
+    else if (temperature < desiredTemperature) {
+      temperature += randomGenerator.nextInt((int) temperatureIncrement + 1);
     }
     else {
-      setTemperature(currentTemperature - (randomGenerator.nextInt(2)));
+      temperature -= (randomGenerator.nextInt((int) temperatureIncrement + 1));
     }
 
-    // pH will change randomly between 6.5 and 9.5
-    double currentPh = getPh();
-    if (currentPh > 6.5 && currentPh < 9.5) {
-      if (randomGenerator.nextBoolean()) {
-        setPh(currentPh + randomGenerator.nextDouble());
-      }
-      else {
-        setPh(currentPh - randomGenerator.nextDouble());
-      }
+    // Increments pH within range of the desired pH.
+    if (ph > (desiredPh - phIncrement) && ph < (desiredPh + phIncrement)) {
+      ph += (randomGenerator.nextDouble() * (phIncrement * 2)) - phIncrement;
     }
-    else if (currentPh < 6.5) {
-      setPh(currentPh + randomGenerator.nextDouble());
+    else if (ph < desiredPh) {
+      ph += (randomGenerator.nextDouble() * phIncrement);
     }
     else {
-      setPh(currentPh - randomGenerator.nextDouble());
+      ph -= (randomGenerator.nextDouble() * phIncrement);
     }
 
-    // Oxygen will change randomly between 1 and 10
-    double currentOxygen = getOxygen();
-    if (currentOxygen > 1 && currentOxygen < 10) {
-      if (randomGenerator.nextBoolean()) {
-        setOxygen(currentOxygen + randomGenerator.nextDouble());
-      }
-      else {
-        setOxygen(currentOxygen - randomGenerator.nextDouble());
-      }
+    // Increments oxygen within range of the desired oxygen.
+    if (oxygen > (desiredOxygen - oxygenIncrement) && oxygen < (desiredOxygen + oxygenIncrement)) {
+      oxygen += (randomGenerator.nextDouble() * (oxygenIncrement * 2)) - oxygenIncrement;
     }
-    else if (currentOxygen < 1) {
-      setOxygen(currentOxygen + randomGenerator.nextDouble());
+    else if (oxygen < desiredOxygen) {
+      oxygen += (randomGenerator.nextDouble() * oxygenIncrement);
     }
     else {
-      setOxygen(currentOxygen - randomGenerator.nextDouble());
+      oxygen -= (randomGenerator.nextDouble() * oxygenIncrement);
     }
 
     System.out.println("----------------------");
     System.out.println("System: Aquaponics");
-    System.out.println("Temperature: " + getTemperature());
-    System.out.println("pH: " + roundSingleDecimal(getPh()));
-    System.out.println("Oxygen: " + roundSingleDecimal(getOxygen()));
+    System.out.println("Temperature: " + temperature + " (Desired: " + desiredTemperature + ")");
+    System.out.println("pH: " + roundSingleDecimal(ph) + " (Desired: "
+        + roundSingleDecimal(desiredPh) + ")");
+    System.out.println("Oxygen: " + roundSingleDecimal(oxygen) + " (Desired: "
+        + roundSingleDecimal(desiredOxygen) + ")");
   }
 
   /**
-   * Accessor for temperature.
+   * Sets the desired temperature.
    * 
-   * @return temperature
+   * @param newDesiredTemperature the desired temperature
    */
-  public static long getTemperature() {
-    return temperature;
+  public static void setDesiredTemperature(long newDesiredTemperature) {
+    desiredTemperature = newDesiredTemperature;
   }
 
   /**
-   * Accessor for ph.
+   * Sets the desired pH.
    * 
-   * @return ph
+   * @param newDesiredPh the ph
    */
-  public static double getPh() {
-    return ph;
+  public static void setDesiredPh(double newDesiredPh) {
+    desiredPh = newDesiredPh;
   }
 
   /**
-   * Accessor for oxygen.
+   * Sets the desired oxygen.
    * 
-   * @return oxygen
+   * @param newDesiredOxygen the oxygen
    */
-  public static double getOxygen() {
-    return oxygen;
-  }
-
-  /**
-   * Sets the temperature.
-   * 
-   * @param newTemperature the temperature
-   */
-  public static void setTemperature(long newTemperature) {
-    temperature = newTemperature;
-  }
-
-  /**
-   * Sets the pH.
-   * 
-   * @param newPh the ph
-   */
-  public static void setPh(double newPh) {
-    ph = newPh;
-  }
-
-  /**
-   * Sets the oxygen.
-   * 
-   * @param newOxygen the oxygen
-   */
-  public static void setOxygen(double newOxygen) {
-    oxygen = newOxygen;
+  public static void setDesiredOxygen(double newDesiredOxygen) {
+    oxygen = newDesiredOxygen;
   }
 
   /**
@@ -171,19 +149,19 @@ public class AquaponicsData {
     // Create state tag.
     Element tempState = doc.createElement("state");
     tempState.setAttribute("key", "temp");
-    tempState.setAttribute("value", String.valueOf(getTemperature()));
+    tempState.setAttribute("value", String.valueOf(temperature));
     root.appendChild(tempState);
 
     // Create state tag.
     Element oxygenState = doc.createElement("state");
     oxygenState.setAttribute("key", "oxygen");
-    oxygenState.setAttribute("value", String.valueOf(roundSingleDecimal(getOxygen())));
+    oxygenState.setAttribute("value", String.valueOf(roundSingleDecimal(oxygen)));
     root.appendChild(oxygenState);
 
     // Create state tag.
     Element phState = doc.createElement("state");
     phState.setAttribute("key", "pH");
-    phState.setAttribute("value", String.valueOf(roundSingleDecimal(getPh())));
+    phState.setAttribute("value", String.valueOf(roundSingleDecimal(ph)));
     root.appendChild(phState);
 
     // Convert Document to DomRepresentation.
