@@ -18,47 +18,46 @@ public class HVACData {
 
   /** Random generator. */
   private static final Random randomGenerator = new Random();
+
   /** The current temperature. */
-  private static long temperature = randomGenerator.nextInt(41) + 60;
+  private static long temperature = (long) randomGenerator.nextInt(41) + 60;
+
+  /** The desired temperature. */
+  private static long desiredTemperature = (long) randomGenerator.nextInt(41) + 60;
+
+  /** The max value temperature will increment by. */
+  private static final long temperatureIncrement = 1;
 
   /**
    * Modifies the state of the system.
    */
   public static void modifySystemState() {
 
-    // Temperature will change by random value between -3 and 3.
-    long currentTemperature = getTemperature();
-    if (currentTemperature > 60 && currentTemperature < 100) {
-      setTemperature(currentTemperature + (randomGenerator.nextInt(7) - 3));
+    // Increments temperature within range of the desired temperature.
+    if (temperature > (desiredTemperature - temperatureIncrement)
+        && temperature < (desiredTemperature + temperatureIncrement)) {
+      temperature +=
+          randomGenerator.nextInt(((int) temperatureIncrement * 2) + 1) - temperatureIncrement;
     }
-    else if (currentTemperature < 60) {
-      setTemperature(currentTemperature + (randomGenerator.nextInt(4)));
+    else if (temperature < desiredTemperature) {
+      temperature += randomGenerator.nextInt((int) temperatureIncrement + 1);
     }
     else {
-      setTemperature(currentTemperature - (randomGenerator.nextInt(4)));
+      temperature -= (randomGenerator.nextInt((int) temperatureIncrement + 1));
     }
 
     System.out.println("----------------------");
     System.out.println("System: HVAC");
-    System.out.println("Temperature: " + getTemperature());
+    System.out.println("Temperature: " + temperature + " (Desired: " + desiredTemperature + ")");
   }
 
   /**
-   * Accessor for temperature.
+   * Sets the desired temperature.
    * 
-   * @return temperature
+   * @param newDesiredTemperature the desired temperature
    */
-  public static long getTemperature() {
-    return temperature;
-  }
-
-  /**
-   * Sets the temperature.
-   * 
-   * @param newTemperature the temperature
-   */
-  public static void setTemperature(long newTemperature) {
-    temperature = newTemperature;
+  public static void setDesiredTemperature(long newDesiredTemperature) {
+    desiredTemperature = newDesiredTemperature;
   }
 
   /**
@@ -83,7 +82,7 @@ public class HVACData {
     // Create state tag.
     Element tempState = doc.createElement("state");
     tempState.setAttribute("key", "temp");
-    tempState.setAttribute("value", String.valueOf(getTemperature()));
+    tempState.setAttribute("value", String.valueOf(temperature));
     root.appendChild(tempState);
 
     // Convert Document to DomRepresentation.

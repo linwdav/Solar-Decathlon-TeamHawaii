@@ -19,6 +19,7 @@ public class AquaponicsData {
 
   /** Random generator. */
   private static final Random randomGenerator = new Random();
+  
   /** The current temperature. */
   private static long temperature = (long) randomGenerator.nextInt(11) + 60;
   /** The current pH. */
