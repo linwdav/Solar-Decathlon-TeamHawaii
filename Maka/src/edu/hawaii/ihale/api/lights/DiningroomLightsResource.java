@@ -1,6 +1,8 @@
 package edu.hawaii.ihale.api.lights;
  
 import java.util.Arrays; 
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import edu.hawaii.ihale.api.hsim.Arduino; 
 
 /**
@@ -12,23 +14,24 @@ import edu.hawaii.ihale.api.hsim.Arduino;
  *
  */
 public class DiningroomLightsResource extends Arduino { 
-  //Array of known keys 
-  String[] localKeys = {"dilevel"}; 
+  //Array of known keys
+  String[] localKeys = {"diningroomLevel"};
+  static Map<String, String> diningroomLightsData;
+
   
   /**
    * Constructor.
    */
   public DiningroomLightsResource() {
     super("lighting","arduino-6");
-    keys = localKeys; 
-    //initialize all lights to "off" 
-    list = Arrays.asList(keys);
-    if (data.get(localKeys[0]) == null) {
-      for (String s : list) { 
-        int val = (int) mt.nextDouble(0, 100);
-        data.put(s , "" + val);
-      }
+    room = "livingroom";
+    if (diningroomLightsData == null) {
+      diningroomLightsData = new ConcurrentHashMap<String, String>();
+      diningroomLightsData.put(localKeys[0], String.valueOf((int) mt.nextDouble(0, 100)));
+      data2.put(room, diningroomLightsData);
     }
+    keys = localKeys; 
+    list = Arrays.asList(keys);
   }
   
   /**
@@ -38,7 +41,7 @@ public class DiningroomLightsResource extends Arduino {
    */
   @Override
   public void set(String key, String val) {
-    data.put(list.get(0),val);
+    diningroomLightsData.put(list.get(0),val);
   }
 
   @Override

@@ -1,6 +1,8 @@
 package edu.hawaii.ihale.api.lights;
  
 import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import edu.hawaii.ihale.api.hsim.Arduino; 
 /**
  * Simulates the lighting in a room of the solar decathlon house.
@@ -11,7 +13,8 @@ import edu.hawaii.ihale.api.hsim.Arduino;
  *
  */
 public class BathroomLightsResource extends Arduino { 
-  String[] localKeys = {"balevel"};
+  String[] localKeys = {"bathroomLevel"};
+  static Map<String, String> bathroomLightsData;
 
   
   /**
@@ -19,15 +22,14 @@ public class BathroomLightsResource extends Arduino {
    */
   public BathroomLightsResource() {
     super("lighting","arduino-8");
-    keys = localKeys; 
-    //initialize all lights to "off"
-    list = Arrays.asList(keys);
-    if (data.get(localKeys[0]) == null) {
-      for (String s : list) { 
-        int val = (int) mt.nextDouble(0, 100);
-        data.put(s , "" + val);
-      }
+    room = "bathroom";
+    if (bathroomLightsData == null) {
+      bathroomLightsData = new ConcurrentHashMap<String, String>();
+      bathroomLightsData.put(localKeys[0], String.valueOf((int) mt.nextDouble(0, 100)));
+      data2.put(room, bathroomLightsData);
     }
+    keys = localKeys; 
+    list = Arrays.asList(keys);
   }
   
   /**
@@ -37,7 +39,7 @@ public class BathroomLightsResource extends Arduino {
    */
   @Override
   public void set(String key, String val) {
-    data.put(list.get(0),val);
+    bathroomLightsData.put(list.get(0),val);
   }
 
   @Override
