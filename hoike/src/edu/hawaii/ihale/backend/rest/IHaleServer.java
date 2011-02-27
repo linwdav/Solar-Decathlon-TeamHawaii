@@ -28,9 +28,7 @@ public class IHaleServer {
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
   // Restlet server properties file name.
-  private static String configurationFile = "configuration-maka.properties";
-  //private static String configurationFile = "configuration-kai.properties";
-  //private static String configurationFile = "configuration.properties";
+  private static String configurationFile = "configuration-kai.properties";
 
   // Full path to the Restlet server properties file.
   private static String configFilePath = currentDirectory + "/" + configurationFile;
@@ -52,7 +50,6 @@ public class IHaleServer {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    readProperties();
     // Perform GETS on all devices at a specified interval.
     while (true) {
       // For each URL entry defined in a configuration properties file, if the URL contains 
@@ -101,6 +98,10 @@ public class IHaleServer {
     }
   }
   
+  static {
+    readProperties();
+  }
+  
   /**
    * Reads the configuration file properties.
    */
@@ -116,6 +117,7 @@ public class IHaleServer {
         value = (String) propItem.getValue();
         uris.put(key, value);
       }
+      System.out.println(configurationFile);
       is.close();
     }
     catch (IOException e) {
@@ -156,5 +158,14 @@ public class IHaleServer {
    */
   public static Map<String, String> getUris() {
     return uris;
+  }
+  
+  /**
+   * Returns the configuration file name for use in the IHaleDAO class.
+   *
+   * @return Returns the configuration file name.
+   */
+  public static String getConfigurationFileName() {
+    return configurationFile;
   }
 }

@@ -120,8 +120,19 @@ public class TestIHaleDB {
     }
     
     List<String> args = new ArrayList<String>();
-    args.add("27");
-    dao.doCommand("aquaponics", "arduino-1", "setTemp", args);
-    
+    args.add("75");
+    dao.doCommand(aquaponics, "arduino-2", "setTemp", args);
+    args.clear();
+    args.add("88");
+    dao.doCommand(hvac, "arduino-4", "setTemp", args);
+    args.clear();
+    args.add("22");
+    dao.doCommand(lighting, "arduino-6", "setLevel", args);
+    args.clear();
+    args.add("6.3");
+    dao.doCommand(aquaponics, "arduino-2", "setPh", args);
+    args.clear();
+    args.add("0.336");
+    dao.doCommand(aquaponics, "arduino-2", "setOxygen", args);
   }
 }

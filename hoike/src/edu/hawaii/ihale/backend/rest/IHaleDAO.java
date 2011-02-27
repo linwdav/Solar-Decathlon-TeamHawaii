@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.backend.rest;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,12 +9,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Properties;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.restlet.data.Method;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -78,6 +81,7 @@ public class IHaleDAO implements SystemStateEntryDB {
     // Retrieve the mapping of device ip addresses to port numbers as defined in the properties 
     // file.
     uris = IHaleServer.getUris();
+    //createDeviceToPortMap(); // Same operation as uris=IHaleServer.getUris();
   }
 
   /**
@@ -329,14 +333,14 @@ public class IHaleDAO implements SystemStateEntryDB {
           url = mapEntry.getValue().toString();
         }
       }
+      
+      // For console debugging.
+      System.out.println("Sending PUT Request on: " + url);
+      
       ClientResource client = new ClientResource(Method.PUT, url);
       DomRepresentation representation = new DomRepresentation();
       representation.setDocument(doc);
       // Send the xml representation to the device. 
-      
-      System.out.println(url);
-      
-      
       client.put(representation);      
     }
     catch (ParserConfigurationException pce) {
@@ -344,6 +348,9 @@ public class IHaleDAO implements SystemStateEntryDB {
     }
     catch (IOException ioe) {
       ioe.printStackTrace();
+    }
+    catch (ResourceException re) {
+      System.out.println(re.getStatus());
     }
   }
   
@@ -497,5 +504,41 @@ public class IHaleDAO implements SystemStateEntryDB {
     String s1 = word.substring(0, 1);
     String s2 = word.substring(1);
     return s1.toLowerCase(Locale.US) + s2;
+  }
+  
+  /**
+   * Create a mapping mapping of device ip address to port number from a properties file.
+   * (i.e., arduino-7.halepilihonua.hawaii.edu/lighting/state=7006 may be a line in the file)
+   *
+   */
+  public static void createDeviceToPortMap() {
+   
+    // Path to where the Restlet server properties file.
+    String currentDirectory = System.getProperty("user.dir");
+    // Restlet server properties file name.
+    String configurationFile = IHaleServer.getConfigurationFileName();
+    // Full path to the Restlet server properties file.
+    String configFilePath = currentDirectory + "/" + configurationFile;
+   
+    System.out.println(IHaleServer.getConfigurationFileName());
+    
+    try {
+     
+      FileInputStream is = new FileInputStream(configFilePath);
+      Properties prop = new Properties();
+      prop.load(is);
+      String key = "";
+      String value = "";
+      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
+        key = (String) propItem.getKey();
+        value = (String) propItem.getValue();
+        uris.put(key, value);
+      }
+      is.close();
+    }
+    catch (IOException e) {
+     System.out.println("failed to read properties file");
+     System.out.println(configFilePath);
+    }
   }
 }
