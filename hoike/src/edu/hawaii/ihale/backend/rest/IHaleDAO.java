@@ -33,7 +33,9 @@ import edu.hawaii.ihale.backend.db.IHaleSystemStateEntry;
  * IHaleSystemEntry objects to IHaleDB methods to store into the
  * database repository.
  * 
- * The createSystemToKeyMap method must be updated whenever the Data Dictionary API is modified.
+ * The createSystemToKeyMap method must be updated whenever the Data Dictionary API is modified. At
+ * the moment all naming conventions (system name, device name, key name, etc.) begin with lower
+ * case lettering to reflect XML information in the responses.
  * 
  * The xmlToSystemStateEntry method must be updated to reflect any changes to the format the XML
  * information from system device returns.
@@ -145,14 +147,13 @@ public class IHaleDAO implements SystemStateEntryDB {
       String key = mapEntry.getKey().toString();
       String value = keyTypePairMap.get(key);
       if (value.equalsIgnoreCase(longString)) {
-        Long longValue = (Long) entry.getLongValue(key);
-        longData.put(key, longValue);
+        longData.put(key, entry.getLongValue(key));
       }
       else if (value.equalsIgnoreCase(stringString)) {
         stringData.put(key, entry.getStringValue(key));
       }
       else if (value.equalsIgnoreCase(doubleString)) {
-        doubleData.put(key, (Double) entry.getDoubleValue(key));
+        doubleData.put(key, entry.getDoubleValue(key));
       }
     }
 
@@ -340,7 +341,8 @@ public class IHaleDAO implements SystemStateEntryDB {
    * device. The key to a field and its value type is concatenated into a single string separated 
    * by ||.
    * 
-   * Note: Ensure that the field keys and system names begin with a lower-case letter. (i.e., temp).
+   * Note: Ensure that the field keys and system names begin with a lower-case letter. (i.e., temp)
+   *       since the XML information returned from system devices uses lower-case styling.
    *       The value type of the key can have its first letter upper-case. (i.e., Double, Long).
    */
   public static void createSystemToKeyMap() {
@@ -432,7 +434,9 @@ public class IHaleDAO implements SystemStateEntryDB {
     Element stateData = doc.getDocumentElement();
     // Retrieve the attributes from state-data element, the system name, device name, and timestamp.
     String systemName = stateData.getAttribute(systemNameAttributeName);
+    systemName = lowerCaseFirstLetter(systemName);
     String deviceName = stateData.getAttribute(deviceNameAttributeName);
+    deviceName = lowerCaseFirstLetter(deviceName);
     long timestamp = Long.parseLong(stateData.getAttribute(timestampAttributeName));
    
     // Create a SystemStateEntry but it still requires its Maps to be filled.
@@ -458,7 +462,8 @@ public class IHaleDAO implements SystemStateEntryDB {
       String value = ((Element) stateList.item(i)).getAttribute(valueAttributeName);
       
       if (keyTypePairMap.get(key).equalsIgnoreCase(longString)) {
-        entry.putLongValue(key, Long.parseLong(value));
+        // Sanitize input values if they use a different type to Long.
+        entry.putLongValue(key, (Double.valueOf(value)).longValue());
       }
       else if (keyTypePairMap.get(key).equalsIgnoreCase(stringString)) {
         entry.putStringValue(key, value);
@@ -502,5 +507,18 @@ public class IHaleDAO implements SystemStateEntryDB {
      System.out.println("failed to read properties file");
      System.out.println(configFilePath);
     }
+  }
+  
+  /**
+   * Lower-cases the first letter of a word, used to keep incoming XML information consistent
+   * with key naming conventions.
+   *
+   * @param word The word to modify.
+   * @return A String with its first character lower-cased.
+   */
+  public String lowerCaseFirstLetter(String word) {
+    String s1 = word.substring(0, 1);
+    String s2 = word.substring(1);
+    return word = s1.toLowerCase() + s2;
   }
 }

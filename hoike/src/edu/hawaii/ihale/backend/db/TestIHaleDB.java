@@ -121,7 +121,7 @@ public class TestIHaleDB {
     
     List<String> args = new ArrayList<String>();
     args.add("27");
-    dao.doCommand("aquaponics", "arduino-1", "setTemp", args);
+    //dao.doCommand("aquaponics", "arduino-1", "setTemp", args);
     
   }
 }
