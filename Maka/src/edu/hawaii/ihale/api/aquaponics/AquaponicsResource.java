@@ -1,6 +1,9 @@
 package edu.hawaii.ihale.api.aquaponics;
  
-import java.util.Arrays; 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import edu.hawaii.ihale.api.hsim.Arduino;
 /**
  * Simulates the Aquaponics System, holds values for temperature (temp), 
@@ -15,22 +18,25 @@ import edu.hawaii.ihale.api.hsim.Arduino;
 public class AquaponicsResource extends Arduino {
   //These hold the goal state defined by the user.
   static double goalPH = 7, goalTemp = 78, goalOxygen = .5;
-  String temp = "aqtemp", pH = "aqpH", oxygen = "aqoxygen";
-  String[] localKeys = {temp, pH, oxygen};
+  static Map<String, String> aquaponicsData;
+  final String temp = "temp", pH = "pH", oxygen = "oxygen";
+  public String[] localKeys = {temp, pH, oxygen};
   
   /**
    * Constructor.
    */
   public AquaponicsResource() {
     super("aquaponics","arduino-1");
-    keys = localKeys;
-    //initialize all lights to "off"
-    list = Arrays.asList(keys);
-    if (data.get(temp) == null) {
-      data.put(temp, "" + goalTemp);
-      data.put(pH, "" + goalPH);
-      data.put(oxygen, "" + goalOxygen);
+    if (aquaponicsData == null) {
+      aquaponicsData = new ConcurrentHashMap<String, String>();
+      aquaponicsData.put(temp, String.valueOf(goalTemp));
+      aquaponicsData.put(pH, String.valueOf(goalPH));
+      aquaponicsData.put(oxygen, String.valueOf(goalOxygen));
+      data2.put("aquaponics", aquaponicsData);
+
     }
+    keys = localKeys; 
+    list = Arrays.asList(keys);
   }
   
   /**
@@ -38,9 +44,9 @@ public class AquaponicsResource extends Arduino {
    */
   @Override
   public void poll() {
-    data.put(temp, "" + getTemp());
-    data.put(pH, "" + getPH());
-    data.put(oxygen, "" + getOxygen()); 
+    aquaponicsData.put(temp, String.valueOf(getTemp()));
+    aquaponicsData.put(pH, String.valueOf(getPH()));
+    aquaponicsData.put(oxygen, String.valueOf(getOxygen())); 
   }
   
   /**
@@ -51,15 +57,15 @@ public class AquaponicsResource extends Arduino {
   @Override
   public void set(String key, String val) {
     double v = sToD(val);
-    if (key.equalsIgnoreCase(temp.substring(2))) {
+    if (key.equalsIgnoreCase(temp)) {
       goalTemp = v;
       System.out.println("Temp set to" + goalTemp);
     }
-    else if (key.equalsIgnoreCase(pH.substring(2))) {
+    else if (key.equalsIgnoreCase(pH)) {
       goalPH = v;
       System.out.println("pH set to" + goalPH);
     }
-    else if (key.equalsIgnoreCase(oxygen.substring(2))) {
+    else if (key.equalsIgnoreCase(oxygen)) {
       goalOxygen = v;
       System.out.println("Oxygen set to" + goalOxygen);
     }
@@ -74,11 +80,11 @@ public class AquaponicsResource extends Arduino {
     double v = 0;
     try {
       v = Double.valueOf(val).doubleValue();
-   } 
+    } 
     catch (NumberFormatException e) {
       System.out.println(e);
-   }
-   return v;
+    }
+    return v;
   }
 
   /**
@@ -86,7 +92,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated pH value.
    */
   private double getPH() {
-    double currentPH = sToD(data.get(pH));
+    double currentPH = sToD(aquaponicsData.get(pH));
     return currentPH + (goalPH - currentPH) / 100 + mt.nextDouble(-.05,.05);
   }
 
@@ -96,7 +102,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated oxygen value.
    */
   private double getOxygen() {
-    double currentDO = sToD(data.get(oxygen));
+    double currentDO = sToD(aquaponicsData.get(oxygen));
     return currentDO + (goalOxygen - currentDO) / 100 + mt.nextDouble(-.01,.01);
   }
   
@@ -105,7 +111,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated temp value.
    */
   private double getTemp() {
-    double currentTemp = sToD(data.get(temp));
+    double currentTemp = sToD(aquaponicsData.get(temp));
     return currentTemp + (goalTemp - currentTemp) / 100 + mt.nextDouble(-.1,.1);
   }
   
