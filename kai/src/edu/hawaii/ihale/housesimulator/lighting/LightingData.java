@@ -139,48 +139,48 @@ public class LightingData {
     Document doc = docBuilder.newDocument();
 
     // Create root tag
-    Element root = doc.createElement("state-data");
-    root.setAttribute("system", "lighting");
+    Element rootElement = doc.createElement("state-data");
+    rootElement.setAttribute("system", "lighting");
 
     String device = "device";
 
     // Set attribute according to room.
     if ("living".equalsIgnoreCase(room)) {
-      root.setAttribute(device, "arduino-5");
+      rootElement.setAttribute(device, "arduino-5");
     }
     else if ("dining".equalsIgnoreCase(room)) {
-      root.setAttribute(device, "arduino-6");
+      rootElement.setAttribute(device, "arduino-6");
     }
     else if ("kitchen".equalsIgnoreCase(room)) {
-      root.setAttribute(device, "arduino-7");
+      rootElement.setAttribute(device, "arduino-7");
     }
     else if ("bathroom".equalsIgnoreCase(room)) {
-      root.setAttribute(device, "arduino-8");
+      rootElement.setAttribute(device, "arduino-8");
     }
 
-    root.setAttribute("timestamp", String.valueOf(new Date().getTime()));
-    doc.appendChild(root);
+    rootElement.setAttribute("timestamp", String.valueOf(new Date().getTime()));
+    doc.appendChild(rootElement);
 
     // Create state tag.
-    Element levelState = doc.createElement("state");
-    levelState.setAttribute("key", "level");
+    Element levelElement = doc.createElement("state");
+    levelElement.setAttribute("key", "level");
 
     String value = "value";
     // Retrieve lighting level according to room.
     if ("living".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(livingLevel));
+      levelElement.setAttribute(value, String.valueOf(livingLevel));
     }
     else if ("dining".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(diningLevel));
+      levelElement.setAttribute(value, String.valueOf(diningLevel));
     }
     else if ("kitchen".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(kitchenLevel));
+      levelElement.setAttribute(value, String.valueOf(kitchenLevel));
     }
     else if ("bathroom".equalsIgnoreCase(room)) {
-      levelState.setAttribute(value, String.valueOf(bathroomLevel));
+      levelElement.setAttribute(value, String.valueOf(bathroomLevel));
     }
 
-    root.appendChild(levelState);
+    rootElement.appendChild(levelElement);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();

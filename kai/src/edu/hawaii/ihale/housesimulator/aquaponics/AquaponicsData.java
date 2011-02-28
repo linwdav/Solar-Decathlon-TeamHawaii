@@ -19,7 +19,7 @@ public class AquaponicsData {
 
   /** Random generator. */
   private static final Random randomGenerator = new Random();
-  
+
   /** The current temperature. */
   private static long temperature = (long) randomGenerator.nextInt(11) + 60;
   /** The current pH. */
@@ -141,29 +141,29 @@ public class AquaponicsData {
     Document doc = docBuilder.newDocument();
 
     // Create root tag
-    Element root = doc.createElement("state-data");
-    root.setAttribute("system", "aquaponics");
-    root.setAttribute("device", "arduino-1");
-    root.setAttribute("timestamp", String.valueOf(new Date().getTime()));
-    doc.appendChild(root);
+    Element rootElement = doc.createElement("state-data");
+    rootElement.setAttribute("system", "aquaponics");
+    rootElement.setAttribute("device", "arduino-1");
+    rootElement.setAttribute("timestamp", String.valueOf(new Date().getTime()));
+    doc.appendChild(rootElement);
 
     // Create state tag.
-    Element tempState = doc.createElement("state");
-    tempState.setAttribute("key", "temp");
-    tempState.setAttribute("value", String.valueOf(temperature));
-    root.appendChild(tempState);
+    Element temperatureElement = doc.createElement("state");
+    temperatureElement.setAttribute("key", "temp");
+    temperatureElement.setAttribute("value", String.valueOf(temperature));
+    rootElement.appendChild(temperatureElement);
 
     // Create state tag.
-    Element oxygenState = doc.createElement("state");
-    oxygenState.setAttribute("key", "oxygen");
-    oxygenState.setAttribute("value", String.valueOf(roundSingleDecimal(oxygen)));
-    root.appendChild(oxygenState);
+    Element oxygenElement = doc.createElement("state");
+    oxygenElement.setAttribute("key", "oxygen");
+    oxygenElement.setAttribute("value", String.valueOf(roundSingleDecimal(oxygen)));
+    rootElement.appendChild(oxygenElement);
 
     // Create state tag.
-    Element phState = doc.createElement("state");
-    phState.setAttribute("key", "pH");
-    phState.setAttribute("value", String.valueOf(roundSingleDecimal(ph)));
-    root.appendChild(phState);
+    Element phElement = doc.createElement("state");
+    phElement.setAttribute("key", "pH");
+    phElement.setAttribute("value", String.valueOf(roundSingleDecimal(ph)));
+    rootElement.appendChild(phElement);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();

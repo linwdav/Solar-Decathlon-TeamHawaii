@@ -73,17 +73,17 @@ public class HVACData {
     Document doc = docBuilder.newDocument();
 
     // Create root tag
-    Element root = doc.createElement("state-data");
-    root.setAttribute("system", "hvac");
-    root.setAttribute("device", "arduino-3");
-    root.setAttribute("timestamp", String.valueOf(new Date().getTime()));
-    doc.appendChild(root);
+    Element rootElement = doc.createElement("state-data");
+    rootElement.setAttribute("system", "hvac");
+    rootElement.setAttribute("device", "arduino-3");
+    rootElement.setAttribute("timestamp", String.valueOf(new Date().getTime()));
+    doc.appendChild(rootElement);
 
     // Create state tag.
-    Element tempState = doc.createElement("state");
-    tempState.setAttribute("key", "temp");
-    tempState.setAttribute("value", String.valueOf(temperature));
-    root.appendChild(tempState);
+    Element temperatureElement = doc.createElement("state");
+    temperatureElement.setAttribute("key", "temp");
+    temperatureElement.setAttribute("value", String.valueOf(temperature));
+    rootElement.appendChild(temperatureElement);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();

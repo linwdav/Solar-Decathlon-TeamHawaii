@@ -75,40 +75,40 @@ public class ElectricalData {
     Document doc = docBuilder.newDocument();
 
     // Create root tag.
-    Element root = doc.createElement("measurements");
-    doc.appendChild(root);
+    Element rootElement = doc.createElement("measurements");
+    doc.appendChild(rootElement);
 
     // Create timestamp tag.
-    Element timestamp = doc.createElement("timestamp");
-    timestamp.setTextContent(String.valueOf(new Date().getTime()));
-    root.appendChild(timestamp);
+    Element timestampElement = doc.createElement("timestamp");
+    timestampElement.setTextContent(String.valueOf(new Date().getTime()));
+    rootElement.appendChild(timestampElement);
 
     // // Create cpower tag.
-    // Element cpower = doc.createElement("cpower");
+    // Element cpowerElement = doc.createElement("cpower");
     // long calcCpower = 1000 + (Math.random() * ((2000 - 1000) + 1));
-    // cpower.setTextContent(String.valueOf(calcCpower));
-    // root.appendChild(cpower);
+    // cpowerElement.setTextContent(String.valueOf(calcCpower));
+    // rootElement.appendChild(cpower);
 
     // Create meter tag.
-    Element meter = doc.createElement("meter");
-    meter.setAttribute("title", "Solar");
-    root.appendChild(meter);
+    Element meterElement = doc.createElement("meter");
+    meterElement.setAttribute("title", "Solar");
+    rootElement.appendChild(meterElement);
 
     // Create energy tag.
-    Element energy = doc.createElement("energy");
-    energy.setTextContent(String.valueOf(energy));
-    meter.appendChild(energy);
+    Element energyElement = doc.createElement("energy");
+    energyElement.setTextContent(String.valueOf(energy));
+    meterElement.appendChild(energyElement);
 
     // // Create energyWs tag.
-    // Element energyWs = doc.createElement("energyWs");
+    // Element energyWsElement = doc.createElement("energyWs");
     // long conversionRatio = 2.7777777777778E-7;
-    // energyWs.setTextContent(String.valueOf(energy / conversionRatio));
-    // meter.appendChild(energyWs);
+    // energyWsElement.setTextContent(String.valueOf(energy / conversionRatio));
+    // meterElement.appendChild(energyWsElement);
 
     // Create power tag.
-    Element power = doc.createElement("power");
-    power.setTextContent(String.valueOf(power));
-    meter.appendChild(power);
+    Element powerElement = doc.createElement("power");
+    powerElement.setTextContent(String.valueOf(power));
+    meterElement.appendChild(powerElement);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
