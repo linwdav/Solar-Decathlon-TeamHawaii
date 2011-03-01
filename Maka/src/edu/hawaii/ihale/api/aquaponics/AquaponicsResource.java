@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.api.aquaponics;
  
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -114,6 +113,7 @@ public class AquaponicsResource extends Arduino {
     double currentTemp = sToD(aquaponicsData.get(temp));
     return currentTemp + (goalTemp - currentTemp) / 100 + mt.nextDouble(-.1,.1);
   }
+
   
   /**
    * Simulates the outdoor temperature changing slowly over time based on

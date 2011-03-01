@@ -48,8 +48,9 @@ public abstract class Arduino extends ServerResource {
     this.systemName = systemName;
     this.deviceName = deviceName; 
   }
+
   /**
-   * Updates the buffer.
+   * Updates information.
    */
   public abstract void poll();
   
@@ -84,7 +85,7 @@ public abstract class Arduino extends ServerResource {
     //System.out.println("string: temp");
     //System.out.println("map: " + data2.get("aquaponics").get("temp"));
     //refresh data
-    poll();
+   // poll();
     //loop through states and attach
     //System.out.println(Arrays.toString(list.toArray()));
     for (String s : list) {

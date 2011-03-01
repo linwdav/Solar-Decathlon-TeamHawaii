@@ -3,12 +3,10 @@ package edu.hawaii.ihale.api.hsim;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
-import org.restlet.resource.ClientResource;
 import org.restlet.routing.Router;
 import edu.hawaii.ihale.api.aquaponics.AquaponicsResource;
 import edu.hawaii.ihale.api.hvac.HVACResource;
@@ -169,24 +167,8 @@ public class HsimServer extends Application {
     runServer("/lighting",8006);
     runServer("/lighting",8007);
     runServer("/lighting",8008);
-    
-    long delay = 5000; //milliseconds
-    long period = 5000;
-    time = new Timer();
-    time.scheduleAtFixedRate(new TimerTask() {
-      public void run() {
-        String tUrl;
-        ClientResource client;
-        System.out.println(names);
-        System.out.println(ports);
-        for (int i = 0; i < names.size(); i++) {
-          tUrl = String.format("http://localhost:%s/%s/state", ports.get(i),
-          names.get(i));
-          System.out.println("Refreshing: " + names.get(i));
-           client = new ClientResource(tUrl);
-          client.get();
-        }
-      }
-    }, delay, period);
+    //start refreshing
+    Refresher refresh = new Refresher();
+    refresh.start();
   }
 }
