@@ -80,7 +80,7 @@ public class Header extends WebPage {
     db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
         .getPhotovoltaicListener());
     db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-        .getConsumptionListener());
+        .getElectricalListener());
 
     // for testing purpose, may remove after the integration with backend system.
 //    try {

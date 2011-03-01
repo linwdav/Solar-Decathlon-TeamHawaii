@@ -13,6 +13,8 @@ import org.apache.wicket.model.Model;
  * @author Noah Woodden
  * @author Kevin Leong
  * @author Anthony Kinsey
+ * @author Kylan Hughes
+ * @author Chuan Lun Hung
  */
 public class AquaponicsStats extends Header {
 

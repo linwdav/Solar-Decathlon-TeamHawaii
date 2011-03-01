@@ -10,6 +10,8 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
  * sensors.
  * 
  * @author Philip Johnson
+ * @author Kylan Hughes
+ * @author Chuan Lun Hung
  * 
  */
 public class BlackMagic {
@@ -46,7 +48,7 @@ public class BlackMagic {
       else {
         timestamp = (new Date()).getTime() - (mHour * 4);
       }
-      cEntry = new SystemStateEntry("ElectricalConsumption", "eGauge-2", timestamp);
+      cEntry = new SystemStateEntry("Electrical", "eGauge-2", timestamp);
       Thread.sleep(10);
       timestamp = (new Date()).getTime();
       if (i == 1) {
@@ -85,7 +87,7 @@ public class BlackMagic {
       db.putEntry(entry);
       db.putEntry(pEntry);
       db.putEntry(cEntry);
-      // Pause for a second.
+      // Pause for a while.
       Thread.sleep(10);
     }
   }

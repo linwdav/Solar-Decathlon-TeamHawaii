@@ -15,7 +15,7 @@ public class HvacListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Hvac.
    */
   public HvacListener() {
-    super("Hvac");
+    super("HVAC");
   }
 
   /**
@@ -25,7 +25,7 @@ public class HvacListener extends SystemStateListener {
   @Override
   public void entryAdded(SystemStateEntry entry) {
     System.out.println("Something just happened in Hvac: " + entry);
-    if (entry.getLongValue("Temp") != null) {
+    if (entry.getLongValue("Temp") != -1) {
       Header.setInsideTemp(entry.getLongValue("Temp"));
     }    
   }

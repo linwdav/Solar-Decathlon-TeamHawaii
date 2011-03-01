@@ -29,6 +29,8 @@ import edu.hawaii.ihale.api.SystemStateEntryDBException;
  * @author Noah Woodden
  * @author Kevin Leong
  * @author Anthony Kinsey
+ * @author Kylan Hughes
+ * @author Chuan Lun Hung
  */
 public class Dashboard extends Header {
 
@@ -50,11 +52,11 @@ public class Dashboard extends Header {
 
   //String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
-  private static final String ELECTRICAL_CONSUMPTION = "ElectricalConsumption";
+  private static final String ELECTRICAL_CONSUMPTION = "Electrical";
   private static final String EGAUGE_1 = "eGauge-1";
   private static final String EGAUGE_2 = "eGauge-2";
   private static final String PHOTOVOLTAICS = "Photovoltaics";
-  private static final String POWER = "power";
+  private static final String POWER = "Power";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
 
@@ -135,8 +137,7 @@ public class Dashboard extends Header {
           tag.put(classTagName, "right medium-large dark-purple");
         }
       });
-      //need separate labels for dayUsage, weekUsage, and monthUsage as they are already
-      //added into a div, different hierarchy.
+      
       add(dayUsage2);
       add(weekUsage2);
       add(monthUsage2);
@@ -359,7 +360,7 @@ public class Dashboard extends Header {
     for (int i = 0; i <= 5; i++) {
       xBuf.append(daysOfWeek[(currentDay + i + 1) % 7] + "|"); //NOPMD
     }
-    xBuf.append(daysOfWeek[currentDay]);
+    xBuf.append(daysOfWeek[currentDay % 7]);
     xAxis = xBuf.toString();
     long time = (new Date()).getTime();
     List<SystemStateEntry> consumptionList = null, generationList = null;

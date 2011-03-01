@@ -27,19 +27,16 @@ public class AquaponicsListener extends SystemStateListener {
   @Override
   public void entryAdded(SystemStateEntry entry) {
     System.out.println("Something just happened in Aquaponics: " + entry);
-    Long airTemp, waterTemp;
+    long temp;
     Double pH, ec;
     try {
-      if ((airTemp = entry.getLongValue("airTemp")) != null) {
-        AquaPonics.setAirTemp(airTemp);
+      if ((temp = entry.getLongValue("Temp")) != -1) {
+        AquaPonics.setTemp(temp);
       }
-      if ((waterTemp = entry.getLongValue("waterTemp")) != null) {
-        AquaPonics.setWaterTemp(waterTemp);
-      }
-      if ((pH = entry.getDoubleValue("pH")) != null) {
+      if ((pH = entry.getDoubleValue("pH")) != -1) {
         AquaPonics.setPH(pH);
       }
-      if ((ec = entry.getDoubleValue("ec")) != null) {
+      if ((ec = entry.getDoubleValue("ec")) != -1) {
         AquaPonics.setEC(ec);
       }
 
