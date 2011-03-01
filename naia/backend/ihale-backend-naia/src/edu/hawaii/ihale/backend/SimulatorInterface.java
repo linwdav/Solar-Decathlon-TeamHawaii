@@ -119,11 +119,25 @@ public class SimulatorInterface {
    * @param deviceType The system of the device being read
    */
   public static void loadSystemState(Document doc, String deviceType) {
-
-    // Populate SystemStateEntry with XML information from the device
-    SystemStateEntry entry = XmlMethods.parseXML(doc);
+    
+    // Return System State Entry object
+    SystemStateEntry entry;
+    
+    // Handles eGauge parsing
+    if ("photovoltaics".equalsIgnoreCase(deviceType) || 
+        "electrical".equalsIgnoreCase(deviceType)) {
+      
+      entry = XmlMethods.parseEgaugeXML(deviceType, doc);
+    }
+    
+    else {
+      // Populate SystemStateEntry with XML information from the device
+      entry = XmlMethods.parseXML(doc);
+    }
+    
+    // Printing Debugging
     System.out.println(entry);
-
+    
     // Set the Device Type
     db.setDevice(deviceType);
 
@@ -136,8 +150,13 @@ public class SimulatorInterface {
    * Parses a property file and converts it to a HashMap.
    */
   public static void parsePropertiesFile() {
+    
+    // Properties file filename
+    String filename = "sims_kai.properties";
+    //String filename = "sims_maka.properties";
+    
     // Get Path to file
-    String path = System.getProperty("user.dir") + "/sims.properties";
+    String path = System.getProperty("user.dir") + "/" + filename;
 
     try {
       // Load properties file

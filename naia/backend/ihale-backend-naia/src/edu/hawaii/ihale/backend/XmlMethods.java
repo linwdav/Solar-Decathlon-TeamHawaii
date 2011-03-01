@@ -1,8 +1,17 @@
 package edu.hawaii.ihale.backend;
 
+import java.io.StringWriter;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -13,115 +22,186 @@ import edu.hawaii.ihale.api.SystemStateEntry;
 /**
  * A class that has methods that parse and create XML document.
  * 
- * @author Christopher Ramleb, Kevin Leong and Emerson Tabucol
+ * @author Christopher Ramelb, Kevin Leong and Emerson Tabucol
  */
 public class XmlMethods {
 
   /**
-   * A method to parse the XML Document from the house's systems
-   * and store it as a SystemStateEntry object.
+   * A method to parse the XML Document from the house's systems and store it as a SystemStateEntry
+   * object.
+   * 
    * @param doc The xml document from the house's systems
    * @return The populated entry
    */
-  
+
   public static SystemStateEntry parseXML(Document doc) {
 
-    // Initialize
-    String system = ""; 
+    // System State Attributes
+    String system = "";
     String device = "";
     long timestamp = 0;
-    String key = "";
-    String value = "";
-    
-    try {
-      
-      // Normalize text representation
-      doc.getDocumentElement().normalize();
 
-      // Get root element name of the xml document
-      Node root = doc.getDocumentElement();
-      System.out.println("Root element is " + root.getNodeName());
+    // Normalize text representation
+    doc.getDocumentElement().normalize();
 
-      // Get attributes of root element <state-data>
-      NamedNodeMap rootAttributes = root.getAttributes();
-      for (int i = 0; i < rootAttributes.getLength(); i++) {
-        Node rootAttribute = rootAttributes.item(i);
-        
-        String label = rootAttribute.getNodeName();
-        String val = rootAttribute.getNodeValue();
-        
-        
-        // Checks the label and store
-        if ("system".equals(label)) {
-          system = val;
-        }
+    // Get the root element
+    Element root = doc.getDocumentElement();
 
-        if ("device".equals(label)) {
-          device = val;
-        }
+    // Get all attributes from root
+    NamedNodeMap attributesMap = root.getAttributes();
 
-        if ("timestamp".equals(label)) {
-          timestamp = Long.parseLong(val.trim());
-        }
+    // Loop through all attributes
+    for (int i = 0; i < attributesMap.getLength(); i++) {
 
+      Node rootAttribute = attributesMap.item(i);
+      String label = rootAttribute.getNodeName();
+      String value = rootAttribute.getNodeValue();
+
+      // Checks the label and store in corresponding variable
+      if ("system".equalsIgnoreCase(label)) {
+        system = value;
       }
-
-      System.out.println("System: " + system + "\nDevice: " + device + "\nTimestamp: " + timestamp);
-
-      // Create new SystemStateEntry object
-      SystemStateEntry entry = new SystemStateEntry(system, device, timestamp);
-
-      // Get list of child elements
-      NodeList children = root.getChildNodes();
-
-      // Iterate through the child elements
-      for (int i = 0; i < children.getLength(); i++) {
-        Node child = children.item(i);
-
-        if (child.getNodeType() == Node.ELEMENT_NODE) {
-          // System.out.println(" Child element is "
-          // + child.getNodeName());
-
-          // Get attributes of child element <state>
-          NamedNodeMap childAttributes = child.getAttributes();
-          for (int x = 0; x < childAttributes.getLength(); x++) {
-            Node childAttribute = childAttributes.item(x);
-
-            String name = childAttribute.getNodeName();
-            String val = childAttribute.getNodeValue();
-
-            if ("key".equals(name)) {
-              key = val;
-            }
-            else {
-              value = val;
-            }
-
-          }
-
-          if ("ph".equals(key) || "oxygen".equals(key)) {
-            // Then set double
-            entry.putDoubleValue(key, Double.parseDouble(value));
-            System.out.println("Key: " + key + ", Double: " + value);
-          }
-          else {
-            // Set long
-            // Double dvalue = Double.parseDouble(value);
-            // entry.putLongValue(key, (long) dvalue.doubleValue());
-            entry.putLongValue(key, Long.parseLong(value.trim()));
-            System.out.println("Key: " + key + ", Long: " + value);
-          }
-        }
+      else if ("deviceName".equalsIgnoreCase(label)) {
+        device = value;
       }
-      return entry;
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      return null;
+      else if ("device".equalsIgnoreCase(label)) {
+        device = value;
+      }
+      else if ("timestamp".equalsIgnoreCase(label)) {
+        timestamp = Long.parseLong(value.trim());
+      }
     }
 
-  } // end of method
-  
+    System.out.println("System: " + system + "\nDevice: " + device + "\nTimestamp: " + timestamp);
+
+    // Create new SystemStateEntry object
+    SystemStateEntry entry = new SystemStateEntry(system, device, timestamp);
+
+    // Get list of child elements
+    NodeList children = root.getChildNodes();
+
+    // Loop through all children.
+    for (int i = 0; i < children.getLength(); i++) {
+
+      // Perform action on each child node
+      Node node = children.item(i);
+
+      // Get attributes associated with node
+      NamedNodeMap labels = node.getAttributes();
+
+      // Holds name (e.g., "pH") and value (e.g., 7.0)
+      String name = "";
+      String value = "";
+
+      // Loop through all attributes. There will be two
+      // name and value.
+      for (int j = 0; j < 2; j++) {
+        if (j == 0) {
+          name = labels.item(j).getTextContent();
+        }
+        else {
+          value = labels.item(j).getTextContent();
+          if ("pH".equalsIgnoreCase(name)) {
+            entry.putDoubleValue("pH", Double.parseDouble(value));
+          }
+          else if ("Oxygen".equalsIgnoreCase(name)) {
+            entry.putDoubleValue("Oxygen", Double.parseDouble(value));
+          }
+          else if ("level".equalsIgnoreCase(name)) {
+            entry.putLongValue("Level", (long) Double.parseDouble(value));
+          }
+          else if ("temp".equalsIgnoreCase(name)) {
+            entry.putLongValue("Temp", (long) Double.parseDouble(value));
+          }
+        } // End Else
+      } // End For loop
+
+      System.out.println(name + " = " + value);
+
+    } // End for loop
+
+    return entry;
+  } // end of method parse XML
+
+  /**
+   * Parse eGauge Readings.
+   * 
+   * @param systemName The System Name.
+   * @param doc The XML document
+   * @return The System State Entry object corresponding to these readings.
+   */
+  public static SystemStateEntry parseEgaugeXML(String systemName, Document doc) {
+
+    // PARSE eGauge XML
+    String deviceName = "";
+    if ("photovoltaics".equalsIgnoreCase(systemName)) {
+      deviceName = "egauge-1";
+    }
+    else if ("electrical".equalsIgnoreCase(systemName)) {
+      deviceName = "egauge-2";
+    }
+
+    System.out.println("System: " + systemName + "\nDevice: " + deviceName);
+
+    // Create new SystemStateEntry object
+    SystemStateEntry entry = new SystemStateEntry(systemName, deviceName, 0);
+
+    // normalize xml document
+    doc.getDocumentElement().normalize();
+
+    // Get root element of the xml (<measurements>)
+    Node root = doc.getDocumentElement();
+
+    // Get children elements
+    NodeList children = root.getChildNodes();
+
+    for (int i = 0; i < children.getLength(); i++) {
+
+      Node child = children.item(i);
+
+      if (child.getNodeType() == Node.ELEMENT_NODE) {
+
+        // Get child element (<meter>)
+        NamedNodeMap childAttributes = child.getAttributes();
+        for (int x = 0; x < childAttributes.getLength(); x++) {
+          Node childAttribute = childAttributes.item(x);
+
+          String name = childAttribute.getNodeName();
+          String val = childAttribute.getNodeValue();
+
+          // Retrieve and store energy and power (<energy> & <power>)
+          if ("title".equalsIgnoreCase(name) && "Solar".equalsIgnoreCase(val)) {
+
+            NodeList grandchildren = child.getChildNodes();
+
+            for (int y = 0; y < grandchildren.getLength(); y++) {
+
+              Node grandchild = grandchildren.item(y);
+
+              if (grandchild.getNodeType() == Node.ELEMENT_NODE) {
+
+                String gcName = grandchild.getNodeName();
+                String gcValue = getElementValue(grandchild);
+
+                if ("energy".equalsIgnoreCase(gcName)) {
+                  System.out.println(gcName + " = " + gcValue);
+                  entry.putLongValue("Power", (long) Double.parseDouble(gcValue));
+                }
+                else if ("power".equalsIgnoreCase(gcName)) {
+                  System.out.println(gcName + " = " + gcValue);
+                  entry.putLongValue("Energy", (long) Double.parseDouble(gcValue));
+                } // end if
+              } // end if (grandchild Node Type)
+            } // end for loop (grandchildren)
+          } // end if (grandchild)
+        } // end for loop (child attributes)
+      } // end if (child Node Type)
+    } // end for loop (children)
+
+    return entry;
+
+  } // End Parse Egauge XML
+
   /**
    * Returns PUT command as an XML Document instance. For example:
    * 
@@ -136,9 +216,9 @@ public class XmlMethods {
    * @param deviceName The device name ex. arduino-1
    * @param command The command name ex. setTemp
    * @param value The value ex. 75
-   * @return doc 
+   * @return doc
    */
-  
+
   public static Document createXml(String deviceName, String command, List<String> value) {
 
     // Initialize Document
@@ -157,7 +237,7 @@ public class XmlMethods {
 
       // Loop through list of arguments.
       for (String s : value) {
-        // Create child element, add an attribute, and add to root <arg> 
+        // Create child element, add an attribute, and add to root <arg>
         Element child = doc.createElement("arg");
         child.setAttribute("value", s);
         rootElement.appendChild(child);
@@ -168,8 +248,62 @@ public class XmlMethods {
       System.out.println(e);
     }
 
+    System.out.println("\n" + xmlToString(doc));
     return doc;
 
   } // end of createXml method
-  
+
+  /**
+   * Displays XML document to display.
+   * 
+   * @param doc The XML documnt to print
+   * @return String to display
+   */
+  public static String xmlToString(Document doc) {
+    String xmlString = "";
+    Transformer transformer;
+    try {
+      transformer = TransformerFactory.newInstance().newTransformer();
+      transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+
+      // initialize StreamResult with File object to save to file
+      StreamResult result = new StreamResult(new StringWriter());
+      DOMSource source = new DOMSource(doc);
+
+      transformer.transform(source, result);
+      xmlString = result.getWriter().toString();
+    }
+    catch (TransformerConfigurationException e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+    catch (TransformerFactoryConfigurationError e1) {
+      // TODO Auto-generated catch block
+      e1.printStackTrace();
+    }
+    catch (TransformerException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    return xmlString;
+  } // End xmlToString
+
+  /**
+   * Returns element value.
+   * 
+   * @param elem element (it is XML tag)
+   * @return Element value otherwise empty String
+   */
+  public static String getElementValue(Node elem) {
+    Node kid;
+    if (elem != null && elem.hasChildNodes()) {
+      for (kid = elem.getFirstChild(); kid != null; kid = kid.getNextSibling()) {
+        if (kid.getNodeType() == Node.TEXT_NODE) {
+          return kid.getNodeValue();
+        }
+      }
+    }
+    return "";
+  } // end getElementValue
+
 } // end of class

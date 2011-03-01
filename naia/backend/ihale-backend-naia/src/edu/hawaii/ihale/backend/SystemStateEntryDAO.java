@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Locale;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
 import org.w3c.dom.Document;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
@@ -86,21 +87,32 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
 
     // Create XML file for PUT command
     Document doc = XmlMethods.createXml(deviceName, command, value);
-
-    // Final portion of the URL
-    String valueTitle;
+    
+    // Final portion of the actual URL
+    String valueTitle = "";
+    
     if (("setLevel").equalsIgnoreCase(command)) {
       valueTitle = "level";
     }
-    else {
+    else if ("setTemp".equalsIgnoreCase(command)) {
       valueTitle = "temp";
     }
-
+    else if ("setPH".equalsIgnoreCase(command)) {
+      valueTitle = "ph";
+    }
+    else if ("setOxygen".equalsIgnoreCase(command)) {
+      valueTitle = "oxygen";
+    }
+    
     // Construct the correct uri to send the command to
-    String key = "http://" + deviceName + ".halepilihonua.hawaii.edu/";
-    String host =
-        SimulatorInterface.getHosts().get(key) + systemName.toLowerCase(Locale.US) + "/"
-            + valueTitle;
+    String key = "http://" + deviceName.toLowerCase(Locale.US) + ".halepilihonua.hawaii.edu/" + 
+        systemName.toLowerCase(Locale.US) + "/" + valueTitle;
+    System.out.println(key);
+
+    // Actual URL to send PUT command to
+    String host = SimulatorInterface.getHosts().get(key);
+    
+    System.out.println(host);
 
     try {
       // Send the XML representation of the command to the appropriate device
@@ -112,6 +124,9 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     }
     catch (IOException e) {
       e.printStackTrace();
+    }
+    catch (ResourceException e) {
+      System.out.println("ERROR: " + e.getStatus());
     }
 
   } // End Do Command

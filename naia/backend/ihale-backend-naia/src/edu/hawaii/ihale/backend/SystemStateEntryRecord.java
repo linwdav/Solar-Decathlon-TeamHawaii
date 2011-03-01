@@ -63,8 +63,6 @@ public class SystemStateEntryRecord {
     if (longList != null) {
       longData = new HashMap<String, Long>();
       for (String data : longList) {
-        System.out.println("NAME: " + data);
-        System.out.println("VALUE: " + entry.getLongValue(data));
         longData.put(data, entry.getLongValue(data));
       }
     } // End if

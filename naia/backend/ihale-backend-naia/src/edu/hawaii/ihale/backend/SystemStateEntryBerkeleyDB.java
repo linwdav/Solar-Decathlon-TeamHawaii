@@ -30,6 +30,9 @@ public class SystemStateEntryBerkeleyDB {
   private static SecondaryIndex<String, SystemStateAttributes, 
     SystemStateEntryRecord> secondarySystemName;
 
+  // Environment variable
+  private static Environment env;
+  
   /** Initialize the static variables at class load time to ensure there's only one of them. */
   static {
     // Create the directory in which this store will live.
@@ -43,7 +46,7 @@ public class SystemStateEntryBerkeleyDB {
     StoreConfig storeConfig = new StoreConfig();
     envConfig.setAllowCreate(true);
     storeConfig.setAllowCreate(true);
-    Environment env = new Environment(dir, envConfig);
+    env = new Environment(dir, envConfig);
     SystemStateEntryBerkeleyDB.store = new EntityStore(env, "EntityStore", storeConfig);
     primaryIndexAttributes =
         store.getPrimaryIndex(SystemStateAttributes.class, SystemStateEntryRecord.class);
@@ -177,5 +180,28 @@ public class SystemStateEntryBerkeleyDB {
     cursor.close();
     return list;
   }
+  
+  /**
+   * This deletes all records in a database.
+   * 
+   * @return Number of records deleted
+   */
+  public static long deleteDB() {
+     long numDeleted = 0;
+     
+     // Create a cursor
+     EntityCursor<SystemStateEntryRecord> cursor =
+       primaryIndexAttributes.entities();
+     
+     // Loop through all records and delete everything
+     while (cursor.next() != null) {
+       cursor.delete();
+       numDeleted++;
+     }
+     //Close cursor
+     cursor.close();
+     
+     return numDeleted;
+  } // End delete DB
 
-} // End DAO class
+} // End DB class
