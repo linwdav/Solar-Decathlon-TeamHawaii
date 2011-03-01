@@ -14,7 +14,7 @@ import edu.hawaii.ihale.api.hsim.Arduino;
  */
 public class LivingroomLightsResource extends Arduino { 
   //Array of known keys
-  String[] localKeys = {"livingroomLevel"};
+  String[] localKeys = {"level"};
   static Map<String, String> livingroomLightsData;
 
   

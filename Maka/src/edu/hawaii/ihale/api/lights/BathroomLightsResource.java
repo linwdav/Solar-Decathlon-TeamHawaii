@@ -13,7 +13,7 @@ import edu.hawaii.ihale.api.hsim.Arduino;
  *
  */
 public class BathroomLightsResource extends Arduino { 
-  String[] localKeys = {"bathroomLevel"};
+  String[] localKeys = {"level"};
   static Map<String, String> bathroomLightsData;
 
   
