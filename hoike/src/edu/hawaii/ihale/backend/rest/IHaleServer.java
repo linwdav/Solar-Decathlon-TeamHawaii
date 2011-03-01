@@ -41,14 +41,12 @@ public class IHaleServer implements Runnable {
   //       value = http://localhost:8001/aquaponics/state
   private static final Map<String, String> uris = new HashMap<String, String>();
   
-//  /**
-//   * Constructor sets the time interval between polling.
-//   * 
-//   * @param interval In milliseconds.
-//   */
-//  public IHaleServer() {
-//    
-//  }
+  /**
+   * Constructor sets the time interval between polling.
+   */
+  public IHaleServer() {
+    // Empty constructor.
+  }
   
 //  /**
 //   * Sets the poll interval.
