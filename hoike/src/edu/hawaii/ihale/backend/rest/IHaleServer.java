@@ -23,7 +23,7 @@ import edu.hawaii.ihale.api.SystemStateEntry;
  * @author Leonardo Nguyen, David Lin, Nathan Dorman
  * @version Java 1.6.0_21
  */
-public class IHaleServer {
+public class IHaleServer implements Runnable {
   
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
@@ -34,22 +34,25 @@ public class IHaleServer {
   private static String configFilePath = currentDirectory + "/" + configurationFile;
 
   // The interval at which to perform GET requests on house devices.
-  private static final long interval = 5000;
+  private static long interval;
   
   // Contains the mapping of device urls to port numbers as defined in the properties file.
   // i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
   //       value = http://localhost:8001/aquaponics/state
   private static final Map<String, String> uris = new HashMap<String, String>();
   
+  public IHaleServer(long interval) {
+    this.interval = interval;
+  }
+  
   /**
-   * This main method starts up a web application that will on timed intervals send GET HTTP
-   * requests to each system device defined in the properties and on the port connection 
-   * mapped to those device URLs.
+   * Attimed intervals send GET HTTP requests to each system device defined in the properties and 
+   * on the port connection mapped to those device URLs.
    * 
-   * @param args Ignored.
+   * @param interval The interval at which to perform GET requests on house devices.
    * @throws Exception If problems occur.
    */
-  public static void main(String[] args) throws Exception {
+  public static void pollDevices() throws Exception {
     // Perform GETS on all devices at a specified interval.
     while (true) {
       // For each URL entry defined in a configuration properties file, if the URL contains 
@@ -82,13 +85,12 @@ public class IHaleServer {
           dao.putEntry(entryFromGet);
          
           // Test Case: Retrieve the entry that was stored in the database repository.
-          /*
+          
           SystemStateEntry returnedEntry = 
             dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
                 entryFromGet.getTimestamp());
-          System.out.println(entryFromGet.getSystemName() + "\t" + entryFromGet.getDeviceName() 
-              + "\t" + entryFromGet.getTimestamp());
-          */
+          System.out.println(returnedEntry.getSystemName() + "\t" + returnedEntry.getDeviceName() 
+              + "\t" + returnedEntry.getTimestamp());
             
           // Finite amount of connections and transactions allowed, must release.
           client.release();
@@ -167,5 +169,15 @@ public class IHaleServer {
    */
   public static String getConfigurationFileName() {
     return configurationFile;
+  }
+
+  @Override
+  public void run() {
+    try {
+      pollDevices();
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 }

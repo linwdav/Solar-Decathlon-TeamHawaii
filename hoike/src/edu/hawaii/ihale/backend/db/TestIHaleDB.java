@@ -134,5 +134,14 @@ public class TestIHaleDB {
     args.clear();
     args.add("0.336");
     dao.doCommand(aquaponics, "arduino-2", "setOxygen", args);
+    args.clear();
+    args.add("98");
+    dao.doCommand(lighting, "arduino-5", "setLevel", args);
+    args.clear();
+    args.add("25");
+    dao.doCommand(lighting, "arduino-8", "setLevel", args);
+    args.clear();
+    args.add("12");
+    dao.doCommand(lighting, "arduino-7", "setLevel", args);
   }
 }
