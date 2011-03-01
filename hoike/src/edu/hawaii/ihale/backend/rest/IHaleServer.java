@@ -34,22 +34,35 @@ public class IHaleServer implements Runnable {
   private static String configFilePath = currentDirectory + "/" + configurationFile;
 
   // The interval at which to perform GET requests on house devices.
-  private static long interval;
+//  private static long interval;
   
   // Contains the mapping of device urls to port numbers as defined in the properties file.
   // i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
   //       value = http://localhost:8001/aquaponics/state
   private static final Map<String, String> uris = new HashMap<String, String>();
   
-  public IHaleServer(long interval) {
-    this.interval = interval;
-  }
+//  /**
+//   * Constructor sets the time interval between polling.
+//   * 
+//   * @param interval In milliseconds.
+//   */
+//  public IHaleServer() {
+//    
+//  }
+  
+//  /**
+//   * Sets the poll interval.
+//   * 
+//   * @param interval The time interval in milliseconds.
+//   */
+//  public void setTimeInterval(long interval) {
+//    this.interval = interval;
+//  }
   
   /**
    * Attimed intervals send GET HTTP requests to each system device defined in the properties and 
    * on the port connection mapped to those device URLs.
    * 
-   * @param interval The interval at which to perform GET requests on house devices.
    * @throws Exception If problems occur.
    */
   public static void pollDevices() throws Exception {
@@ -96,7 +109,7 @@ public class IHaleServer implements Runnable {
           client.release();
         }
       }
-      Thread.sleep(interval);
+      Thread.sleep(9000);
     }
   }
   

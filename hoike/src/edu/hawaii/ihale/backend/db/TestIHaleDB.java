@@ -118,6 +118,7 @@ public class TestIHaleDB {
     catch (SystemStateEntryDBException e) {
       e.printStackTrace();
     }
+    String setLevel = "setLevel";
     
     List<String> args = new ArrayList<String>();
     args.add("75");
@@ -127,7 +128,7 @@ public class TestIHaleDB {
     dao.doCommand(hvac, "arduino-4", "setTemp", args);
     args.clear();
     args.add("22");
-    dao.doCommand(lighting, "arduino-6", "setLevel", args);
+    dao.doCommand(lighting, "arduino-6", setLevel, args);
     args.clear();
     args.add("6.3");
     dao.doCommand(aquaponics, "arduino-2", "setPh", args);
@@ -136,12 +137,12 @@ public class TestIHaleDB {
     dao.doCommand(aquaponics, "arduino-2", "setOxygen", args);
     args.clear();
     args.add("98");
-    dao.doCommand(lighting, "arduino-5", "setLevel", args);
+    dao.doCommand(lighting, "arduino-5", setLevel, args);
     args.clear();
     args.add("25");
-    dao.doCommand(lighting, "arduino-8", "setLevel", args);
+    dao.doCommand(lighting, "arduino-8", setLevel, args);
     args.clear();
     args.add("12");
-    dao.doCommand(lighting, "arduino-7", "setLevel", args);
+    dao.doCommand(lighting, "arduino-7", setLevel, args);
   }
 }
