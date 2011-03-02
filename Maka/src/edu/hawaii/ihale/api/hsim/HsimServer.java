@@ -48,8 +48,7 @@ public class HsimServer extends Application {
   public static void runServer(String contextRoot, int port) throws Exception {
 
     final String state = "/state";
-    final String key = "/{key}";
-    final String egauge = "/egague?tot";
+    final String key = "/{key}"; 
     names.add(contextRoot.substring(1));
     ports.add("" + port);
     // Create a component.  
@@ -94,7 +93,7 @@ public class HsimServer extends Application {
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach(egauge, GridResource.class);
+            router.attach(state, GridResource.class);
             // Return the root router
             return router;  
           }   
@@ -106,7 +105,7 @@ public class HsimServer extends Application {
             // Create a router restlet.
             Router router = new Router(getContext());
             // Attach the resources to the router.
-            router.attach(egauge, SolarResource.class);
+            router.attach(state, SolarResource.class);
             // Return the root router
             return router;  
           }   
@@ -185,17 +184,17 @@ public class HsimServer extends Application {
   public static void main(String[] args) throws Exception {
     names = new ArrayList<String>();
     ports = new ArrayList<String>();
-    
+    String lighting = "/lighting";
     runServer("/aquaponics",8001);
     runServer("/hvac",8002);
-    runServer("/cgi-bin",8003);   // Photovoltaics
-    runServer("/cgi-bin",8004);  // Electrical
-    runServer("/lighting",8005);
-    runServer("/lighting",8006);
-    runServer("/lighting",8007);
-    runServer("/lighting",8008);
+    runServer("/photovoltaics",8003);   // Photovoltaics
+    runServer("/electrical",8004);  // Electrical
+    runServer(lighting,8005);
+    runServer(lighting,8006);
+    runServer(lighting,8007);
+    runServer(lighting,8008);
     //start refreshing
     Refresher refresh = new Refresher();
-    refresh.start();
+    refresh.start(5000);
   }
 }

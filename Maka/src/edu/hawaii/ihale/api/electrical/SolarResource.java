@@ -5,21 +5,29 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import edu.hawaii.ihale.api.hsim.EGauge;
-
+/**
+ * Simulates the Electrical System, holds values for power and energy consumed.
+ * @author Team Maka
+ *
+ */
 public class SolarResource extends EGauge {
-  
-  static Map<String, String> gridData;
+  //Maps need to be non-final...
+  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+  static Map<String, String> gridData = new ConcurrentHashMap<String, String>();
   static double goalEnergy = 5918.9, goalPower = -3.5;
-  final String energy = "energy", power = "power";
+  static final String energy = "energy", power = "power";
+  /** Local keys used by the resource.*/
   public String[] localKeys = {energy, power};
-
+  /**
+   * Constructor.
+   */
   public SolarResource() {
-    super("Solar");
-    if (gridData == null) {
-      gridData = new ConcurrentHashMap<String, String>();
+    super();
+    meterName = "Grid";
+    if (gridData.get(localKeys[0]) == null) {
       gridData.put(energy, String.valueOf(goalEnergy));
       gridData.put(power, String.valueOf(goalPower));
-      data.put("solar", gridData);
+      data.put(meterName, gridData);
     }
     keys = localKeys; 
     list = Arrays.asList(keys);

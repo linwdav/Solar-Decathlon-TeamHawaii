@@ -14,7 +14,9 @@ import edu.hawaii.ihale.api.hsim.Arduino;
  */
 public class BathroomLightsResource extends Arduino { 
   String[] localKeys = {"level"};
-  static Map<String, String> bathroomLightsData;
+  //Maps need to be non-final...
+  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+  static Map<String, String> bathroomLightsData = new ConcurrentHashMap<String, String>();
 
   
   /**
@@ -23,8 +25,7 @@ public class BathroomLightsResource extends Arduino {
   public BathroomLightsResource() {
     super("lighting","arduino-8");
     room = "bathroom";
-    if (bathroomLightsData == null) {
-      bathroomLightsData = new ConcurrentHashMap<String, String>();
+    if (bathroomLightsData.get(localKeys[0]) == null) {
       bathroomLightsData.put(localKeys[0], String.valueOf((int) mt.nextDouble(0, 100)));
       data2.put(room, bathroomLightsData);
     }

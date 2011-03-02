@@ -15,7 +15,9 @@ import edu.hawaii.ihale.api.hsim.Arduino;
   justification = "Restlet makes multiple instances of this class, so " +
   "nonstatic variables are lost.")
 public class HVACResource extends Arduino { 
-  static Map<String, String> hvacData;
+  //Maps need to be non-final...
+  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+  static Map<String, String> hvacData = new ConcurrentHashMap<String, String>();
   //These hold the goal state defined by the user.
   static double goalTemp = 79.4;
   String temp = "temp";
@@ -27,8 +29,7 @@ public class HVACResource extends Arduino {
    */
   public HVACResource() {
     super("hvac","arduino-3");
-    if (hvacData == null) {
-      hvacData = new ConcurrentHashMap<String, String>();
+    if (hvacData.get(localKeys[0]) == null) {
       hvacData.put(temp, String.valueOf(goalTemp));
       data2.put("hvac", hvacData);
 

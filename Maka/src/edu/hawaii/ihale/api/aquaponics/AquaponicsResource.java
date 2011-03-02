@@ -17,8 +17,11 @@ import edu.hawaii.ihale.api.hsim.Arduino;
 public class AquaponicsResource extends Arduino {
   //These hold the goal state defined by the user.
   static double goalPH = 7, goalTemp = 78, goalOxygen = .5;
-  static Map<String, String> aquaponicsData;
-  final String temp = "temp", pH = "pH", oxygen = "oxygen";
+  //Maps need to be non-final...
+  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
+  static Map<String, String> aquaponicsData = new ConcurrentHashMap<String, String>();
+  static final String temp = "temp", pH = "pH", oxygen = "oxygen";
+  /** Local keys used by the resource.*/
   public String[] localKeys = {temp, pH, oxygen};
   
   /**
@@ -26,8 +29,7 @@ public class AquaponicsResource extends Arduino {
    */
   public AquaponicsResource() {
     super("aquaponics","arduino-1");
-    if (aquaponicsData == null) {
-      aquaponicsData = new ConcurrentHashMap<String, String>();
+    if (aquaponicsData.get(localKeys[0]) == null) {
       aquaponicsData.put(temp, String.valueOf(goalTemp));
       aquaponicsData.put(pH, String.valueOf(goalPH));
       aquaponicsData.put(oxygen, String.valueOf(goalOxygen));

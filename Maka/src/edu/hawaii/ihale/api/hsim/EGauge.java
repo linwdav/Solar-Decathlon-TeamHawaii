@@ -24,6 +24,7 @@ import org.w3c.dom.Element;
  * @author Team Maka
  */
 public abstract class EGauge extends ServerResource {
+  /** Name of this meter. */
   public String meterName;
   /** The random number generator.*/
   public static final MT mt = new MT(Calendar.MILLISECOND);
@@ -31,18 +32,17 @@ public abstract class EGauge extends ServerResource {
   /** Magic map that holds all the data.*/
   @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "MS_SHOULD_BE_FINAL", 
     justification = "data Map should definately not be final...")
-  public static Map<String, Map<String,String>> data = new ConcurrentHashMap<String, Map<String,String>>();
+  public static Map<String, Map<String,String>> data = 
+    new ConcurrentHashMap<String, Map<String,String>>();
   /** The array of keys for use in the system.*/
   public String[] keys;
   /** A list of all the keys for use in the system. */
   public List<String> list; 
   /**
-   * Initializes the object.
-   * @param systemName  SubSystem name.
-   * @param deviceName  Arduino device name.
+   * Initializes the object. 
    */
-  public EGauge(String meterName) {
-    this.meterName = meterName;
+  public EGauge() {
+    //Empty.
   }
   /**
    * Updates the buffer.
@@ -69,30 +69,18 @@ public abstract class EGauge extends ServerResource {
     Element timestamp = doc.createElement("timestamp");
     timestamp.appendChild(doc.createTextNode(String.valueOf(date.getTime())));
     rootElement.appendChild(timestamp);
-
-    //refresh data
-    poll();
-
-    //loop through meters and append data.
-//    for (String s : list) {
-      // Create meter element
-      Element meter = doc.createElement("meter");
-      meter.setAttribute("title", meterName);
-      //Create energy and power child elements
-      for (String s : list) {
-        Element e = doc.createElement(s);
-        e.appendChild(doc.createTextNode(data.get(meterName).get(s)));
-        rootElement.appendChild(e);
-      }
-/*      Element energy = doc.createElement("energy");
-      energy.appendChild(doc.createTextNode("Energy Value"));
-      meter.appendChild(energy);
-      Element power = doc.createElement("power");
-      power.appendChild(doc.createTextNode("Power Value"));
-      meter.appendChild(power);
-      rootElement.appendChild(meter); */
-//    }
-    
+ 
+    //loop through meters and append data. 
+    // Create meter element
+    Element meter = doc.createElement("meter");
+    meter.setAttribute("title", meterName);
+    //Create energy and power child elements
+    for (String s : list) {
+      Element e = doc.createElement(s);
+      e.appendChild(doc.createTextNode(data.get(meterName).get(s)));
+      meter.appendChild(e);
+    } 
+    rootElement.appendChild(meter);
     doc.appendChild(rootElement);
     result.setDocument(doc);
     return result;
