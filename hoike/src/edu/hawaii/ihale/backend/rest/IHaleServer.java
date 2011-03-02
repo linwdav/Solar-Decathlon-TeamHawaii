@@ -34,7 +34,10 @@ public class IHaleServer implements Runnable {
   private static String configFilePath = currentDirectory + "/" + configurationFile;
 
   // The interval at which to perform GET requests on house devices.
-//  private static long interval;
+  private static long interval = 10000;
+  
+  // Determinant for if the thread is done running or not.
+  private boolean isDone = false;
   
   // Contains the mapping of device urls to port numbers as defined in the properties file.
   // i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
@@ -43,22 +46,15 @@ public class IHaleServer implements Runnable {
   
   /**
    * Constructor sets the time interval between polling.
+   * 
+   * @param interval The time interval in milliseconds.
    */
-  public IHaleServer() {
+  public IHaleServer(long interval) {
     // Empty constructor.
   }
   
-//  /**
-//   * Sets the poll interval.
-//   * 
-//   * @param interval The time interval in milliseconds.
-//   */
-//  public void setTimeInterval(long interval) {
-//    this.interval = interval;
-//  }
-  
   /**
-   * Attimed intervals send GET HTTP requests to each system device defined in the properties and 
+   * At timed intervals send GET HTTP requests to each system device defined in the properties and 
    * on the port connection mapped to those device URLs.
    * 
    * @throws Exception If problems occur.
@@ -107,7 +103,7 @@ public class IHaleServer implements Runnable {
           client.release();
         }
       }
-      Thread.sleep(9000);
+      Thread.sleep(5000);
     }
   }
   
@@ -182,13 +178,26 @@ public class IHaleServer implements Runnable {
     return configurationFile;
   }
 
+  /**
+   * Required method to implement Runnable. Polls the system devices regularly for system
+   * device information.
+   */
   @Override
   public void run() {
     try {
-      pollDevices();
+      while (!isDone) {
+        pollDevices();
+      }
     }
     catch (Exception e) {
       e.printStackTrace();
     }
+  }
+  
+  /**
+   * Ends this thread instance.
+   */
+  public void done() {
+    this.isDone = true;
   }
 }

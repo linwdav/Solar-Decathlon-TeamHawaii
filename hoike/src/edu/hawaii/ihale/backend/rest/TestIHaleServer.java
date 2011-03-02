@@ -103,63 +103,22 @@ public class TestIHaleServer {
     }
   }
   
-//  /**
-//   * Test the functionality of polling devices and storing their XML packages into the database.
-//   */
-//  @Test
-//  public void testDeviceCommunication() {
-//    // Create a component.
-//    Component component = new Component();
-//    // Create an application (this class).
-//    Application application = null;
-//    List<String> urls = new ArrayList<String>();
-//    
-//    readProperties();
-//    for (Map.Entry<String, String> entry : uris.entrySet()) {
-//      final String key = entry.getKey();
-//      final String contextRoot = "/" + key.split("/")[1] + "/" + key.split("/")[2];
-//      final int port = Integer.valueOf(entry.getValue());
-//      //System.out.println(contextRoot);
-//      //System.out.println(port);
-//      urls.add("http://localhost:" + entry.getValue() + contextRoot);
-//      application = new Application() {
-//        @Override
-//        public Restlet createInboundRoot() {
-//          // Create a router restlet.
-//          Router router = new Router(getContext());
-//          // Attach the resources to the router.
-//          if ("aquaponics".equals(key.split("/")[1])) {
-//            router.attach(contextRoot, AquaponicsResource.class);
-//            router.attach("", AquaponicsResource.class);
-//          }
-//          else if ("hvac".equals(key.split("/")[1])) {
-//            router.attach(contextRoot, HvacResource.class);
-//            router.attach("", HvacResource.class);
-//          }
-//          else if ("lighting".equals(key.split("/")[1])) {
-//            router.attach(contextRoot, LightingResource.class);
-//            router.attach("", LightingResource.class);
-//          }
-//          else if ("egauge-1.halepilihonua.hawaii.edu".equals(key.split("/")[0])) {
-//            router.attach(contextRoot, PhotovoltaicsResource.class);
-//            router.attach("", PhotovoltaicsResource.class);
-//          }
-//          else if ("egauge-2.halepilihonua.hawaii.edu".equals(key.split("/")[0])) {
-//            router.attach(contextRoot, ElectricalResource.class);
-//            router.attach("", ElectricalResource.class);
-//          }
-//          else {
-//            System.out.println("Error with attaching to router.");
-//          }
-//          System.out.println(key.split("/")[0]);
-//          // Return the root router
-//          return router;
-//        }
-//      };
-//      component.getServers().add(Protocol.HTTP, port);
-//      // Attach the application to the component with a defined contextRoot.
-//      component.getDefaultHost().attach(contextRoot, application);
-//    }
-//    component.start();
-//  }
+  /**
+   * Test the timed interval thread that cycles through and sends GET HTTP requests to
+   * the system devices defined in the properties file. Handles the responses by storing
+   * the entries in the database repository.
+   */
+  @Test
+  public void testGetThread() {
+    IHaleServer serverThread = new IHaleServer(10000);
+    try {
+      Thread controlThread = new Thread(serverThread);
+      controlThread.start();
+      Thread.sleep(15000);
+      serverThread.done();
+    }
+    catch (InterruptedException e) {
+      e.printStackTrace();
+    }
+  }
 }
