@@ -14,6 +14,9 @@ import edu.hawaii.ihale.api.lights.BathroomLightsResource;
 import edu.hawaii.ihale.api.lights.DiningroomLightsResource;
 import edu.hawaii.ihale.api.lights.KitchenLightsResource;
 import edu.hawaii.ihale.api.lights.LivingroomLightsResource;
+import edu.hawaii.ihale.api.photovoltaics.GridResource;
+import edu.hawaii.ihale.api.electrical.SolarResource;
+
 
 
 //import edu.hawaii.contactservice.server.resource.contact.ContactResource;
@@ -46,6 +49,7 @@ public class HsimServer extends Application {
 
     final String state = "/state";
     final String key = "/{key}";
+    final String egauge = "/egague?tot";
     names.add(contextRoot.substring(1));
     ports.add("" + port);
     // Create a component.  
@@ -83,7 +87,30 @@ public class HsimServer extends Application {
             return router;  
           }   
         }; break;
-        
+      case 8003:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach(egauge, GridResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
+      case 8004:
+        application = new Application() {  
+          @Override  
+          public Restlet createInboundRoot() {  
+            // Create a router restlet.
+            Router router = new Router(getContext());
+            // Attach the resources to the router.
+            router.attach(egauge, SolarResource.class);
+            // Return the root router
+            return router;  
+          }   
+        }; break;
       case 8005:
         application = new Application() {  
           @Override  
@@ -161,8 +188,8 @@ public class HsimServer extends Application {
     
     runServer("/aquaponics",8001);
     runServer("/hvac",8002);
-    //runServer("/photovoltaics",8003);
-    //runServer("/electrical",8004;
+    runServer("/cgi-bin",8003);   // Photovoltaics
+    runServer("/cgi-bin",8004);  // Electrical
     runServer("/lighting",8005);
     runServer("/lighting",8006);
     runServer("/lighting",8007);
