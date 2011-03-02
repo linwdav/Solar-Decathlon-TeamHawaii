@@ -91,7 +91,7 @@ public class ElectricalData {
 
     // Create meter tag.
     Element meterElement = doc.createElement("meter");
-    meterElement.setAttribute("title", "Solar");
+    meterElement.setAttribute("title", "Grid");
     rootElement.appendChild(meterElement);
 
     // Create energy tag.

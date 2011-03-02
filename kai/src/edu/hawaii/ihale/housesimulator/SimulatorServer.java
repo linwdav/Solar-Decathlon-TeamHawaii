@@ -79,4 +79,6 @@ public class SimulatorServer extends Application {
     runServer();
     SimulationTimer.startTimer(Integer.parseInt(args[0]));
   }
+
 }
+
