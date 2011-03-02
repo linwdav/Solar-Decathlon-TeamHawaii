@@ -114,7 +114,7 @@ public class AquaponicsData {
    * @param newDesiredOxygen the oxygen
    */
   public static void setDesiredOxygen(double newDesiredOxygen) {
-    oxygen = newDesiredOxygen;
+    desiredOxygen = newDesiredOxygen;
   }
 
   /**
