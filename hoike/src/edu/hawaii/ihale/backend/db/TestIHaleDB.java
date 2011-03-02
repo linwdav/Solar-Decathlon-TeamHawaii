@@ -131,7 +131,7 @@ public class TestIHaleDB {
     dao.doCommand(lighting, "arduino-6", setLevel, args);
     args.clear();
     args.add("6.3");
-    dao.doCommand(aquaponics, "arduino-2", "setPh", args);
+    dao.doCommand(aquaponics, "arduino-2", "setPH", args);
     args.clear();
     args.add("0.336");
     dao.doCommand(aquaponics, "arduino-2", "setOxygen", args);

@@ -111,6 +111,7 @@ public class TestIHaleServer {
   @Test
   public void testGetThread() {
     IHaleServer serverThread = new IHaleServer(10000);
+    serverThread.setDebugMode(false);
     try {
       Thread controlThread = new Thread(serverThread);
       controlThread.start();

@@ -25,10 +25,13 @@ import edu.hawaii.ihale.api.SystemStateEntry;
  */
 public class IHaleServer implements Runnable {
   
+  // Enable debug print statements or not.
+  private static boolean debugMode = true;
+  
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
   // Restlet server properties file name.
-  private static String configurationFile = "configuration-kai.properties";
+  private static String configurationFile = "configuration-maka.properties";
 
   // Full path to the Restlet server properties file.
   private static String configFilePath = currentDirectory + "/" + configurationFile;
@@ -67,7 +70,7 @@ public class IHaleServer implements Runnable {
       // on that URL.
       for (Map.Entry<String, String> entry : uris.entrySet()) {
         // Currently doesn't support eguage API XML keys and value types.
-        if (entry.getValue().contains("/state") && (!(entry.getKey().contains("egauge")))) {
+        if (entry.getValue().contains("/state")) {
           String url = entry.getValue();
           // Some configuration properties mapped devices to URLs that look like
           // localhost:7103/lighting/living/state without the protocol name.
@@ -76,28 +79,75 @@ public class IHaleServer implements Runnable {
           }
           
           // For console debugging.
-          System.out.println(url);
+          if (debugMode) {
+            System.out.println(url);
+          }
           
           ClientResource client = new ClientResource(url);
           // client.get should return a Representation of a xmlDocument.
           DomRepresentation representation = new DomRepresentation(client.get());
             
           // For console debugging.
-          System.out.println(getStringFromDocument(representation.getDocument()));
+          if (debugMode) {
+            System.out.println(getStringFromDocument(representation.getDocument()));          
+          }
           
           // From the XML information returned regarding the state of the system device,
           // create an entry and put it into the database repository.
           IHaleDAO dao = new IHaleDAO();
-          SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
-          dao.putEntry(entryFromGet);
-         
-          // Test Case: Retrieve the entry that was stored in the database repository.
-          
-          SystemStateEntry returnedEntry = 
-            dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
-                entryFromGet.getTimestamp());
-          System.out.println(returnedEntry.getSystemName() + "\t" + returnedEntry.getDeviceName() 
-              + "\t" + returnedEntry.getTimestamp());
+          if (entry.getKey().contains("arduino")) {
+            SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
+            dao.putEntry(entryFromGet);
+            
+            // Test Case: Retrieve the entry that was stored in the database repository.
+            /*
+            if (debugMode) {
+              SystemStateEntry returnedEntry = 
+                dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
+                    entryFromGet.getTimestamp());
+              System.out.println(returnedEntry.getSystemName() + "\t" + 
+                  returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp());
+            }
+            */
+          }
+          else if (entry.getKey().contains("egauge-1")) {
+            SystemStateEntry entryFromGet = 
+              dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), 
+                  "photovoltaics", "egauge-1");
+            dao.putEntry(entryFromGet);
+            
+            // Test Case: Retrieve the entry that was stored in the database repository.
+            /*
+            if (debugMode) {
+              SystemStateEntry returnedEntry = 
+                dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
+                    entryFromGet.getTimestamp());
+              System.out.println(returnedEntry.getSystemName() + "\t" + 
+                  returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" + 
+                  returnedEntry.getLongValue("energy") + "\t" 
+                  + returnedEntry.getLongValue("power"));
+            }
+            */
+          }
+          else if (entry.getKey().contains("egauge-2")) {
+            SystemStateEntry entryFromGet = 
+              dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), 
+                  "electrical", "egauge-2");
+            dao.putEntry(entryFromGet);
+            
+            // Test Case: Retrieve the entry that was stored in the database repository.
+            /*
+            if (debugMode) {
+              SystemStateEntry returnedEntry = 
+                dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
+                    entryFromGet.getTimestamp());
+              System.out.println(returnedEntry.getSystemName() + "\t" + 
+                  returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" 
+                  + returnedEntry.getLongValue("energy") + "\t" 
+                  + returnedEntry.getLongValue("power"));
+            }
+            */
+          }
             
           // Finite amount of connections and transactions allowed, must release.
           client.release();
@@ -199,5 +249,15 @@ public class IHaleServer implements Runnable {
    */
   public void done() {
     this.isDone = true;
+  }
+
+  /**
+   * Sets the debugging on or off for this class. True if debug statements are permitted, false
+   * otherwise.
+   *
+   * @param status True if debug statements permitted, false otherwise.
+   */
+  public static void setDebugMode(boolean status) {
+    debugMode = status;
   }
 }

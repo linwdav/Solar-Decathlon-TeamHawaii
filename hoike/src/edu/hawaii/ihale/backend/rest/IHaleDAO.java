@@ -94,7 +94,11 @@ public class IHaleDAO implements SystemStateEntryDB {
    */
   public SystemStateEntry getEntry(String systemName, String deviceName, long timestamp) {
     
-    IHaleSystemStateEntry entry = IHaleDB.getEntry(systemName, deviceName, timestamp);
+    // Lower-case the system and device name to keep entries consistent between lower-case
+    // format in XML documents and from front-end form submissions.
+    String system = lowerCaseFirstLetter(systemName);
+    String device = lowerCaseFirstLetter(deviceName);
+    IHaleSystemStateEntry entry = IHaleDB.getEntry(system, device, timestamp);
     
     SystemStateEntry returnEntry = 
       new SystemStateEntry(entry.getSystemName(), entry.getDeviceName(), entry.getTimestamp());
@@ -134,10 +138,15 @@ public class IHaleDAO implements SystemStateEntryDB {
    * @param entry The entry instance to store. 
    */
   public void putEntry(SystemStateEntry entry) {
-        
+    
+    // Lower-case the system and device name to keep entries consistent between lower-case
+    // format in XML documents and from front-end form submissions.
+    String system = lowerCaseFirstLetter(entry.getSystemName());
+    String device = lowerCaseFirstLetter(entry.getDeviceName());
+    
     // A Map such that the key is the device field key (i.e., Oxygen, Temp) and the
     // value mapped to the key is the value type (i.e., Double, Long).
-    Map<String, String> keyTypePairMap = getTypeList(entry.getSystemName());
+    Map<String, String> keyTypePairMap = getTypeList(system);
 
     // The three Maps longData, stringData, doubleData are representative of the Map fields
     // of SystemStateEntry objects. There is no accessor method to them so we must create
@@ -150,7 +159,6 @@ public class IHaleDAO implements SystemStateEntryDB {
     // Retrieve the keys and iterate through them checking for the corresponding value type
     // Double, String, or Long. Then retrieve from the SystemStateEntry object and put both
     // the key and value associated with the key into the appropriate Map.
-    
     Iterator<Entry<String, String>> iterator = keyTypePairMap.entrySet().iterator();
     while (iterator.hasNext()) {
       Map.Entry<String, String> mapEntry = iterator.next();
@@ -168,7 +176,7 @@ public class IHaleDAO implements SystemStateEntryDB {
     }
 
     IHaleSystemStateEntry entryToStore = 
-      new IHaleSystemStateEntry(entry.getSystemName(), entry.getDeviceName(), entry.getTimestamp(),
+      new IHaleSystemStateEntry(system, device, entry.getTimestamp(),
           longData, stringData, doubleData);
     IHaleDB.putEntry(entryToStore);
     
@@ -203,8 +211,13 @@ public class IHaleDAO implements SystemStateEntryDB {
   public List<SystemStateEntry> getEntries(String systemName, String deviceName, long startTime, 
       long endTime) throws SystemStateEntryDBException {
     
+    // Lower-case the system and device name to keep entries consistent between lower-case
+    // format in XML documents and from front-end form submissions.
+    String system = lowerCaseFirstLetter(systemName);
+    String device = lowerCaseFirstLetter(deviceName);
+    
     List<IHaleSystemStateEntry> iHaleEntries = 
-      IHaleDB.getEntries(systemName, deviceName, startTime, endTime);
+      IHaleDB.getEntries(system, device, startTime, endTime);
     List<SystemStateEntry> returnEntryList = new ArrayList<SystemStateEntry>();
     
     // For each entry retrieved from the data repository, we must transform from 
@@ -405,7 +418,8 @@ public class IHaleDAO implements SystemStateEntryDB {
    */
   public Map<String, String> getTypeList(String systemName) {
     
-    ArrayList<String> keyTypePairList = IHaleDAO.systemToFieldMap.get(systemName);
+    String systemNameKey = lowerCaseFirstLetter(systemName);
+    ArrayList<String> keyTypePairList = IHaleDAO.systemToFieldMap.get(systemNameKey);
 
     Map<String, String> keyTypePairMap = new HashMap<String, String>();
     
@@ -417,6 +431,43 @@ public class IHaleDAO implements SystemStateEntryDB {
     return keyTypePairMap;
   }
  
+  /**
+   * Create a mapping mapping of device ip address to port number from a properties file.
+   * (i.e., arduino-7.halepilihonua.hawaii.edu/lighting/state=7006 may be a line in the file),
+   * this method has significance with the doCommand() method.
+   *
+   */
+  public static void createDeviceToPortMap() {
+   
+    // Path to where the Restlet server properties file.
+    String currentDirectory = System.getProperty("user.dir");
+    // Restlet server properties file name.
+    String configurationFile = IHaleServer.getConfigurationFileName();
+    // Full path to the Restlet server properties file.
+    String configFilePath = currentDirectory + "/" + configurationFile;
+   
+    System.out.println(IHaleServer.getConfigurationFileName());
+    
+    try {
+     
+      FileInputStream is = new FileInputStream(configFilePath);
+      Properties prop = new Properties();
+      prop.load(is);
+      String key = "";
+      String value = "";
+      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
+        key = (String) propItem.getKey();
+        value = (String) propItem.getValue();
+        uris.put(key, value);
+      }
+      is.close();
+    }
+    catch (IOException e) {
+     System.out.println("failed to read properties file");
+     System.out.println(configFilePath);
+    }
+  }
+  
   /**
    * Parses XML information and creates a SystemStateEntry object.
    * 
@@ -465,7 +516,7 @@ public class IHaleDAO implements SystemStateEntryDB {
 
     // Retrieve a helper Map to determine the key value types for use in corresponding
     // putLongDataValue, putStringDataValue, or putDoubleValue methods when a state element
-    // has a certain key (i.e., pH should be a Double, Temp should be a Long).
+    // has a certain key (i.e., pH should be a Double, temp should be a Long).
     
     Map<String, String> keyTypePairMap = getTypeList(systemName);
        
@@ -494,6 +545,118 @@ public class IHaleDAO implements SystemStateEntryDB {
   }
   
   /**
+   * Parses XML information specific to the Egauge XML API defined format and creates a 
+   * SystemStateEntry object. Currently only supports use with Photovoltaics and Electrical
+   * system devices.
+   * 
+   * @param doc The XML document from a system device response to a GET method for its
+   *            current state. Format of XML document below.
+   *            <pre>
+   *            {@code
+   *            <?xml version="1.0" encoding="UTF-8" ?>
+   *            <measurements>
+   *              <timestamp>1284607004</timestamp>
+   *              <cpower src="Grg&amp;Bth (PHEV)" i="11" u="1">-988.9</cpower>
+   *              <cpower src="Solar" i="5" u="8">-1.9</cpower>
+   *              <cpower src="Grid" i="3" u="1">1621.5</cpower>
+   *              <meter title="Grid">
+   *                <energy>1443.5</energy>
+   *                <energyWs>5196771697</energyWs>
+   *                <power>2226.2</power>
+   *              </meter>
+   *              <meter title="Solar">
+   *                <energy>5918.9</energy>
+   *                <energyWs>21308130148</energyWs>
+   *                <power>-3.5</power>
+   *              </meter>
+   *              <meter title="Grg&amp;Bth (PHEV)">
+   *                <energy>4889.2</energy>
+   *                <energyWs>17601054087</energyWs>
+   *                <power>-988.9</power>
+   *              </meter>
+   *              <frequency>59.98</frequency>
+   *              <voltage>119.0</voltage>
+   *              <voltage>118.3</voltage>
+   *              <current>5.495</current>
+   *              <current>14.152</current>
+   *              <current>0.223</current>
+   *              <current>0.136</current>
+   *              </measurements>
+   *            }
+   *            </pre>
+   * @param systemName The name of the system associated with this device reading.
+   * @param deviceName The device that provided this XML reading.
+   * @return Returns a SystemStateEntry object.
+   */
+  public SystemStateEntry xmlEgaugeToSystemStateEntry(Document doc, String systemName,
+      String deviceName) {
+    
+    /** The timestamp attribute name. */
+    String timestampAttributeName = "timestamp";
+    /** The state element name. */
+    String meterElementName = "meter";
+    /** The title attribute name */
+    String titleAttributeName = "title";
+    /** The energy element name */
+    String energyElementName = "energy";
+    /** The power element name */
+    String powerElementName = "power";
+      
+    // Get the root element, in this case would be measurements element.
+    Element measurementsData = doc.getDocumentElement();
+    // Retrieve the list of nodes (should just be 1) representing the timestamp element of the
+    // measurements element.
+    NodeList timestampList = measurementsData.getElementsByTagName(timestampAttributeName);    
+        
+    // Retrieve the content between the timestamp element tags.
+    long timestamp = Long.parseLong(((Element) timestampList.item(0)).getTextContent());
+
+    // Create a SystemStateEntry but it still requires its Maps to be filled.
+    SystemStateEntry entry = new SystemStateEntry(systemName, deviceName, timestamp);
+    
+    // Retrieve the list of nodes representing the meter element of the measurements element.
+    NodeList meterList = measurementsData.getElementsByTagName(meterElementName); 
+    
+    for (int i = 0; i < meterList.getLength(); i++) { 
+            
+      Element meterElement = ((Element) meterList.item(i));
+      String title = meterElement.getAttribute(titleAttributeName);
+      
+      // If XML parsing is for Photovoltaics system device readings, we are only interested in the 
+      // energy and power readings associated with the Solar meter.
+      if (systemName.equalsIgnoreCase("photovoltaics") && title.equalsIgnoreCase("Solar")) {
+        // Retrieve the list of energy and power elements; should only be 1 each.
+        NodeList energyList = meterElement.getElementsByTagName(energyElementName);
+        NodeList powerList = meterElement.getElementsByTagName(powerElementName);
+        
+        // Determine these fields were long value types by referring to the Data Dictionary API.
+        Long energy = (Double.valueOf(energyList.item(0).getTextContent())).longValue();
+        Long power = (Double.valueOf(powerList.item(0).getTextContent())).longValue();
+        
+        entry.putLongValue("energy", energy);
+        entry.putLongValue("power", power);
+        
+        return entry;
+      }
+      // For Electrical system device readings, only energy and power associated with the 
+      // Grid meter.
+      else if (systemName.equalsIgnoreCase("electrical") && title.equalsIgnoreCase("Grid")) {
+        NodeList energyList = meterElement.getElementsByTagName(energyElementName);
+        NodeList powerList = meterElement.getElementsByTagName(powerElementName);
+        
+        Long energy = (Double.valueOf(energyList.item(0).getTextContent())).longValue();
+        Long power = (Double.valueOf(powerList.item(0).getTextContent())).longValue();
+        
+        entry.putLongValue("energy", energy);
+        entry.putLongValue("power", power);
+        
+        return entry;
+      }
+    }
+    return null;
+  }
+  
+  /**
    * Lower-cases the first letter of a word, used to keep incoming XML information consistent
    * with key naming conventions.
    *
@@ -507,38 +670,15 @@ public class IHaleDAO implements SystemStateEntryDB {
   }
   
   /**
-   * Create a mapping mapping of device ip address to port number from a properties file.
-   * (i.e., arduino-7.halepilihonua.hawaii.edu/lighting/state=7006 may be a line in the file)
-   *
+   * Upper-cases the first letter of a word, used to retrieve values from a Map field of a
+   * SystemStateEntry object.
+   * 
+   * @param word The word to modify.
+   * @return A string with its first character upper-cased.
    */
-  public static void createDeviceToPortMap() {
-   
-    // Path to where the Restlet server properties file.
-    String currentDirectory = System.getProperty("user.dir");
-    // Restlet server properties file name.
-    String configurationFile = IHaleServer.getConfigurationFileName();
-    // Full path to the Restlet server properties file.
-    String configFilePath = currentDirectory + "/" + configurationFile;
-   
-    System.out.println(IHaleServer.getConfigurationFileName());
-    
-    try {
-     
-      FileInputStream is = new FileInputStream(configFilePath);
-      Properties prop = new Properties();
-      prop.load(is);
-      String key = "";
-      String value = "";
-      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
-        key = (String) propItem.getKey();
-        value = (String) propItem.getValue();
-        uris.put(key, value);
-      }
-      is.close();
-    }
-    catch (IOException e) {
-     System.out.println("failed to read properties file");
-     System.out.println(configFilePath);
-    }
+  public String upperCaseFirstLetter(String word) {
+    String s1 = word.substring(0, 1);
+    String s2 = word.substring(1);
+    return s1.toUpperCase(Locale.US) + s2;
   }
 }
