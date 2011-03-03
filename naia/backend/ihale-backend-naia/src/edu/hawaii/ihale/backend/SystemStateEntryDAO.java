@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
@@ -87,10 +88,10 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
 
     // Create XML file for PUT command
     Document doc = XmlMethods.createXml(deviceName, command, value);
-    
+
     // Final portion of the actual URL
     String valueTitle = "";
-    
+
     if (("setLevel").equalsIgnoreCase(command)) {
       valueTitle = "level";
     }
@@ -103,15 +104,16 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     else if ("setOxygen".equalsIgnoreCase(command)) {
       valueTitle = "oxygen";
     }
-    
+
     // Construct the correct uri to send the command to
-    String key = "http://" + deviceName.toLowerCase(Locale.US) + ".halepilihonua.hawaii.edu/" + 
-        systemName.toLowerCase(Locale.US) + "/" + valueTitle;
+    String key =
+        "http://" + deviceName.toLowerCase(Locale.US) + ".halepilihonua.hawaii.edu/"
+            + systemName.toLowerCase(Locale.US) + "/" + valueTitle;
     System.out.println(key);
 
     // Actual URL to send PUT command to
     String host = SimulatorInterface.getHosts().get(key);
-    
+
     System.out.println(host);
 
     try {
@@ -150,9 +152,15 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     SystemStateAttributes attributes = new SystemStateAttributes(systemName, deviceName, timestamp);
 
     // Get the database entity associated with the given parameters
-    SystemStateEntryBerkeleyDB.getSystemStateEntryRecord(attributes);
+    SystemStateEntryRecord record =
+        SystemStateEntryBerkeleyDB.getSystemStateEntryRecord(attributes);
 
-    return null;
+    if (record == null) {
+      return null;
+    }
+    else {
+      return convertRecord(record);
+    }
   }
 
   @Override
@@ -230,5 +238,57 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     }
     return null;
   } // End convertEntry
+
+  /**
+   * Converts SystemStateEntryRecord object into SystemStateEntry object.
+   * 
+   * @param record The SystemStateEntryRecord object
+   * @return entry The converted record
+   */
+  public SystemStateEntry convertRecord(SystemStateEntryRecord record) {
+
+    String systemName = record.getAttributes().getSystemName();
+    String deviceName = record.getAttributes().getDeviceName();
+    Long timestamp = record.getAttributes().getTimestamp();
+
+    // New SystemStateEntry object
+    SystemStateEntry entry = new SystemStateEntry(systemName, deviceName, timestamp);
+
+    // Hash maps
+    Map<String, Double> doubleData = record.getDoubleData();
+    Map<String, Long> longData = record.getLongData();
+    Map<String, String> stringData = record.getStringData();
+
+    // Check for Map with double value
+    if (doubleData != null) {
+      for (Map.Entry<String, Double> en : doubleData.entrySet()) {
+        String key = en.getKey();
+        Double value = en.getValue();
+        // Add to entry
+        entry.putDoubleValue(key, value);
+      }
+    }
+
+    // Check for map with long value
+    if (longData != null) {
+      for (Map.Entry<String, Long> en : longData.entrySet()) {
+        String key = en.getKey();
+        long value = en.getValue();
+        // Add to entry
+        entry.putLongValue(key, value);
+      }
+    }
+    // Check for map with string value
+    if (stringData != null) {
+      for (Map.Entry<String, String> en : stringData.entrySet()) {
+        String key = en.getKey();
+        String value = en.getValue();
+        // Add to entry
+        entry.putStringValue(key, value);
+      }
+    }
+
+    return entry;
+  } // End convertRecord
 
 } // End DB Class
