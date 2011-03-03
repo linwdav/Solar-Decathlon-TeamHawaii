@@ -90,7 +90,7 @@ public class TestAquaponics {
     // Check that we are returning the correct key
     assertEquals("Checking that key is temp", tempKey, "temp");
     assertEquals("Checking that key is oxygen", oxygenKey, "oxygen");
-    assertEquals("Checking that key is pH", phKey, "pH");
+    assertEquals("Checking that key is pH", phKey, "ph");
 
     // Check that the returned value is within a delta of our PUT value.
     assertEquals(70.0, Double.parseDouble(tempValue), 3);

@@ -161,7 +161,7 @@ public class AquaponicsData {
 
     // Create state tag.
     Element phElement = doc.createElement("state");
-    phElement.setAttribute("key", "pH");
+    phElement.setAttribute("key", "ph");
     phElement.setAttribute("value", String.valueOf(roundSingleDecimal(ph)));
     rootElement.appendChild(phElement);
 

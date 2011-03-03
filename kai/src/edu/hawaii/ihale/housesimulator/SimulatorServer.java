@@ -71,13 +71,16 @@ public class SimulatorServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    if (args.length == 0) {
-      System.out.println("Must enter an integer as a valid argument.");
-      System.out.println("New sensor data will be updated according to argument.");
-      System.exit(0);
+    if (args.length == 2 && "-step".equalsIgnoreCase(args[0])) {
+      runServer();
+      SimulationTimer.startTimer(Integer.parseInt(args[1]));    
     }
-    runServer();
-    SimulationTimer.startTimer(Integer.parseInt(args[0]));
+    else {
+      System.out.println("Usage: java -jar <jar filename> -step N");
+      System.out.println("Where N is the step value, in seconds.");
+      System.out.println("New sensor data will be updated every N seconds.");
+      System.exit(0);     
+    }
   }
 
 }
