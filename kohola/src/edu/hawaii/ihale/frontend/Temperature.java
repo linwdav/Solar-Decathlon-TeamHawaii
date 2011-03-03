@@ -7,11 +7,12 @@ import org.apache.wicket.ResourceReference;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
-//import org.apache.wicket.markup.html.form.Button;
+import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 
@@ -34,6 +35,8 @@ public class Temperature extends Header {
   static Label outsideTemperature = new Label("OutsideTemperature", "0");
   static Label waterTemperature = new Label("WaterTemperature", "0");
 
+  private TextField<String> textField = new TextField<String>("SetTemp", new Model<String>(""));
+  
   // values (attributes) for the on off hvac button
   private String buttonLabel = "Activate HVAC";
   private String buttonClass = "green-button right";
@@ -111,7 +114,7 @@ public class Temperature extends Header {
     add(hvacState);
 
     // copy over the temperature values from the header to this page since they should be the same.
-    String insideTempStr = (String) insideTemperatureHeader.getDefaultModelObject();
+    String insideTempStr = String.valueOf(SolarDecathlonApplication.getHvac().getTemp());
     insideTemperature.setDefaultModelObject(insideTempStr);
     String outsideTempStr = (String) outsideTemperatureHeader.getDefaultModelObject();
     outsideTemperature.setDefaultModelObject(outsideTempStr);
@@ -133,22 +136,22 @@ public class Temperature extends Header {
     // add(waterTemperature);
 
     Form<String> form = new Form<String>("form");
-    final TextField<String> textField = new TextField<String>("SetTemp");
+
+    //textField = new TextField<String>("SetTemp", new Model<String>(""));
     form.add(textField);
-    form.add(new Link<String>("SubmitTemp") {
+    form.add(new Button("SubmitTemp") {
 
       // support serializable
       private static final long serialVersionUID = 1L;
 
       /** Display the page again, now with the updated values of field1 and field2. */
       @Override
-      public void onClick() {
-        // setResponsePage(FormPage.class);
+      public void onSubmit() {    
         // do a put command
         List<String> list = new ArrayList<String>();
         list.add((String) textField.getDefaultModelObject());
-        // db.doCommand("HVAC", "Arduino-4", "SetTemp", list);
-
+        SolarDecathlonApplication.db.doCommand("hvac", "arduino-4", "SetTemp", list);
+        textField.setDefaultModelObject("");
       }
     });
     add(form);

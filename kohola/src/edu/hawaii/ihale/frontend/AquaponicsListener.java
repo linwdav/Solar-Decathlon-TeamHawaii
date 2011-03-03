@@ -12,6 +12,9 @@ import edu.hawaii.ihale.api.SystemStateListener;
  */
 public class AquaponicsListener extends SystemStateListener {
 
+  private long temp = -1;
+  private Double pH = -1.0, oxygen = -1.0;
+  
   /**
    * Provide a default constructor that indicates that this listener is for Aquaponics.
    */
@@ -27,17 +30,15 @@ public class AquaponicsListener extends SystemStateListener {
   @Override
   public void entryAdded(SystemStateEntry entry) {
     System.out.println("Something just happened in Aquaponics: " + entry);
-    long temp;
-    Double pH, ec;
     try {
-      if ((temp = entry.getLongValue("Temp")) != -1) {
-        AquaPonics.setTemp(temp);
+      if (entry.getLongValue("Temp") != -1) {        
+        temp = entry.getLongValue("Temp"); 
       }
-      if ((pH = entry.getDoubleValue("pH")) != -1) {
-        AquaPonics.setPH(pH);
+      if (entry.getDoubleValue("pH") != -1.0) {
+        pH = entry.getDoubleValue("pH"); 
       }
-      if ((ec = entry.getDoubleValue("Oxygen")) != -1) {
-        AquaPonics.setEC(ec);
+      if (entry.getDoubleValue("Oxygen") != -1.0) {
+        oxygen = entry.getDoubleValue("Oxygen"); 
       }
 
     }
@@ -48,5 +49,29 @@ public class AquaponicsListener extends SystemStateListener {
     }
 
   }
+  
+  /**
+   * The temp.
+   * @return The temp
+   */
+  public long getTemp() {
+    return temp;
+  }
 
+  /**
+   * The ph.
+   * @return The ph
+   */
+  public double getPH() {
+    return pH;
+  }
+  
+  /**
+   * The oxygen.
+   * @return The oxygen
+   */
+  public double getOxygen() {
+    return oxygen;
+  }
+  
 }

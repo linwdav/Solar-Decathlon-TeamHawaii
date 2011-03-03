@@ -17,7 +17,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
-import edu.hawaii.ihale.api.SystemStateEntryDB;
 
 /**
  * The header page. This is a parent class to all pages.
@@ -30,9 +29,6 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
  */
 public class Header extends WebPage {
 
-  // create the db instance.
-  static final SystemStateEntryDB db = ((SolarDecathlonApplication) SolarDecathlonApplication
-      .get()).getDB();
   // Date format for the time displayed at the top right corner.
   private static final String DATE_FORMAT = "MMMM d, yyyy  hh:mm a";
   private static final String PAGE_DISPLAY = "ActivePage";
@@ -54,7 +50,7 @@ public class Header extends WebPage {
   Map<String, Integer> properties = ((SolarDecathlonSession) getSession()).getProperties();
 
   // labels for the header, aka basepage.
-  static Label insideTemperatureHeader = new Label("InsideTemperatureHeader", "0");
+  // static Label insideTemperatureHeader = new Label("InsideTemperatureHeader", "0");
   static Label outsideTemperatureHeader = new Label("OutsideTemperatureHeader", "0");
 
   /** Support serialization. */
@@ -65,31 +61,23 @@ public class Header extends WebPage {
    */
   public Header() {
 
+    Label insideTemperatureHeader = new Label("InsideTemperatureHeader", "0");
+
     // This is totally bogus!!
     // Right now there's no outside temp in the dictionary so we just use a random number
     Long rand = (long) (Math.random() * 100);
     outsideTemperatureHeader.setDefaultModelObject(String.valueOf(rand));
-
-    // add hvac listener for the temperature display.
-    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-    // .getAquaponicsListener());
-    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-    // .getHvacListener());
-    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-    // .getLightsListener());
-    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-    // .getPhotovoltaicListener());
-    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-    // .getElectricalListener());
+    insideTemperatureHeader.setDefaultModelObject(String.valueOf(SolarDecathlonApplication
+        .getHvac().getTemp()));
 
     // for testing purpose, may remove after the integration with backend system.
-//    try {
-//      new BlackMagic(db);
-//    }
-//    catch (Exception e1) {
-//      // TODO Auto-generated catch block
-//      e1.printStackTrace();
-//    }
+//     try {
+//     new BlackMagic(SolarDecathlonApplication.db);
+//     }
+//     catch (Exception e1) {
+//     // TODO Auto-generated catch block
+//     e1.printStackTrace();
+//     }
 
     // figure out the active page from session properties.
     int activePage = properties.get(PAGE_DISPLAY);
@@ -104,40 +92,40 @@ public class Header extends WebPage {
         "style.css", screenContainer));
 
     // Add Javascript for use in all pages
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery.min.js"));
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery-ui.min.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery.min.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery-ui.min.js"));
     /*
      * add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.solardecathlon
      * .frontend.Header.* class, "javascripts/jquery-ui-1.8.7.custom.js"));
      */
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery.effects.core.js"));
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery.ui.core.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery.effects.core.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery.ui.core.js"));
 
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery.ui.widget.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery.ui.widget.js"));
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
         "jqueryUI.css", screenContainer));
 
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/main.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/main.js"));
 
     // For Time Picker and Color chooser
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery.icolor.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery.icolor.js"));
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
         "timePicker.css", screenContainer));
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery.timePicker.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery.timePicker.js"));
 
     // For Date Picker
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
         "datePicker.css", screenContainer));
-    add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.ihale.frontend.Header.class, "javascripts/jquery.ui.datepicker.js"));
+    add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
+        "javascripts/jquery.ui.datepicker.js"));
 
     // Logo Image
     add(new Image("logo", new ResourceReference(Header.class, "images/logo.png")));
@@ -595,16 +583,6 @@ public class Header extends WebPage {
   public Map<String, Integer> getSessionGraphProperties() {
     return ((SolarDecathlonSession) getSession()).getProperties();
 
-  }
-
-  /**
-   * Set the inside temperature label on header page.
-   * 
-   * @param value The inside temperature.
-   */
-  public static void setInsideTemp(Long value) {
-    // DecimalFormat df = new DecimalFormat("#.##");
-    insideTemperatureHeader.setDefaultModelObject(String.valueOf(value));
   }
 
   /**

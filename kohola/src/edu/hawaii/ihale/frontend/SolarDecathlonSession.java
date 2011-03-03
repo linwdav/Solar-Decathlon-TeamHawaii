@@ -19,7 +19,6 @@ public class SolarDecathlonSession extends WebSession {
   private static final long serialVersionUID = 1L;
 
   private Map<String, Integer> properties = new HashMap<String, Integer>();
-  //private Map<String, Long> temperatures = new HashMap<String, Long>();
 
   /**
    * Create default values for the application.
@@ -31,11 +30,7 @@ public class SolarDecathlonSession extends WebSession {
     super(request);
     this.properties.put("AquaponicsStatsGraph", 0);
     this.properties.put("EnergyGraph", 0);
-    this.properties.put("ActivePage", 0);
-    // making up temperature values for now.
-    //this.temperatures.put("InsideTemperature", 74L);
-    //this.temperatures.put("OutsideTemperature", 84L);
-    
+    this.properties.put("ActivePage", 0);       
   }
 
   /**
@@ -46,13 +41,4 @@ public class SolarDecathlonSession extends WebSession {
   public Map<String, Integer> getProperties() {
     return this.properties;
   }
-  
-  /**
-   * Return the temperatures instance.
-   * @return The inside and outside temperatures
-   */
-  // public Map<String, Long> getTemperatures() {
-  // return this.temperatures;
-  // }
-
 }

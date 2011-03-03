@@ -36,13 +36,13 @@ public class AquaPonics extends Header {
    */
   WebMarkupContainer graph = new WebMarkupContainer("graphImage");
 
-  static Label temp = new Label("Temp", "0");
-  static Label ph = new Label("PH", "0");
-  static Label ec = new Label("EC", "0");
+  // static Label temp = new Label("Temp", "0");
+  // static Label ph = new Label("PH", "0");
+  // static Label ec = new Label("EC", "0");
 
   static Label tempStatus = new Label("tempStatus", "");
   static Label phStatus = new Label("PhStatus", "");
-  static Label ecStatus = new Label("EcStatus", "");
+  static Label oxygenStatus = new Label("OxygenStatus", "");
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
@@ -54,9 +54,23 @@ public class AquaPonics extends Header {
    */
   public AquaPonics() throws Exception {
 
+    DecimalFormat df = new DecimalFormat("#.##");
+    Label temp =
+        new Label("Temp", String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp()));
+    Label ph =
+        new Label("PH", String.valueOf(df.format(SolarDecathlonApplication.getAquaponics()
+            .getPH())));
+    Label oxygen =
+        new Label("Oxygen", String.valueOf(df.format(SolarDecathlonApplication.getAquaponics()
+            .getOxygen())));
+
+    setTempStatusColor(SolarDecathlonApplication.getAquaponics().getTemp());
+    setPHStatusColor(SolarDecathlonApplication.getAquaponics().getPH());
+    setOxygenStatusColor(SolarDecathlonApplication.getAquaponics().getOxygen());
+
     tempStatus.setEscapeModelStrings(false);
     phStatus.setEscapeModelStrings(false);
-    ecStatus.setEscapeModelStrings(false);
+    oxygenStatus.setEscapeModelStrings(false);
 
     // SystemStateEntryDB db = ((SolarDecathlonApplication)
     // SolarDecathlonApplication.get()).getDB();
@@ -259,13 +273,13 @@ public class AquaPonics extends Header {
     phOuterDiv.add(phInnerDiv);
     add(phOuterDiv);
 
-    WebMarkupContainerWithAssociatedMarkup ecInnerDiv =
-        new WebMarkupContainerWithAssociatedMarkup("EcInnerDiv");
+    WebMarkupContainerWithAssociatedMarkup oxygenInnerDiv =
+        new WebMarkupContainerWithAssociatedMarkup("OxygenInnerDiv");
 
-    WebMarkupContainerWithAssociatedMarkup ecOuterDiv =
-        new WebMarkupContainerWithAssociatedMarkup("EcOuterDiv");
+    WebMarkupContainerWithAssociatedMarkup oxygenOuterDiv =
+        new WebMarkupContainerWithAssociatedMarkup("OxygenOuterDiv");
 
-    ecInnerDiv.add(new AbstractBehavior() {
+    oxygenInnerDiv.add(new AbstractBehavior() {
 
       /**
        * Add attribute tags to the div.
@@ -277,9 +291,9 @@ public class AquaPonics extends Header {
       }
     });
 
-    if (Double.parseDouble((String) ec.getDefaultModelObject()) < 2.25
-        && Double.parseDouble((String) ec.getDefaultModelObject()) > 1.75) {
-      ecOuterDiv.add(new AbstractBehavior() {
+    if (Double.parseDouble((String) oxygen.getDefaultModelObject()) < 5.5
+        && Double.parseDouble((String) oxygen.getDefaultModelObject()) > 6.0) {
+      oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
          * Add attribute tags to the div.
@@ -292,9 +306,9 @@ public class AquaPonics extends Header {
         }
       });
     }
-    else if (Double.parseDouble((String) ec.getDefaultModelObject()) == 1.75
-        || Double.parseDouble((String) ec.getDefaultModelObject()) == 2.25) {
-      ecOuterDiv.add(new AbstractBehavior() {
+    else if (Double.parseDouble((String) oxygen.getDefaultModelObject()) == 5.5
+        || Double.parseDouble((String) oxygen.getDefaultModelObject()) == 6.0) {
+      oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
          * Add attribute tags to the div.
@@ -308,7 +322,7 @@ public class AquaPonics extends Header {
       });
     }
     else {
-      ecOuterDiv.add(new AbstractBehavior() {
+      oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
          * Add attribute tags to the div.
@@ -322,10 +336,10 @@ public class AquaPonics extends Header {
       });
     }
 
-    ecInnerDiv.add(ec);
-    ecInnerDiv.add(ecStatus);
-    ecOuterDiv.add(ecInnerDiv);
-    add(ecOuterDiv);
+    oxygenInnerDiv.add(oxygen);
+    oxygenInnerDiv.add(oxygenStatus);
+    oxygenOuterDiv.add(oxygenInnerDiv);
+    add(oxygenOuterDiv);
 
     // add(ec);
 
@@ -343,13 +357,13 @@ public class AquaPonics extends Header {
   private void displayDayGraph(WebMarkupContainer wmc) {
     String graphURL;
     DecimalFormat df = new DecimalFormat("#");
-    String tempValue = String.valueOf((String) temp.getDefaultModelObject());
-    String phValue = df.format(Double.parseDouble((String) ph.getDefaultModelObject()));
-    String ecValue = df.format(Double.parseDouble((String) ec.getDefaultModelObject()));
+    String tempValue = String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp());
+    String phValue = df.format(SolarDecathlonApplication.getAquaponics().getPH());
+    String oxygenValue = df.format(SolarDecathlonApplication.getAquaponics().getOxygen());
     graphURL =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|Temp|pH|EC" + "&chxt=x,y"
+        "http://chart.apis.google.com/chart" + "?chxl=0:|Temp|pH|Oxygen" + "&chxt=x,y"
             + "&chbh=a,5,15" + "&chs=300x200" + "&cht=bvg" + "&chco=008000,FF9900"
-            + "&chd=t:73,6.8,2|" + tempValue + "," + phValue + "," + ecValue
+            + "&chd=t:73,6.8,2|" + tempValue + "," + phValue + "," + oxygenValue
             + "&chdl=Recommended|Actual" + "&chdlp=t";
     wmc.add(new AttributeModifier("src", true, new Model<String>(graphURL)));
 
@@ -360,8 +374,7 @@ public class AquaPonics extends Header {
    * 
    * @param value The temperature.
    */
-  public static void setTemp(Long value) {
-    temp.setDefaultModelObject(String.valueOf(value));
+  public static void setTempStatusColor(Long value) {
 
     if (value == 55 || value == 65) {
       tempStatus.setDefaultModelObject(WARNG_MESSAGE);
@@ -379,9 +392,7 @@ public class AquaPonics extends Header {
    * 
    * @param value The ph level.
    */
-  public static void setPH(Double value) {
-    DecimalFormat df = new DecimalFormat("#.##");
-    ph.setDefaultModelObject(String.valueOf(df.format(value)));
+  public static void setPHStatusColor(Double value) {
 
     if (value == 6.5 || value == 7) {
       phStatus.setDefaultModelObject(WARNG_MESSAGE);
@@ -399,18 +410,17 @@ public class AquaPonics extends Header {
    * 
    * @param value The electrical conductivity.
    */
-  public static void setEC(Double value) {
+  public static void setOxygenStatusColor(Double value) {
     DecimalFormat df = new DecimalFormat("#.##");
-    ec.setDefaultModelObject(String.valueOf(df.format(value)));
 
-    if ("1.75".equals(df.format(value)) || "2.25".equals(df.format(value))) {
-      ecStatus.setDefaultModelObject(WARNG_MESSAGE);
+    if ("5.50".equals(df.format(value)) || "6.00".equals(df.format(value))) {
+      oxygenStatus.setDefaultModelObject(WARNG_MESSAGE);
     }
-    else if (value < 1.75 || value > 2.25) {
-      ecStatus.setDefaultModelObject(ALERT_MESSAGE);
+    else if (value < 5.5 || value > 6.0) {
+      oxygenStatus.setDefaultModelObject(ALERT_MESSAGE);
     }
     else {
-      ecStatus.setDefaultModelObject("");
+      oxygenStatus.setDefaultModelObject("");
     }
   }
 

@@ -7,7 +7,8 @@ import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
-//import edu.hawaii.ihale.backend.DataGatheringThread;
+import edu.hawaii.ihale.backend.DataGatheringThread;
+//import edu.hawaii.ihale.backend.rest.IHaleServer;
 
 /**
  * This top-level class is required to specify the Wicket WebApplication.
@@ -21,18 +22,31 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
  */
 public class SolarDecathlonApplication extends WebApplication {
     
+  private static AquaponicsListener aquaponicsListener;
+  private static HvacListener hvacListener;
+  private static LightsListener lightsListener;
+  private static PhotovoltaicListener photovoltaicListener;
+  private static ElectricalListener electricalListener;
   static SystemStateEntryDB db;
   
   static {
 
-    AquaponicsListener aquaponicsListener = new AquaponicsListener();
-    HvacListener hvacListener = new HvacListener();
-    LightsListener lightsListener = new LightsListener();
-    PhotovoltaicListener photovoltaicListener = new PhotovoltaicListener();
-    ElectricalListener electricalListener = new ElectricalListener();
+    aquaponicsListener = new AquaponicsListener();
+    hvacListener = new HvacListener();
+    lightsListener = new LightsListener();
+    photovoltaicListener = new PhotovoltaicListener();
+    electricalListener = new ElectricalListener();
 
+    // for integration with Naia backend
     String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
-
+    
+    // for integration with Hoike backend
+    //String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
+    
+    // for testing our frontend solely
+    //String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
+    
+        
     try {
       db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
     }
@@ -55,12 +69,19 @@ public class SolarDecathlonApplication extends WebApplication {
     db.addSystemStateListener(electricalListener);
     
     
-    // calling the backend naia thread to get reading from sensors
-    // DataGatheringThread dataGathering = new DataGatheringThread(10000);
-    // // Create Thread
-    // Thread dataGatheringThread = new Thread(dataGathering);
-    // // Start Thread
-    // dataGatheringThread.start();
+     //calling the backend naia thread to get reading from sensors
+     DataGatheringThread dataGathering = new DataGatheringThread(10000);
+     // Create Thread
+     Thread dataGatheringThread = new Thread(dataGathering);
+     // Start Thread
+     dataGatheringThread.start();
+   
+//    IHaleServer iHaleServer = new IHaleServer(10000);
+//    // Create Thread
+//    Thread iHaleServerThread = new Thread(iHaleServer);
+//    // Start Thread
+//    iHaleServerThread.start();
+  
   }
 
   /**
@@ -100,28 +121,43 @@ public class SolarDecathlonApplication extends WebApplication {
   }
 
   /**
-   * Returns an instance of the database.
-   * @return db The database.
+   * Returns the aquaponics listener.
+   * @return The aquaponics listener
    */
-  public SystemStateEntryDB getDB() {
-    // Create an instance of the database.
-    // We could read this string from a properties file on startup, for example.
-    String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
-    SystemStateEntryDB db = null;
-    try {
-      db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
-    }
-    catch (InstantiationException e) {
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-        
-    return db;
+  public static AquaponicsListener getAquaponics() {
+    return aquaponicsListener;
   }
-
+  
+  /**
+   * Returns the hvac listener.
+   * @return The hvac listener
+   */
+  public static HvacListener getHvac() {
+    return hvacListener;
+  }
+  
+  /**
+   * Returns the lights listener.
+   * @return The lights listener
+   */
+  public static LightsListener getLights() {
+    return lightsListener;
+  }
+  
+  /**
+   * Returns the photovoltaic listener.
+   * @return The photovoltaic listener
+   */
+  public static PhotovoltaicListener getPhotovoltaic() {
+    return photovoltaicListener;
+  }
+  
+  /**
+   * Returns the electrical listener.
+   * @return The electrical listener
+   */
+  public static ElectricalListener getElectrical() {
+    return electricalListener;
+  }
+  
 }

@@ -48,7 +48,7 @@ public class BlackMagic {
       else {
         timestamp = (new Date()).getTime() - (mHour * 4);
       }
-      cEntry = new SystemStateEntry("Electrical", "eGauge-2", timestamp);
+      cEntry = new SystemStateEntry("electrical", "eGauge-2", timestamp);
       Thread.sleep(10);
       timestamp = (new Date()).getTime();
       if (i == 1) {
@@ -60,25 +60,26 @@ public class BlackMagic {
       else if (i == 7 || i == 8 || i == 9) {
         timestamp = (new Date()).getTime() - mFive;
       }
-      pEntry = new SystemStateEntry("Photovoltaics", "eGauge-1", timestamp);
+      pEntry = new SystemStateEntry("photovoltaics", "eGauge-1", timestamp);
       Thread.sleep(10);
       timestamp = (new Date()).getTime();
-      entry = new SystemStateEntry("Aquaponics", "Arduino-23", timestamp);
+      entry = new SystemStateEntry("aquaponics", "arduino-23", timestamp);
       
-      cEntry.putLongValue("power", cValue);
-      pEntry.putLongValue("power", pValue);
+      cEntry.putLongValue("Power", cValue);
+      pEntry.putLongValue("Power", pValue);
       if (i == 1 || i == 7 || i == 6) {
-        entry.putLongValue("airTemp", longValue);
-        entry.putLongValue("waterTemp", longValue);
-        entry.putDoubleValue("ec", doubleValue);
+        entry.putLongValue("Temp", longValue);
+        entry.putDoubleValue("Oxygen", doubleValue);
         entry.putDoubleValue("pH", doubleValue);
       }
       else if (i == 2 || i == 3 || i == 5) {
         longValue = (long) (Math.random() * 200);
-
+        entry.putLongValue("Temp", longValue);
+        entry.putDoubleValue("Oxygen", doubleValue);
+        entry.putDoubleValue("pH", doubleValue);
       }
       else {        
-        entry = new SystemStateEntry("Hvac", "Arduino-3", timestamp);
+        entry = new SystemStateEntry("hvac", "arduino-3", timestamp);
         entry.putLongValue("Temp", longValue);        
       }
 
