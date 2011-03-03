@@ -133,7 +133,11 @@ public class XmlMethods {
   public static SystemStateEntry parseEgaugeXML(String systemName, Document doc) {
 
     // PARSE eGauge XML
+    String eqString = " = ";
     String deviceName = "";
+    long timestamp = 0;
+    SystemStateEntry entry = null;
+
     if ("photovoltaics".equalsIgnoreCase(systemName)) {
       deviceName = "egauge-1";
     }
@@ -142,9 +146,6 @@ public class XmlMethods {
     }
 
     System.out.println("System: " + systemName + "\nDevice: " + deviceName);
-
-    // Create new SystemStateEntry object
-    SystemStateEntry entry = new SystemStateEntry(systemName, deviceName, 0);
 
     // normalize xml document
     doc.getDocumentElement().normalize();
@@ -161,40 +162,22 @@ public class XmlMethods {
 
       if (child.getNodeType() == Node.ELEMENT_NODE) {
 
-        // Get child element (<meter>)
-        NamedNodeMap childAttributes = child.getAttributes();
-        for (int x = 0; x < childAttributes.getLength(); x++) {
-          Node childAttribute = childAttributes.item(x);
+        String schild = child.getNodeName();
+        String cval = getElementValue(child);
 
-          String name = childAttribute.getNodeName();
-          String val = childAttribute.getNodeValue();
+        if ("timestamp".equalsIgnoreCase(schild)) {
+          System.out.println(schild + eqString + cval);
+          timestamp = Long.parseLong(cval.trim());
+        }
 
-          // Retrieve and store energy and power (<energy> & <power>)
-          if ("title".equalsIgnoreCase(name) && "Solar".equalsIgnoreCase(val)) {
+        // Create new SystemStateEntry object
+        entry = new SystemStateEntry(systemName, deviceName, timestamp);
 
-            NodeList grandchildren = child.getChildNodes();
+        // Parse and add Power and Energy value from the PV system (Generation)
+        processEnergyPower(entry, "Solar", child);
+        // Parse and add Power and Energy value from the Electrical (Consumption)
+        processEnergyPower(entry, "Grid", child);
 
-            for (int y = 0; y < grandchildren.getLength(); y++) {
-
-              Node grandchild = grandchildren.item(y);
-
-              if (grandchild.getNodeType() == Node.ELEMENT_NODE) {
-
-                String gcName = grandchild.getNodeName();
-                String gcValue = getElementValue(grandchild);
-
-                if ("energy".equalsIgnoreCase(gcName)) {
-                  System.out.println(gcName + " = " + gcValue);
-                  entry.putLongValue("Power", (long) Double.parseDouble(gcValue));
-                }
-                else if ("power".equalsIgnoreCase(gcName)) {
-                  System.out.println(gcName + " = " + gcValue);
-                  entry.putLongValue("Energy", (long) Double.parseDouble(gcValue));
-                } // end if
-              } // end if (grandchild Node Type)
-            } // end for loop (grandchildren)
-          } // end if (grandchild)
-        } // end for loop (child attributes)
       } // end if (child Node Type)
     } // end for loop (children)
 
@@ -305,5 +288,56 @@ public class XmlMethods {
     }
     return "";
   } // end getElementValue
+
+  /**
+   * Checks if the <meter> attributes is Solar or Grid then parse the <energy> and <power> element
+   * value then add it in the SystemStateEntry.
+   * 
+   * @param entry The SystemStateEntry object
+   * @param attribute The attribute "Solar" or "Grid"
+   * @param node The parent node <measurement>
+   */
+  public static void processEnergyPower(SystemStateEntry entry, String attribute, Node node) {
+
+    String eqString = " = ";
+
+    // Get child element (<meter>)
+    NamedNodeMap childAttributes = node.getAttributes();
+
+    for (int x = 0; x < childAttributes.getLength(); x++) {
+      Node childAttribute = childAttributes.item(x);
+
+      String name = childAttribute.getNodeName();
+      String val = childAttribute.getNodeValue();
+
+      // Checks if attributes is either "Solar" or "Grid"
+      // depending on the parameter
+      if ("title".equalsIgnoreCase(name) && attribute.equalsIgnoreCase(val)) {
+
+        NodeList grandchildren = node.getChildNodes();
+
+        for (int y = 0; y < grandchildren.getLength(); y++) {
+
+          Node grandchild = grandchildren.item(y);
+
+          // Retrieve and store energy and power (<energy> & <power>)
+          if (grandchild.getNodeType() == Node.ELEMENT_NODE) {
+
+            String gcName = grandchild.getNodeName();
+            String gcValue = getElementValue(grandchild);
+
+            if ("energy".equalsIgnoreCase(gcName)) {
+              System.out.println(gcName + eqString + gcValue);
+              entry.putLongValue("Energy", (long) Double.parseDouble(gcValue));
+            }
+            else if ("power".equalsIgnoreCase(gcName)) {
+              System.out.println(gcName + eqString + gcValue);
+              entry.putLongValue("Power", (long) Double.parseDouble(gcValue));
+            } // end if
+          } // end if
+        } // end for loop
+      } // end if
+    } // end for loop
+  } // end of processEnergyPower
 
 } // end of class
