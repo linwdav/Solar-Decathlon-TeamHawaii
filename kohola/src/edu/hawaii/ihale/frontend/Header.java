@@ -71,16 +71,16 @@ public class Header extends WebPage {
     outsideTemperatureHeader.setDefaultModelObject(String.valueOf(rand));
 
     // add hvac listener for the temperature display.
-    db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-        .getAquaponicsListener());
-    db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-        .getHvacListener());
-    db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-        .getLightsListener());
-    db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-        .getPhotovoltaicListener());
-    db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-        .getElectricalListener());
+    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
+    // .getAquaponicsListener());
+    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
+    // .getHvacListener());
+    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
+    // .getLightsListener());
+    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
+    // .getPhotovoltaicListener());
+    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
+    // .getElectricalListener());
 
     // for testing purpose, may remove after the integration with backend system.
 //    try {

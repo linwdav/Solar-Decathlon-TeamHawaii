@@ -16,7 +16,7 @@ public class ElectricalListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Electricity Consumption.
    */
   public ElectricalListener() {
-    super("Electrical");
+    super("electrical");
   }
 
   /**

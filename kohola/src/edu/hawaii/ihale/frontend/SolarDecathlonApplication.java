@@ -7,6 +7,7 @@ import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
+//import edu.hawaii.ihale.backend.DataGatheringThread;
 
 /**
  * This top-level class is required to specify the Wicket WebApplication.
@@ -15,14 +16,52 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
  * @author Noah Woodden
  * @author Kevin Leong
  * @author Anthony Kinsey
+ * @author Kylan Hughes
+ * @author Chuan Lun Hung
  */
 public class SolarDecathlonApplication extends WebApplication {
     
-  AquaponicsListener aquaponicsListener = new AquaponicsListener();
-  HvacListener hvacListener = new HvacListener();
-  LightsListener lightsListener = new LightsListener();
-  PhotovoltaicListener photovoltaicListener = new PhotovoltaicListener();
-  ConsumptionListener consumptionListener = new ConsumptionListener();
+  static SystemStateEntryDB db;
+  
+  static {
+
+    AquaponicsListener aquaponicsListener = new AquaponicsListener();
+    HvacListener hvacListener = new HvacListener();
+    LightsListener lightsListener = new LightsListener();
+    PhotovoltaicListener photovoltaicListener = new PhotovoltaicListener();
+    ElectricalListener electricalListener = new ElectricalListener();
+
+    String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
+
+    try {
+      db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
+    }
+    catch (InstantiationException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    catch (ClassNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    db.addSystemStateListener(aquaponicsListener);
+    db.addSystemStateListener(hvacListener);
+    db.addSystemStateListener(lightsListener);
+    db.addSystemStateListener(photovoltaicListener);
+    db.addSystemStateListener(electricalListener);
+    
+    
+    // calling the backend naia thread to get reading from sensors
+    // DataGatheringThread dataGathering = new DataGatheringThread(10000);
+    // // Create Thread
+    // Thread dataGatheringThread = new Thread(dataGathering);
+    // // Start Thread
+    // dataGatheringThread.start();
+  }
 
   /**
    * Return the home page for this application.
@@ -67,7 +106,7 @@ public class SolarDecathlonApplication extends WebApplication {
   public SystemStateEntryDB getDB() {
     // Create an instance of the database.
     // We could read this string from a properties file on startup, for example.
-    String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
+    String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
     SystemStateEntryDB db = null;
     try {
       db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
@@ -83,46 +122,6 @@ public class SolarDecathlonApplication extends WebApplication {
     }
         
     return db;
-  }
-  
-  /**
-   * Returns the aquaponics listener.
-   * @return aquaponicsListener
-   */
-  public AquaponicsListener getAquaponicsListener() {
-    return aquaponicsListener;
-  }
-  
-  /**
-   * Returns the hvac listener.
-   * @return hvacListener.
-   */
-  public HvacListener getHvacListener() {
-    return hvacListener;
-  }
-  
-  /**
-   * Returns the lights listener.
-   * @return lightsLisnter.
-   */
-  public LightsListener getLightsListener() {
-    return lightsListener;
-  }
-  
-  /**
-   * Returns the photovoltaic listener.
-   * @return photovoltaicListener.
-   */
-  public PhotovoltaicListener getPhotovoltaicListener() {
-    return photovoltaicListener;
-  }
-  
-  /**
-   * Returns the consumption listener.
-   * @return consumptionListener.
-   */
-  public ConsumptionListener getConsumptionListener() {
-    return consumptionListener;
   }
 
 }

@@ -15,7 +15,7 @@ public class HvacListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Hvac.
    */
   public HvacListener() {
-    super("HVAC");
+    super("hvac");
   }
 
   /**

@@ -9,7 +9,8 @@ import org.apache.wicket.protocol.http.WebSession;
 /**
  * Session that holds each user's state.
  * 
- * @author Team Kohola
+ * @author Kylan Hughes
+ * @author Chuan Lun Hung
  * 
  */
 public class SolarDecathlonSession extends WebSession {

@@ -16,7 +16,7 @@ public class AquaponicsListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Aquaponics.
    */
   public AquaponicsListener() {
-    super("Aquaponics");
+    super("aquaponics");
   }
 
   /**
@@ -36,7 +36,7 @@ public class AquaponicsListener extends SystemStateListener {
       if ((pH = entry.getDoubleValue("pH")) != -1) {
         AquaPonics.setPH(pH);
       }
-      if ((ec = entry.getDoubleValue("ec")) != -1) {
+      if ((ec = entry.getDoubleValue("Oxygen")) != -1) {
         AquaPonics.setEC(ec);
       }
 

@@ -15,7 +15,7 @@ public class LightsListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for lighting.
    */
   public LightsListener() {
-    super("Lights");
+    super("lighting");
   }
 
   /**
