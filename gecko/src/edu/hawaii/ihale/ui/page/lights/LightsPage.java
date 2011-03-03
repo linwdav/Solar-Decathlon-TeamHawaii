@@ -8,7 +8,6 @@ import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
-//import org.apache.wicket.markup.html.panel.FeedbackPanel;
 import org.apache.wicket.model.PropertyModel;
 
 import edu.hawaii.ihale.ui.LightingListener;
@@ -36,7 +35,8 @@ public class LightsPage extends BasePage {
    */
   public LightsPage() {
       
-      listener = new LightingListener();
+     listener = (LightingListener) this.getSession().getSystemStateListener("lighting");
+    
 //      final FeedbackPanel feedback = new FeedbackPanel("feedback");
 //      add(feedback);
       Form<String> form = new Form<String>("form");

@@ -68,7 +68,7 @@ public class BasePageLogOutPanel extends BasePanel {
         @Override
         public void onClick(AjaxRequestTarget target) {
           try {
-            new BlackMagic(((BasePage) getPage()).database);
+            new BlackMagic(((BasePage)getPage()).getDatabase());
           }
           catch (Exception e) {
             e.printStackTrace();

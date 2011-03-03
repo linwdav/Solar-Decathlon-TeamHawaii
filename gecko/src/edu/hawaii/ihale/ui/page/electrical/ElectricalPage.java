@@ -21,11 +21,16 @@ public class ElectricalPage extends BasePage {
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
+  
+  private transient ElectricalListener listener;
 
   /**
    * Creates the electricity page.
    */
   public ElectricalPage() {
+    
+    listener = (ElectricalListener) this.getSession().getSystemStateListener("electrical");
+    
     add(CSSPackageResource.getHeaderContribution(ElectricalPage.class, "style.css"));
     
     StringBuilder sb = new StringBuilder();
@@ -67,9 +72,6 @@ public class ElectricalPage extends BasePage {
   protected void onBeforeRender() {
     super.onBeforeRender();
     
-    ElectricalListener listener = new ElectricalListener();
-    this.database.addSystemStateListener(listener);
-
     List<Sidebar> list = new ArrayList<Sidebar>();
     list.add(new Sidebar(new Label(SidebarPanel.LEFT, "Power"), new Label(SidebarPanel.RIGHT,
         new PropertyModel<Long>(listener.getModel(), "power"))));

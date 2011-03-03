@@ -26,12 +26,14 @@ public class HVACPage extends BasePage {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
-  private transient HVacListener listener = new HVacListener();
+  private transient HVacListener listener;
   
   /**
    * Creates the HVAC page.
    */
   public HVACPage() {
+    
+    listener = (HVacListener) this.getSession().getSystemStateListener("hvac");
 
     final FeedbackPanel feedback = new FeedbackPanel("feedback");
     add(feedback);

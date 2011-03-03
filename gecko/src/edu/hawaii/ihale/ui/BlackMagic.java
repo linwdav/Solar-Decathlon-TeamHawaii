@@ -26,10 +26,10 @@ public class BlackMagic {
     String level = "Level";
     
     //Aquaponics
-    entry = new SystemStateEntry("Aquaponics", "Arduino-1", timestamp);
-    entry.putDoubleValue("pH", Math.random() * 10);
-    entry.putDoubleValue("Oxygen", Math.random() * 10);
-    entry.putLongValue("Temp", (long) (Math.random() * 10));
+    entry = new SystemStateEntry("aquaponics", "arduino-1", timestamp);
+    entry.putDoubleValue("ph", Math.random() * 10);
+    entry.putDoubleValue("oxygen", Math.random() * 10);
+    entry.putLongValue("temp", (long) (Math.random() * 10));
     db.putEntry(entry);
     
     //HVAC
@@ -62,6 +62,4 @@ public class BlackMagic {
     entry.putLongValue("energy", (long) (Math.random() * 10));
     db.putEntry(entry); 
   }
-  
-  
 }

@@ -32,8 +32,7 @@ public abstract class BasePage extends WebPage implements Serializable {
 
   
   private SolarDecathlonSession session;
-
-  private String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
+  
   protected transient SystemStateEntryDB database;
 
   /**
@@ -59,19 +58,12 @@ public abstract class BasePage extends WebPage implements Serializable {
 
     add(new Image("basePageImage", new ResourceReference(
         edu.hawaii.ihale.SolarDecathlonApplication.class, "./ui/resources/images/logo.png")));
+    
+    if (session == null) {
+      session = (SolarDecathlonSession)super.getSession();
+    }
 
-    try {
-      database = (SystemStateEntryDB)Class.forName(dbClassName).newInstance();
-    }
-    catch (InstantiationException e1) {
-      e1.printStackTrace();
-    }
-    catch (IllegalAccessException e1) {
-      e1.printStackTrace();
-    }
-    catch (ClassNotFoundException e1) {
-      e1.printStackTrace();
-    }
+    database = session.getIHaleDAO();
   }
 
   /**

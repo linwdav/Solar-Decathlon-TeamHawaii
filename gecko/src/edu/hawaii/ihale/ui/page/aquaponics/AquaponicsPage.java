@@ -27,20 +27,19 @@ public class AquaponicsPage extends BasePage {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
-  private final transient AquaponicsListener listener;
-
+  private transient AquaponicsListener listener;
+  
   /**
    * Creates the Aquaponics page.
    */
   public AquaponicsPage() {
 
+    listener = (AquaponicsListener) this.getSession().getSystemStateListener("aquaponics");
+    
     final FeedbackPanel feedback = new FeedbackPanel("feedback");
     feedback.setOutputMarkupId(true);
     add(feedback);
-
-    listener = new AquaponicsListener();
-    this.database.addSystemStateListener(listener);
-
+    
     AjaxSubmitLink submit = new AjaxSubmitLink("submit") {
 
       /**
