@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.form.AjaxSubmitLink;
 import org.apache.wicket.behavior.SimpleAttributeModifier;
+import org.apache.wicket.feedback.IFeedbackMessageFilter;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
@@ -28,18 +29,18 @@ public class AquaponicsPage extends BasePage {
   private static final long serialVersionUID = 1L;
 
   private transient AquaponicsListener listener;
-  
+
   /**
    * Creates the Aquaponics page.
    */
   public AquaponicsPage() {
 
     listener = (AquaponicsListener) this.getSession().getSystemStateListener("aquaponics");
-    
-    final FeedbackPanel feedback = new FeedbackPanel("feedback");
+
+    final FeedbackPanel feedback = new FeedbackPanel("feedback", IFeedbackMessageFilter.ALL);
     feedback.setOutputMarkupId(true);
     add(feedback);
-    
+
     AjaxSubmitLink submit = new AjaxSubmitLink("submit") {
 
       /**
@@ -52,6 +53,7 @@ public class AquaponicsPage extends BasePage {
        */
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
+        super.onSubmit();
 
         // Send command to the backend
         String temp = listener.getModel().getTemp().toString();
@@ -80,7 +82,7 @@ public class AquaponicsPage extends BasePage {
     submit.add(new SimpleAttributeModifier("value", "Update"));
 
     String tempID = "Temp";
-    
+
     Form<String> form = new Form<String>("form");
     form.add(new Label("tempLabel", "Temperature:").setMarkupId(tempID));
     form.add(new TextField<Long>("temp", new PropertyModel<Long>(listener.getModel(), "temp"))

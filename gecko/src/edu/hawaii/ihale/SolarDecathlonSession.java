@@ -1,8 +1,6 @@
 package edu.hawaii.ihale;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebApplication;
@@ -14,7 +12,6 @@ import edu.hawaii.ihale.ui.ElectricalListener;
 import edu.hawaii.ihale.ui.HVacListener;
 import edu.hawaii.ihale.ui.LightingListener;
 import edu.hawaii.ihale.ui.PhotovoltaicListener;
-import edu.hawaii.ihale.ui.WaterListener;
 
 /**
  * Provide a very simple session data structure, which is just a set of string key-value pairs. The
@@ -28,11 +25,15 @@ public class SolarDecathlonSession extends WebSession {
   private static final long serialVersionUID = 1L;
   /** Each user has a set of properties. */
   private Map<String, String> properties = new HashMap<String, String>();
-  
+
   private String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
   protected transient SystemStateEntryDB database;
-  
-  private List<SystemStateListener> listeners;
+
+  private transient AquaponicsListener listAquaponics;
+  private transient ElectricalListener listElectrical;
+  private transient HVacListener listHvac;
+  private transient LightingListener listLighting;
+  private transient PhotovoltaicListener listPhotovoltaic;
 
   /**
    * Create a new session for this user. Called automatically by wicket. You always need to define
@@ -47,9 +48,9 @@ public class SolarDecathlonSession extends WebSession {
     this.properties.put("Page", "homePage");
     this.properties.put("UserName", "Guest");
     this.properties.put("UserAuthenticated", "false");
-    
+
     try {
-      database = (SystemStateEntryDB)Class.forName(dbClassName).newInstance();
+      database = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
     }
     catch (InstantiationException e1) {
       e1.printStackTrace();
@@ -60,18 +61,21 @@ public class SolarDecathlonSession extends WebSession {
     catch (ClassNotFoundException e1) {
       e1.printStackTrace();
     }
-    
-    listeners = new ArrayList<SystemStateListener>();
-    listeners.add(new AquaponicsListener());
-    listeners.add(new ElectricalListener());
-    listeners.add(new HVacListener());
-    listeners.add(new LightingListener());
-    listeners.add(new PhotovoltaicListener());
-    listeners.add(new WaterListener());
-    
-    for (SystemStateListener listener : listeners) {
-      this.database.addSystemStateListener(listener);
-    }
+
+    listAquaponics = new AquaponicsListener();
+    this.database.addSystemStateListener(listAquaponics);
+
+    listElectrical = new ElectricalListener();
+    this.database.addSystemStateListener(listElectrical);
+
+    listHvac = new HVacListener();
+    this.database.addSystemStateListener(listHvac);
+
+    listLighting = new LightingListener();
+    this.database.addSystemStateListener(listLighting);
+
+    listPhotovoltaic = new PhotovoltaicListener();
+    this.database.addSystemStateListener(listPhotovoltaic);
   }
 
   /**
@@ -110,7 +114,7 @@ public class SolarDecathlonSession extends WebSession {
 
     return false;
   }
-  
+
   /**
    * Gets this SystemStateEntryDB.
    * 
@@ -119,7 +123,7 @@ public class SolarDecathlonSession extends WebSession {
   public SystemStateEntryDB getIHaleDAO() {
     return this.database;
   }
-  
+
   /**
    * Gets this System State Listeners.
    * 
@@ -127,11 +131,10 @@ public class SolarDecathlonSession extends WebSession {
    * @return SystemStateListener
    */
   public SystemStateListener getSystemStateListener(String systemName) {
-    for (SystemStateListener listener : listeners) {
-      if (listener.getSystemName().equalsIgnoreCase(systemName)) {
-        return listener;
-      }
-    }
-    return null;
+    return ("aquaponics".equalsIgnoreCase(systemName)) ? listAquaponics : ("electrical"
+        .equalsIgnoreCase(systemName)) ? listElectrical
+        : ("hvac".equalsIgnoreCase(systemName)) ? listHvac : ("lighting"
+            .equalsIgnoreCase(systemName)) ? listLighting : ("photovoltaic"
+            .equalsIgnoreCase(systemName)) ? listPhotovoltaic : null;
   }
 }
