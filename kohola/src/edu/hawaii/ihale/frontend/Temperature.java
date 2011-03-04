@@ -216,10 +216,10 @@ public class Temperature extends Header {
   private void determineInsideTempTextColor(Long value) {
     String original = (String) insideTemperature.getDefaultModelObject();
     String closeTag = "</font>";
-    if (value > 70 && value < 77) {
+    if (value > TEMPERATURE_RANGE_START && value < TEMPERATURE_RANGE_END) {
       original = "<font color=\"green\">" + original + closeTag;
     }
-    else if (value == 70 || value == 77) {
+    else if (value == TEMPERATURE_RANGE_START || value == TEMPERATURE_RANGE_END) {
       original = "<font color=\"#FF9900\">" + original + closeTag;
     }
     else {

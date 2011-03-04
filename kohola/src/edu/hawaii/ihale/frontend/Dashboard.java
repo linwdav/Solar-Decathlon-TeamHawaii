@@ -208,10 +208,10 @@ public class Dashboard extends Header {
     StringBuffer xBuf = new StringBuffer();
     for (int i = 0; i <= 11; i++) {
       if ((currentHour + i * 2) % 12 == 0) {
-        xBuf.append(12 + "|"); // NOPMD
+        xBuf.append(12 + "|");
       }
       else {
-        xBuf.append(((currentHour + i * 2) % 12) + "|"); // NOPMDs
+        xBuf.append(((currentHour + i * 2) % 12) + "|");
       }
     }
     xBuf.append((currentHour % 12));
@@ -272,17 +272,24 @@ public class Dashboard extends Header {
       if (gAverage != 0) {
         gValue = (long) ((gValue / (double) gAverage) / divisor);
       }
+      String tempValue = "";
       if (i == 0) {
-        cPrintBuf.append((long) (cValue * divisor) + "|"); // NOPMD
+        tempValue = (long) (cValue * divisor) + "|";
+        cPrintBuf.append(tempValue);
         gPrintBuf.append((long) (gValue * divisor));
-        cBuf.append(cValue + "|"); // NOPMD
+        tempValue = cValue + "|";
+        cBuf.append(tempValue);
         gBuf.append(gValue);
       }
       else {
-        cPrintBuf.append((long) (cValue * divisor) + ","); // NOPMD
-        gPrintBuf.append((long) (gValue * divisor) + ","); // NOPMD
-        cBuf.append(cValue + ","); // NOPMD
-        gBuf.append(gValue + ","); // NOPMD
+        tempValue = (long) (cValue * divisor) + ",";
+        cPrintBuf.append(tempValue);
+        tempValue = (long) (gValue * divisor) + ",";
+        gPrintBuf.append(tempValue);
+        tempValue = cValue + ",";
+        cBuf.append(tempValue);
+        tempValue = gValue + ",";
+        gBuf.append(tempValue);
       }
       cValue = 0;
       gValue = 0;
@@ -335,7 +342,7 @@ public class Dashboard extends Header {
     String xAxis = "";
     StringBuffer xBuf = new StringBuffer();
     for (int i = 0; i <= 5; i++) {
-      xBuf.append(daysOfWeek[(currentDay + i + 1) % 7] + "|"); // NOPMD
+      xBuf.append(daysOfWeek[(currentDay + i + 1) % 7] + "|"); 
     }
     xBuf.append(daysOfWeek[currentDay % 7]);
     xAxis = xBuf.toString();
@@ -387,17 +394,24 @@ public class Dashboard extends Header {
       if (gAverage != 0) {
         gValue = (long) ((gValue / (double) gAverage) / divisor);
       }
+      String tempValue = "";
       if (i == 0) {
-        cPrintBuf.append((long) (cValue * divisor) + "|"); // NOPMD
+        tempValue = (long) (cValue * divisor) + "|";
+        cPrintBuf.append(tempValue);
         gPrintBuf.append((long) (gValue * divisor));
-        cBuf.append(cValue + "|"); // NOPMD
+        tempValue = cValue + "|";
+        cBuf.append(tempValue);
         gBuf.append(gValue);
       }
       else {
-        cPrintBuf.append((long) (cValue * divisor) + ","); // NOPMD
-        gPrintBuf.append((long) (gValue * divisor) + ","); // NOPMD
-        cBuf.append(cValue + ","); // NOPMD
-        gBuf.append(gValue + ","); // NOPMD
+        tempValue = (long) (cValue * divisor) + ",";
+        cPrintBuf.append(tempValue);
+        tempValue = (long) (gValue * divisor) + ",";
+        gPrintBuf.append(tempValue);
+        tempValue = cValue + ",";
+        cBuf.append(tempValue);
+        tempValue = gValue + ",";
+        gBuf.append(tempValue);
       }
       cValue = 0;
       gValue = 0;
@@ -445,10 +459,10 @@ public class Dashboard extends Header {
     StringBuffer xBuf = new StringBuffer();
     for (int i = 6; i >= 1; i--) {
       if ((currentDay - (i * 5)) < 0) {
-        xBuf.append((months[currentMonth - 1] - (i * 5 - currentDay)) + "|"); // NOPMD
+        xBuf.append((months[currentMonth - 1] - (i * 5 - currentDay)) + "|"); 
       }
       else {
-        xBuf.append((currentDay - (i * 5)) + "|"); // NOPMD
+        xBuf.append((currentDay - (i * 5)) + "|"); 
       }
     }
     xBuf.append(currentDay);
@@ -508,17 +522,24 @@ public class Dashboard extends Header {
       if (gAverage != 0) {
         gValue = (long) ((gValue / (double) gAverage) / divisor);
       }
+      String tempValue = "";
       if (i == 0) {
-        cPrintBuf.append((long) (cValue * divisor) + "|"); // NOPMD
+        tempValue = (long) (cValue * divisor) + "|";
+        cPrintBuf.append(tempValue);
         gPrintBuf.append((long) (gValue * divisor));
-        cBuf.append(cValue + "|"); // NOPMD
+        tempValue = cValue + "|";
+        cBuf.append(tempValue);
         gBuf.append(gValue);
       }
       else {
-        cPrintBuf.append((long) (cValue * divisor) + ","); // NOPMD
-        gPrintBuf.append((long) (gValue * divisor) + ","); // NOPMD
-        cBuf.append(cValue + ","); // NOPMD
-        gBuf.append(gValue + ","); // NOPMD
+        tempValue = (long) (cValue * divisor) + ",";
+        cPrintBuf.append(tempValue);
+        tempValue = (long) (gValue * divisor) + ",";
+        gPrintBuf.append(tempValue);
+        tempValue = cValue + ",";
+        cBuf.append(tempValue);
+        tempValue = gValue + ",";
+        gBuf.append(tempValue);
       }
       cValue = 0;
       gValue = 0;

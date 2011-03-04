@@ -53,20 +53,6 @@ public class SolarDecathlonApplication extends WebApplication {
     // 3. for testing our frontend solely
     String dbClassName = BLACKMAGIC_DB_CLASS_NAME;
 
-    /**
-     * Or read from the parameter from the command line
-     */
-    // String dbClassName;
-    // if ("naia".equalsIgnoreCase(Jetty.getBackendName())) {
-    // dbClassName = NAIA_DB_CLASS_NAME;
-    // }
-    // else if ("hoike.equalsIgnoreCase.(Jetty.getBackendName())) {
-    // dbClassName = HOIKE_DB_CLASS_NAME;
-    // }
-    // else {
-    // dbClassName = BLACKMAGIC_DB_CLASS_NAME;
-    // }
-
     try {
       db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
     }
@@ -104,27 +90,6 @@ public class SolarDecathlonApplication extends WebApplication {
 
     // 3. call BlackMagic
     // Please modify the code in Header.java
-
-    /*********************************************************************
-     * To be uncommented after backend teams finish their implementation.
-     **********************************************************************/
-    // if ("naia".equalsIgnoreCase(Jetty.getBackendName())) {
-    // DataGatheringThread dataGathering =
-    // new DataGatheringThread(10000, Jetty.getSimulationName());
-    // // Create Thread
-    // Thread dataGatheringThread = new Thread(dataGathering);
-    // // Start Thread
-    // dataGatheringThread.start();
-    // }
-    //
-    // else if ("hoike".equalsIgnoreCase(Jetty.getBackendName())) {
-    // IHaleServer iHaleServer = new IHaleServer(10000, Jetty.getSimulationName());
-    // // // Create Thread
-    // Thread iHaleServerThread = new Thread(iHaleServer);
-    // // // Start Thread
-    // iHaleServerThread.start();
-    // }
-
   }
 
   /**

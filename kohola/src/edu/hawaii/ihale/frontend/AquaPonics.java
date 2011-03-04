@@ -31,14 +31,29 @@ public class AquaPonics extends Header {
   private static final String ALERT_MESSAGE = "<font color=\"red\">(ALERT)</font>";
   private static final String WARNG_MESSAGE = "<font color=\"#FF9900\">(WARNG)</font>";
 
+  // recommended values for aquaponics
+  private static final long TEMPERATRUE_RANGE_START = 55;
+  private static final long TEMPERATRUE_RANGE_END = 65;
+
+  private static final double PH_RANGE_START = 6.5;
+  private static final double PH_RANGE_END = 7.5;
+
+  private static final double OXYGEN_RANGE_START = 1.50;
+  private static final double OXYGEN_RANGE_END = 2.50;
+
+  private static final Label recommendedTempLabel = new Label("RecommendedTempLabel",
+      TEMPERATRUE_RANGE_START + "&deg;F - " + TEMPERATRUE_RANGE_END + "&deg;F");
+
+  private static final Label recommendedPHLabel = new Label("RecommendedPHLabel", PH_RANGE_START
+      + " - " + PH_RANGE_END);
+
+  private static final Label recommendedOxygenLabel = new Label("RecommendedOxygenLabel",
+      TEMPERATRUE_RANGE_START + " - " + TEMPERATRUE_RANGE_END);
+
   /**
    * MarkupContainer for all graphs.
    */
   WebMarkupContainer graph = new WebMarkupContainer("graphImage");
-
-  // static Label temp = new Label("Temp", "0");
-  // static Label ph = new Label("PH", "0");
-  // static Label ec = new Label("EC", "0");
 
   static Label tempStatus = new Label("tempStatus", "");
   static Label phStatus = new Label("PhStatus", "");
@@ -58,8 +73,8 @@ public class AquaPonics extends Header {
     Label temp =
         new Label("Temp", String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp()));
     Label ph =
-        new Label("PH", String.valueOf(df.format(SolarDecathlonApplication.getAquaponics()
-            .getPH())));
+        new Label("PH",
+            String.valueOf(df.format(SolarDecathlonApplication.getAquaponics().getPH())));
     Label oxygen =
         new Label("Oxygen", String.valueOf(df.format(SolarDecathlonApplication.getAquaponics()
             .getOxygen())));
@@ -92,7 +107,6 @@ public class AquaPonics extends Header {
           setResponsePage(new AquaponicsStats());
         }
         catch (Exception e) {
-          // TODO Auto-generated catch block
           e.printStackTrace();
         }
       }
@@ -113,8 +127,8 @@ public class AquaPonics extends Header {
     WebMarkupContainerWithAssociatedMarkup tempDiv4 =
         new WebMarkupContainerWithAssociatedMarkup("TempDiv4");
 
-    if (Long.parseLong((String) temp.getDefaultModelObject()) > 65
-        || Long.parseLong((String) temp.getDefaultModelObject()) < 55) {
+    if (Long.parseLong((String) temp.getDefaultModelObject()) > TEMPERATRUE_RANGE_END
+        || Long.parseLong((String) temp.getDefaultModelObject()) < TEMPERATRUE_RANGE_START) {
 
       tempDiv.add(new AbstractBehavior() {
 
@@ -129,8 +143,8 @@ public class AquaPonics extends Header {
         }
       });
     }
-    else if (Long.parseLong((String) temp.getDefaultModelObject()) == 65
-        || Long.parseLong((String) temp.getDefaultModelObject()) == 55) {
+    else if (Long.parseLong((String) temp.getDefaultModelObject()) == TEMPERATRUE_RANGE_END
+        || Long.parseLong((String) temp.getDefaultModelObject()) == TEMPERATRUE_RANGE_START) {
       tempDiv.add(new AbstractBehavior() {
 
         /**
@@ -205,6 +219,10 @@ public class AquaPonics extends Header {
     tempDiv.add(tempDiv2);
     add(tempDiv);
 
+    // add recommended temp range label to page
+    recommendedTempLabel.setEscapeModelStrings(false);
+    add(recommendedTempLabel);
+
     WebMarkupContainerWithAssociatedMarkup phInnerDiv =
         new WebMarkupContainerWithAssociatedMarkup("PhInnerDiv");
 
@@ -223,8 +241,8 @@ public class AquaPonics extends Header {
       }
     });
 
-    if (Double.parseDouble((String) ph.getDefaultModelObject()) < 7
-        && Double.parseDouble((String) ph.getDefaultModelObject()) > 6.5) {
+    if (Double.parseDouble((String) ph.getDefaultModelObject()) < PH_RANGE_END
+        && Double.parseDouble((String) ph.getDefaultModelObject()) > PH_RANGE_START) {
       phOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -238,8 +256,8 @@ public class AquaPonics extends Header {
         }
       });
     }
-    else if (Double.parseDouble((String) ph.getDefaultModelObject()) == 7
-        || Double.parseDouble((String) ph.getDefaultModelObject()) == 6.5) {
+    else if (Double.parseDouble((String) ph.getDefaultModelObject()) == PH_RANGE_END
+        || Double.parseDouble((String) ph.getDefaultModelObject()) == PH_RANGE_START) {
       phOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -273,6 +291,10 @@ public class AquaPonics extends Header {
     phOuterDiv.add(phInnerDiv);
     add(phOuterDiv);
 
+    // add recommended pH range label to page
+    recommendedPHLabel.setEscapeModelStrings(false);
+    add(recommendedPHLabel);
+
     WebMarkupContainerWithAssociatedMarkup oxygenInnerDiv =
         new WebMarkupContainerWithAssociatedMarkup("OxygenInnerDiv");
 
@@ -291,8 +313,8 @@ public class AquaPonics extends Header {
       }
     });
 
-    if (Double.parseDouble((String) oxygen.getDefaultModelObject()) < 5.5
-        && Double.parseDouble((String) oxygen.getDefaultModelObject()) > 6.0) {
+    if (Double.parseDouble((String) oxygen.getDefaultModelObject()) < OXYGEN_RANGE_START
+        && Double.parseDouble((String) oxygen.getDefaultModelObject()) > OXYGEN_RANGE_END) {
       oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -306,8 +328,8 @@ public class AquaPonics extends Header {
         }
       });
     }
-    else if (Double.parseDouble((String) oxygen.getDefaultModelObject()) == 5.5
-        || Double.parseDouble((String) oxygen.getDefaultModelObject()) == 6.0) {
+    else if (Double.parseDouble((String) oxygen.getDefaultModelObject()) == OXYGEN_RANGE_START
+        || Double.parseDouble((String) oxygen.getDefaultModelObject()) == OXYGEN_RANGE_END) {
       oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -341,7 +363,9 @@ public class AquaPonics extends Header {
     oxygenOuterDiv.add(oxygenInnerDiv);
     add(oxygenOuterDiv);
 
-    // add(ec);
+    // add recommended oxygen range label to page
+    recommendedOxygenLabel.setEscapeModelStrings(false);
+    add(recommendedOxygenLabel);
 
     // Add Graph of Water Quality to page
     add(graph);
@@ -376,10 +400,10 @@ public class AquaPonics extends Header {
    */
   public static void setTempStatusColor(Long value) {
 
-    if (value == 55 || value == 65) {
+    if (value == TEMPERATRUE_RANGE_START || value == TEMPERATRUE_RANGE_END) {
       tempStatus.setDefaultModelObject(WARNG_MESSAGE);
     }
-    else if (value < 55 || value > 65) {
+    else if (value < TEMPERATRUE_RANGE_START || value > TEMPERATRUE_RANGE_END) {
       tempStatus.setDefaultModelObject(ALERT_MESSAGE);
     }
     else {
@@ -394,10 +418,10 @@ public class AquaPonics extends Header {
    */
   public static void setPHStatusColor(Double value) {
 
-    if (value == 6.5 || value == 7) {
+    if (value == PH_RANGE_START || value == PH_RANGE_END) {
       phStatus.setDefaultModelObject(WARNG_MESSAGE);
     }
-    else if (value < 6.5 || value > 7) {
+    else if (value < PH_RANGE_START || value > PH_RANGE_END) {
       phStatus.setDefaultModelObject(ALERT_MESSAGE);
     }
     else {
@@ -416,7 +440,7 @@ public class AquaPonics extends Header {
     if ("5.50".equals(df.format(value)) || "6.00".equals(df.format(value))) {
       oxygenStatus.setDefaultModelObject(WARNG_MESSAGE);
     }
-    else if (value < 5.5 || value > 6.0) {
+    else if (value < OXYGEN_RANGE_START || value > OXYGEN_RANGE_END) {
       oxygenStatus.setDefaultModelObject(ALERT_MESSAGE);
     }
     else {
