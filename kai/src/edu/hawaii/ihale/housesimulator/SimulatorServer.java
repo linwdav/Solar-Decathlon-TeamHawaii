@@ -101,7 +101,7 @@ public class SimulatorServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    if (args.length == 2 && "-step".equalsIgnoreCase(args[0])) {
+    if (args.length == 2 && "-stepinterval".equalsIgnoreCase(args[0])) {
 
       // Get the users home directory and establish the ".ihale" directory
       File theDir = new File(System.getProperty("user.home"), ".ihale");
@@ -204,8 +204,8 @@ public class SimulatorServer extends Application {
       SimulationTimer.startTimer(Integer.parseInt(args[1]));
     }
     else {
-      System.out.println("Usage: java -jar <jar filename> -step N");
-      System.out.println("Where N is the step value, in seconds.");
+      System.out.println("Usage: java -jar <jar filename> -stepinterval N");
+      System.out.println("Where N is the step interval value, in seconds.");
       System.out.println("New sensor data will be updated every N seconds.");
       System.exit(0);
     }
