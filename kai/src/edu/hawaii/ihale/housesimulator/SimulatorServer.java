@@ -157,8 +157,6 @@ public class SimulatorServer extends Application {
             try {
               System.out.println("Overwriting properties file: " + propFile.getAbsolutePath());
               prop.store(new FileOutputStream(propFile), null);
-              prop.load(new FileInputStream(propFile));
-              prop.getProperty("aquaponics-state");
             }
             catch (IOException ex) {
               ex.printStackTrace();
