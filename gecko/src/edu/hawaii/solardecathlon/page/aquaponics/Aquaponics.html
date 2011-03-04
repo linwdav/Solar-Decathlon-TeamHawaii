@@ -1,4 +1,8 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
+      xml:lang="en"  
+      lang="en"> 
 <wicket:extend>
 
 <script>
@@ -116,16 +120,7 @@ $(function(){
       <!-- END ONE ROW OF STATUS BOXES -->
     
       <!-- ONE ROW OF STATUS BOXES -->
-	  <div class="column-two">
-  		<div class="inner">
-  			<div class="box" style="background-color:red;">
-  			  <h4 style="color:white;">Current pH</h4>
-  			  
-  			  <div class="box">
-	  			  <h4 style="text-align:center"><wicket:container wicket:id="ph">5.5</wicket:container> <span style="color:red;">(ALERT)</span></h4>  			  	  
-  			  </div>  			  
-  			</div> 	  
-  		</div>
+	  <div wicket:id="phPanel" class="column-two">
 	  </div>
 	  
 	  <div class="column-two">

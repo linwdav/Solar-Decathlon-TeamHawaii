@@ -12,6 +12,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.solardecathlon.BlackMagic;
 import edu.hawaii.solardecathlon.SolarDecathlonApplication;
 import edu.hawaii.solardecathlon.SolarDecathlonSession;
@@ -38,6 +39,10 @@ import edu.hawaii.solardecathlon.page.temperature.Temperature;
  */
 public class BasePage extends WebPage {
 
+  protected static final String TABNUM = "TabNum";
+  protected static final String GRAPHNUM = "GraphNum";
+  protected static final String PAGENUM = "PageNum";
+  
   /**
    * Variables to allow the active tab to change.
    */
@@ -54,17 +59,33 @@ public class BasePage extends WebPage {
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
-  
+
   protected SolarDecathlonSession session;
+
+  private static String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
+  protected transient SystemStateEntryDB database;
 
   /**
    * Layout of page.
    */
   public BasePage() {
     String screenContainer = "screen";
-    
+
     this.session = (SolarDecathlonSession) getSession();
-    
+
+    try {
+      this.database = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
+    }
+    catch (InstantiationException e) {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    catch (ClassNotFoundException e) {
+      e.printStackTrace();
+    }
+
     add(new AjaxLink<String>("blackmagic") {
 
       /**
@@ -79,10 +100,10 @@ public class BasePage extends WebPage {
        */
       @Override
       public void onClick(AjaxRequestTarget target) {
-        new BlackMagic(session.listAquaponics);
+        new BlackMagic(getDAO());
       }
     });
-    
+
     // Add CSS definitions for use in all pages
     add(CSSPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/style/style.css", screenContainer));
@@ -92,10 +113,6 @@ public class BasePage extends WebPage {
         "page/javascript/jquery.min.js"));
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/javascript/jquery-ui.min.js"));
-    /*
-     * add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
-     * "javascripts/jquery-ui-1.8.7.custom.js"));
-     */
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/javascript/jquery.effects.core.js"));
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
@@ -124,14 +141,18 @@ public class BasePage extends WebPage {
         "page/javascript/jquery.ui.datepicker.js"));
 
     // Logo Image
-    // dashboardLink.add(new Image("logo", new ResourceReference(SolarDecathlonApplication.class, "page/images/logo.png")));
-    add(new Image("logo", new ResourceReference(SolarDecathlonApplication.class, "page/images/logo.png")));
+    // dashboardLink.add(new Image("logo", new ResourceReference(SolarDecathlonApplication.class,
+    // "page/images/logo.png")));
+    add(new Image("logo", new ResourceReference(SolarDecathlonApplication.class,
+        "page/images/logo.png")));
 
     // Print Image
-    add(new Image("printer", new ResourceReference(SolarDecathlonApplication.class, "page/images/icons/printer.png")));
+    add(new Image("printer", new ResourceReference(SolarDecathlonApplication.class,
+        "page/images/icons/printer.png")));
 
     // Help Image
-    add(new Image("help", new ResourceReference(SolarDecathlonApplication.class, "page/images/icons/help.png")));
+    add(new Image("help", new ResourceReference(SolarDecathlonApplication.class,
+        "page/images/icons/help.png")));
 
     // Refresh Image
     add(new Image("refresh", new ResourceReference(SolarDecathlonApplication.class,
@@ -140,8 +161,8 @@ public class BasePage extends WebPage {
     // Other images used throughout system
     add(new Image("TableViewImage", new ResourceReference(SolarDecathlonApplication.class,
         "page/images/icons/magnifier.png")));
-    add(new Image("TableEditImage",
-        new ResourceReference(SolarDecathlonApplication.class, "page/images/icons/pencil.png")));
+    add(new Image("TableEditImage", new ResourceReference(SolarDecathlonApplication.class,
+        "page/images/icons/pencil.png")));
     add(new Image("TableDeleteImage", new ResourceReference(SolarDecathlonApplication.class,
         "page/images/icons/cancel.png")));
     add(new Label("title", "Home Management System"));
@@ -155,7 +176,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "0");
+        session.setProperty(TABNUM, "0");
         setResponsePage(Dashboard.class);
       }
     });
@@ -169,7 +190,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "1");
+        session.setProperty(TABNUM, "1");
         setResponsePage(Energy.class);
 
       }
@@ -184,7 +205,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "2");
+        session.setProperty(TABNUM, "2");
         setResponsePage(Aquaponics.class);
       }
     });
@@ -198,7 +219,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "3");
+        session.setProperty(TABNUM, "3");
         setResponsePage(Lighting.class);
 
       }
@@ -213,7 +234,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "4");
+        session.setProperty(TABNUM, "4");
         setResponsePage(Temperature.class);
 
       }
@@ -228,7 +249,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "5");
+        session.setProperty(TABNUM, "5");
         setResponsePage(Security.class);
 
       }
@@ -243,7 +264,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "6");
+        session.setProperty(TABNUM, "6");
         setResponsePage(Reports.class);
       }
     });
@@ -257,7 +278,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "7");
+        session.setProperty(TABNUM, "7");
         setResponsePage(Settings.class);
 
       }
@@ -272,7 +293,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "8");
+        session.setProperty(TABNUM, "8");
         setResponsePage(Administrator.class);
 
       }
@@ -287,7 +308,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "9");
+        session.setProperty(TABNUM, "9");
         setResponsePage(new Help());
 
       }
@@ -301,7 +322,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "0");
+        session.setProperty(TABNUM, "0");
         setResponsePage(new Dashboard());
       }
     });
@@ -312,7 +333,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "1");
+        session.setProperty(TABNUM, "1");
         setResponsePage(new Energy());
       }
     });
@@ -323,7 +344,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "2");
+        session.setProperty(TABNUM, "2");
         setResponsePage(new Aquaponics());
       }
     });
@@ -333,7 +354,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "3");
+        session.setProperty(TABNUM, "3");
         setResponsePage(new Lighting());
       }
     });
@@ -343,7 +364,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "4");
+        session.setProperty(TABNUM, "4");
         setResponsePage(new Temperature());
       }
     });
@@ -353,7 +374,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "5");
+        session.setProperty(TABNUM, "5");
         setResponsePage(new Security());
       }
     });
@@ -363,7 +384,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "5");
+        session.setProperty(TABNUM, "5");
         setResponsePage(new SecurityCam());
       }
     });
@@ -373,7 +394,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "5");
+        session.setProperty(TABNUM, "5");
         setResponsePage(new SecurityRec());
       }
     });
@@ -383,7 +404,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "6");
+        session.setProperty(TABNUM, "6");
         setResponsePage(new Reports());
       }
     });
@@ -393,7 +414,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "7");
+        session.setProperty(TABNUM, "7");
         setResponsePage(new Settings());
       }
     });
@@ -403,7 +424,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "8");
+        session.setProperty(TABNUM, "8");
         setResponsePage(new Administrator());
       }
     });
@@ -413,7 +434,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "9");
+        session.setProperty(TABNUM, "9");
         setResponsePage(new Help());
       }
     });
@@ -424,7 +445,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty("TabNum", "7");
+        session.setProperty(TABNUM, "7");
         setResponsePage(new Settings());
       }
     });
@@ -445,58 +466,25 @@ public class BasePage extends WebPage {
 
   /**
    * Highlights the active tab.
-   * 
-   * @param i - this is a flag to tell the application which tab should be active
    */
   private void makeTabActive() {
-    String classContainer = "class";
-    String activeContainer = "active";
-    
-    int i = Integer.valueOf(session.getProperty("TabNum"));
-    
-    switch (i) {
+    int i = Integer.valueOf(session.getProperty(TABNUM));
 
-    case 1:
-      energyItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 2:
-      aquaponicsItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 3:
-      lightingItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 4:
-      temperatureItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 5:
-      securityItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 6:
-      reportsItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 7:
-      settingsItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 8:
-      administratorItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    case 9:
-      helpItem
-          .add(new AttributeModifier(classContainer, true, new Model<String>(activeContainer)));
-      break;
-    case 0: // pass-through
-    default:
-      dashboardItem.add(new AttributeModifier(classContainer, true, new Model<String>(
-          activeContainer)));
-      break;
-    }
+    WebMarkupContainer container =
+        (i == 1) ? energyItem : (i == 2) ? aquaponicsItem : (i == 3) ? lightingItem
+            : (i == 4) ? temperatureItem : (i == 5) ? securityItem : (i == 6) ? reportsItem
+                : (i == 7) ? settingsItem : (i == 8) ? administratorItem : (i == 9) ? helpItem
+                    : dashboardItem;
+    container
+        .add(new AttributeModifier("class", true, new Model<String>("active")));
+  }
+
+  /**
+   * Gets this database access object.
+   * 
+   * @return SystemStateEntryDB
+   */
+  public SystemStateEntryDB getDAO() {
+    return database;
   }
 }

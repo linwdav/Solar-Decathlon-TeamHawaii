@@ -23,9 +23,10 @@ public class BlackMagic {
     SystemStateEntry entry = null;
     
     //Aquaponics
-    entry = new SystemStateEntry("aquaponics", "arduino-1", timestamp);
-    entry.putDoubleValue("pH", 7.5);
-    entry.putDoubleValue("Oxygen", 6.2);    
+    entry = new SystemStateEntry("aquaponics", "arduino-23", timestamp);
+    entry.putDoubleValue("ph", Math.random() * 10);
+    entry.putDoubleValue("oxygen", 6.2);    
+    entry.putLongValue("temp", 6L);    
     db.putEntry(entry);
   }
   

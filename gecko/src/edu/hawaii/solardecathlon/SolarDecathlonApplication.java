@@ -6,7 +6,6 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
-import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.solardecathlon.page.dashboard.Dashboard;
 
 /**
@@ -18,27 +17,6 @@ import edu.hawaii.solardecathlon.page.dashboard.Dashboard;
  * @author Anthony Kinsey
  */
 public class SolarDecathlonApplication extends WebApplication {
-
-  private static String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
-  public SystemStateEntryDB database;
-  
-  /**
-   * Default constructor.
-   */
-  public SolarDecathlonApplication() {
-    try {
-      database = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
-    }
-    catch (InstantiationException e) {
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-  }
   
   /**
    * Return the home page for this application.
@@ -70,8 +48,9 @@ public class SolarDecathlonApplication extends WebApplication {
   public String getConfigurationType() {
     // Allow non-unique wicket ids
     getDebugSettings().setComponentUseCheck(false);
+    getDebugSettings().setDevelopmentUtilitiesEnabled(true);
 
     // Set mode = deployment
-    return Application.DEPLOYMENT;
+    return Application.DEVELOPMENT;
   }
 }

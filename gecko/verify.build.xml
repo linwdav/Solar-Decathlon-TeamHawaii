@@ -5,9 +5,9 @@
   </description>
 
   <!-- First, override the default settings of these properties. -->
-  <property name="pmd.failonerror" value="false"/>
-  <property name="findbugs.failOnError" value="false"/>  
-  <property name="checkstyle.failOnViolation" value="false"/> 
+  <property name="pmd.failonerror" value="true"/>
+  <property name="findbugs.failOnError" value="true"/>  
+  <property name="checkstyle.failOnViolation" value="true"/> 
   <property name="junit.haltonfailure" value="true"/>
 
   <!-- Now import the target definitions. -->

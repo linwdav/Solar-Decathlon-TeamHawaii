@@ -52,7 +52,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "0");
+        session.setProperty(PAGENUM, "0");
         setResponsePage(new Help());
       }
     };
@@ -62,7 +62,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "1");
+        session.setProperty(PAGENUM, "1");
         setResponsePage(new Help());
       }
     };
@@ -72,7 +72,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "2");
+        session.setProperty(PAGENUM, "2");
         setResponsePage(new Help());
       }
     };
@@ -82,7 +82,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "3");
+        session.setProperty(PAGENUM, "3");
         setResponsePage(new Help());
       }
     };
@@ -92,7 +92,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "4");
+        session.setProperty(PAGENUM, "4");
         setResponsePage(new Help());
       }
     };
@@ -102,7 +102,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "5");
+        session.setProperty(PAGENUM, "5");
         setResponsePage(new Help());
       }
     };
@@ -112,7 +112,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "6");
+        session.setProperty(PAGENUM, "6");
         setResponsePage(new Help());
       }
     };
@@ -122,7 +122,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "7");
+        session.setProperty(PAGENUM, "7");
         setResponsePage(new Help());
       }
     };
@@ -132,7 +132,7 @@ public class Help extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("PageNum", "8");
+        session.setProperty(PAGENUM, "8");
         setResponsePage(new Help());
       }
     };
@@ -179,7 +179,7 @@ public class Help extends BasePage {
    */
   private void updateInfo() {
     
-    int i = Integer.valueOf(session.getProperty("PageNum"));
+    int i = Integer.valueOf(session.getProperty(PAGENUM));
     switch (i) {
 
     // Buttons
@@ -229,7 +229,7 @@ public class Help extends BasePage {
    */
   private void updateTitle() {
 
-    int i = Integer.valueOf(session.getProperty("PageNum"));
+    int i = Integer.valueOf(session.getProperty(PAGENUM));
     switch (i) {
 
     // Buttons
@@ -279,7 +279,7 @@ public class Help extends BasePage {
   private void makeButtonActive() {
     String classContainer = "class";
     String buttonContainer = "green-button";
-    int i = Integer.valueOf(session.getProperty("PageNum"));
+    int i = Integer.valueOf(session.getProperty(PAGENUM));
     
     switch (i) {
 

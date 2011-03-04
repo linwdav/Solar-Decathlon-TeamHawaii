@@ -59,7 +59,7 @@ public class AquaponicsStats extends BasePage {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        session.setProperty("GraphNum", "0");
+        session.setProperty(GRAPHNUM, "0");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -71,7 +71,7 @@ public class AquaponicsStats extends BasePage {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        session.setProperty("GraphNum", "1");
+        session.setProperty(GRAPHNUM, "1");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -83,7 +83,7 @@ public class AquaponicsStats extends BasePage {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        session.setProperty("GraphNum", "2");
+        session.setProperty(GRAPHNUM, "2");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -94,7 +94,7 @@ public class AquaponicsStats extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("GraphNum", "3");
+        session.setProperty(GRAPHNUM, "3");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -105,7 +105,7 @@ public class AquaponicsStats extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("GraphNum", "4");
+        session.setProperty(GRAPHNUM, "4");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -116,7 +116,7 @@ public class AquaponicsStats extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty("GraphNum", "5");
+        session.setProperty(GRAPHNUM, "5");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -131,7 +131,7 @@ public class AquaponicsStats extends BasePage {
     add(dayWaterGraph);
     add(mainButton);
 
-    int currentGraphDisplay = Integer.valueOf(session.getProperty("GraphNum"));
+    int currentGraphDisplay = Integer.valueOf(session.getProperty(GRAPHNUM));
     makeButtonActive(currentGraphDisplay);
     displayDayGraph(currentGraphDisplay, dayGraph);
     add(dayGraph);

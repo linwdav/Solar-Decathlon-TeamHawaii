@@ -1,4 +1,4 @@
-package edu.hawaii.solardecathlon.listener;
+package edu.hawaii.solardecathlon.page;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -10,7 +10,7 @@ import org.apache.wicket.ajax.AjaxRequestTarget;
  * 
  * @author Bret Ikehara
  */
-public class AjaxDAOUpdate extends AjaxEventBehavior {
+public class AjaxUpdate extends AjaxEventBehavior {
 
   /**
    * Serial ID.
@@ -20,7 +20,7 @@ public class AjaxDAOUpdate extends AjaxEventBehavior {
   /**
    * Default Constructor.
    */
-  public AjaxDAOUpdate() {
+  public AjaxUpdate() {
     super("onDatabaseUpdate");
   }
 

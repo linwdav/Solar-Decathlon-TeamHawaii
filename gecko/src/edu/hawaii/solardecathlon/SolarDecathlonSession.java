@@ -5,6 +5,8 @@ import java.util.Map;
 import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
+import edu.hawaii.solardecathlon.page.SystemModel;
+import edu.hawaii.solardecathlon.page.aquaponics.AquaponicsModel;
 /**
  * Provide a very simple session data structure, which is just a set of string key-value pairs. The
  * session should typically store all of the "model" data for a user.
@@ -18,7 +20,9 @@ public class SolarDecathlonSession extends WebSession {
   
   /** Each user has a set of properties. */
   private Map<String, String> properties = new HashMap<String, String>();
-
+  
+  protected AquaponicsModel aquaponics;
+  
   /**
    * Create a new session for this user. Called automatically by wicket. You always need to define
    * this constructor when implementing your own application-specific Session class.
@@ -32,7 +36,8 @@ public class SolarDecathlonSession extends WebSession {
     this.properties.put("TabNum", "0");
     this.properties.put("PageNum", "0");
     this.properties.put("GraphNum", "0");
-        
+    
+    aquaponics = new AquaponicsModel();
   }
 
   /**
@@ -78,14 +83,14 @@ public class SolarDecathlonSession extends WebSession {
    * @param prop String
    * @param value String
    */
-  public String setProperty(String prop, String value) {
-    
-    return this.properties.put(prop, value);
+  public void setProperty(String prop, String value) {
+    this.properties.put(prop, value);
   }
   
   /**
    * Gets a property in this session.
-   *  
+   * 
+   * @param prop String
    * @return String
    */
   public String getProperty(String prop) {
@@ -94,10 +99,12 @@ public class SolarDecathlonSession extends WebSession {
   }
   
   /**
-   * Invalidates the session.
+   * Gets this system models.
+   * 
+   * @param systemName String
+   * @return SystemModel
    */
-  @Override
-  public void invalidate() {
-    super.invalidate();
+  public SystemModel getModel(String systemName) {
+    return ("aquaponics".equalsIgnoreCase(systemName)) ? aquaponics : null;
   }
 }
