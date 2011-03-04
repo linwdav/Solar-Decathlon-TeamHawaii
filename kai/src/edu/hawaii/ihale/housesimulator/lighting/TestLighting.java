@@ -41,28 +41,28 @@ public class TestLighting {
   @Test
   public void testGetAndPut() throws Exception {
     // Put the values to our system.
-    putValue("living", "70");
-    putValue("dining", "80");
-    putValue("kitchen", "90");
-    putValue("bathroom", "100");
+    putValue(7103, "70");
+    putValue(7104, "80");
+    putValue(7105, "90");
+    putValue(7106, "100");
 
     // Check that the returned GET value matches out PUT value.
-    assertEquals("Checking that living room level is 70", getValue("living"), "70");
-    assertEquals("Checking that dining room level is 80", getValue("dining"), "80");
-    assertEquals("Checking that kitchen level is 90", getValue("kitchen"), "90");
-    assertEquals("Checking that bathroom level is 100", getValue("bathroom"), "100");
+    assertEquals("Checking that living room level is 70", getValue(7103), "70");
+    assertEquals("Checking that dining room level is 80", getValue(7104), "80");
+    assertEquals("Checking that kitchen level is 90", getValue(7105), "90");
+    assertEquals("Checking that bathroom level is 100", getValue(7106), "100");
   }
 
   /**
    * Helper function that GETs a value from the system given the room.
    * 
-   * @param room the room to retrieve the lighting level from
+   * @param port the port of the room to retrieve the lighting level from
    * @throws IOException If there is a problem getting the document
    * @return the value of the lighting level in the specified room
    */
-  public static String getValue(String room) throws IOException {
+  public static String getValue(int port) throws IOException {
     // Set up the GET client
-    String getUrl = "http://localhost:7103/lighting/" + room + "/state";
+    String getUrl = "http://localhost:" + port + "/lighting/state";
     ClientResource getClient = new ClientResource(getUrl);
 
     // Get the XML representation.
@@ -86,14 +86,14 @@ public class TestLighting {
   /**
    * Helper function that PUTs a value to the system.
    * 
-   * @param room the room that we are doing a PUT to
+   * @param port the port of the room that we are doing a PUT to
    * @param value The value we want the to be set
    * @throws ParserConfigurationException If there is a problem with the parser
    * @throws IOException If there is a problem building the document
    */
-  public static void putValue(String room, String value)
-      throws ParserConfigurationException, IOException {
-    String putUrl = "http://localhost:7103/lighting/" + room + "/level";
+  public static void putValue(int port, String value) throws ParserConfigurationException,
+      IOException {
+    String putUrl = "http://localhost:" + port + "/lighting/level";
     ClientResource putClient = new ClientResource(putUrl);
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();

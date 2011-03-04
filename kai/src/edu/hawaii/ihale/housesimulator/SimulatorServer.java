@@ -13,7 +13,10 @@ import org.restlet.routing.VirtualHost;
 import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsSystem;
 import edu.hawaii.ihale.housesimulator.electrical.ElectricalSystem;
 import edu.hawaii.ihale.housesimulator.hvac.HVACSystem;
-import edu.hawaii.ihale.housesimulator.lighting.LightingSystem;
+import edu.hawaii.ihale.housesimulator.lighting.bathroom.LightingBathroomSystem;
+import edu.hawaii.ihale.housesimulator.lighting.dining.LightingDiningSystem;
+import edu.hawaii.ihale.housesimulator.lighting.kitchen.LightingKitchenSystem;
+import edu.hawaii.ihale.housesimulator.lighting.living.LightingLivingSystem;
 import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsSystem;
 import edu.hawaii.ihale.housesimulator.simulationtimer.SimulationTimer;
 
@@ -39,6 +42,9 @@ public class SimulatorServer extends Application {
     component.getServers().add(Protocol.HTTP, 7101);
     component.getServers().add(Protocol.HTTP, 7102);
     component.getServers().add(Protocol.HTTP, 7103);
+    component.getServers().add(Protocol.HTTP, 7104);
+    component.getServers().add(Protocol.HTTP, 7105);
+    component.getServers().add(Protocol.HTTP, 7106);
 
     // Create virtual hosts. E-Gauge boards will be on port ranges 7001-7100, Arduino boards on port
     // ranges 7101+.
@@ -62,11 +68,29 @@ public class SimulatorServer extends Application {
     host.attach("/hvac", new HVACSystem());
     component.getHosts().add(host);
 
+    
+    String lighting = "/lighting"; // To satisfy PMD
+    
     host = new VirtualHost(component.getContext());
     host.setHostPort("7103");
-    host.attach("/lighting", new LightingSystem());
+    host.attach(lighting, new LightingLivingSystem());
     component.getHosts().add(host);
 
+    host = new VirtualHost(component.getContext());
+    host.setHostPort("7104");
+    host.attach(lighting, new LightingDiningSystem());
+    component.getHosts().add(host);
+    
+    host = new VirtualHost(component.getContext());
+    host.setHostPort("7105");
+    host.attach(lighting, new LightingKitchenSystem());
+    component.getHosts().add(host);
+    
+    host = new VirtualHost(component.getContext());
+    host.setHostPort("7106");
+    host.attach(lighting, new LightingBathroomSystem());
+    component.getHosts().add(host);
+    
     component.start();
   }
 
@@ -86,26 +110,29 @@ public class SimulatorServer extends Application {
       // Create the properties object to write to file.
       Properties prop = new Properties();
 
-      // Set the properties value.
-      
+      // System URI's
       String aquaponics = "http://localhost:7101/";
       String hvac = "http://localhost:7102/";
-      String lighting = "http://localhost:7103/";
+      String lightingLiving = "http://localhost:7103/";
+      String lightingDining = "http://localhost:7104/";
+      String lightingKitchen = "http://localhost:7105/";
+      String lightingBathroom = "http://localhost:7106/";
       String pv = "http://localhost:7001/";
       String electrical = "http://localhost:7002/";
       
+      // Set the properties value.
       prop.setProperty("aquaponics-state", aquaponics);
       prop.setProperty("aquaponics-control", aquaponics);
       prop.setProperty("hvac-state", hvac);
       prop.setProperty("hvac-control", hvac);
-      prop.setProperty("lighting-living-state", lighting);
-      prop.setProperty("lighting-living-control", lighting);
-      prop.setProperty("lighting-dining-state", lighting);
-      prop.setProperty("lighting-dining-control", lighting);
-      prop.setProperty("lighting-kitchen-state", lighting);
-      prop.setProperty("lighting-kitchen-control", lighting);
-      prop.setProperty("lighting-bathroom-state", lighting);
-      prop.setProperty("lighting-bathroom-control", lighting);
+      prop.setProperty("lighting-living-state", lightingLiving);
+      prop.setProperty("lighting-living-control", lightingLiving);
+      prop.setProperty("lighting-dining-state", lightingDining);
+      prop.setProperty("lighting-dining-control", lightingDining);
+      prop.setProperty("lighting-kitchen-state", lightingKitchen);
+      prop.setProperty("lighting-kitchen-control", lightingKitchen);
+      prop.setProperty("lighting-bathroom-state", lightingBathroom);
+      prop.setProperty("lighting-bathroom-control", lightingBathroom);
       prop.setProperty("pv-state", pv);
       prop.setProperty("electrical-state", electrical);
 
