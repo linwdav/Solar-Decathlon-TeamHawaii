@@ -1,0 +1,99 @@
+<html>
+<wicket:extend>
+<div class="top-links">
+  
+  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
+  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
+  <div class="clear"></div>
+</div>
+
+<h1>Energy</h1>
+
+<div class="column-two">
+  <div class="inner">
+  	
+    
+    <div class="clear"></div>
+    
+	    <div class="tab-wrapper" id="tabset-2">
+	      <ul class="tabs">
+	        <li class="tab-1"><a href="#">Day</a></li>
+	        <li class="tab-2"><a href="#">Week</a></li>
+	        <li class="tab-3"><a href="#">Month</a></li>
+	        <li class="tab-4"><a href="#">Year</a></li>
+	      </ul>
+	      <ul class="tab-content">
+	        <li class="content-1">
+	          <h5 wicket:id="dayChartType">[Tab 1]</h5>
+          	<p><img wicket:id="dayGraphImage"/></p>
+          	<div class="clear"></div>
+	        </li>
+	        <li class="content-2">
+						<h5 wicket:id="weekChartType">[Tab 1]</h5>
+            <p><img wicket:id="weekGraphImage"/></p>
+            <div class="clear"></div>
+          </li>
+	        <li class="content-3">
+						<h5 wicket:id="monthChartType">[Tab 1]</h5>
+          	<p><img wicket:id="monthGraphImage"/></p>
+          	<div class="clear"></div>
+          </li>
+	        <li class="content-4">
+	          <h5 wicket:id="yearChartType">Tab 4</h5>
+            <p><img wicket:id="yearGraphImage"/></p>
+	        </li>
+	      </ul>	      
+	    </div>	    
+	    <div class="clear"></div>    
+    
+  </div>
+</div>
+
+
+<!-- COLUMN TWO -->
+<div class="column-two">
+  <div class="inner" style="padding-top:30px;">
+  	<table class="bare" style="width:100%;">
+    	<tr>
+      	<td style="padding-right:40px;">
+          <div class="column-button">
+            <a class="gray-button" wicket:id="dayConsumptionGraph" href="#" style="width:150px;">Consumption<br />vs. Production</a>
+            <a class="gray-button" wicket:id="dayBreakdownGraph" href="#" style="width:150px;">Breakdown</a>
+            <a class="gray-button" wicket:id="dayHVACGraph" href="#" style="width:150px;">HVAC</a>
+            <a class="gray-button" wicket:id="dayAquaponicsGraph" href="#" style="width:150px;">Aquaponics</a>
+            <a class="gray-button" wicket:id="dayLightingGraph" href="#" style="width:150px;">Lighting</a>
+          </div>
+ 				</td>
+        <td style="width:100%;">
+          <div class="box">
+            <h3>Current Levels</h3> 
+            <h6>Solar Power Remaining (kWh)</h6>
+            <div class="status-bar-lg"><strong>120kWh (53%)&nbsp;&nbsp;</strong></div>
+            <br /><h6>Battery Power Remaining (kWh)</h6>
+            <div class="status-bar-sm"><strong>60kWh (33%)&nbsp;&nbsp;&nbsp;</strong></div>
+            
+    
+            <div class="clear"></div>
+            
+          </div>
+          <div class="box">
+            <h3>Settings</h3>
+            <p class="info">Click one of the following buttons to manage the appropriate settings.</p>
+            <div class="column-button">
+              <a style="width:220px;" class="gray-button" href="#">HVAC</a><div class="clear"></div>
+              <a style="width:220px;" class="gray-button" href="#">Aquaponics</a><div class="clear"></div>
+              <a style="width:220px;" class="gray-button" href="#">Lighting</a><div class="clear"></div>
+            </div>
+            <div class="clear"></div>      
+          </div>  
+      	</td>
+      </tr>
+    </table>
+    
+    
+  </div>
+</div>
+  
+</wicket:extend>
+</html>
