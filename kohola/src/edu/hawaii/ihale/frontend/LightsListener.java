@@ -11,11 +11,13 @@ import edu.hawaii.ihale.api.SystemStateListener;
  */
 public class LightsListener extends SystemStateListener {
   
+  private static final String SYSTEM_NAME = "lighting";
+  
   /**
    * Provide a default constructor that indicates that this listener is for lighting.
    */
   public LightsListener() {
-    super("lighting");
+    super(SYSTEM_NAME);
   }
 
   /**

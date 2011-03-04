@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.frontend;
 
-//import java.util.Date;
 import java.util.Date;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
@@ -15,6 +14,20 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
  * 
  */
 public class BlackMagic {
+
+  private static final String ELECTRICAL_SYSTEM_NAME = "electrical";
+  private static final String PHOTOVOLTAICS_SYSTEM_NAME = "photovoltaics";
+  private static final String AQUAPONICS_SYSTEM_NAME = "aquaponics";
+  private static final String HVAC_SYSTEM_NAME = "hvac";
+  private static final String ARDUINO_3 = "arduino-3";
+  private static final String ARDUINO_23 = "arduino-23";
+  private static final String EGAUGE_1 = "egauge-1";
+  private static final String EGAUGE_2 = "egauge-2";
+  private static final String POWER_KEY = "power";
+  private static final String ENERGY_KEY = "energy";
+  private static final String TEMP_KEY = "temp";
+  private static final String OXYGEN_KEY = "oxygen";
+  private static final String PH_KEY = "ph";
 
   /**
    * Public constructor adds 10 state entries to the passed database at 1 second intervals.
@@ -48,7 +61,7 @@ public class BlackMagic {
       else {
         timestamp = (new Date()).getTime() - (mHour * 4);
       }
-      cEntry = new SystemStateEntry("electrical", "eGauge-2", timestamp);
+      cEntry = new SystemStateEntry(ELECTRICAL_SYSTEM_NAME, EGAUGE_2, timestamp);
       Thread.sleep(10);
       timestamp = (new Date()).getTime();
       if (i == 1) {
@@ -60,29 +73,30 @@ public class BlackMagic {
       else if (i == 7 || i == 8 || i == 9) {
         timestamp = (new Date()).getTime() - mFive;
       }
-      pEntry = new SystemStateEntry("photovoltaics", "eGauge-1", timestamp);
+      pEntry = new SystemStateEntry(PHOTOVOLTAICS_SYSTEM_NAME, EGAUGE_1, timestamp);
       Thread.sleep(10);
       timestamp = (new Date()).getTime();
-      entry = new SystemStateEntry("aquaponics", "arduino-23", timestamp);
-      
-      cEntry.putLongValue("Power", cValue);
-      pEntry.putLongValue("Power", pValue);
+      entry = new SystemStateEntry(AQUAPONICS_SYSTEM_NAME, ARDUINO_23, timestamp);
+
+      cEntry.putLongValue(POWER_KEY, cValue);
+      cEntry.putLongValue(ENERGY_KEY, cValue);
+      pEntry.putLongValue(POWER_KEY, pValue);
+      pEntry.putLongValue(ENERGY_KEY, pValue);
       if (i == 1 || i == 7 || i == 6) {
-        entry.putLongValue("Temp", longValue);
-        entry.putDoubleValue("Oxygen", doubleValue);
-        entry.putDoubleValue("pH", doubleValue);
+        entry.putLongValue(TEMP_KEY, longValue);
+        entry.putDoubleValue(OXYGEN_KEY, doubleValue);
+        entry.putDoubleValue(PH_KEY, doubleValue);
       }
       else if (i == 2 || i == 3 || i == 5) {
         longValue = (long) (Math.random() * 200);
-        entry.putLongValue("Temp", longValue);
-        entry.putDoubleValue("Oxygen", doubleValue);
-        entry.putDoubleValue("pH", doubleValue);
+        entry.putLongValue(TEMP_KEY, longValue);
+        entry.putDoubleValue(OXYGEN_KEY, doubleValue);
+        entry.putDoubleValue(PH_KEY, doubleValue);
       }
-      else {        
-        entry = new SystemStateEntry("hvac", "arduino-3", timestamp);
-        entry.putLongValue("Temp", longValue);        
+      else {
+        entry = new SystemStateEntry(HVAC_SYSTEM_NAME, ARDUINO_3, timestamp);
+        entry.putLongValue(TEMP_KEY, longValue);
       }
-
 
       // Now add the entry. This will trigger a listener.
       db.putEntry(entry);

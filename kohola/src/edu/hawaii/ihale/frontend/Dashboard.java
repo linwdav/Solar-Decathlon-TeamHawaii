@@ -53,10 +53,10 @@ public class Dashboard extends Header {
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
   private static final String ELECTRICAL_CONSUMPTION = "electrical";
-  private static final String EGAUGE_1 = "eGauge-1";
-  private static final String EGAUGE_2 = "eGauge-2";
+  private static final String EGAUGE_1 = "egauge-1";
+  private static final String EGAUGE_2 = "egauge-2";
   private static final String PHOTOVOLTAICS = "photovoltaics";
-  private static final String POWER = "Power";
+  private static final String POWER = "power";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
 

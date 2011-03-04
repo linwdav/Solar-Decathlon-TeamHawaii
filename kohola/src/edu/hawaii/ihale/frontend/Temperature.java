@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.form.Button;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
-//import edu.hawaii.ihale.api.SystemStateEntryDB;
 
 /**
  * The temperature(Hvac) page.
@@ -30,13 +30,24 @@ public class Temperature extends Header {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
+  // desired room temperature range
+  private static final long TEMPERATURE_RANGE_START = 70L;
+  private static final long TEMPERATURE_RANGE_END = 80L;
+
   // temperature labels
-  static Label insideTemperature = new Label("InsideTemperature", "0");
-  static Label outsideTemperature = new Label("OutsideTemperature", "0");
-  static Label waterTemperature = new Label("WaterTemperature", "0");
+  private static Label insideTemperature = new Label("InsideTemperature",
+      String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp()));
+  private static Label outsideTemperature = new Label("OutsideTemperature", "0");
+
+  // for validating user's input for setTemp
+  // don't want them perform duplicate doCommand with the same temperature.
+  private long desiredTemp = 0L;
+  
+  // feedback to user after they setTemp, failed or successful
+  private Label feedback;
 
   private TextField<String> textField = new TextField<String>("SetTemp", new Model<String>(""));
-  
+
   // values (attributes) for the on off hvac button
   private String buttonLabel = "Activate HVAC";
   private String buttonClass = "green-button right";
@@ -45,22 +56,17 @@ public class Temperature extends Header {
   // the on off message to the right of the button.
   private Label hvacState = new Label("hvacState", "<font color=\"red\">OFF</font>");
 
-  // to keep track of the state of hvac.
+  // to keep track of the state of hvac button
   private boolean hvacOn = false;
 
   /**
    * The temperature(Hvac) page.
+   * 
    * @throws Exception the Exception
    */
   public Temperature() throws Exception {
-
-    // SystemStateEntryDB db = ((SolarDecathlonApplication)
-    // SolarDecathlonApplication.get()).getDB();
-
-    // This is totally bogus!!
-    // Right now there's no water temp in the dictionary so we just use a random number
-    Long rand = (long) (Math.random() * 100);
-    setWaterTemp(rand);
+    // clear feedback each time the page is refreshed.
+    feedback = new Label("Feedback", "");
 
     // the on off button for hvac
     Link<String> onOffButton = new Link<String>("button") {
@@ -126,37 +132,75 @@ public class Temperature extends Header {
     long outsideTemp = Long.parseLong(outsideTempStr);
     outsideTemperature.setDefaultModelObject(outsideTemp + "&deg;F");
     outsideTemperature.setEscapeModelStrings(false);
-    waterTemperature.setEscapeModelStrings(false);
 
     // change the label color to green, yellow, or red according to the temperature value.
     determineInsideTempTextColor(insideTemp);
 
     add(insideTemperature);
     add(outsideTemperature);
-    // add(waterTemperature);
 
     Form<String> form = new Form<String>("form");
 
-    //textField = new TextField<String>("SetTemp", new Model<String>(""));
+    textField.setOutputMarkupId(true);
     form.add(textField);
-    form.add(new Button("SubmitTemp") {
+    form.add(new AjaxButton("SubmitTemp") {
 
       // support serializable
       private static final long serialVersionUID = 1L;
 
       /** Display the page again, now with the updated values of field1 and field2. */
       @Override
-      public void onSubmit() {    
+      protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         // do a put command
         List<String> list = new ArrayList<String>();
-        list.add((String) textField.getDefaultModelObject());
-        SolarDecathlonApplication.db.doCommand("hvac", "arduino-4", "SetTemp", list);
-        textField.setDefaultModelObject("");
+        String temp = (String) textField.getDefaultModelObject();
+        long tempLong = 0L;
+        try {
+          tempLong = Long.parseLong(temp);
+        }
+        catch (NumberFormatException e) {
+          textField.setDefaultModelObject("");
+          feedback.setDefaultModelObject("<font color=\"red\">"
+              + "Failure:<br />Textfield must contain all digits</font>");          
+          target.addComponent(feedback);
+          target.addComponent(textField);
+          return;
+        }
+        if (tempLong == desiredTemp) {
+          textField.setDefaultModelObject("");
+          feedback.setDefaultModelObject("<font color=\"#FF9900\">Unnecessary Change:<br />"
+              + "Same as the original desired temperature (" + desiredTemp + "F&deg)</font>");
+          target.addComponent(textField);
+          target.addComponent(feedback);
+          return;
+        }
+        if (tempLong < TEMPERATURE_RANGE_START || tempLong > TEMPERATURE_RANGE_END) {
+          textField.setDefaultModelObject("");
+          feedback
+              .setDefaultModelObject("<font color=\"red\">Failure:<br />Recommanded temperature: "
+                  + TEMPERATURE_RANGE_START + "-" + TEMPERATURE_RANGE_END + "F&deg</font>");
+        }
+        else {
+          desiredTemp = tempLong;
+          list.add(temp);
+          SolarDecathlonApplication.db.doCommand("hvac", "arduino-4", "SetTemp", list);
+          textField.setDefaultModelObject("");
+          feedback.setDefaultModelObject("<font color=\"green\">"
+              + "Success:<br />Desired room temperature is now " + temp + "F&deg</font>");
+        }
+        target.addComponent(textField);
+        target.addComponent(feedback);
       }
     });
-    add(form);
 
-    // temporary images to be replaced.
+    add(form);
+    form.setOutputMarkupId(true);
+
+    feedback.setEscapeModelStrings(false);
+    feedback.setOutputMarkupId(true);
+    add(feedback);
+
+    // temporary images yet to be replaced.
     add(new Image("tempY", new ResourceReference(Header.class, "images/tempY.png")));
     add(new Image("tempM", new ResourceReference(Header.class, "images/tempM.png")));
     add(new Image("tempW", new ResourceReference(Header.class, "images/tempW.png")));
@@ -182,28 +226,6 @@ public class Temperature extends Header {
       original = "<font color=\"red\">" + original + closeTag;
     }
     insideTemperature.setDefaultModelObject(original);
-  }
-
-  /**
-   * Set the water temperature label and to its appropriate color.
-   * 
-   * @param value The water temperature value.
-   */
-  public static void setWaterTemp(Long value) {
-
-    String original = value + "&deg;F";
-
-    String closeTag = "</font>";
-    if (value > 59 && value < 68) {
-      original = "<font color=\"green\">" + original + closeTag;
-    }
-    else if (value == 59 || value == 68) {
-      original = "<font color=\"#FF9900\">" + original + closeTag;
-    }
-    else {
-      original = "<font color=\"red\">" + original + closeTag;
-    }
-    waterTemperature.setDefaultModelObject(original);
   }
 
   /**

@@ -50,7 +50,8 @@ public class Header extends WebPage {
   Map<String, Integer> properties = ((SolarDecathlonSession) getSession()).getProperties();
 
   // labels for the header, aka basepage.
-  // static Label insideTemperatureHeader = new Label("InsideTemperatureHeader", "0");
+  // after the simulator and backend add outsideTemp can remove this line
+  // and put it in the constructor along with insideTemperatureHeader
   static Label outsideTemperatureHeader = new Label("OutsideTemperatureHeader", "0");
 
   /** Support serialization. */
@@ -65,20 +66,25 @@ public class Header extends WebPage {
 
     // This is totally bogus!!
     // Right now there's no outside temp in the dictionary so we just use a random number
+    // Maybe in milestone 2 we can just do it like how we did insideTemperatureHeader
     Long rand = (long) (Math.random() * 100);
     outsideTemperatureHeader.setDefaultModelObject(String.valueOf(rand));
+
+    /*******************************************************************************************
+     * for testing purpose, may remove after the integration with backend system. or just simply
+     * uncomment this section to test with BlackMagic Note: after uncommenting, you have to comment
+     * out the thread in the Application class and use the matching dbClassName for BlackMagic
+     *******************************************************************************************/
+    try {
+      new BlackMagic(SolarDecathlonApplication.db);
+    }
+    catch (Exception e1) {
+      e1.printStackTrace();
+    }
+
     insideTemperatureHeader.setDefaultModelObject(String.valueOf(SolarDecathlonApplication
         .getHvac().getTemp()));
-
-    // for testing purpose, may remove after the integration with backend system.
-//     try {
-//     new BlackMagic(SolarDecathlonApplication.db);
-//     }
-//     catch (Exception e1) {
-//     // TODO Auto-generated catch block
-//     e1.printStackTrace();
-//     }
-
+    
     // figure out the active page from session properties.
     int activePage = properties.get(PAGE_DISPLAY);
 
@@ -91,6 +97,9 @@ public class Header extends WebPage {
     add(CSSPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
         "style.css", screenContainer));
 
+    /**
+     * Javascripts were done by Noah but couldn't get in contact with him.
+     */
     // Add Javascript for use in all pages
     add(JavascriptPackageResource.getHeaderContribution(edu.hawaii.ihale.frontend.Header.class,
         "javascripts/jquery.min.js"));
@@ -162,8 +171,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new Dashboard());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {   
           e.printStackTrace();
         }
 
@@ -183,8 +191,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new Energy());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {       
           e.printStackTrace();
         }
 
@@ -204,8 +211,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new AquaPonics());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {    
           e.printStackTrace();
         }
 
@@ -240,8 +246,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new Temperature());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {        
           e.printStackTrace();
         }
       }
@@ -333,8 +338,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new Dashboard());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {         
           e.printStackTrace();
         }
       }
@@ -350,8 +354,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new Energy());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {       
           e.printStackTrace();
         }
       }
@@ -367,8 +370,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new AquaPonics());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {       
           e.printStackTrace();
         }
       }
@@ -393,8 +395,7 @@ public class Header extends WebPage {
         try {
           setResponsePage(new Temperature());
         }
-        catch (Exception e) {
-          // TODO Auto-generated catch block
+        catch (Exception e) {   
           e.printStackTrace();
         }
       }
@@ -583,16 +584,5 @@ public class Header extends WebPage {
   public Map<String, Integer> getSessionGraphProperties() {
     return ((SolarDecathlonSession) getSession()).getProperties();
 
-  }
-
-  /**
-   * Set the outside temperature label on header page.
-   * 
-   * @param value The inside temperature.
-   */
-  public static void setOutsideTemp(Long value) {
-    // DecimalFormat df = new DecimalFormat("#.##");
-    outsideTemperatureHeader.setDefaultModelObject(String.valueOf(value));
-  }
-
+  } 
 }

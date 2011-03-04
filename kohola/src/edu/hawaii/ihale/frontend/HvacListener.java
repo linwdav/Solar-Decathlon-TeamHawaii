@@ -11,13 +11,16 @@ import edu.hawaii.ihale.api.SystemStateListener;
  */
 public class HvacListener extends SystemStateListener {
   
+  private static final String SYSTEM_NAME = "hvac";
+  private static final String TEMP_KEY = "temp";
+  
   private long temp = -1;
   
   /**
    * Provide a default constructor that indicates that this listener is for Hvac.
    */
   public HvacListener() {
-    super("hvac");
+    super(SYSTEM_NAME);
   }
 
   /**
@@ -27,15 +30,14 @@ public class HvacListener extends SystemStateListener {
   @Override
   public void entryAdded(SystemStateEntry entry) {
     System.out.println("Something just happened in Hvac: " + entry);
-    if (entry.getLongValue("Temp") != -1) {
-      //Header.setInsideTemp(entry.getLongValue("Temp"));
-      temp = entry.getLongValue("Temp");
+    if (entry.getLongValue(TEMP_KEY) != -1) {  
+      temp = entry.getLongValue(TEMP_KEY);
     }    
   }
   
   /**
-   * The temp.
-   * @return The temp
+   * The house temperature.
+   * @return The temperature in Fahrenheit.
    */
   public long getTemp() {
     return temp;
