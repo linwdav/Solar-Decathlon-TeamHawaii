@@ -1,5 +1,11 @@
 package edu.hawaii.ihale.housesimulator;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Properties;
+import java.util.Scanner;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
@@ -72,16 +78,109 @@ public class SimulatorServer extends Application {
    */
   public static void main(String[] args) throws Exception {
     if (args.length == 2 && "-step".equalsIgnoreCase(args[0])) {
+
+      // Get the users home directory and establish the ".ihale" directory
+      File theDir = new File(System.getProperty("user.home"), ".ihale");
+      // Create the properties file in the ".ihale" directory
+      File propFile = new File(theDir, "device-urls.properties");
+      // Create the properties object to write to file.
+      Properties prop = new Properties();
+
+      // Set the properties value.
+      
+      String aquaponics = "http://localhost:7101/";
+      String hvac = "http://localhost:7102/";
+      String lighting = "http://localhost:7103/";
+      String pv = "http://localhost:7001/";
+      String electrical = "http://localhost:7002/";
+      
+      prop.setProperty("aquaponics-state", aquaponics);
+      prop.setProperty("aquaponics-control", aquaponics);
+      prop.setProperty("hvac-state", hvac);
+      prop.setProperty("hvac-control", hvac);
+      prop.setProperty("lighting-living-state", lighting);
+      prop.setProperty("lighting-living-control", lighting);
+      prop.setProperty("lighting-dining-state", lighting);
+      prop.setProperty("lighting-dining-control", lighting);
+      prop.setProperty("lighting-kitchen-state", lighting);
+      prop.setProperty("lighting-kitchen-control", lighting);
+      prop.setProperty("lighting-bathroom-state", lighting);
+      prop.setProperty("lighting-bathroom-control", lighting);
+      prop.setProperty("pv-state", pv);
+      prop.setProperty("electrical-state", electrical);
+
+      // Check if the properties file exists or not.
+      if (propFile.exists()) {
+        System.out.println("File already exists: " + propFile.getAbsolutePath());
+
+        // Initialize scanner and input string.
+        Scanner sc;
+        String input = "";
+
+        // Keep asking user if they want to overwrite the file if they don't say y or n.
+        do {
+
+          System.out.println("Would you like to overwrite this properties file? y/n");
+          sc = new Scanner(System.in);
+          input = sc.next();
+
+          // Overwrite the file.
+          if ("y".equalsIgnoreCase(input)) {
+            // Try to store the properties object in the properties file.
+            try {
+              System.out.println("Overwriting properties file: " + propFile.getAbsolutePath());
+              prop.store(new FileOutputStream(propFile), null);
+              prop.load(new FileInputStream(propFile));
+              prop.getProperty("aquaponics-state");
+            }
+            catch (IOException ex) {
+              ex.printStackTrace();
+            }
+          }
+          // Leave existing file.
+          else if ("n".equalsIgnoreCase(input)) {
+            System.out.println("Starting simulation using exisiting properties file.");
+          }
+
+        }
+        while (!"y".equalsIgnoreCase(input) && !"n".equalsIgnoreCase(input));
+
+      }
+      else {
+
+        System.out.println("Creating properties file: " + propFile.getAbsolutePath());
+        // Create the Directory.
+        if (theDir.mkdir()) {
+          // Create the Properties file.
+          if (propFile.createNewFile()) {
+            // Try to store the properties object in the properties file.
+            try {
+              prop.store(new FileOutputStream(propFile), null);
+            }
+            catch (IOException ex) {
+              ex.printStackTrace();
+            }
+          }
+          else {
+            System.out.println("Failed to create properties file: " + propFile.getAbsolutePath());
+            System.exit(1);
+          }
+        }
+        else {
+          System.out.println("Failed to create directory: " + theDir.getAbsolutePath());
+          System.exit(1);
+        }
+
+      }
+
       runServer();
-      SimulationTimer.startTimer(Integer.parseInt(args[1]));    
+      SimulationTimer.startTimer(Integer.parseInt(args[1]));
     }
     else {
       System.out.println("Usage: java -jar <jar filename> -step N");
       System.out.println("Where N is the step value, in seconds.");
       System.out.println("New sensor data will be updated every N seconds.");
-      System.exit(0);     
+      System.exit(0);
     }
   }
-
 }
-

@@ -20,5 +20,4 @@
           description="Invoke analyzers, fail if any errors found.">
     <fail message="FindBugs reported warnings." if="findbugs.warningsfound"/>
   </target>
-  
-</project>
+</project>  
