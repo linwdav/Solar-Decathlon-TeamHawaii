@@ -10,10 +10,8 @@ import edu.hawaii.ihale.api.SystemStateEntryDBException;
 import edu.hawaii.ihale.backend.rest.IHaleDAO;
 
 /**
- * Unit test of the IHale database functionality. 
- *
- * @author Leonardo Nguyen
- * @version Java 1.6.0_21
+ * Unit test of the IHale database functionality.
+ * @author Leonardo Nguyen, David Lin, Nathan Dorman
  */
 public class TestIHaleDB {
 
@@ -22,16 +20,17 @@ public class TestIHaleDB {
    */
   @Test
   public void testIHaleDAO() {
-    
+
     String aquaponics = "aquaponics";
     String hvac = "hvac";
     String lighting = "lighting";
     String level = "level";
     // To ensure timestamp uniqueness.
     int counter = 0;
-    
+
     IHaleDAO dao = new IHaleDAO();
-    
+
+    // Test getEntry and putEntry methods.
     String system = aquaponics;
     String device = "arduino-1";
     long timestamp = (new Date()).getTime() + counter++;
@@ -41,35 +40,39 @@ public class TestIHaleDB {
     entry.putLongValue("temp", 25);
     dao.putEntry(entry);
     IHaleSystemStateEntry iHaleEntry = IHaleDB.getEntry(system, device, timestamp);
-    assertEquals("Testing storing via DAO and retrieving an entry straight from the repository: ", 
+    assertEquals("Testing storing via DAO and retrieving an entry straight from the repository: ",
         entry.toString(), iHaleEntry.toString());
-    
+
+    // Test getEntry and putEntry methods.
     system = aquaponics;
     device = "arduino-1";
-    timestamp = (new Date()).getTime() + counter++;    
+    timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry2 = new SystemStateEntry(system, device, timestamp);
     entry2.putDoubleValue("pH", 11.5);
     entry2.putDoubleValue("oxygen", 100.2);
     entry2.putLongValue("temp", 98);
     dao.putEntry(entry2);
     SystemStateEntry entry3 = dao.getEntry(system, device, timestamp);
-    assertEquals("Testing storing via DAO and retrieving an entry via DAO: ", 
-        entry2.toString(), entry3.toString());
-    
+    assertEquals("Testing storing via DAO and retrieving an entry via DAO: ", entry2.toString(),
+        entry3.toString());
+
+    // Add hvac entry.
     system = hvac;
     device = "arduino-3";
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry4 = new SystemStateEntry(system, device, timestamp);
     entry4.putLongValue("temp", 25);
     dao.putEntry(entry4);
-    
+
+    // Add lighting entry.
     system = lighting;
     device = "arduino-8";
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry5 = new SystemStateEntry(system, device, timestamp);
     entry5.putLongValue("level", 10);
     dao.putEntry(entry5);
-    
+
+    // Add photovoltaics entry.
     system = "photovoltaics";
     device = "egauge-1";
     timestamp = (new Date()).getTime() + counter++;
@@ -77,7 +80,8 @@ public class TestIHaleDB {
     entry6.putLongValue("power", 10);
     entry6.putLongValue("energy", 10234);
     dao.putEntry(entry6);
-    
+
+    // Add electrical entry.
     system = "electrical";
     device = "egauge-2";
     timestamp = (new Date()).getTime() + counter++;
@@ -85,41 +89,45 @@ public class TestIHaleDB {
     entry7.putLongValue("power", 50);
     entry7.putLongValue("energy", 15000);
     dao.putEntry(entry7);
-        
-    // An assertion.
+
+    // Assert that 5 systems have been added into the database.
     assertEquals("Checking for number of systems, should be 5: ", 5, dao.getSystemNames().size());
-    
+
+    // Add lighting entry.
     system = lighting;
     device = "arduino-7";
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry8 = new SystemStateEntry(system, device, timestamp);
     entry8.putLongValue(level, 20);
     dao.putEntry(entry8);
-    
+
+    // Add lighting entry.
     system = lighting;
     device = "arduino-6";
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry9 = new SystemStateEntry(system, device, timestamp);
     entry9.putLongValue(level, 30);
     dao.putEntry(entry9);
-    
+
+    // Add lighting entry.
     system = lighting;
     device = "arduino-5";
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry10 = new SystemStateEntry(system, device, timestamp);
     entry10.putLongValue(level, 30);
     dao.putEntry(entry10);
-    
-    // An assertion.
+
+    // Assert that 4 lighting systems have been added into the database.
     try {
-      assertEquals("Checking for number of devices for Lighting System, should be 4: ",
-          4, dao.getDeviceNames(lighting).size());
+      assertEquals("Checking for number of devices for Lighting System, should be 4: ", 4, dao
+          .getDeviceNames(lighting).size());
     }
     catch (SystemStateEntryDBException e) {
       e.printStackTrace();
     }
     String setLevel = "setLevel";
-    
+
+    // Test the doCommand which sends XML to devices.
     List<String> args = new ArrayList<String>();
     args.add("75");
     dao.doCommand(aquaponics, "arduino-2", "setTemp", args);
@@ -144,5 +152,18 @@ public class TestIHaleDB {
     args.clear();
     args.add("12");
     dao.doCommand(lighting, "arduino-7", setLevel, args);
+
+    // Test deleteEntry method.
+//    system = entry10.getSystemName();
+//    device = entry10.getDeviceName();
+//    timestamp = entry10.getTimestamp();
+//    dao.deleteEntry(system, device, timestamp);
+//    try {
+//      assertEquals("Checking for number of devices for Lighting System, should be 3: ", 3, dao
+//          .getDeviceNames(lighting).size());
+//    }
+//    catch (SystemStateEntryDBException e) {
+//      e.printStackTrace();
+//    }
   }
 }

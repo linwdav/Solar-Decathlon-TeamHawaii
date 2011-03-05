@@ -21,13 +21,12 @@ import edu.hawaii.ihale.api.SystemStateEntry;
  * store their information into the iHale's database repository.
  * 
  * @author Leonardo Nguyen, David Lin, Nathan Dorman
- * @version Java 1.6.0_21
  */
 public class IHaleServer implements Runnable {
-  
+
   // Enable debug print statements or not.
   private static boolean debugMode = true;
-  
+
   // Path to where the Restlet server properties file.
   private static String currentDirectory = System.getProperty("user.dir");
   // Restlet server properties file name.
@@ -37,16 +36,16 @@ public class IHaleServer implements Runnable {
   private static String configFilePath = currentDirectory + "/" + configurationFile;
 
   // The interval at which to perform GET requests on house devices.
-  private static long interval = 10000;
-  
+  //private static long interval = 10000;
+
   // Determinant for if the thread is done running or not.
   private boolean isDone = false;
-  
+
   // Contains the mapping of device urls to port numbers as defined in the properties file.
   // i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
-  //       value = http://localhost:8001/aquaponics/state
+  // value = http://localhost:8001/aquaponics/state
   private static final Map<String, String> uris = new HashMap<String, String>();
-  
+
   /**
    * Constructor sets the time interval between polling.
    * 
@@ -55,9 +54,9 @@ public class IHaleServer implements Runnable {
   public IHaleServer(long interval) {
     // Empty constructor.
   }
-  
+
   /**
-   * At timed intervals send GET HTTP requests to each system device defined in the properties and 
+   * At timed intervals send GET HTTP requests to each system device defined in the properties and
    * on the port connection mapped to those device URLs.
    * 
    * @throws Exception If problems occur.
@@ -65,7 +64,7 @@ public class IHaleServer implements Runnable {
   public static void pollDevices() throws Exception {
     // Perform GETS on all devices at a specified interval.
     while (true) {
-      // For each URL entry defined in a configuration properties file, if the URL contains 
+      // For each URL entry defined in a configuration properties file, if the URL contains
       // a string phrase /state (indication to a GET URL to a system device) send a HTTP GET
       // on that URL.
       for (Map.Entry<String, String> entry : uris.entrySet()) {
@@ -77,78 +76,67 @@ public class IHaleServer implements Runnable {
           if (!(url.contains("http://"))) {
             url = "http://" + url;
           }
-          
+
           // For console debugging.
           if (debugMode) {
             System.out.println(url);
           }
-          
+
           ClientResource client = new ClientResource(url);
           // client.get should return a Representation of a xmlDocument.
           DomRepresentation representation = new DomRepresentation(client.get());
-            
+
           // For console debugging.
           if (debugMode) {
-            System.out.println(getStringFromDocument(representation.getDocument()));          
+            System.out.println(getStringFromDocument(representation.getDocument()));
           }
-          
+
           // From the XML information returned regarding the state of the system device,
           // create an entry and put it into the database repository.
           IHaleDAO dao = new IHaleDAO();
           if (entry.getKey().contains("arduino")) {
             SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
             dao.putEntry(entryFromGet);
-            
+
             // Test Case: Retrieve the entry that was stored in the database repository.
             /*
-            if (debugMode) {
-              SystemStateEntry returnedEntry = 
-                dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
-                    entryFromGet.getTimestamp());
-              System.out.println(returnedEntry.getSystemName() + "\t" + 
-                  returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp());
-            }
-            */
+             * if (debugMode) { SystemStateEntry returnedEntry =
+             * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+             * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+             * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp()); }
+             */
           }
           else if (entry.getKey().contains("egauge-1")) {
-            SystemStateEntry entryFromGet = 
-              dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), 
-                  "photovoltaics", "egauge-1");
+            SystemStateEntry entryFromGet =
+                dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "photovoltaics",
+                    "egauge-1");
             dao.putEntry(entryFromGet);
-            
+
             // Test Case: Retrieve the entry that was stored in the database repository.
             /*
-            if (debugMode) {
-              SystemStateEntry returnedEntry = 
-                dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
-                    entryFromGet.getTimestamp());
-              System.out.println(returnedEntry.getSystemName() + "\t" + 
-                  returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" + 
-                  returnedEntry.getLongValue("energy") + "\t" 
-                  + returnedEntry.getLongValue("power"));
-            }
-            */
+             * if (debugMode) { SystemStateEntry returnedEntry =
+             * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+             * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+             * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
+             * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
+             */
           }
           else if (entry.getKey().contains("egauge-2")) {
-            SystemStateEntry entryFromGet = 
-              dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), 
-                  "electrical", "egauge-2");
+            SystemStateEntry entryFromGet =
+                dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "electrical",
+                    "egauge-2");
             dao.putEntry(entryFromGet);
-            
+
             // Test Case: Retrieve the entry that was stored in the database repository.
             /*
-            if (debugMode) {
-              SystemStateEntry returnedEntry = 
-                dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(), 
-                    entryFromGet.getTimestamp());
-              System.out.println(returnedEntry.getSystemName() + "\t" + 
-                  returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" 
-                  + returnedEntry.getLongValue("energy") + "\t" 
-                  + returnedEntry.getLongValue("power"));
-            }
-            */
+             * if (debugMode) { SystemStateEntry returnedEntry =
+             * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+             * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+             * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
+             * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
+             */
           }
-            
+
           // Finite amount of connections and transactions allowed, must release.
           client.release();
         }
@@ -156,11 +144,11 @@ public class IHaleServer implements Runnable {
       Thread.sleep(5000);
     }
   }
-  
+
   static {
     readProperties();
   }
-  
+
   /**
    * Reads the configuration file properties.
    */
@@ -184,11 +172,11 @@ public class IHaleServer implements Runnable {
       System.out.println(configFilePath);
     }
   }
-  
+
   /**
-   * Returns a String representation of a XML document. Useful for debugging responses from
-   * system devices.
-   *
+   * Returns a String representation of a XML document. Useful for debugging responses from system
+   * devices.
+   * 
    * @param doc The XML document.
    * @return String representation of a XML document.
    */
@@ -207,21 +195,21 @@ public class IHaleServer implements Runnable {
       return null;
     }
   }
-  
+
   /**
-   * Returns the mapping of device urls to port numbers as defined in the properties file.
-   *  i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
-   *        value = http://localhost:8001/aquaponics/state
-   *
+   * Returns the mapping of device urls to port numbers as defined in the properties file. i.e., key
+   * = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state value =
+   * http://localhost:8001/aquaponics/state
+   * 
    * @return Map of devices to port.
    */
   public static Map<String, String> getUris() {
     return uris;
   }
-  
+
   /**
    * Returns the configuration file name for use in the IHaleDAO class.
-   *
+   * 
    * @return Returns the configuration file name.
    */
   public static String getConfigurationFileName() {
@@ -229,8 +217,8 @@ public class IHaleServer implements Runnable {
   }
 
   /**
-   * Required method to implement Runnable. Polls the system devices regularly for system
-   * device information.
+   * Required method to implement Runnable. Polls the system devices regularly for system device
+   * information.
    */
   @Override
   public void run() {
@@ -243,7 +231,7 @@ public class IHaleServer implements Runnable {
       e.printStackTrace();
     }
   }
-  
+
   /**
    * Ends this thread instance.
    */
@@ -254,7 +242,7 @@ public class IHaleServer implements Runnable {
   /**
    * Sets the debugging on or off for this class. True if debug statements are permitted, false
    * otherwise.
-   *
+   * 
    * @param status True if debug statements permitted, false otherwise.
    */
   public static void setDebugMode(boolean status) {
