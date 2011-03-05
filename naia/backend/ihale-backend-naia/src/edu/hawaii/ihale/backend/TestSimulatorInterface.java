@@ -33,6 +33,7 @@ public class TestSimulatorInterface {
 
   } // End testParsePropertiesFile
 
+ 
   /**
    * Tests the reading of items from the devices. Prints out results only.
    */

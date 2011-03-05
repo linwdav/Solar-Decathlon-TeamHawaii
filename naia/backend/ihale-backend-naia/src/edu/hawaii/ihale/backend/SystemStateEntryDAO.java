@@ -114,7 +114,9 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     // Actual URL to send PUT command to
     String host = SimulatorInterface.getHosts().get(key);
 
-    System.out.println(host);
+    SimulatorInterface.printHosts();
+    
+    System.out.println("Host: " + host);
 
     try {
       // Send the XML representation of the command to the appropriate device

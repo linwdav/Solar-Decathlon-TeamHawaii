@@ -38,61 +38,42 @@ public class SimulatorInterface {
     for (Map.Entry<String, String> location : host.entrySet()) {
 
       // Rest API URL
-      String url = location.getKey();
+      String device = location.getKey();
 
-      // Actual URL. e.g., http://localhost:3000
-      String actualURL = location.getValue();
+      // URI. e.g., http://localhost:3000/
+      String uri = location.getValue();
+ 
+      // Parse the system name
+      String[] temp = device.split("-");
 
       // System name
-      String deviceType = "";
+      String deviceType;
 
-      // String to search for
-      String locateString;
+      // System name/ device type
+      if ("pv".equals(temp[0])) {
+        deviceType = "photovoltaics";
+      }
+      else {
+        deviceType = temp[0];
+      }
+
+      // Initialize url string
+      String url = "";
 
       // If these are state devices, then request XML.
       // State URLs are denoted by the word "state" at the end of the
-      // URL path name. Both egauge devices also contain state information
-      if (url.contains("state") || url.contains("egauge")) {
+      // URL path name.
+      if (device.contains("state")) {
 
         try {
 
-          // Need to parse to determine what type of system device this
-          // is. This can be determined by extracting the system name from
-          // the url
+          // Generate the url for all system state
+          url = uri + deviceType + "/state";
 
-          // Handles eguage devices
-          if (url.contains("egauge")) {
-
-            // Extract device number
-            locateString = "egauge-";
-            int startIndex = locateString.length() + url.indexOf(locateString);
-            int endIndex = url.indexOf('.', startIndex);
-            int deviceNumber = Integer.parseInt(url.substring(startIndex, endIndex));
-
-            // Assign correct system name to corresponding device
-            if (deviceNumber == 1) {
-              deviceType = "photovoltaics";
-            }
-            else if (deviceNumber == 2) {
-              deviceType = "electrical";
-            }
-            
-          } // End if
-
-          // Handles arduino boards
-          else {
-
-            // Extract system name from url
-            locateString = "hawaii.edu/";
-            int startIndex = locateString.length() + url.indexOf(locateString);
-            int endIndex = url.indexOf('/', startIndex);
-            deviceType = url.substring(startIndex, endIndex);
-          }
-
-          System.out.println("\n" + actualURL);
+          System.out.println("\n" + url);
 
           // Send the XML representation of the command to the appropriate device
-          ClientResource client = new ClientResource(actualURL);
+          ClientResource client = new ClientResource(url);
           DomRepresentation representation = new DomRepresentation(client.get());
 
           // Insert Information into database
@@ -119,25 +100,24 @@ public class SimulatorInterface {
    * @param deviceType The system of the device being read
    */
   public static void loadSystemState(Document doc, String deviceType) {
-    
+
     // Return System State Entry object
     SystemStateEntry entry;
-    
+
     // Handles eGauge parsing
-    if ("photovoltaics".equalsIgnoreCase(deviceType) || 
-        "electrical".equalsIgnoreCase(deviceType)) {
-      
+    if ("photovoltaics".equalsIgnoreCase(deviceType) || "electrical".equalsIgnoreCase(deviceType)) {
+
       entry = XmlMethods.parseEgaugeXML(deviceType, doc);
     }
-    
+
     else {
       // Populate SystemStateEntry with XML information from the device
       entry = XmlMethods.parseXML(doc);
     }
-    
+
     // Printing Debugging
     System.out.println(entry);
-    
+
     // Set the Device Type
     db.setDevice(deviceType);
 
@@ -150,13 +130,12 @@ public class SimulatorInterface {
    * Parses a property file and converts it to a HashMap.
    */
   public static void parsePropertiesFile() {
-    
+
     // Properties file filename
-    String filename = "sims_kai.properties";
-    //String filename = "sims_maka.properties";
-    
+    String filePath = "/.ihale/device-urls.properties";
+
     // Get Path to file
-    String path = System.getProperty("user.dir") + "/" + filename;
+    String path = System.getProperty("user.home") + "/" + filePath;
 
     try {
       // Load properties file
@@ -188,19 +167,19 @@ public class SimulatorInterface {
   public static Map<String, String> getHosts() {
     return host;
   }
-  
+
   /**
    * Prints out the hosts HashMap.
    */
   public static void printHosts() {
-    
+
     // Loop through the hash map and print key-value pairs
     for (Map.Entry<String, String> entry : host.entrySet()) {
       System.out.print(entry.getKey() + "  ||  ");
       System.out.println(entry.getValue());
     }
     System.out.println();
-    
+
   } // End printHosts
-  
+
 } // End Simulator Interface
