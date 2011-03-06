@@ -38,8 +38,8 @@ public class AquaPonics extends Header {
   private static final double PH_RANGE_START = 6.5;
   private static final double PH_RANGE_END = 7.5;
 
-  private static final double OXYGEN_RANGE_START = 1.50;
-  private static final double OXYGEN_RANGE_END = 2.50;
+  private static final double OXYGEN_RANGE_START = 4.50;
+  private static final double OXYGEN_RANGE_END = 5.50;
 
   private static final Label recommendedTempLabel = new Label("RecommendedTempLabel",
       TEMPERATRUE_RANGE_START + "&deg;F - " + TEMPERATRUE_RANGE_END + "&deg;F");
@@ -48,7 +48,7 @@ public class AquaPonics extends Header {
       + " - " + PH_RANGE_END);
 
   private static final Label recommendedOxygenLabel = new Label("RecommendedOxygenLabel",
-      TEMPERATRUE_RANGE_START + " - " + TEMPERATRUE_RANGE_END);
+      OXYGEN_RANGE_START + " - " + OXYGEN_RANGE_END);
 
   /**
    * MarkupContainer for all graphs.
@@ -313,8 +313,8 @@ public class AquaPonics extends Header {
       }
     });
 
-    if (Double.parseDouble((String) oxygen.getDefaultModelObject()) < OXYGEN_RANGE_START
-        && Double.parseDouble((String) oxygen.getDefaultModelObject()) > OXYGEN_RANGE_END) {
+    if (Double.parseDouble((String) oxygen.getDefaultModelObject()) > OXYGEN_RANGE_START
+        && Double.parseDouble((String) oxygen.getDefaultModelObject()) < OXYGEN_RANGE_END) {
       oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
