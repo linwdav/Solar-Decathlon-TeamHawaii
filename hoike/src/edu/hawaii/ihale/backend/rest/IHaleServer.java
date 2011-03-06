@@ -94,20 +94,8 @@ public class IHaleServer implements Runnable {
         // From the XML information returned regarding the state of the system device,
         // create an entry and put it into the database repository.
         IHaleDAO dao = new IHaleDAO();
-        if (!key.contains("lighting") && !key.contains("electrical")) {
-          SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
-          dao.putEntry(entryFromGet);
-  
-          // Test Case: Retrieve the entry that was stored in the database repository.
-          /*
-           * if (debugMode) { SystemStateEntry returnedEntry =
-           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
-           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
-           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp()); }
-           */
-        }
         // Special case for lighting since it uses e-gauge device.
-        else if (key.contains("lighting")) {
+        if (key.contains("lighting")) {
           SystemStateEntry entryFromGet =
               dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "photovoltaics",
                   "egauge-1");
@@ -135,6 +123,18 @@ public class IHaleServer implements Runnable {
            * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
            * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
            * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
+           */
+        }
+        else {
+          SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
+          dao.putEntry(entryFromGet);
+  
+          // Test Case: Retrieve the entry that was stored in the database repository.
+          /*
+           * if (debugMode) { SystemStateEntry returnedEntry =
+           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp()); }
            */
         }
         // Finite amount of connections and transactions allowed, must release.
