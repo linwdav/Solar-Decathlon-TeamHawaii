@@ -68,7 +68,7 @@ public class IHaleDB {
    * @param timestamp The timestamp.
    * @return The associated IHaleSystemStateEntry, or null if not found.
    */
-  public static IHaleSystemStateEntry getEntry(String systemName, String deviceName, 
+  public static IHaleSystemStateEntry getEntry(String systemName, String deviceName,
       long timestamp) {
 
     // Retrieve an entry from the database with defined timestamp and and compare for
@@ -109,26 +109,26 @@ public class IHaleDB {
    * @param systemName The system name.
    * @param deviceName The device name.
    * @param startTime The start time.
-   * @param endTime The end time. 
+   * @param endTime The end time.
    * @return A (possibly empty) list of IHaleSystemStateEntries.
    * @throws SystemStateEntryDBException If startTime is greater than endTime.
    */
-  public static List<IHaleSystemStateEntry> getEntries(String systemName, String deviceName, 
+  public static List<IHaleSystemStateEntry> getEntries(String systemName, String deviceName,
       long startTime, long endTime) throws SystemStateEntryDBException {
 
     List<IHaleSystemStateEntry> entryList = new ArrayList<IHaleSystemStateEntry>();
     // Retrieve all entries with timestamp values between startTime and endTime.
-    EntityCursor<IHaleSystemStateEntry> cursor = 
-      entryIndexPKey.entities(startTime, true, endTime, true);
-    
+    EntityCursor<IHaleSystemStateEntry> cursor =
+        entryIndexPKey.entities(startTime, true, endTime, true);
+
     // Only return entries matching the specified device and system name.
     try {
       for (IHaleSystemStateEntry entry : cursor) {
         if (entry.getDeviceName().equals(deviceName) && entry.getSystemName().equals(systemName)) {
           entryList.add(entry);
         }
-      }       
-    } 
+      }
+    }
     finally {
       cursor.close();
     }
@@ -149,8 +149,8 @@ public class IHaleDB {
     try {
       // Iterate through the list, only looking at the first entry per system name group.
       // i.e., first occurrence of entry with systemName = Hvac, then Lighting, etc.
-      for (IHaleSystemStateEntry entry = cursor.first(); entry != null; 
-              entry = cursor.nextNoDup()) {
+      for (IHaleSystemStateEntry entry = cursor.first(); entry != null; entry =
+          cursor.nextNoDup()) {
         systemNameList.add(entry.getSystemName());
       }
     }
