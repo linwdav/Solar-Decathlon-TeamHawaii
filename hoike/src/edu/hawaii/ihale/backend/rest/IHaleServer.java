@@ -28,12 +28,14 @@ public class IHaleServer implements Runnable {
   private static boolean debugMode = true;
 
   // Path to where the Restlet server properties file.
-  private static String currentDirectory = System.getProperty("user.dir");
+  private static String currentDirectory = System.getProperty("user.home");
+  // Folder containing properties file.
+  private static String folder = ".ihale";
   // Restlet server properties file name.
-  private static String configurationFile = "configuration-maka.properties";
+  private static String configurationFile = "device-urls.properties";
 
   // Full path to the Restlet server properties file.
-  private static String configFilePath = currentDirectory + "/" + configurationFile;
+  private static String configFilePath = currentDirectory + "/" + folder + "/" + configurationFile;
 
   // The interval at which to perform GET requests on house devices.
   //private static long interval = 10000;

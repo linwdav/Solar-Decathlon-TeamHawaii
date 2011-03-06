@@ -21,7 +21,7 @@ public class TestIHaleServer {
    */
   @Test
   public void testXML() {
-
+    
     try {
 
       /** The device name attribute name. */
