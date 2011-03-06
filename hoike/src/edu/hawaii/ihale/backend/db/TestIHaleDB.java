@@ -130,30 +130,30 @@ public class TestIHaleDB {
     String setLevel = "setLevel";
 
     // Test the doCommand which sends XML to devices.
-    List<String> args = new ArrayList<String>();
-    args.add("75");
-    dao.doCommand(aquaponics, "arduino-2", "setTemp", args);
-    args.clear();
-    args.add("88");
-    dao.doCommand(hvac, "arduino-4", "setTemp", args);
-    args.clear();
-    args.add("22");
-    dao.doCommand(lighting, "arduino-6", setLevel, args);
-    args.clear();
-    args.add("6.3");
-    dao.doCommand(aquaponics, "arduino-2", "setPH", args);
-    args.clear();
-    args.add("0.336");
-    dao.doCommand(aquaponics, "arduino-2", "setOxygen", args);
-    args.clear();
-    args.add("98");
-    dao.doCommand(lighting, "arduino-5", setLevel, args);
-    args.clear();
-    args.add("25");
-    dao.doCommand(lighting, "arduino-8", setLevel, args);
-    args.clear();
-    args.add("12");
-    dao.doCommand(lighting, "arduino-7", setLevel, args);
+//    List<String> args = new ArrayList<String>();
+//    args.add("75");
+//    dao.doCommand(aquaponics, "arduino-2", "setTemp", args);
+//    args.clear();
+//    args.add("88");
+//    dao.doCommand(hvac, "arduino-4", "setTemp", args);
+//    args.clear();
+//    args.add("22");
+//    dao.doCommand(lighting, "arduino-6", setLevel, args);
+//    args.clear();
+//    args.add("6.3");
+//    dao.doCommand(aquaponics, "arduino-2", "setPH", args);
+//    args.clear();
+//    args.add("0.336");
+//    dao.doCommand(aquaponics, "arduino-2", "setOxygen", args);
+//    args.clear();
+//    args.add("98");
+//    dao.doCommand(lighting, "arduino-5", setLevel, args);
+//    args.clear();
+//    args.add("25");
+//    dao.doCommand(lighting, "arduino-8", setLevel, args);
+//    args.clear();
+//    args.add("12");
+//    dao.doCommand(lighting, "arduino-7", setLevel, args);
 
     // Test deleteEntry method.
     List<String> devices = new ArrayList<String>(0);

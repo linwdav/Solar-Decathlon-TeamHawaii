@@ -94,8 +94,8 @@ public class IHaleServer implements Runnable {
         // From the XML information returned regarding the state of the system device,
         // create an entry and put it into the database repository.
         IHaleDAO dao = new IHaleDAO();
-        // Special case for lighting since it uses e-gauge device.
-        if (key.contains("lighting")) {
+        // Special case for photovoltaics since it uses e-gauge device.
+        if (key.contains("pv")) {
           SystemStateEntry entryFromGet =
               dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "photovoltaics",
                   "egauge-1");
