@@ -1,8 +1,13 @@
 package edu.hawaii.ihale.aquaponics;
  
 import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import edu.hawaii.ihale.housesimulator.Arduino;
 /**
  * Simulates the Aquaponics System, holds values for temperature (temp), 
@@ -17,25 +22,18 @@ import edu.hawaii.ihale.housesimulator.Arduino;
 public class AquaponicsResource extends Arduino {
   //These hold the goal state defined by the user.
   static double goalPH = 7, goalTemp = 78, goalOxygen = .5;
-  //Maps need to be non-final...
-  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-  static Map<String, String> aquaponicsData = new ConcurrentHashMap<String, String>();
   static final String temp = "temp", pH = "pH", oxygen = "oxygen";
   /** Local keys used by the resource.*/
   public String[] localKeys = {temp, pH, oxygen};
+  //Singleton repository
+  private AquaponicsRepository repository;
   
   /**
    * Constructor.
    */
   public AquaponicsResource() {
     super("aquaponics","arduino-1");
-    if (aquaponicsData.get(localKeys[0]) == null) {
-      aquaponicsData.put(temp, String.valueOf(goalTemp));
-      aquaponicsData.put(pH, String.valueOf(goalPH));
-      aquaponicsData.put(oxygen, String.valueOf(goalOxygen));
-      data2.put("aquaponics", aquaponicsData);
-
-    }
+    this.repository = AquaponicsRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
@@ -45,11 +43,56 @@ public class AquaponicsResource extends Arduino {
    */
   @Override
   public void poll() {
-    aquaponicsData.put(temp, String.valueOf(getTemp()));
-    aquaponicsData.put(pH, String.valueOf(getPH()));
-    aquaponicsData.put(oxygen, String.valueOf(getOxygen())); 
+    //System.err.println("String value of getPH(): " + repository.getpH());
+    repository.setpH(String.valueOf(getPH()));
+    repository.setTemp(String.valueOf(getTemp()));
+    repository.setOxygen(String.valueOf(getOxygen()));
   }
   
+  /**
+   * Returns the Contact instance requested by the URL. 
+   * @return The XML representation of the contact, or CLIENT_ERROR_NOT_ACCEPTABLE if the 
+   * unique ID is not present.
+   * @throws Exception If problems occur making the representation. Shouldn't occur in 
+   * practice but if it does, Restlet will set the Status code. 
+   */
+  @Get
+  public Representation getResource() throws Exception {
+    //refresh values
+    // Create an empty XML representation.
+    DomRepresentation result = new DomRepresentation();
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+    //create root element
+    Element rootElement = doc.createElement("state-data");
+    rootElement.setAttribute("system", systemName);
+    rootElement.setAttribute("device", deviceName);
+    rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
+
+    AquaponicsRepository repository = AquaponicsRepository.getInstance();
+    Element temperatureElement = doc.createElement("state");
+    temperatureElement.setAttribute("key", "temp");
+    //System.err.println(repository.valuesMap.get(item));
+    temperatureElement.setAttribute("value", repository.getTemp());
+    rootElement.appendChild(temperatureElement);
+          
+    Element phElement = doc.createElement("state");
+    phElement.setAttribute("key", "pH");
+    //System.err.println(repository.valuesMap.get(item));
+    phElement.setAttribute("value", repository.getpH());
+    rootElement.appendChild(phElement);
+          
+    Element oxygenElement = doc.createElement("state");
+    oxygenElement.setAttribute("key", "oxygen");
+    //System.err.println(repository.valuesMap.get(item));
+    oxygenElement.setAttribute("value", repository.getOxygen());
+    rootElement.appendChild(oxygenElement);
+
+    doc.appendChild(rootElement);
+    result.setDocument(doc);
+    return result;
+  }
   /**
    * Adds a value to the map.
    * @param key Item's key.
@@ -80,7 +123,7 @@ public class AquaponicsResource extends Arduino {
   private Double sToD(String val) {
     double v = 0;
     try {
-      v = Double.valueOf(val).doubleValue();
+      v = Double.valueOf(val);
     } 
     catch (NumberFormatException e) {
       System.out.println(e);
@@ -93,7 +136,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated pH value.
    */
   private double getPH() {
-    double currentPH = sToD(aquaponicsData.get(pH));
+    double currentPH = sToD(repository.getpH());
     return currentPH + (goalPH - currentPH) / 100 + mt.nextDouble(-.05,.05);
   }
 
@@ -103,7 +146,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated oxygen value.
    */
   private double getOxygen() {
-    double currentDO = sToD(aquaponicsData.get(oxygen));
+    double currentDO = sToD(repository.getOxygen());
     return currentDO + (goalOxygen - currentDO) / 100 + mt.nextDouble(-.01,.01);
   }
   
@@ -112,7 +155,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated temp value.
    */
   private double getTemp() {
-    double currentTemp = sToD(aquaponicsData.get(temp));
+    double currentTemp = sToD(repository.getTemp());
     return currentTemp + (goalTemp - currentTemp) / 100 + mt.nextDouble(-.1,.1);
   }
 

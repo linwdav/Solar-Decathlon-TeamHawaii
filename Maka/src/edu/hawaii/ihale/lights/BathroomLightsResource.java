@@ -1,8 +1,13 @@
 package edu.hawaii.ihale.lights;
  
 import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import edu.hawaii.ihale.housesimulator.Arduino;
 /**
  * Simulates the lighting in a room of the solar decathlon house.
@@ -14,9 +19,9 @@ import edu.hawaii.ihale.housesimulator.Arduino;
  */
 public class BathroomLightsResource extends Arduino { 
   String[] localKeys = {"level"};
+  String currentLevel;
   //Maps need to be non-final...
-  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-  static Map<String, String> bathroomLightsData = new ConcurrentHashMap<String, String>();
+  BathroomLightsRepository repository;
 
   
   /**
@@ -24,28 +29,51 @@ public class BathroomLightsResource extends Arduino {
    */
   public BathroomLightsResource() {
     super("lighting","arduino-8");
-    room = "bathroom";
-    if (bathroomLightsData.get(localKeys[0]) == null) {
-      bathroomLightsData.put(localKeys[0], String.valueOf((int) mt.nextDouble(0, 100)));
-      data2.put(room, bathroomLightsData);
-    }
+    repository = BathroomLightsRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
-  
-  /**
-   * Adds a value to the map.
-   * @param key Item's key.
-   * @param val Item's value.
-   */
-  @Override
-  public void set(String key, String val) {
-    bathroomLightsData.put(list.get(0),val);
-  }
 
+/**
+ * Returns the Contact instance requested by the URL. 
+ * @return The XML representation of the contact, or CLIENT_ERROR_NOT_ACCEPTABLE if the 
+ * unique ID is not present.
+ * @throws Exception If problems occur making the representation. Shouldn't occur in 
+ * practice but if it does, Restlet will set the Status code. 
+ */
+
+@Get
+public Representation getResource() throws Exception {
+  //refresh values
+  // Create an empty XML representation.
+  DomRepresentation result = new DomRepresentation();
+  DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+  DocumentBuilder builder = factory.newDocumentBuilder();
+  Document doc = builder.newDocument();
+  //create root element
+  Element rootElement = doc.createElement("state-data");
+  rootElement.setAttribute("system", "lighting");
+  rootElement.setAttribute("device", deviceName);
+  rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
+
+  //AquaponicsRepository repository = AquaponicsRepository.getInstance();
+  Element levelElement = doc.createElement("state");
+  levelElement.setAttribute("key", "level");
+  //System.err.println(repository.valuesMap.get(item));
+  levelElement.setAttribute("value", repository.getLevel());
+  rootElement.appendChild(levelElement);
+
+  doc.appendChild(rootElement);
+  result.setDocument(doc);
+  return result;
+}
   @Override
   public void poll() {
-    // TODO Auto-generated method stub
+    repository.setLevel(String.valueOf(mt.nextDouble(0,100)));
   }
 
+  @Override
+  public void set(String key, String value) {
+    repository.setLevel(value);
+  }
 }

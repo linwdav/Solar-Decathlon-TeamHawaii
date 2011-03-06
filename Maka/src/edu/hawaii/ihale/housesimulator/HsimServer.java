@@ -1,7 +1,11 @@
 package edu.hawaii.ihale.housesimulator;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
 import java.util.Timer;
 import org.restlet.Application;
 import org.restlet.Component;
@@ -77,12 +81,9 @@ public class HsimServer extends Application {
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
-            // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
             router.attach(state, HVACResource.class);
             router.attach(key, HVACResource.class);
-            // Return the root router
             return router;  
           }   
         }; break;
@@ -90,11 +91,8 @@ public class HsimServer extends Application {
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
-            // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
             router.attach(state, PhotovoltaicResource.class);
-            // Return the root router
             return router;  
           }   
         }; break;
@@ -102,11 +100,8 @@ public class HsimServer extends Application {
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
-            // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
             router.attach(state, ElectricalResource.class);
-            // Return the root router
             return router;  
           }   
         }; break;
@@ -114,13 +109,9 @@ public class HsimServer extends Application {
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
-            // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
             router.attach(state, LivingroomLightsResource.class);
             router.attach(key, LivingroomLightsResource.class);
-            //router.attach("/kitchen", LivingRoomResource.class);
-            // Return the root router
             return router;  
           }   
         }; break;
@@ -128,13 +119,9 @@ public class HsimServer extends Application {
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
-            // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
             router.attach(state, DiningroomLightsResource.class);
             router.attach(key, DiningroomLightsResource.class);
-            //router.attach("/kitchen", LivingRoomResource.class);
-            // Return the root router
             return router;  
           }   
         }; break;
@@ -142,13 +129,9 @@ public class HsimServer extends Application {
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
-            // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
             router.attach(state, KitchenLightsResource.class);
             router.attach(key, KitchenLightsResource.class);
-            //router.attach("/kitchen", LivingRoomResource.class);
-            // Return the root router
             return router;  
           }   
         }; break;
@@ -156,13 +139,9 @@ public class HsimServer extends Application {
         application = new Application() {  
           @Override  
           public Restlet createInboundRoot() {  
-            // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
             router.attach(state, BathroomLightsResource.class);
             router.attach(key, BathroomLightsResource.class);
-            //router.attach("/kitchen", LivingRoomResource.class);
-            // Return the root router
             return router;  
           }   
         }; break;
@@ -174,7 +153,6 @@ public class HsimServer extends Application {
     component.getDefaultHost().attach(contextRoot, application);
     component.start();
   }
-
   
   /**
    * This main method starts up a web application that will listen on port 8111.
@@ -193,6 +171,62 @@ public class HsimServer extends Application {
     runServer(lighting,8006);
     runServer(lighting,8007);
     runServer(lighting,8008);
+    
+    // Get the users home directory and establish the ".ihale" directory
+    File theDir = new File(System.getProperty("user.home"), ".ihale");
+    // Create the properties file in the ".ihale" directory
+    File propFile = new File(theDir, "device-urls.properties");
+    // Create the properties object to write to file.
+    Properties prop = new Properties();
+
+    // System URI's
+    String aquaponics = "http://localhost:8001/";
+    String hvac = "http://localhost:8002/";
+    String pv = "http://localhost:8003/";
+    String electrical = "http://localhost:8004/";
+    String lightingLiving = "http://localhost:8005/";
+    String lightingDining = "http://localhost:8006/";
+    String lightingKitchen = "http://localhost:8007/";
+    String lightingBathroom = "http://localhost:8008/";
+    /*
+    // Set the properties value.
+    prop.setProperty("aquaponics-state", aquaponics);
+    prop.setProperty("aquaponics-control", aquaponics);
+    prop.setProperty("hvac-state", hvac);
+    prop.setProperty("hvac-control", hvac);
+    prop.setProperty("lighting-living-state", lightingLiving);
+    prop.setProperty("lighting-living-control", lightingLiving);
+    prop.setProperty("lighting-dining-state", lightingDining);
+    prop.setProperty("lighting-dining-control", lightingDining);
+    prop.setProperty("lighting-kitchen-state", lightingKitchen);
+    prop.setProperty("lighting-kitchen-control", lightingKitchen);
+    prop.setProperty("lighting-bathroom-state", lightingBathroom);
+    prop.setProperty("lighting-bathroom-control", lightingBathroom);
+    prop.setProperty("pv-state", pv);
+    prop.setProperty("electrical-state", electrical);
+    
+    
+    if (theDir.mkdir()) {
+      // Create the Properties file.
+      if (propFile.createNewFile()) {
+        // Try to store the properties object in the properties file.
+        try {
+          prop.store(new FileOutputStream(propFile), null);
+        }
+        catch (IOException ex) {
+          ex.printStackTrace();
+        }
+      }
+      else {
+        System.out.println("Failed to create properties file: " + propFile.getAbsolutePath());
+        System.exit(1);
+      }
+    }
+    else {
+      System.out.println("Failed to create directory: " + theDir.getAbsolutePath());
+      System.exit(1);
+    }
+    */
     //start refreshing
     Refresher refresh = new Refresher();
     refresh.start(5000);

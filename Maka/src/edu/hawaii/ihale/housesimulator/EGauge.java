@@ -15,6 +15,7 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import edu.hawaii.ihale.photovoltaics.PhotovoltaicRepository;
 
 
 /**
@@ -28,7 +29,7 @@ public abstract class EGauge extends ServerResource {
   public String meterName;
   /** The random number generator.*/
   public static final MT mt = new MT(Calendar.MILLISECOND);
-  Date date = new Date();
+  protected Date date = new Date();
   /** Magic map that holds all the data.*/
   @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "MS_SHOULD_BE_FINAL", 
     justification = "data Map should definately not be final...")
@@ -81,11 +82,26 @@ public abstract class EGauge extends ServerResource {
     Element meter = doc.createElement("meter");
     meter.setAttribute("title", meterName);
     //Create energy and power child elements
+    /*
     for (String s : list) {
       Element e = doc.createElement(s);
       e.appendChild(doc.createTextNode(data.get(meterName).get(s)));
       meter.appendChild(e);
     } 
+    */
+    PhotovoltaicRepository repository = PhotovoltaicRepository.getInstance();
+    Element energyElement = doc.createElement("energy");
+    energyElement.appendChild(doc.createTextNode(repository.getEnergy()));
+    meter.appendChild(energyElement);
+    
+    Element powerElement = doc.createElement("power");
+    powerElement.appendChild(doc.createTextNode(repository.getPower()));
+    meter.appendChild(powerElement);
+    
+    Element wattsecondsElement = doc.createElement("energyWs");
+    wattsecondsElement.appendChild(doc.createTextNode(repository.getJoules()));
+    meter.appendChild(wattsecondsElement);
+    
     rootElement.appendChild(meter);
     //<frequency>59.98</frequency>
     //<voltage>119.0</voltage>

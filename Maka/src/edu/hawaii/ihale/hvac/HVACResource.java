@@ -1,8 +1,14 @@
 package edu.hawaii.ihale.hvac;
  
-import java.util.Arrays; 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Arrays;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import edu.hawaii.ihale.aquaponics.AquaponicsRepository;
 import edu.hawaii.ihale.housesimulator.Arduino;
 
 /**
@@ -16,10 +22,9 @@ import edu.hawaii.ihale.housesimulator.Arduino;
   "nonstatic variables are lost.")
 public class HVACResource extends Arduino { 
   //Maps need to be non-final...
-  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-  static Map<String, String> hvacData = new ConcurrentHashMap<String, String>();
   //These hold the goal state defined by the user.
   static double goalTemp = 79.4;
+  HVACRepository repository;
   String temp = "temp";
   //Array of known keys 
   String[] localKeys = {temp}; 
@@ -29,19 +34,9 @@ public class HVACResource extends Arduino {
    */
   public HVACResource() {
     super("hvac","arduino-3");
-    if (hvacData.get(localKeys[0]) == null) {
-      hvacData.put(temp, String.valueOf(goalTemp));
-      data2.put("hvac", hvacData);
-
-    }
+    repository = HVACRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
-    /*
-    if (data.get(temp) == null) {
-      data.put(temp, "" + goalTemp);
-    }
-    */
-
   }
   
   /**
@@ -49,10 +44,42 @@ public class HVACResource extends Arduino {
    */
   @Override
   public void poll() {
-    hvacData.put(temp, String.valueOf(getTemp()));
+    repository.setTemp(String.valueOf(getTemp()));
 
   }
+  /**
+   * Returns the Contact instance requested by the URL. 
+   * @return The XML representation of the contact, or CLIENT_ERROR_NOT_ACCEPTABLE if the 
+   * unique ID is not present.
+   * @throws Exception If problems occur making the representation. Shouldn't occur in 
+   * practice but if it does, Restlet will set the Status code. 
+   */
   
+  @Get
+  public Representation getResource() throws Exception {
+    //refresh values
+    // Create an empty XML representation.
+    DomRepresentation result = new DomRepresentation();
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+    //create root element
+    Element rootElement = doc.createElement("state-data");
+    rootElement.setAttribute("system", "hvac");
+    rootElement.setAttribute("device", deviceName);
+    rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
+
+    AquaponicsRepository repository = AquaponicsRepository.getInstance();
+    Element temperatureElement = doc.createElement("state");
+    temperatureElement.setAttribute("key", "temp");
+    //System.err.println(repository.valuesMap.get(item));
+    temperatureElement.setAttribute("value", repository.getTemp());
+    rootElement.appendChild(temperatureElement);
+
+    doc.appendChild(rootElement);
+    result.setDocument(doc);
+    return result;
+  }
   /**
    * Adds a value to the map.
    * @param key Item's key.
@@ -72,7 +99,7 @@ public class HVACResource extends Arduino {
   private Double sToD(String val) {
     double v = 0;
     try {
-      v = Double.valueOf(val).doubleValue();
+      v = Double.valueOf(val);
    } 
     catch (NumberFormatException e) {
       System.out.println(e);
@@ -85,7 +112,7 @@ public class HVACResource extends Arduino {
    * @return An updated temp value.
    */
   private double getTemp() {
-    double currentTemp = sToD(hvacData.get(temp));
+    double currentTemp = sToD(repository.getTemp());
     return currentTemp + (goalTemp - currentTemp) / 100 + mt.nextDouble(-.05,.05); 
   }
   

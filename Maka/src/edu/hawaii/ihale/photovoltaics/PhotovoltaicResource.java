@@ -1,9 +1,6 @@
 package edu.hawaii.ihale.photovoltaics;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 import edu.hawaii.ihale.housesimulator.EGauge;
 /**
  * Simulates the Photovoltaics System, holds values for power and energy consumed.
@@ -12,10 +9,9 @@ import edu.hawaii.ihale.housesimulator.EGauge;
  */
 public class PhotovoltaicResource extends EGauge {
   //Maps need to be non-final...
-  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-  static Map<String, String> gridData = new ConcurrentHashMap<String, String>();
   static double goalEnergy = 1443.5, goalPower = 2226.2, goalWs = 2130813014;
   static final String energy = "energy", ws = "energyWs", power = "power";
+  PhotovoltaicRepository repository;
   /** Local keys used by the resource.*/
   public String[] localKeys = {energy, power, ws};
   /**
@@ -24,12 +20,7 @@ public class PhotovoltaicResource extends EGauge {
   public PhotovoltaicResource() {
     super();
     meterName = "Solar";
-    if (gridData.get(localKeys[0]) == null) {
-      gridData.put(energy, String.valueOf(goalEnergy));
-      gridData.put(power, String.valueOf(goalPower));
-      gridData.put(ws, String.valueOf(goalWs));
-      data.put(meterName, gridData);
-    }
+    repository = PhotovoltaicRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
@@ -39,10 +30,18 @@ public class PhotovoltaicResource extends EGauge {
    */
   @Override
   public void poll() {
-    gridData.put(energy, String.valueOf(getEnergy()));
-    gridData.put(power, String.valueOf(getPower()));
-    gridData.put(ws, String.valueOf(getWs()));
+    repository.setEnergy(String.valueOf(getEnergy()));
+    repository.setPower(String.valueOf(getPower()));
+    repository.setJoules(String.valueOf(getWs()));
   }
+  
+  /**
+   * Returns the Contact instance requested by the URL. 
+   * @return The XML representation of the contact, or CLIENT_ERROR_NOT_ACCEPTABLE if the 
+   * unique ID is not present.
+   * @throws Exception If problems occur making the representation. Shouldn't occur in 
+   * practice but if it does, Restlet will set the Status code. 
+   */
   
   /**
    * Converts a String to a double.
@@ -52,7 +51,7 @@ public class PhotovoltaicResource extends EGauge {
   private Double sToD(String val) {
     double v = 0;
     try {
-      v = Double.valueOf(val).doubleValue();
+      v = Double.valueOf(val);
     } 
     catch (NumberFormatException e) {
       System.out.println(e);
@@ -65,7 +64,7 @@ public class PhotovoltaicResource extends EGauge {
    * @return An updated pH value.
    */
   private double getEnergy() {
-    double currentEnergy = sToD(gridData.get(energy));
+    double currentEnergy = sToD(repository.getEnergy());
     return currentEnergy + (goalEnergy - currentEnergy) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -74,7 +73,7 @@ public class PhotovoltaicResource extends EGauge {
    * @return An updated pH value.
    */
   private double getPower() {
-    double currentPH = sToD(gridData.get(power));
+    double currentPH = sToD(repository.getEnergy());
     return currentPH + (goalPower - currentPH) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -83,7 +82,7 @@ public class PhotovoltaicResource extends EGauge {
    * @return An updated wattage value.
    */
   private double getWs() {
-    double currentWs = sToD(gridData.get(ws));
+    double currentWs = sToD(repository.getJoules());
     return currentWs + (goalWs - currentWs) / 100 + mt.nextDouble (-1000,1000);
   }
 }

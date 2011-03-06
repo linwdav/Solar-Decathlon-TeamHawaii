@@ -1,10 +1,14 @@
 package edu.hawaii.ihale.lights;
  
-import java.util.Arrays; 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Arrays;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
+import org.restlet.resource.Get;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import edu.hawaii.ihale.housesimulator.Arduino;
-
 /**
  * Simulates the lighting in a room of the solar decathlon house.
  * Each class is titled after the room it represents.
@@ -14,45 +18,61 @@ import edu.hawaii.ihale.housesimulator.Arduino;
  *
  */
 public class DiningroomLightsResource extends Arduino { 
-  //Array of known keys
   String[] localKeys = {"level"};
+  String currentLevel;
   //Maps need to be non-final...
-  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-  static Map<String, String> diningroomLightsData = new ConcurrentHashMap<String, String>();
+  BathroomLightsRepository repository;
+
   
   /**
    * Constructor.
    */
   public DiningroomLightsResource() {
     super("lighting","arduino-6");
-    room = "livingroom";
-    if (diningroomLightsData.get(localKeys[0]) == null) {
-      diningroomLightsData.put(localKeys[0], String.valueOf((int) mt.nextDouble(0, 100)));
-      data2.put(room, diningroomLightsData);
-    }
+    repository = BathroomLightsRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
-  }
-  
-  /**
-   * Adds a value to the map.
-   * @param key Item's key.
-   * @param val Item's value.
-   */
-  @Override
-  public void set(String key, String val) {
-    diningroomLightsData.put(list.get(0),val);
   }
 
   @Override
   public void poll() {
-    // TODO Auto-generated method stub
-    
+    repository.setLevel(String.valueOf(mt.nextDouble(0,100)));
   }
-  
   /**
-   * Refreshes the data.
+   * Returns the Contact instance requested by the URL. 
+   * @return The XML representation of the contact, or CLIENT_ERROR_NOT_ACCEPTABLE if the 
+   * unique ID is not present.
+   * @throws Exception If problems occur making the representation. Shouldn't occur in 
+   * practice but if it does, Restlet will set the Status code. 
    */
-  //public void poll() {
-  //}
+
+  @Get
+  public Representation getResource() throws Exception {
+    //refresh values
+    // Create an empty XML representation.
+    DomRepresentation result = new DomRepresentation();
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder builder = factory.newDocumentBuilder();
+    Document doc = builder.newDocument();
+    //create root element
+    Element rootElement = doc.createElement("state-data");
+    rootElement.setAttribute("system", "lighting");
+    rootElement.setAttribute("device", deviceName);
+    rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
+
+    //AquaponicsRepository repository = AquaponicsRepository.getInstance();
+    Element levelElement = doc.createElement("state");
+    levelElement.setAttribute("key", "level");
+    //System.err.println(repository.valuesMap.get(item));
+    levelElement.setAttribute("value", repository.getLevel());
+    rootElement.appendChild(levelElement);
+
+    doc.appendChild(rootElement);
+    result.setDocument(doc);
+    return result;
+  }
+  @Override
+  public void set(String key, String value) {
+    repository.setLevel(value);
+  }
 }

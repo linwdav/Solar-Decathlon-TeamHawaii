@@ -1,8 +1,6 @@
 package edu.hawaii.ihale.electrical;
 
 import java.util.Arrays;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 import edu.hawaii.ihale.housesimulator.EGauge;
 /**
@@ -12,24 +10,18 @@ import edu.hawaii.ihale.housesimulator.EGauge;
  */
 public class ElectricalResource extends EGauge {
   //Maps need to be non-final...
-  @SuppressWarnings("PMD.AssignmentToNonFinalStatic")
-  static Map<String, String> gridData = new ConcurrentHashMap<String, String>();
   static double goalEnergy = 5918.9, goalPower = -3.5, goalWs = 2130813014;
   static final String energy = "energy", ws = "energyWs", power = "power";
   /** Local keys used by the resource.*/
   public String[] localKeys = {energy, power,ws};
+  private EnergyRepository repository;
   /**
    * Constructor.
    */
   public ElectricalResource() {
     super();
     meterName = "Grid";
-    if (gridData.get(localKeys[0]) == null) {
-      gridData.put(energy, String.valueOf(goalEnergy));
-      gridData.put(power, String.valueOf(goalPower));
-      gridData.put(ws, String.valueOf(goalWs));
-      data.put(meterName, gridData);
-    }
+    repository = EnergyRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
@@ -39,9 +31,9 @@ public class ElectricalResource extends EGauge {
    */
   @Override
   public void poll() {
-    gridData.put(energy, String.valueOf(getEnergy()));
-    gridData.put(power, String.valueOf(getPower()));
-    gridData.put(ws, String.valueOf(getWs()));
+    repository.setEnergy(String.valueOf(getEnergy()));
+    repository.setPower(String.valueOf(getPower()));
+    repository.setJoules(String.valueOf(getWs()));
   }
   
   /**
@@ -65,7 +57,7 @@ public class ElectricalResource extends EGauge {
    * @return An updated pH value.
    */
   private double getEnergy() {
-    double currentEnergy = sToD(gridData.get(energy));
+    double currentEnergy = sToD(repository.getJoules());
     return currentEnergy + (goalEnergy - currentEnergy) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -74,7 +66,7 @@ public class ElectricalResource extends EGauge {
    * @return An updated pH value.
    */
   private double getPower() {
-    double currentPower = sToD(gridData.get(power));
+    double currentPower = sToD(repository.getPower());
     return currentPower + (goalPower - currentPower) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -83,7 +75,7 @@ public class ElectricalResource extends EGauge {
    * @return An updated wattage value.
    */
   private double getWs() {
-    double currentWs = sToD(gridData.get(ws));
+    double currentWs = sToD(repository.getJoules());
     return currentWs + (goalWs - currentWs) / 100 + mt.nextDouble (-1000,1000);
   }
 }

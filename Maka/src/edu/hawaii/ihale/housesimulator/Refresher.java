@@ -5,6 +5,7 @@ import java.util.TimerTask;
 import edu.hawaii.ihale.aquaponics.AquaponicsResource;
 import edu.hawaii.ihale.electrical.ElectricalResource;
 import edu.hawaii.ihale.hvac.HVACResource;
+import edu.hawaii.ihale.lights.BathroomLightsResource;
 import edu.hawaii.ihale.photovoltaics.PhotovoltaicResource;
 /**
  * An external timer class that updates all resources periodically.
@@ -14,8 +15,13 @@ public class Refresher {
   static Timer time;
   static AquaponicsResource aquaponics = new AquaponicsResource();
   static HVACResource hvac = new HVACResource();
-  static ElectricalResource solar = new ElectricalResource();
-  static PhotovoltaicResource electrical = new PhotovoltaicResource();
+  static PhotovoltaicResource solar = new PhotovoltaicResource();
+  static ElectricalResource electrical = new ElectricalResource();
+  static BathroomLightsResource bathroomLights = new BathroomLightsResource();
+  static BathroomLightsResource kitchenLights = new BathroomLightsResource();
+  static BathroomLightsResource diningroomLights = new BathroomLightsResource();
+  static BathroomLightsResource livingroomLights = new BathroomLightsResource();
+
   /**
    * Constructor.
    */
@@ -43,6 +49,10 @@ public class Refresher {
         aquaponics.poll();
         hvac.poll();
         electrical.poll();
+        bathroomLights.poll();
+        kitchenLights.poll();
+        livingroomLights.poll();
+        diningroomLights.poll();
         solar.poll();
       }
     }, delay, period);
