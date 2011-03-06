@@ -32,6 +32,7 @@ public class IHaleDB {
   private static SecondaryIndex<String, Long, IHaleSystemStateEntry> entryIndexSKeySystem;
 
   /** The SecondaryIndex accessor for entries related to its device name. */
+  @SuppressWarnings("unused")
   private static SecondaryIndex<String, Long, IHaleSystemStateEntry> entryIndexSKeyDevice;
 
   /** Initialize the static variables at class load time to ensure there's only one of them. */
@@ -98,9 +99,7 @@ public class IHaleDB {
    * @param timestamp The timestamp.
    */
   public static void deleteEntry(String systemName, String deviceName, long timestamp) {
-    entryIndexSKeyDevice.delete(deviceName);
     entryIndexPKey.delete(timestamp);
-    
   }
 
   /**

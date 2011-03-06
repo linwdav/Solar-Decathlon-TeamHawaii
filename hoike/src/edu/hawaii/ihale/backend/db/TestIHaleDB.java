@@ -151,19 +151,44 @@ public class TestIHaleDB {
     dao.doCommand(lighting, "arduino-8", setLevel, args);
     args.clear();
     args.add("12");
-    dao.doCommand(lighting, "arduino-7", setLevel, args);
-
+    dao.doCommand(lighting, "arduino-7", setLevel, args);    
+    
     // Test deleteEntry method.
-//    system = entry10.getSystemName();
-//    device = entry10.getDeviceName();
-//    timestamp = entry10.getTimestamp();
-//    dao.deleteEntry(system, device, timestamp);
-//    try {
-//      assertEquals("Checking for number of devices for Lighting System, should be 3: ", 3, dao
-//          .getDeviceNames(lighting).size());
-//    }
-//    catch (SystemStateEntryDBException e) {
-//      e.printStackTrace();
-//    }
+    List<String> devices = new ArrayList<String>(0);
+    dao.deleteEntry(system, device, timestamp);
+    try {
+      devices = dao.getDeviceNames(system);
+    }
+    catch (SystemStateEntryDBException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    System.out.println(devices.size());
+    assertEquals("Checking for number of devices for Lighting System, should be 3: ", 3, devices.size());
+    
+    // Add aquaponics entry.
+    system = aquaponics;
+    device = "arduino-1";
+    timestamp = (new Date()).getTime() + counter++;
+    SystemStateEntry entry9000 = new SystemStateEntry(system, device, timestamp);
+    entry9000.putDoubleValue("pH", 9000.0);
+    entry9000.putDoubleValue("oxygen", 9000.0);
+    entry9000.putLongValue("temp", 9000);
+    entry9000.putLongValue("temp", 9000);
+    dao.putEntry(entry9000);
+    
+    // Test getEntries method.
+    List<SystemStateEntry> entries = new ArrayList<SystemStateEntry>(0);
+    try {
+      entries = dao.getEntries(aquaponics, "arduino-1", entry.getTimestamp(), entry9000.getTimestamp());
+    }
+    catch (SystemStateEntryDBException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+    assertEquals("Checking for number of devices for Aquaponics System, should be 3: ", 3, entries.size());
+    assertEquals("Testing for correct return of 1st aquaponics entry on arduino-1: ", entry.toString(), entries.get(0).toString());
+    assertEquals("Testing for correct return of 2nd aquaponics entry on arduino-1: ", entry2.toString(), entries.get(1).toString());
+    assertEquals("Testing for correct return of 3rd aquaponics entry on arduino-1: ", entry9000.toString(), entries.get(2).toString());
   }
 }
