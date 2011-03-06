@@ -113,7 +113,7 @@ public class TestIHaleServer {
     try {
       Thread controlThread = new Thread(serverThread);
       controlThread.start();
-      Thread.sleep(15000);
+      Thread.sleep(5000);
       serverThread.done();
     }
     catch (InterruptedException e) {

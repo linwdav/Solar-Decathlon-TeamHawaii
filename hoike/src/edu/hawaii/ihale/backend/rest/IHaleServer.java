@@ -38,7 +38,7 @@ public class IHaleServer implements Runnable {
   private static String configFilePath = currentDirectory + "/" + folder + "/" + configurationFile;
 
   // The interval at which to perform GET requests on house devices.
-  //private static long interval = 10000;
+  private static long interval = 10000;
 
   // Determinant for if the thread is done running or not.
   private boolean isDone = false;
@@ -64,86 +64,83 @@ public class IHaleServer implements Runnable {
    * @throws Exception If problems occur.
    */
   public static void pollDevices() throws Exception {
+    String key = "";
+    String value = "";
+    String url = "";
+    String context = "";
     // Perform GETS on all devices at a specified interval.
     while (true) {
-      // For each URL entry defined in a configuration properties file, if the URL contains
-      // a string phrase /state (indication to a GET URL to a system device) send a HTTP GET
-      // on that URL.
       for (Map.Entry<String, String> entry : uris.entrySet()) {
-        // Currently doesn't support eguage API XML keys and value types.
-        if (entry.getValue().contains("/state")) {
-          String url = entry.getValue();
-          // Some configuration properties mapped devices to URLs that look like
-          // localhost:7103/lighting/living/state without the protocol name.
-          if (!(url.contains("http://"))) {
-            url = "http://" + url;
-          }
-
+        key = entry.getKey();
+        value = entry.getValue();
+        if (key.contains("state")) {
+          context = key.replace('-', '/');
+          url = value + context;
           // For console debugging.
           if (debugMode) {
             System.out.println(url);
           }
-
-          ClientResource client = new ClientResource(url);
-          // client.get should return a Representation of a xmlDocument.
-          DomRepresentation representation = new DomRepresentation(client.get());
-
-          // For console debugging.
-          if (debugMode) {
-            System.out.println(getStringFromDocument(representation.getDocument()));
-          }
-
-          // From the XML information returned regarding the state of the system device,
-          // create an entry and put it into the database repository.
-          IHaleDAO dao = new IHaleDAO();
-          if (entry.getKey().contains("arduino")) {
-            SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
-            dao.putEntry(entryFromGet);
-
-            // Test Case: Retrieve the entry that was stored in the database repository.
-            /*
-             * if (debugMode) { SystemStateEntry returnedEntry =
-             * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
-             * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
-             * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp()); }
-             */
-          }
-          else if (entry.getKey().contains("egauge-1")) {
-            SystemStateEntry entryFromGet =
-                dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "photovoltaics",
-                    "egauge-1");
-            dao.putEntry(entryFromGet);
-
-            // Test Case: Retrieve the entry that was stored in the database repository.
-            /*
-             * if (debugMode) { SystemStateEntry returnedEntry =
-             * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
-             * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
-             * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
-             * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
-             */
-          }
-          else if (entry.getKey().contains("egauge-2")) {
-            SystemStateEntry entryFromGet =
-                dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "electrical",
-                    "egauge-2");
-            dao.putEntry(entryFromGet);
-
-            // Test Case: Retrieve the entry that was stored in the database repository.
-            /*
-             * if (debugMode) { SystemStateEntry returnedEntry =
-             * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
-             * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
-             * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
-             * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
-             */
-          }
-
-          // Finite amount of connections and transactions allowed, must release.
-          client.release();
         }
+        
+        // Connect to device and retrieve a Representation of a xmlDocument
+        ClientResource client = new ClientResource(url);
+        DomRepresentation representation = new DomRepresentation(client.get());
+        
+        // For console debugging.
+        if (debugMode) {
+          System.out.println(getStringFromDocument(representation.getDocument()));
+        }
+  
+        // From the XML information returned regarding the state of the system device,
+        // create an entry and put it into the database repository.
+        IHaleDAO dao = new IHaleDAO();
+        if (!key.contains("lighting") && !key.contains("electrical")) {
+          SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
+          dao.putEntry(entryFromGet);
+  
+          // Test Case: Retrieve the entry that was stored in the database repository.
+          /*
+           * if (debugMode) { SystemStateEntry returnedEntry =
+           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp()); }
+           */
+        }
+        // Special case for lighting since it uses e-gauge device.
+        else if (key.contains("lighting")) {
+          SystemStateEntry entryFromGet =
+              dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "photovoltaics",
+                  "egauge-1");
+          dao.putEntry(entryFromGet);
+  
+          // Test Case: Retrieve the entry that was stored in the database repository.
+          /*
+           * if (debugMode) { SystemStateEntry returnedEntry =
+           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
+           * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
+           */
+        }
+        else if (key.contains("electrical")) {
+          SystemStateEntry entryFromGet =
+              dao.xmlEgaugeToSystemStateEntry(representation.getDocument(), "electrical",
+                  "egauge-2");
+          dao.putEntry(entryFromGet);
+  
+          // Test Case: Retrieve the entry that was stored in the database repository.
+          /*
+           * if (debugMode) { SystemStateEntry returnedEntry =
+           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
+           * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
+           */
+        }
+        // Finite amount of connections and transactions allowed, must release.
+        client.release();
       }
-      Thread.sleep(5000);
+      Thread.sleep(interval);
     }
   }
 

@@ -165,7 +165,6 @@ public class TestIHaleDB {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
-    System.out.println(devices.size());
     assertEquals("Checking for number of devices for Lighting System, should be 3: ", 3,
         devices.size());
 
