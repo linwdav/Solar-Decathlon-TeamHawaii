@@ -42,7 +42,7 @@
   <!-- <property name="system.main.class" value="edu.hawaii.ihale.db.Main" /> -->
   <property name="system.main.class" value="edu.hawaii.ihale.backend.rest.IHaleServer" />
   <property name="majorVersionNumber" value="1" />
-  <property name="minorVersionNumber" value="0" />
+  <property name="minorVersionNumber" value="1" />
   <tstamp>
     <format property="DAYSTAMP" pattern="Mdd" />
     <format property="TSTAMP" pattern="HH:mm:ss" />
