@@ -27,26 +27,25 @@ public class IHaleServer implements Runnable {
   // Enable debug print statements or not.
   private static boolean debugMode = true;
 
-  // Path to where the Restlet server properties file.
+  // Parent directory to the system device properties file.
   private static String currentDirectory = System.getProperty("user.home");
-  // Folder containing properties file.
+  // Sub-directory containing system device properties file.
   private static String folder = ".ihale";
-  // Restlet server properties file name.
+  // System device properties file name.
   private static String configurationFile = "device-urls.properties";
 
-  // Full path to the Restlet server properties file.
+  // Full path to the system device properties file.
   private static String configFilePath = currentDirectory + "/" + folder + "/" + configurationFile;
 
   // The interval at which to perform GET requests on house devices.
-  //private static 
-  long interval;
+  private long interval;
   
-  // Determinant for if the thread is done running or not.
+  // Flag for if the thread is done running or not.
   private boolean isDone = false;
   
   // Contains the mapping of device urls to port numbers as defined in the properties file.
-  // i.e., key = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state
-  // value = http://localhost:8001/aquaponics/state
+  // i.e., key = lighting-dining-state
+  // value = http://localhost:8001/
   private static final Map<String, String> uris = new HashMap<String, String>();
 
   /**
@@ -56,7 +55,6 @@ public class IHaleServer implements Runnable {
    */
   public IHaleServer(long interval) {
     this.interval = interval;
-    // Empty constructor.
   }
 
   /**
@@ -80,6 +78,10 @@ public class IHaleServer implements Runnable {
         // Spell out the abbreviation of pv to photovoltaics.
         if (context.contains("pv")) {
           context = context.replace("pv", "photovoltaics");
+        }
+        // To eliminate the room identifier from the context.
+        else if (context.contains("lighting")) {
+          context = "lighting/state";
         }
         url = value + context;
         
@@ -108,13 +110,13 @@ public class IHaleServer implements Runnable {
           dao.putEntry(entryFromGet);
   
           // Test Case: Retrieve the entry that was stored in the database repository.
-          /*
-           * if (debugMode) { SystemStateEntry returnedEntry =
-           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
-           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
-           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
-           * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
-           */
+          //
+          // if (debugMode) { SystemStateEntry returnedEntry =
+          // dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+          // entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+          // + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
+          // returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
+          //
         }
         else if (key.contains("electrical")) {
           SystemStateEntry entryFromGet =
@@ -123,25 +125,25 @@ public class IHaleServer implements Runnable {
           dao.putEntry(entryFromGet);
   
           // Test Case: Retrieve the entry that was stored in the database repository.
-          /*
-           * if (debugMode) { SystemStateEntry returnedEntry =
-           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
-           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
-           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
-           * returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
-           */
+          //
+          // if (debugMode) { SystemStateEntry returnedEntry =
+          // dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+          // entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+          // + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp() + "\t" +
+          // returnedEntry.getLongValue("energy") + "\t" + returnedEntry.getLongValue("power")); }
+          //
         }
         else {
           SystemStateEntry entryFromGet = dao.xmlToSystemStateEntry(representation.getDocument());
           dao.putEntry(entryFromGet);
   
           // Test Case: Retrieve the entry that was stored in the database repository.
-          /*
-           * if (debugMode) { SystemStateEntry returnedEntry =
-           * dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
-           * entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
-           * + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp()); }
-           */
+          //
+          // if (debugMode) { SystemStateEntry returnedEntry =
+          // dao.getEntry(entryFromGet.getSystemName(), entryFromGet.getDeviceName(),
+          // entryFromGet.getTimestamp()); System.out.println(returnedEntry.getSystemName() + "\t"
+          // + returnedEntry.getDeviceName() + "\t" + returnedEntry.getTimestamp()); }
+          //
         }
         // Finite amount of connections and transactions allowed, must release.
         client.release();
@@ -202,8 +204,7 @@ public class IHaleServer implements Runnable {
 
   /**
    * Returns the mapping of device urls to port numbers as defined in the properties file. i.e., key
-   * = http://arduino-1.halepilihonua.hawaii.edu/aquaponics/state value =
-   * http://localhost:8001/aquaponics/state
+   * = lighting-living-state, value = http://localhost:8001/
    * 
    * @return Map of devices to port.
    */

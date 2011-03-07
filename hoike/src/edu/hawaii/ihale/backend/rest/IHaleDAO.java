@@ -61,7 +61,13 @@ public class IHaleDAO implements SystemStateEntryDB {
 
   // Contains the mapping of device ip addresses to port numbers as defined in the properties file.
   private static Map<String, String> uris = new HashMap<String, String>();
+  
+  // A Map from device names that support PUTs (arduino-2, arduino-4, arduino-5, etc.) to a key 
+  // from the device-urls.properties file. Used primarily for the doCommand() method.
+  // i.e., A key for this Map: "arduino-2" mapped to "aquaponics-control"
+  private static Map<String, String> deviceToSystemControl = new HashMap<String, String>();
 
+  
   /**
    * Default constructor.
    */
@@ -80,6 +86,15 @@ public class IHaleDAO implements SystemStateEntryDB {
     // file.
     uris = IHaleServer.getUris();
     // createDeviceToPortMap(); // Same operation as uris=IHaleServer.getUris();
+    
+    // Initialize the devices to their associated key in the device-urls.properties file,
+    // so the PUT URLs can be retrieved.
+    deviceToSystemControl.put("arduino-2", "aquaponics-control");
+    deviceToSystemControl.put("arduino-4", "hvac-control");
+    deviceToSystemControl.put("arduino-5", "lighting-living-control");
+    deviceToSystemControl.put("arduino-6", "lighting-dining-control");
+    deviceToSystemControl.put("arduino-7", "lighting-kitchen-control");
+    deviceToSystemControl.put("arduino-8", "lighting-bathroom-control");
   }
 
   /**
@@ -329,25 +344,14 @@ public class IHaleDAO implements SystemStateEntryDB {
       }
 
       String url = "";
-      Map<String, String> deviceToPortMap = uris;
+      
       // A String used for assist matching to a URL that contains the field to be affected,
       // i.e., /lighting/living/level or /aquaponics/temp whereas the command String is
       // setLevel or setTemp.
       String fieldToAffect = lowerCaseFirstLetter(command.substring(3));
 
-      // Figure out which port is mapped to the system and device we want to send the doCommand
-      // operation for. Iterate through the keys which are the device URIs and if it contains
-      // portions of the system name and device name then it is a URI match and retrieve the URL
-      // mapped to the device URI.
-      Iterator<Entry<String, String>> iterator = deviceToPortMap.entrySet().iterator();
-      while (iterator.hasNext()) {
-        Map.Entry<String, String> mapEntry = iterator.next();
-        String key = mapEntry.getKey().toString();
-        if (key.contains(systemName) && key.contains(deviceName) && (!(key.contains("/state")))
-            && key.contains(fieldToAffect)) {
-          url = mapEntry.getValue().toString();
-        }
-      }
+      String deviceControlUrl = deviceToSystemControl.get(deviceName);
+      url = uris.get(deviceControlUrl) + systemName + "/" + fieldToAffect;
 
       // For console debugging.
       System.out.println("Sending PUT Request on: " + url);
@@ -531,6 +535,12 @@ public class IHaleDAO implements SystemStateEntryDB {
     for (int i = 0; i < stateList.getLength(); i++) {
 
       String key = ((Element) stateList.item(i)).getAttribute(keyAttributeName);
+      
+      // Special case for pH, lower-case it all.
+      if (key.equals("pH")) {
+        key = "ph";
+      }
+      
       String value = ((Element) stateList.item(i)).getAttribute(valueAttributeName);
 
       if (keyTypePairMap.get(key).equalsIgnoreCase(longString)) {
