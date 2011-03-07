@@ -74,6 +74,12 @@ public class IHaleDB {
     // Retrieve an entry from the database with defined timestamp and and compare for
     // system name and device name matching.
     IHaleSystemStateEntry entry = entryIndexPKey.get(timestamp);
+    
+    if (entry == null) {
+      return null;
+    }
+    // There may be an entry with matching timestamp but not the appropriate system name and 
+    // device name.
     if (entry.getSystemName().equals(systemName) && entry.getDeviceName().equals(deviceName)) {
       return entry;
     }
@@ -120,7 +126,7 @@ public class IHaleDB {
     // Retrieve all entries with timestamp values between startTime and endTime.
     EntityCursor<IHaleSystemStateEntry> cursor =
         entryIndexPKey.entities(startTime, true, endTime, true);
-
+    
     // Only return entries matching the specified device and system name.
     try {
       for (IHaleSystemStateEntry entry : cursor) {

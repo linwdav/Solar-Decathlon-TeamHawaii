@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend.db;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -156,26 +157,15 @@ public class TestIHaleDB {
 //    dao.doCommand(lighting, "arduino-7", setLevel, args);
 
     // Test deleteEntry method.
-    List<String> devices = new ArrayList<String>(0);
     dao.deleteEntry(system, device, timestamp);
-    try {
-      devices = dao.getDeviceNames(system);
-    }
-    catch (SystemStateEntryDBException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
-    assertEquals("Checking for number of devices for Lighting System, should be 3: ", 3,
-        devices.size());
+    assertNull("Checking if entry was indeed deleted", dao.getEntry(system, device, timestamp));
 
-    // Add aquaponics entry.
     system = aquaponics;
     device = arduino1;
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry9000 = new SystemStateEntry(system, device, timestamp);
     entry9000.putDoubleValue("pH", 9000.0);
     entry9000.putDoubleValue("oxygen", 9000.0);
-    entry9000.putLongValue(temp,  9000);
     entry9000.putLongValue(temp,  9000);
     dao.putEntry(entry9000);
 

@@ -98,6 +98,10 @@ public class IHaleDAO implements SystemStateEntryDB {
     String device = lowerCaseFirstLetter(deviceName);
     IHaleSystemStateEntry entry = IHaleDB.getEntry(system, device, timestamp);
 
+    if (entry == null) {
+      return null;
+    }
+    
     SystemStateEntry returnEntry =
         new SystemStateEntry(entry.getSystemName(), entry.getDeviceName(), entry.getTimestamp());
 
@@ -217,7 +221,7 @@ public class IHaleDAO implements SystemStateEntryDB {
     List<IHaleSystemStateEntry> iHaleEntries =
         IHaleDB.getEntries(system, device, startTime, endTime);
     List<SystemStateEntry> returnEntryList = new ArrayList<SystemStateEntry>();
-
+    
     // For each entry retrieved from the data repository, we must transform from
     // IHaleSystemStateEntry to SystemStateEntry and store it in a List to be returned.
     for (int i = 0; i < iHaleEntries.size(); i++) {
@@ -438,7 +442,7 @@ public class IHaleDAO implements SystemStateEntryDB {
   public static void createDeviceToPortMap() {
 
     // Path to where the Restlet server properties file.
-    String currentDirectory = System.getProperty("user.dir");
+    String currentDirectory = System.getProperty("user.home");
     // Restlet server properties file name.
     String configurationFile = IHaleServer.getConfigurationFileName();
     // Full path to the Restlet server properties file.
