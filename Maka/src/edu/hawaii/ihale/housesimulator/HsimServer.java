@@ -152,6 +152,14 @@ public class HsimServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
+    
+    if (args.length != 2 || !args[0].equalsIgnoreCase("-stepinterval")
+        || !args[1].matches("\\d+")) {
+      System.err.println("Invalid parameters: " + Arrays.toString(args));
+      System.err.println("Usage: java -jar ihale-housesim-maka.jar -stepinterval 5");
+      System.exit(1);
+    }
+    
     names = new ArrayList<String>();
     ports = new ArrayList<String>();
     String lighting = "/lighting";
@@ -193,31 +201,30 @@ public class HsimServer extends Application {
     properties.setProperty("pv-state", pv);
     properties.setProperty("electrical-state", electrical);
     
+    boolean[] returnValues = new boolean[4];
+    Arrays.fill(returnValues, true);
+    
     if (!directoryFile.exists()) {
-      directoryFile.mkdir();
+      returnValues[0] = directoryFile.mkdir();
     }
     
     if (propertiesFile.exists()) {
       // delete old properties file if it exists and create a new one
-      propertiesFile.delete();
-      propertiesFile.createNewFile();
+      returnValues[1] = propertiesFile.delete();
+      returnValues[2] = propertiesFile.createNewFile();
       properties.store(new FileOutputStream(propertiesFile), null);
     }
     else {
-      propertiesFile.createNewFile();
+      returnValues[3] = propertiesFile.createNewFile();
       properties.store(new FileOutputStream(propertiesFile), null);  
     }
-    
-    if (args.length == 2 && args[0].equalsIgnoreCase("-stepinterval")
-        && args[1].matches("\\d+")) {
-      Refresher refresh = new Refresher();
-      refresh.start(Integer.parseInt(args[1]));
-    }
-    else {
-      System.err.println("Invalid parameters: " + Arrays.toString(args));
-      System.err.println("Usage: java -jar ihale-housesim-maka.jar -stepinterval 5");
+
+    if (Arrays.toString(returnValues).contains("false")) {
+      System.err.println("Failed i/o event");
       System.exit(1);
     }
-
+    
+    Refresher refresh = new Refresher();
+    refresh.start(Integer.parseInt(args[1]));
   }
 }
