@@ -80,7 +80,7 @@ public class TestIHaleServer {
       Element stateElement3 = doc.createElement(stateElementName);
       rootElement.appendChild(stateElement3);
       attribute = doc.createAttribute("key");
-      attribute.setValue("pH");
+      attribute.setValue("ph");
       stateElement3.setAttributeNode(attribute);
       attribute = doc.createAttribute("value");
       attribute.setValue("7");
@@ -108,16 +108,20 @@ public class TestIHaleServer {
    */
   @Test
   public void testGetThread() {
+    // Creates a server that will generate GETs to system devices every 10000 milliseconds.
     IHaleServer serverThread = new IHaleServer(10000);
     //serverThread.setDebugMode(false);
+    Thread controlThread = new Thread(serverThread);
+    controlThread.start();
+    // After at least 30 seconds end the serverThread process.
     try {
-      Thread controlThread = new Thread(serverThread);
-      controlThread.start();
-      Thread.sleep(5000);
-      serverThread.done();
+        long x = 30000;
+        Thread.sleep(x);
+        serverThread.done();
     }
     catch (InterruptedException e) {
       e.printStackTrace();
     }
+    System.out.println("serverThread ended.");
   }
 }

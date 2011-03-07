@@ -28,6 +28,7 @@ public class TestIHaleDB {
     String level = "level";
     String arduino1 = "arduino-1";
     String temp = "temp";
+    String ph = "ph";
     // To ensure timestamp uniqueness.
     int counter = 0;
 
@@ -38,7 +39,7 @@ public class TestIHaleDB {
     String device = arduino1;
     long timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry = new SystemStateEntry(system, device, timestamp);
-    entry.putDoubleValue("pH", 7.5);
+    entry.putDoubleValue(ph, 7.5);
     entry.putDoubleValue("oxygen", 6.2);
     entry.putLongValue(temp,  25);
     dao.putEntry(entry);
@@ -51,7 +52,7 @@ public class TestIHaleDB {
     device = arduino1;
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry2 = new SystemStateEntry(system, device, timestamp);
-    entry2.putDoubleValue("pH", 11.5);
+    entry2.putDoubleValue(ph, 11.5);
     entry2.putDoubleValue("oxygen", 100.2);
     entry2.putLongValue(temp,  98);
     dao.putEntry(entry2);
@@ -164,7 +165,7 @@ public class TestIHaleDB {
     device = arduino1;
     timestamp = (new Date()).getTime() + counter++;
     SystemStateEntry entry9000 = new SystemStateEntry(system, device, timestamp);
-    entry9000.putDoubleValue("pH", 9000.0);
+    entry9000.putDoubleValue(ph, 9000.0);
     entry9000.putDoubleValue("oxygen", 9000.0);
     entry9000.putLongValue(temp,  9000);
     dao.putEntry(entry9000);

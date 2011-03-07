@@ -383,7 +383,7 @@ public class IHaleDAO implements SystemStateEntryDB {
     ArrayList<String> keyTypePairList = new ArrayList<String>();
 
     /** Aquaponics System **/
-    keyTypePairList.add("pH||Double");
+    keyTypePairList.add("ph||Double");
     keyTypePairList.add("oxygen||Double");
     keyTypePairList.add("temp||Long");
     IHaleDAO.systemToFieldMap.put("aquaponics", keyTypePairList);
