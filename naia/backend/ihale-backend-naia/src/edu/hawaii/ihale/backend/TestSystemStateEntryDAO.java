@@ -17,6 +17,7 @@ import edu.hawaii.ihale.api.SystemStateEntryDBException;
 public class TestSystemStateEntryDAO {
   SystemStateEntryDAO db = new SystemStateEntryDAO();
   String aqua = "aquaponics";
+  String ard2 = "arduino-2";
 
   /**
    * Tests the Do Command.
@@ -29,11 +30,11 @@ public class TestSystemStateEntryDAO {
     List<String> list4 = Arrays.asList("6.3");
     List<String> list5 = Arrays.asList("0.336");
 
-    db.doCommand(aqua, "arduino-2", "setTemp", list);
+    db.doCommand(aqua, ard2, "setTemp", list);
     db.doCommand("hvac", "arduino-4", "setTemp", list2);
     db.doCommand("lighting", "arduino-6", "setLevel", list3);
-    db.doCommand(aqua, "arduino-2", "setPh", list4);
-    db.doCommand(aqua, "arduino-2", "setOxygen", list5);
+    db.doCommand(aqua, ard2, "setPh", list4);
+    db.doCommand(aqua, ard2, "setOxygen", list5);
 
   }
 
@@ -48,8 +49,8 @@ public class TestSystemStateEntryDAO {
     // Initialize
     String aqua = "aquaponics";
     String ard1 = "arduino-1";
-    String o2 = "Oxygen";
-    String temp = "Temp";
+    String o2 = "oxygen";
+    String temp = "temp";
 
     // Create SystemStateEntry objects
     SystemStateEntry entry1 = new SystemStateEntry(aqua, ard1, 111111111);
@@ -58,16 +59,16 @@ public class TestSystemStateEntryDAO {
     SystemStateEntry entry4 = new SystemStateEntry(aqua, ard1, 444444444);
 
     // Insert information for each entry
-    entry1.putDoubleValue("pH", 4.5);
+    entry1.putDoubleValue("ph", 4.5);
     entry1.putDoubleValue( o2, 4.5);
     entry1.putLongValue(temp, 75);
-    entry2.putDoubleValue("pH", 5.5);
+    entry2.putDoubleValue("ph", 5.5);
     entry2.putDoubleValue(o2, 5.5);
     entry2.putLongValue(temp, 76);
-    entry3.putDoubleValue("pH", 6.5);
+    entry3.putDoubleValue("ph", 6.5);
     entry3.putDoubleValue(o2, 6.5);
     entry3.putLongValue(temp, 77);
-    entry4.putDoubleValue("pH", 7.5);
+    entry4.putDoubleValue("ph", 7.5);
     entry4.putDoubleValue(o2, 7.5);
     entry4.putLongValue(temp, 78);
 
@@ -123,8 +124,8 @@ public class TestSystemStateEntryDAO {
     String photo = "photovoltaics";
     String elec = "electrical";
     String ard5 = "arduino-5";
-    String o2 = "Oxygen";
-    String temp = "Temp";
+    String o2 = "oxygen";
+    String temp = "temp";
     
     // Create SystemStateEntry objects
     SystemStateEntry entry1 = new SystemStateEntry(aqua, "arduino-1", 111111111);
@@ -134,15 +135,15 @@ public class TestSystemStateEntryDAO {
     SystemStateEntry entry5 = new SystemStateEntry(elec, "eguage-2", 77777777);
 
     // Insert information for each entry
-    entry1.putDoubleValue("pH", 4.5);
+    entry1.putDoubleValue("ph", 4.5);
     entry1.putDoubleValue(o2, 4.5);
     entry1.putLongValue(temp, 75);
     entry2.putLongValue(temp, 72);
-    entry3.putLongValue("Level", 10);
-    entry4.putLongValue("Energy", 1234);
-    entry4.putLongValue("Power", 111);
-    entry5.putLongValue("Energy", 4321);
-    entry5.putLongValue("Power", 222);
+    entry3.putLongValue("level", 10);
+    entry4.putLongValue("energy", 1234);
+    entry4.putLongValue("power", 111);
+    entry5.putLongValue("energy", 4321);
+    entry5.putLongValue("power", 222);
 
     // Add all entries into the Database
     SystemStateEntryDAO db = new SystemStateEntryDAO();
@@ -190,26 +191,26 @@ public class TestSystemStateEntryDAO {
    */
   @Test
   public void testGetNames() {
-    String temp = "Temp";
-    String level = "Level";
+    String temp = "temp";
+    String level = "level";
     String light = "lighting";
-    String o2 = "Oxygen";
+    String o2 = "oxygen";
 
     // Create list of keys based on Java API Data Dictionary
-    List<String> aquaponicsDouble = Arrays.asList("pH", o2);
+    List<String> aquaponicsDouble = Arrays.asList("ph", o2);
     List<String> aquaponicsLong = Arrays.asList(temp);
     List<String> HVACLong = Arrays.asList(temp);
     List<String> lightingLong = Arrays.asList(level);
 
     // Create API Objects
-    SystemStateEntry state1 = new SystemStateEntry(aqua, "Arduino-2", 111222333);
+    SystemStateEntry state1 = new SystemStateEntry(aqua, ard2, 111222333);
     SystemStateEntry state2 = new SystemStateEntry("hvac", "arduino-3", 333222111);
     SystemStateEntry state3 = new SystemStateEntry(light, "arduino-5", 444555666);
     SystemStateEntry state4 = new SystemStateEntry(light, "arduino-5", 444555333);
     SystemStateEntry state5 = new SystemStateEntry(light, "arduino-6", 555666777);
 
     // Populate state information on API objects
-    state1.putDoubleValue("pH", 7.0);
+    state1.putDoubleValue("ph", 7.0);
     state1.putDoubleValue(o2, 55.0);
     state1.putLongValue(temp, 65);
     state2.putLongValue(temp, 72);

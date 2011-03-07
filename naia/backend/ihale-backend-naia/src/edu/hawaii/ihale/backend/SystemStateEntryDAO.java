@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -30,20 +29,20 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
   // Hard Coding of the Java API Data Dictionary
 
   // Aquaponics
-  static List<String> aquaponicsDouble = Arrays.asList("pH", "Oxygen");
-  static List<String> aquaponicsLong = Arrays.asList("Temp");
+  static List<String> aquaponicsDouble = Arrays.asList("ph", "oxygen");
+  static List<String> aquaponicsLong = Arrays.asList("temp");
 
   // HVAC
-  static List<String> HVACLong = Arrays.asList("Temp");
+  static List<String> HVACLong = Arrays.asList("temp");
 
   // Lighting
-  static List<String> LightingLong = Arrays.asList("Level");
+  static List<String> LightingLong = Arrays.asList("level");
 
   // Photovoltaics
-  static List<String> PVLong = Arrays.asList("Power", "Energy");
+  static List<String> PVLong = Arrays.asList("power", "energy");
 
   // Electricity Consumption
-  static List<String> ECLong = Arrays.asList("Power", "Energy");
+  static List<String> ECLong = Arrays.asList("power", "energy");
 
   // Holds an in-memory list of system state listeners.
   static List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
@@ -106,21 +105,38 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     }
 
     // Construct the correct uri to send the command to
-    String key =
-        "http://" + deviceName.toLowerCase(Locale.US) + ".halepilihonua.hawaii.edu/"
-            + systemName.toLowerCase(Locale.US) + "/" + valueTitle;
-    System.out.println(key);
+    String dash = "-";
+    String key = "";
 
-    // Actual URL to send PUT command to
-    String host = SimulatorInterface.getHosts().get(key);
+    if ("arduino-5".equalsIgnoreCase(deviceName)) {
+      key = systemName + dash + "living-control";
+    }
+    else if ("arduino-6".equalsIgnoreCase(deviceName)) {
+      key = systemName + dash + "dining-control";
+    }
+    else if ("arduino-7".equalsIgnoreCase(deviceName)) {
+      key = systemName + dash + "kitchen-control";
+    }
+    else if ("arduino-8".equalsIgnoreCase(deviceName)) {
+      key = systemName + dash + "bathroom-control";
+    }
+    else {
+      key = systemName + "-control";
 
-    SimulatorInterface.printHosts();
-    
-    System.out.println("Host: " + host);
+    }
+
+    System.out.println("System: " + key);
+
+    // Get the URI for that particular system
+    String uri = SimulatorInterface.getHosts().get(key);
+    // Generate the URL to send the created XML for controls
+    String url = uri + systemName + "/" + valueTitle;
+
+    System.out.println("URL: " + url);
 
     try {
       // Send the XML representation of the command to the appropriate device
-      ClientResource client = new ClientResource(host);
+      ClientResource client = new ClientResource(url);
       DomRepresentation representation;
       representation = new DomRepresentation();
       representation.setDocument(doc);

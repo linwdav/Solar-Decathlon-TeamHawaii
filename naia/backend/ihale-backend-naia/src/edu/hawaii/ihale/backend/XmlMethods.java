@@ -101,17 +101,17 @@ public class XmlMethods {
         }
         else {
           value = labels.item(j).getTextContent();
-          if ("pH".equalsIgnoreCase(name)) {
-            entry.putDoubleValue("pH", Double.parseDouble(value));
+          if ("ph".equalsIgnoreCase(name)) {
+            entry.putDoubleValue("ph", Double.parseDouble(value));
           }
-          else if ("Oxygen".equalsIgnoreCase(name)) {
-            entry.putDoubleValue("Oxygen", Double.parseDouble(value));
+          else if ("oxygen".equalsIgnoreCase(name)) {
+            entry.putDoubleValue("oxygen", Double.parseDouble(value));
           }
           else if ("level".equalsIgnoreCase(name)) {
-            entry.putLongValue("Level", (long) Double.parseDouble(value));
+            entry.putLongValue("level", (long) Double.parseDouble(value));
           }
           else if ("temp".equalsIgnoreCase(name)) {
-            entry.putLongValue("Temp", (long) Double.parseDouble(value));
+            entry.putLongValue("temp", (long) Double.parseDouble(value));
           }
         } // End Else
       } // End For loop
@@ -328,11 +328,11 @@ public class XmlMethods {
 
             if ("energy".equalsIgnoreCase(gcName)) {
               System.out.println(gcName + eqString + gcValue);
-              entry.putLongValue("Energy", (long) Double.parseDouble(gcValue));
+              entry.putLongValue("energy", (long) Double.parseDouble(gcValue));
             }
             else if ("power".equalsIgnoreCase(gcName)) {
               System.out.println(gcName + eqString + gcValue);
-              entry.putLongValue("Power", (long) Double.parseDouble(gcValue));
+              entry.putLongValue("power", (long) Double.parseDouble(gcValue));
             } // end if
           } // end if
         } // end for loop
