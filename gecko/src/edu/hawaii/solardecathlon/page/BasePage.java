@@ -218,7 +218,7 @@ public class BasePage extends WebPage {
         wmc.add(link);
 
         // highlight tab
-        if (currentPage.equals(modelObj.getModel())) {
+        if (currentPage.equals(modelObj.getModelObject())) {
           wmc.add(new AttributeModifier("class", true, new Model<String>("active")));
         }
 

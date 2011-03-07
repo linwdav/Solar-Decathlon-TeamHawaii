@@ -36,7 +36,7 @@ public class TemperaturePanel extends Panel {
     propModel = (TemperatureModel) ((SolarDecathlonSession) getSession()).getModel("temperature");
 
     List<Item<String>> condList = new ArrayList<Item<String>>();
-    condList.add(new Item<String>("Temp", 0, new Model<String>("temperature.temp")));
+    condList.add(new Item<String>("Temp", 0, new Model<String>("temp")));
 
     ListView<Item<String>> tempList = new ListView<Item<String>>("listCond", condList) {
 

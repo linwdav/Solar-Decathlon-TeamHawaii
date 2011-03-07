@@ -7,7 +7,8 @@ import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
 import edu.hawaii.solardecathlon.components.BaseModel;
 import edu.hawaii.solardecathlon.page.aquaponics.AquaponicsModel;
-import edu.hawaii.solardecathlon.page.energy.EnergyModel;
+import edu.hawaii.solardecathlon.page.energy.ElectricalModel;
+import edu.hawaii.solardecathlon.page.energy.PhotovoltaicsModel;
 import edu.hawaii.solardecathlon.page.lighting.LightingModel;
 import edu.hawaii.solardecathlon.page.lighting.RoomModel;
 import edu.hawaii.solardecathlon.page.temperature.TemperatureModel;
@@ -29,7 +30,8 @@ public class SolarDecathlonSession extends WebSession {
   protected AquaponicsModel aquaponics;
   protected LightingModel lighting;
   protected TemperatureModel temperature;
-  protected EnergyModel energy;
+  protected ElectricalModel electrical;
+  protected PhotovoltaicsModel photovoltaics;
 
   /**
    * Create a new session for this user. Called automatically by wicket. You always need to define
@@ -113,7 +115,7 @@ public class SolarDecathlonSession extends WebSession {
   public void putProperty(String prop, Integer value) {
     this.properties.put(prop, value.toString());
   }
-  
+
   /**
    * Gets a property in this session.
    * 
@@ -134,7 +136,8 @@ public class SolarDecathlonSession extends WebSession {
   public BaseModel getModel(String systemName) {
     return ("aquaponics".equalsIgnoreCase(systemName)) ? aquaponics : ("lighting"
         .equalsIgnoreCase(systemName)) ? lighting
-        : ("temperature".equalsIgnoreCase(systemName)) ? temperature : ("energy"
-            .equalsIgnoreCase(systemName)) ? energy : null;
+        : ("temperature".equalsIgnoreCase(systemName)) ? temperature : ("electrical"
+            .equalsIgnoreCase(systemName)) ? electrical : ("photovoltaics"
+            .equalsIgnoreCase(systemName)) ? photovoltaics : null;
   }
 }

@@ -8,7 +8,7 @@ import edu.hawaii.solardecathlon.components.BaseModel;
  * @author Bret Ikehara
  * @revised Shoji Bravo
  */
-public class EnergyModel extends BaseModel {
+public class ElectricalModel extends BaseModel {
 
   /**
    * Serial ID.
@@ -21,29 +21,9 @@ public class EnergyModel extends BaseModel {
   /**
    * Default Constructor.
    */
-  public EnergyModel() {
+  public ElectricalModel() {
     this.power = 0L;
     this.energy = 0L;
-  }
-  
-  /**
-   * Gets this Electricity model time stamp.
-   * 
-   * @return String
-   */
-  @Override
-  public Long getTimestamp() {
-    return this.timestamp;
-  }
-
-  /**
-   * Sets this Electricity model time stamp.
-   * 
-   * @param timestamp Long
-   */
-  @Override
-  public void setTimestamp(Long timestamp) {
-    this.timestamp = timestamp;
   }
 
   /**

@@ -3,12 +3,14 @@ package edu.hawaii.solardecathlon.page.temperature;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
+import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateListener;
+import edu.hawaii.solardecathlon.SolarDecathlonApplication;
 import edu.hawaii.solardecathlon.components.AjaxUpdate;
 import edu.hawaii.solardecathlon.page.BasePage;
 
@@ -98,6 +100,15 @@ public class TemperaturePage extends BasePage {
     tempPanel.add(tempEvent);
     tempPanel.setMarkupId("tempConditions");
     add(tempPanel);
+
+    resourceRef();
   }
 
+  /**
+   * References all the resources on the page.
+   */
+  private void resourceRef() {
+    add(CSSPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
+        "page/style/temperature.css", CSS_SCREEN));
+  }
 }

@@ -14,6 +14,8 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.Model;
+import edu.hawaii.ihale.api.SystemStateEntry;
+import edu.hawaii.ihale.api.SystemStateListener;
 import edu.hawaii.solardecathlon.components.AttributeModifier;
 import edu.hawaii.solardecathlon.page.BasePage;
 
@@ -31,11 +33,44 @@ public class EnergyPage extends BasePage {
   private static final long serialVersionUID = 2978474992827L;
 
   private AjaxFallbackLink<String> selectedGraphType;
+  
+  private ElectricalModel elecModel;
+  private PhotovoltaicsModel photoModel;
 
   /**
    * The page layout.
    */
   public EnergyPage() {
+    
+    elecModel = (ElectricalModel) session.getModel("electrical");
+    photoModel = (PhotovoltaicsModel) session.getModel("photovoltaics");
+    
+    // Add the photovoltaics listener.
+    getDAO().addSystemStateListener(new SystemStateListener("photovoltaics") {
+      
+      /**
+       * Update model when an entry is added.
+       */
+      @Override
+      public void entryAdded(SystemStateEntry entry) {
+        photoModel.setEnergy(entry.getLongValue("energy"));
+        photoModel.setPower(entry.getLongValue("power"));        
+      }
+    });
+    
+    // Add the electrical listener.
+    getDAO().addSystemStateListener(new SystemStateListener("electrical") {
+      
+      /**
+       * Update model when an entry is added.
+       */
+      @Override
+      public void entryAdded(SystemStateEntry entry) {
+        elecModel.setEnergy(entry.getLongValue("energy"));
+        elecModel.setPower(entry.getLongValue("power"));        
+      }
+    });
+    
     tabPanelResource();
     graphTypeResource();
   }
