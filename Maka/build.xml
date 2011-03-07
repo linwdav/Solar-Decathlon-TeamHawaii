@@ -39,7 +39,7 @@
   </target>
 
   <!-- Basic properties for this system. -->
-  <property name="system.name" value="iHale-API-Maka" />
+  <property name="system.name" value="ihale-housesim-maka" />
   <property name="system.main.class" value="edu.hawaii.ihale.api.hsim.HsimServer" />
   <property name="majorVersionNumber" value="1" />
   <property name="minorVersionNumber" value="1" />
