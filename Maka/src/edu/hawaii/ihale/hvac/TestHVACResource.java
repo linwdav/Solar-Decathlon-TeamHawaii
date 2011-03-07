@@ -23,7 +23,8 @@ public class TestHVACResource {
    */
   @BeforeClass
   public static void startServer () throws Exception {
-    HsimServer.main(null);
+    String[] args = {"-stepinterval","5000"};
+    HsimServer.main(args);
   }
   
   /**

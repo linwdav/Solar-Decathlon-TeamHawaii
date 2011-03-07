@@ -19,7 +19,8 @@ public class TestElectricalResource {
    */
   @BeforeClass
   public static void startServer () throws Exception {
-    HsimServer.main(null);
+    String[] args = {"-stepinterval","5000"};
+    HsimServer.main(args);
   }
   
   /**
