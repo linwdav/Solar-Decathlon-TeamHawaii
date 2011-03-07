@@ -61,7 +61,7 @@ public class PhotovoltaicRepository {
    * Returs the current power level.
    * @return the current power level.
    */
-  public String getPower() {
+  public synchronized String getPower() {
     return power;
   }
 
@@ -77,7 +77,7 @@ public class PhotovoltaicRepository {
    * Returns the current joules value.
    * @return the current joules value.
    */
-  public String getJoules() {
+  public synchronized String getJoules() {
     return joules;
   }
 }
