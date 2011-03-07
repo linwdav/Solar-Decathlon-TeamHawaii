@@ -1,4 +1,9 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
+      xml:lang="en"  
+      lang="en"> 
+<body>
 <wicket:extend>
 <div class="top-links">  
   <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
@@ -21,31 +26,19 @@
     	<tr>
       	<td style="padding-right:40px;">
           <div class="column-button">
-          	<a wicket:id="overviewButton" class="gray-button" href="#" style="width:120px;">Overview</a>
-            <a wicket:id="energyButton" class="gray-button" href="#" style="width:120px;">Energy</a>
-            <a wicket:id="aquaponicsButton" class="gray-button" href="#" style="width:120px;">Aquaponics</a>
-            <a wicket:id="lightingButton" class="gray-button" href="#" style="width:120px;">Lighting</a>
-            <a wicket:id="temperatureButton" class="gray-button" href="#" style="width:120px;">Temperature</a>
-            <a wicket:id="securityButton" class="gray-button" href="#" style="width:120px;">Security</a>
-            <a wicket:id="reportsButton" class="gray-button" href="#" style="width:120px;">Reports</a>
-            <a wicket:id="settingsButton" class="gray-button" href="#" style="width:120px;">Settings</a>
-            <a wicket:id="adminButton" class="gray-button" href="#" style="width:120px;">Administrator*</a>
+            <wicket:container wicket:id="helpList">
+              <a wicket:id="link" href="#" style="width:120px;"><wicket:container wicket:id="name">Overview</wicket:container></a>
+            </wicket:container>
             </div>
  				</td>
         <td style="width:100%;">
-          <div class="box">
-            <h2 wicket:id="titleHelp">[Title Here]</h2>
-            <div class="box" style="overflow:auto; height: 350px; margin-bottom:0;">
-              <div wicket:id="infoHelp">[Text Goes Here]</div>
-            </div>
-            <div class="clear"></div>
+          <div wicket:id="helpContent" class="box">
           </div>
         </td>
       </tr>
     </table>
 	</div>
 </div>
-  
 </wicket:extend>
+</body>
 </html>
-

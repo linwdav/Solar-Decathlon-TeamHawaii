@@ -1,4 +1,8 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
+      xml:lang="en"  
+      lang="en"> 
 <wicket:extend>
 <script>
 function toggleHVAC(x) {
@@ -21,19 +25,19 @@ function toggleHVAC(x) {
 }
 
 $(function(){			
-
+	
 	// Slider for Air
 	$('#sliderAir').slider({
 		orientation: "vertical",
 		range: "min",
 		min: 45,
 		max: 85,
-		value: 73,
-		slide: function( event, ui ) {
-			$( "#amountAir" ).html( ui.value + "&deg;F" );
+		value: parseInt($( "#airTemperature" ).val(), 10),
+		change: function( event, ui ) {
+			$( "#airTemperature" ).val( ui.value + "°F" );
+			$( "#airTemperature" ).change();
 		}
 	});
-	$( "#amountAir" ).html( $( "#sliderAir" ).slider( "value" ) + "&deg;F" );
 
 	// Slider for Water
 	$('#sliderWater').slider({
@@ -43,10 +47,10 @@ $(function(){
 		max: 85,
 		value: 60,
 		slide: function( event, ui ) {
-			$( "#amountWater" ).html( ui.value + "&deg;F" );
+			$( "#airTemperature" ).html( ui.value + "&deg;F" );
 		}
 	});
-	$( "#amountWater" ).html( $( "#sliderWater" ).slider( "value" ) + "&deg;F" );
+	$( "#amountWater" ).html( $( "#sliderWater" ).slider( "value" ) + "°F" );
 	
 });
 </script>
@@ -79,60 +83,52 @@ $(function(){
       	<div class="inner" style="margin-left:0;">
         	<h4 class="dark-purple" style="text-align:center;">Current Conditions</h4>
           <div class="clear"></div>
-          <div class="box">
-            <div class="column-two" style="line-height:20px;">
-            	Inside:<br /><br />
-              Outside:<br /><br />
-              Water:<br /><br />
-            </div>
-            <div class="column-two" style="line-height:20px;font-size: 20px;">
-            	<span style="color:#FF6300;">76&deg;F</span><br /><br />
-              <span style="color:#D10000;">85&deg;F</span><br /><br />
-              <span style="color:#3880e1;">72&deg;F</span><br /><br />
-            </div>
-            <div class="clear"></div>
+          <div wicket:id="tempConditions" class="box">
           </div>
           <div class="clear"></div>
         </div>
       </div>
       
       <div class="column-two">
-      	
-        <h4 class="dark-purple" style="text-align:center;">Temperature Control</h4>
-        <div class="clear"></div>
-        <!-- Air TEMP -->  			
-        <div class="column-two">
-          <div class="inner">
-            <div class="box" style="text-align:center;padding:20px 0;">
-              <h6 style="text-align:center">Air</h6>
-              <div style="margin:auto;" id="sliderAir"></div>
-              <div class="clear"></div>
-              
-              <div id="amountAir" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">76&deg;F</div>
-               
-            </div>
-          </div>  			  	
-        </div>
-        
-        <!-- Water TEMP -->
-        <div class="column-two">
-          <div class="inner">
-            <div class="box" style="text-align:center;padding:20px 0;">
-              <h6 style="text-align:center">Water</h6>
-              <div style="margin:auto;" id="sliderWater"></div>
-              <div class="clear"></div>
-              
-              <div id="amountWater" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">60&deg;F</div>
-              
-            </div>
-          </div>
-        </div>
-        <div class="clear"></div>
-        	
-        <div class="right" style="margin-right:10px;text-align:right;">
-          Recent Day Temperature <a href="#" onClick="alert('this will automatically set the inside target temperature to 72 degrees');">72&deg;F</a><br />
-          Recent Night Temperature <a href="#" onClick="alert('this will automatically set the inside target temperature to 75 degrees');">75&deg;F</a>
-        </div>
+      	<form wicket:id="temperatureControl">
+	        <h4 class="dark-purple" style="text-align:center;">Temperature Control</h4>
+	        <div class="clear"></div>
+	        <!-- Air TEMP -->  			
+	        <div class="column-two">
+	          <div class="inner">
+	            <div class="box" style="text-align:center;padding:20px 0;">
+	              <h6 style="text-align:center">Air</h6>
+	              <div style="margin:auto;" id="sliderAir"></div>
+	              <div class="clear"></div>
+	              
+	              <div class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">
+	                <input wicket:id="airTemperature" type="text"/>
+	              </div>
+	               
+	            </div>
+	          </div>  			  	
+	        </div>
+	        
+	        <!-- Water TEMP -->
+	        <div class="column-two">
+	          <div class="inner">
+	            <div class="box" style="text-align:center;padding:20px 0;">
+	              <h6 style="text-align:center">Water</h6>
+	              <div style="margin:auto;" id="sliderWater"></div>
+	              <div class="clear"></div>
+	              
+	              <div id="amountWater" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">60&deg;F</div>
+	              
+	            </div>
+	          </div>
+	        </div>
+	        <div class="clear"></div>
+	        	
+	        <div class="right" style="margin-right:10px;text-align:right;">
+	          Recent Day Temperature <a href="#" onClick="alert('this will automatically set the inside target temperature to 72 degrees');">72&deg;F</a><br />
+	          Recent Night Temperature <a href="#" onClick="alert('this will automatically set the inside target temperature to 75 degrees');">75&deg;F</a>
+	        </div>
+        </form>
       </div>
       <div class="clear"></div>
     </div>

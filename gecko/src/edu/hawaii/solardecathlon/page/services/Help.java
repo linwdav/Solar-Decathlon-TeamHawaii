@@ -1,9 +1,18 @@
 package edu.hawaii.solardecathlon.page.services;
 
-import org.apache.wicket.AttributeModifier;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
+import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.markup.html.AjaxFallbackLink;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.panel.Panel;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.Model;
+import edu.hawaii.solardecathlon.components.AttributeModifier;
 import edu.hawaii.solardecathlon.page.BasePage;
 
 /**
@@ -12,323 +21,104 @@ import edu.hawaii.solardecathlon.page.BasePage;
  * @author Noah Woodden
  * @author Kevin Leong
  * @author Anthony Kinsey
+ * @author Bret K. Ikehara
  */
 public class Help extends BasePage {
 
   /** Support serialization. */
-  private static final long serialVersionUID = 1L;
+  private static final long serialVersionUID = 4L;
 
-  /**
-   * Buttons.
-   */
-  Link<String> overviewButton;
-  Link<String> energyButton;
-  Link<String> aquaponicsButton;
-  Link<String> lightingButton;
-  Link<String> temperatureButton;
-  Link<String> securityButton;
-  Link<String> reportsButton;
-  Link<String> settingsButton;
-  Link<String> adminButton;
-
-  /**
-   * Tile portion of Help Screen.
-   */
-  String title = "";
-
-  /**
-   * Info portion.
-   */
-  String info = "";
+  protected Class<? extends Panel> helpPage;
 
   /**
    * Layout of page.
    */
   public Help() {
-
-    // Buttons on left of page
-    overviewButton = new Link<String>("overviewButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "0");
-        setResponsePage(new Help());
-      }
-    };
-
-    energyButton = new Link<String>("energyButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "1");
-        setResponsePage(new Help());
-      }
-    };
-
-    aquaponicsButton = new Link<String>("aquaponicsButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "2");
-        setResponsePage(new Help());
-      }
-    };
-
-    lightingButton = new Link<String>("lightingButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "3");
-        setResponsePage(new Help());
-      }
-    };
-
-    temperatureButton = new Link<String>("temperatureButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "4");
-        setResponsePage(new Help());
-      }
-    };
-
-    securityButton = new Link<String>("securityButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "5");
-        setResponsePage(new Help());
-      }
-    };
-
-    reportsButton = new Link<String>("reportsButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "6");
-        setResponsePage(new Help());
-      }
-    };
-
-    settingsButton = new Link<String>("settingsButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "7");
-        setResponsePage(new Help());
-      }
-    };
-
-    adminButton = new Link<String>("adminButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        session.setProperty(PAGENUM, "8");
-        setResponsePage(new Help());
-      }
-    };
-
-    Model<String> titleModel = new Model<String>() {
-      private static final long serialVersionUID = 1L;
-
-      public String getObject() {
-        updateTitle();
-        return title;
-      }
-    };
-
-    Model<String> infoModel = new Model<String>() {
-      private static final long serialVersionUID = 1L;
-
-      public String getObject() {
-        updateInfo();
-        return info;
-      }
-    };
-
-    add(new Label("titleHelp", titleModel));
-    add(new Label("infoHelp", infoModel).setEscapeModelStrings(false));
-
-    // Add buttons to page
-    add(overviewButton);
-    add(energyButton);
-    add(aquaponicsButton);
-    add(lightingButton);
-    add(temperatureButton);
-    add(securityButton);
-    add(reportsButton);
-    add(settingsButton);
-    add(adminButton);
-
-    makeButtonActive();
-
-  } // End Help Constructor
+    linkResource();
+  }
 
   /**
-   * Displays the appropriate text in the info box.
-   * 
+   * Adds all link resources to the page.
    */
-  private void updateInfo() {
-    
-    int i = Integer.valueOf(session.getProperty(PAGENUM));
-    switch (i) {
+  private void linkResource() {
 
-    // Buttons
-    case 0:
-      info =
-          "<p><strong>Dashboard</strong> - The dashboard provides a quick look"
-              + " at essential statistics and status of all main systems.  The page also includes "
-              + "system alerts as well.</p>"
-              + "<p><strong>Energy</strong> - Shows power cosumption and power"
-              + " balances. Also provides the user with a breakdown of power consumption by system "
-              + " as well as a portal to change settings to increase energy efficiency.</p>"
-              + "<p><strong>Aquaponics</strong> - Shows the status of all essential aquaponics "
-              + " related"
-              + " parameters.  Offers real-time monitoring and solutions to problematic areas.</p>"
-              + "<p><strong>Lighting</strong> - Allows the user to select between different "
-              + " lighting modes (follow me, manual, visualizer, and strobe), control lighting, "
-              + " and configure a timer to set automated lighting schedules.</p>"
-              + "<p><strong>Temperature</strong> - Lets the user set the temperature for the house"
-              + " and aquaponics area.  Also monitors temperature at the various areas of the "
-              + "house.</p>"
-              + "<p><strong>Security</strong> - Manages the alarm (disabling/enabling), locks, "
-              + "and security cameras.  This module also contains a viewer to select and review "
-              + "recorded sessions from and camera.</p>"
-              + "<p><strong>Reports</strong> - Allows for exporting of detailed statistical "
-              + "reports on each system in the house.</p>"
-              + "<p><strong>Settings</strong> - Modify and manage presets for temperature and "
-              + "lighting.</p>"
-              + "<p><strong>Administrator</strong> - View settings and options available only to "
-              + "administrators.</p>";
-      break;
+    // Help page side bar
+    List<Item<Class<? extends Panel>>> helpList = new ArrayList<Item<Class<? extends Panel>>>();
+    helpList.add(new Item<Class<? extends Panel>>("Overview", 0,
+        new Model<Class<? extends Panel>>(HelpOverview.class)));
 
-    case 1: // pass-through
-    case 2:
-    case 3:
-    default:
-      info =
-          "Information on this page is similar to the Overview page but specific"
-              + " to a particular section of the Home Management System.";
-      break;
+    // set default value.
+    if (helpPage == null) {
+      helpPage = helpList.get(0).getModelObject();
+    }
 
-    } // End switch
-  } // End updateTitle
+    add(new ListView<Item<Class<? extends Panel>>>("helpList", helpList) {
 
-  /**
-   * Determines which title to display.
-   * 
-   */
-  private void updateTitle() {
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 3992102347955899398L;
 
-    int i = Integer.valueOf(session.getProperty(PAGENUM));
-    switch (i) {
+      /**
+       * Populates the links.
+       */
+      @Override
+      protected void populateItem(ListItem<Item<Class<? extends Panel>>> item) {
+        final Item<Class<? extends Panel>> modelObj = item.getModelObject();
+        String className = null;
+        boolean selected = helpPage.equals(modelObj.getModelObject());
 
-    // Buttons
-    case 0:
-      title = "Overview";
-      break;
+        AjaxFallbackLink<String> link = new AjaxFallbackLink<String>("link") {
 
-    case 1:
-      title = "Energy";
-      break;
+          /**
+           * Serial ID.
+           */
+          private static final long serialVersionUID = 2775237894777162688L;
 
-    case 2:
-      title = "Aquaponics";
-      break;
+          /**
+           * Update the help contents.
+           * 
+           * @param target AjaxRequestTarget
+           */
+          @Override
+          public void onClick(AjaxRequestTarget target) {
+            helpPage = modelObj.getModelObject();
+          }
+        };
+        link.add(new Label("name", modelObj.getId()));
 
-    case 3:
-      title = "Lighting";
-      break;
-    case 4:
-      title = "Temperature";
-      break;
+        // highlight tab
+        className = selected ? CLASS_BTN_GREEN : CLASS_BTN_GRAY;
+        link.add(new AttributeModifier("class", true, new Model<String>(className), CLASS_PAT_BTN));
 
-    case 5:
-      title = "Security";
-      break;
+        item.add(link);
+      }
 
-    case 6:
-      title = "Reports";
-      break;
+    });
 
-    case 7:
-      title = "Settings";
-      break;
-    case 8:
-      title = "Administrator";
-      break;
-
-    default:
-      break;
-
-    } // End switch
-  } // End updateTitle
-
-  /**
-   * Determines which button to make active.
-   */
-  private void makeButtonActive() {
-    String classContainer = "class";
-    String buttonContainer = "green-button";
-    int i = Integer.valueOf(session.getProperty(PAGENUM));
-    
-    switch (i) {
-
-    // Buttons
-    case 0:
-      overviewButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 1:
-      energyButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 2:
-      aquaponicsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 3:
-      lightingButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-    case 4:
-      temperatureButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          "green-button")));
-      break;
-
-    case 5:
-      securityButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 6:
-      reportsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 7:
-      settingsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-    case 8:
-      adminButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-    default:
-      break;
-    } // End switch
-  } // End makeButtonActive
+    // Create the constructor from the class object to populate the help contents.
+    try {
+      Constructor<? extends Panel> constr = helpPage.getConstructor(new Class[] { String.class });
+      add(constr.newInstance("helpContent"));
+    }
+    catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    }
+    catch (InstantiationException e) {
+      e.printStackTrace();
+    }
+    catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    catch (InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    catch (SecurityException e) {
+      e.printStackTrace();
+    }
+    catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    }
+  }
 } // End Help class
 

@@ -1,13 +1,13 @@
-package edu.hawaii.solardecathlon.page;
+package edu.hawaii.solardecathlon.components;
 
 import java.io.Serializable;
 
 /**
- * Implements an abstract System Model.
+ * Implements an abstract System Model. This is used to populate 
  * 
  * @author Bret K. Ikehara
  */
-public abstract class SystemModel implements Serializable {
+public abstract class BaseModel implements Serializable {
 
   /**
    * Serial ID.
@@ -20,11 +20,15 @@ public abstract class SystemModel implements Serializable {
    * 
    * @return Long
    */
-  public abstract Long getTimestamp();
+  public Long getTimestamp() {
+    return this.timestamp;
+  }
   
   /**
    * Sets the System Model time stamp.
    * @param timestamp Long
    */
-  public abstract void setTimestamp(Long timestamp);  
+  public void setTimestamp(Long timestamp) {  
+    this.timestamp = timestamp;
+  }
 }

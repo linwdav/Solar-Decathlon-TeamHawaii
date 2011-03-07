@@ -1,4 +1,8 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
+      xml:lang="en"  
+      lang="en"> 
 <wicket:extend>
 
 <script>
@@ -10,13 +14,12 @@ $(function(){
 		range: "min",
 		min: 1,
 		max: 100,
-		value: 75,
-		slide: function( event, ui ) {
-			$( "#amountBright" ).html( ui.value );	
+		value: 1,
+		change: function( event, ui ) {
+			$( "#roomLevel" ).val( ui.value + "%" );
+			$( "#roomLevel" ).change();
 		}
-	});
-	$( "#amountBright" ).html( $( "#sliderBright" ).slider( "value" ) );
-	
+	});	
 });
 
 function toggleMode(y) {
@@ -82,45 +85,42 @@ function toggleOnOff(x) {
         <a id="strobe" class="gray-button" onClick="toggleMode(3);" style="cursor: pointer;">Strobe</a>
       </div>
       <div class="clear"></div>
-      <div class="column-three">
-      	<h5 class="dark-purple">Room</h5>
-        <div class="clear"></div>
-        <select id="room">
-          <option>All Rooms</option>
-          <option>Bedroom</option>
-          <option>Living Room</option>
-          <option>Bath Room</option>
-          <option>Kitchen</option>
-          <option>Common Room</option>
-        </select>
-      </div>
-      <div class="column-three">
-     		<h5 class="dark-purple">Lights</h5>
-        <div class="clear"></div>
-        <a id="on" onClick="toggleOnOff(1);" class="green-button" style="cursor: pointer; float: center;">On</a>&nbsp;
-        <a id="off" onClick="toggleOnOff(0);" class="gray-button" style="cursor: pointer; float: center;">Off</a>
-      </div>
-      <div class="column-three">
-      	<h5 class="dark-purple">Brightness</h5>
-        <div class="clear"></div>
-        <table class="bare" style="width:100%;">
-        	<tr>
-          	<td style="width:100%;"><div id="sliderBright"></div></td>
-            <td style="padding-left:10px !important;"><span id="amountBright">75</span>%</td>
-          </tr>
-        </table>
-      </div>
-      <div class="clear"></div>
-      <h5 class="dark-purple" style="margin-top:20px;">Color</h5>
-      <div id="icolor" class="icolorC"></div>
-      <script type="text/javascript">
-        $("#icolor").icolor({
-        flat:true,
-        onSelect:function(c){this.$tb.css("background-color",c);},
-        showInput:false,
-        title:false
-        });
-      </script>
+      
+      <form wicket:id="roomForm">
+	      <div class="column-three">
+	      	<h5 class="dark-purple">Room</h5>
+	        <div class="clear"></div>
+	        <select id="room" wicket:id="roomChoice"></select>
+	      </div>
+	      <div class="column-three">
+	     		<h5 class="dark-purple">Lights</h5>
+	        <div class="clear" />
+	        <a wicket:id="roomStatusOn" style="cursor: pointer; float: center;">On</a>&nbsp;
+	        <a wicket:id="roomStatusOff" style="cursor: pointer; float: center;">Off</a>
+	      </div>
+	      <div class="column-three">
+	      	<h5 class="dark-purple">Brightness</h5>
+	        <div class="clear"></div>
+	        
+	        <table class="bare" style="width:100%;">
+	        	<tr>
+	          	<td style="width:100%;"><div id="sliderBright"></div></td>
+	            <td style="padding-left:10px !important;"><input wicket:id="roomLevel" type="text" /></td>
+	          </tr>
+	        </table>
+	      </div>
+	      <div class="clear"></div>
+	      <h5 class="dark-purple" style="margin-top:20px;">Color</h5>
+	      <div id="icolor" class="icolorC"></div>
+	      <script type="text/javascript">
+	        $("#icolor").icolor({
+	        flat:true,
+	        onSelect:function(c){this.$tb.css("background-color",c);},
+	        showInput:false,
+	        title:false
+	        });
+	      </script>
+      </form>
       <div class="clear"></div>
     </div>
 
@@ -243,4 +243,3 @@ for(i=1; i<15; i++) {
   
 </wicket:extend>
 </html>
-

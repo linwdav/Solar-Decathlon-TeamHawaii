@@ -28,6 +28,10 @@ public class BlackMagic {
     entry.putDoubleValue("oxygen", 6.2);    
     entry.putLongValue("temp", 6L);    
     db.putEntry(entry);
+    
+    entry = new SystemStateEntry("hvac", "arduino-2", timestamp);
+    entry.putLongValue("temp", 6L);    
+    db.putEntry(entry);
   }
   
   

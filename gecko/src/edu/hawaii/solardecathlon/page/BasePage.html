@@ -1,5 +1,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
+      xml:lang="en"  
+      lang="en"> 
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 		<title>Team Hawai'i - Home Management System</title>		
@@ -10,16 +13,9 @@
 				<a class="logo"><img wicket:id="logo" /></a>
 				<div class="clear"></div>
 				<ul class="navigation">
-					<li wicket:id="DashboardItem"><a wicket:id="DashboardPageLinkTab" href="#">Dashboard</a></li>
-					<li wicket:id="EnergyItem"><a wicket:id="EnergyPageLinkTab" href="#">Energy</a></li>
-					<li wicket:id="AquaponicsItem"><a wicket:id="AquaponicsPageLinkTab" href="#">Aquaponics</a></li>
-					<li wicket:id="LightingItem"><a wicket:id="LightingPageLinkTab" href="#">Lighting</a></li>
-					<li wicket:id="TemperatureItem"><a wicket:id="TemperaturePageLinkTab" href="#">Temperature</a></li>
-					<li wicket:id="SecurityItem"><a wicket:id="SecurityPageLinkTab" href="#">Security</a></li>
-          <li wicket:id="ReportsItem"><a wicket:id="ReportsPageLinkTab" href="#">Reports</a></li>
-          <li wicket:id="SettingsItem"><a wicket:id="SettingsPageLinkTab" href="#">Settings</a></li>
-          <li wicket:id="AdministratorItem"><a wicket:id="AdministratorPageLinkTab" href="#">Administrator</a></li>
-          <li wicket:id="HelpItem"><a wicket:id="HelpPageLinkTab" href="#">Help</a></li>
+				  <wicket:container wicket:id="headerLinkList">
+				    <li wicket:id="class"><a wicket:id="link"><wicket:container wicket:id="name"/></a></li>
+				  </wicket:container>
 				</ul>
 			</div>
 			<div class="header-right">
@@ -41,7 +37,11 @@
       <div class="clear"></div>
 		</div>
 		<div class="footer">
-			<p><a wicket:id="DashboardPageLink" href="#">Dashboard</a> | <a wicket:id="EnergyPageLink" href="#">Energy</a> | <a wicket:id="AquaponicsPageLink" href="#">Aquaponics</a> | <a wicket:id="LightingPageLink" href="#">Lighting</a> | <a wicket:id="TemperaturePageLink" href="#">Temperature</a> | <a wicket:id="SecurityPageLink" href="#">Security</a> | <a wicket:id="ReportsPageLink" href="#">Reports</a> | <a wicket:id="SettingsPageLink" href="#">Settings</a> | <a wicket:id="AdministratorPageLink" href="#">Administrator</a> | <a wicket:id="HelpPageLink" href="#">Help</a></p>
+			<p>
+			  <wicket:container wicket:id="footerLinkList">
+			    <a wicket:id="link"><wicket:container wicket:id="name"/></a><span wicket:id="divider"> | </span>
+			  </wicket:container>
+			</p>
 			<p>&copy; Copyright 2010 Team 6 - All Rights Reserved</p>
 		</div>
 	</body>

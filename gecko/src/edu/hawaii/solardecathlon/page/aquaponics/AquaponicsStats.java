@@ -46,7 +46,7 @@ public class AquaponicsStats extends BasePage {
       /** Upon clicking this link, go to AquaponicsStatsPage. */
       @Override
       public void onClick() {
-        setResponsePage(new Aquaponics());
+        setResponsePage(new AquaponicsPage());
       }
     };
 
@@ -59,7 +59,7 @@ public class AquaponicsStats extends BasePage {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        session.setProperty(GRAPHNUM, "0");
+        session.putProperty(GRAPH_NUM, "0");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -71,7 +71,7 @@ public class AquaponicsStats extends BasePage {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        session.setProperty(GRAPHNUM, "1");
+        session.putProperty(GRAPH_NUM, "1");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -83,7 +83,7 @@ public class AquaponicsStats extends BasePage {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        session.setProperty(GRAPHNUM, "2");
+        session.putProperty(GRAPH_NUM, "2");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -94,7 +94,7 @@ public class AquaponicsStats extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty(GRAPHNUM, "3");
+        session.putProperty(GRAPH_NUM, "3");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -105,7 +105,7 @@ public class AquaponicsStats extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty(GRAPHNUM, "4");
+        session.putProperty(GRAPH_NUM, "4");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -116,7 +116,7 @@ public class AquaponicsStats extends BasePage {
 
       @Override
       public void onClick() {
-        session.setProperty(GRAPHNUM, "5");
+        session.putProperty(GRAPH_NUM, "5");
         setResponsePage(new AquaponicsStats());
       }
     };
@@ -131,7 +131,7 @@ public class AquaponicsStats extends BasePage {
     add(dayWaterGraph);
     add(mainButton);
 
-    int currentGraphDisplay = Integer.valueOf(session.getProperty(GRAPHNUM));
+    int currentGraphDisplay = Integer.valueOf(session.getProperty(GRAPH_NUM));
     makeButtonActive(currentGraphDisplay);
     displayDayGraph(currentGraphDisplay, dayGraph);
     add(dayGraph);

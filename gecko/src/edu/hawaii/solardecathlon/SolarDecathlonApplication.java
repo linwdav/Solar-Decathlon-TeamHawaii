@@ -8,6 +8,8 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import edu.hawaii.solardecathlon.page.dashboard.Dashboard;
 
+//TODO remove non-unique wicket ids.
+
 /**
  * This top-level class is required to specify the Wicket WebApplication.
  * 
@@ -48,7 +50,6 @@ public class SolarDecathlonApplication extends WebApplication {
   public String getConfigurationType() {
     // Allow non-unique wicket ids
     getDebugSettings().setComponentUseCheck(false);
-    getDebugSettings().setDevelopmentUtilitiesEnabled(true);
 
     // Set mode = deployment
     return Application.DEVELOPMENT;

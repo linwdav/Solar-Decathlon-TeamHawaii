@@ -5,8 +5,13 @@ import java.util.Map;
 import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
-import edu.hawaii.solardecathlon.page.SystemModel;
+import edu.hawaii.solardecathlon.components.BaseModel;
 import edu.hawaii.solardecathlon.page.aquaponics.AquaponicsModel;
+import edu.hawaii.solardecathlon.page.energy.EnergyModel;
+import edu.hawaii.solardecathlon.page.lighting.LightingModel;
+import edu.hawaii.solardecathlon.page.lighting.RoomModel;
+import edu.hawaii.solardecathlon.page.temperature.TemperatureModel;
+
 /**
  * Provide a very simple session data structure, which is just a set of string key-value pairs. The
  * session should typically store all of the "model" data for a user.
@@ -17,12 +22,15 @@ import edu.hawaii.solardecathlon.page.aquaponics.AquaponicsModel;
 public class SolarDecathlonSession extends WebSession {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
-  
+
   /** Each user has a set of properties. */
   private Map<String, String> properties = new HashMap<String, String>();
-  
+
   protected AquaponicsModel aquaponics;
-  
+  protected LightingModel lighting;
+  protected TemperatureModel temperature;
+  protected EnergyModel energy;
+
   /**
    * Create a new session for this user. Called automatically by wicket. You always need to define
    * this constructor when implementing your own application-specific Session class.
@@ -36,8 +44,17 @@ public class SolarDecathlonSession extends WebSession {
     this.properties.put("TabNum", "0");
     this.properties.put("PageNum", "0");
     this.properties.put("GraphNum", "0");
-    
+
+    // Initiate all the models.
     aquaponics = new AquaponicsModel();
+
+    lighting = new LightingModel();
+    lighting.putRoom(new RoomModel("Living Room"));
+    lighting.putRoom(new RoomModel("Dining Room"));
+    lighting.putRoom(new RoomModel("Bathroom"));
+    lighting.putRoom(new RoomModel("Kitchen"));
+
+    temperature = new TemperatureModel();
   }
 
   /**
@@ -76,15 +93,25 @@ public class SolarDecathlonSession extends WebSession {
 
     return false;
   }
-  
+
   /**
    * Sets a property in this session.
-   *  
+   * 
    * @param prop String
    * @param value String
    */
-  public void setProperty(String prop, String value) {
+  public void putProperty(String prop, String value) {
     this.properties.put(prop, value);
+  }
+
+  /**
+   * Sets a property in this session.
+   * 
+   * @param prop String
+   * @param value String
+   */
+  public void putProperty(String prop, Integer value) {
+    this.properties.put(prop, value.toString());
   }
   
   /**
@@ -94,17 +121,20 @@ public class SolarDecathlonSession extends WebSession {
    * @return String
    */
   public String getProperty(String prop) {
-    
+
     return this.properties.get(prop);
   }
-  
+
   /**
    * Gets this system models.
    * 
    * @param systemName String
    * @return SystemModel
    */
-  public SystemModel getModel(String systemName) {
-    return ("aquaponics".equalsIgnoreCase(systemName)) ? aquaponics : null;
+  public BaseModel getModel(String systemName) {
+    return ("aquaponics".equalsIgnoreCase(systemName)) ? aquaponics : ("lighting"
+        .equalsIgnoreCase(systemName)) ? lighting
+        : ("temperature".equalsIgnoreCase(systemName)) ? temperature : ("energy"
+            .equalsIgnoreCase(systemName)) ? energy : null;
   }
 }

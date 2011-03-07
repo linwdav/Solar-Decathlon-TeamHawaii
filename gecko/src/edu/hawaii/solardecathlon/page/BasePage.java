@@ -1,6 +1,10 @@
 package edu.hawaii.solardecathlon.page;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.Page;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.markup.html.AjaxLink;
@@ -10,7 +14,11 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebPage;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.BookmarkablePageLink;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.solardecathlon.BlackMagic;
@@ -18,17 +26,15 @@ import edu.hawaii.solardecathlon.SolarDecathlonApplication;
 import edu.hawaii.solardecathlon.SolarDecathlonSession;
 import edu.hawaii.solardecathlon.page.admin.Administrator;
 import edu.hawaii.solardecathlon.page.admin.Settings;
-import edu.hawaii.solardecathlon.page.aquaponics.Aquaponics;
+import edu.hawaii.solardecathlon.page.aquaponics.AquaponicsPage;
 import edu.hawaii.solardecathlon.page.dashboard.Dashboard;
-import edu.hawaii.solardecathlon.page.energy.Energy;
-import edu.hawaii.solardecathlon.page.lighting.Lighting;
+import edu.hawaii.solardecathlon.page.energy.EnergyPage;
+import edu.hawaii.solardecathlon.page.lighting.LightingPage;
 import edu.hawaii.solardecathlon.page.reports.Reports;
 import edu.hawaii.solardecathlon.page.security.Security;
-import edu.hawaii.solardecathlon.page.security.SecurityCam;
-import edu.hawaii.solardecathlon.page.security.SecurityRec;
 import edu.hawaii.solardecathlon.page.services.Help;
 import edu.hawaii.solardecathlon.page.services.Login;
-import edu.hawaii.solardecathlon.page.temperature.Temperature;
+import edu.hawaii.solardecathlon.page.temperature.TemperaturePage;
 
 /**
  * The header page. This is a parent class to all pages.
@@ -39,40 +45,33 @@ import edu.hawaii.solardecathlon.page.temperature.Temperature;
  */
 public class BasePage extends WebPage {
 
-  protected static final String TABNUM = "TabNum";
-  protected static final String GRAPHNUM = "GraphNum";
-  protected static final String PAGENUM = "PageNum";
-  
-  /**
-   * Variables to allow the active tab to change.
-   */
-  WebMarkupContainer dashboardItem;
-  WebMarkupContainer energyItem;
-  WebMarkupContainer aquaponicsItem;
-  WebMarkupContainer lightingItem;
-  WebMarkupContainer temperatureItem;
-  WebMarkupContainer securityItem;
-  WebMarkupContainer settingsItem;
-  WebMarkupContainer reportsItem;
-  WebMarkupContainer administratorItem;
-  WebMarkupContainer helpItem;
+  protected static final String TAB_NUM = "TabNum";
+  protected static final String GRAPH_NUM = "GraphNum";
+  protected static final String CSS_SCREEN = "screen";
+
+  protected static final Pattern CLASS_PAT_BTN = Pattern.compile("(green|grey)-button");
+  protected static final String CLASS_BTN_GREEN = "green-button";
+  protected static final String CLASS_BTN_GRAY = "gray-button";
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
+  private static String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
+  private List<Item<Class<? extends Page>>> pageLinks;
+
+  protected transient SystemStateEntryDB database;
+  protected Class<? extends BasePage> currentPage;
   protected SolarDecathlonSession session;
 
-  private static String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
-  protected transient SystemStateEntryDB database;
-
   /**
-   * Layout of page.
+   * Default constructor.
    */
   public BasePage() {
-    String screenContainer = "screen";
 
+    // Set reference to session.
     this.session = (SolarDecathlonSession) getSession();
 
+    // Setup reference to database.
     try {
       this.database = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
     }
@@ -86,27 +85,53 @@ public class BasePage extends WebPage {
       e.printStackTrace();
     }
 
-    add(new AjaxLink<String>("blackmagic") {
+    // Links to add to the header and footer.
+    pageLinks = new ArrayList<Item<Class<? extends Page>>>();
+    pageLinks.add(new Item<Class<? extends Page>>("Dashboard", 0,
+        new Model<Class<? extends Page>>(Dashboard.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Energy", 1, new Model<Class<? extends Page>>(
+        EnergyPage.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Aquaponics", 2,
+        new Model<Class<? extends Page>>(AquaponicsPage.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Lighting", 3,
+        new Model<Class<? extends Page>>(LightingPage.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Temperature", 4,
+        new Model<Class<? extends Page>>(TemperaturePage.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Security", 5,
+        new Model<Class<? extends Page>>(Security.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Reports", 6, new Model<Class<? extends Page>>(
+        Reports.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Settings", 7,
+        new Model<Class<? extends Page>>(Settings.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Administration", 8,
+        new Model<Class<? extends Page>>(Administrator.class)));
+    pageLinks.add(new Item<Class<? extends Page>>("Help", 9, new Model<Class<? extends Page>>(
+        Help.class)));
+  }
 
-      /**
-       * Serial ID.
-       */
-      private static final long serialVersionUID = -5577357049183345374L;
+  /**
+   * Selects the tab.
+   */
+  @Override
+  protected void onBeforeRender() {
+    super.onBeforeRender();
 
-      /**
-       * Calls Black Magic.
-       * 
-       * @param target AjaxRequestTarget
-       */
-      @Override
-      public void onClick(AjaxRequestTarget target) {
-        new BlackMagic(getDAO());
-      }
-    });
+    // Sets the page in order to hightlight tab in linkReference method.
+    currentPage = this.getClass();
+
+    // add all resources
+    resourceReference();
+    linkReference();
+  }
+
+  /**
+   * References all the styles and javascript resources inside the default constructor.
+   */
+  private void resourceReference() {
 
     // Add CSS definitions for use in all pages
     add(CSSPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
-        "page/style/style.css", screenContainer));
+        "page/style/style.css", CSS_SCREEN));
 
     // Add Javascript for use in all pages
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
@@ -121,7 +146,7 @@ public class BasePage extends WebPage {
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/javascript/jquery.ui.widget.js"));
     add(CSSPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
-        "page/style/jqueryUI.css", screenContainer));
+        "page/style/jqueryUI.css", CSS_SCREEN));
 
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/javascript/main.js"));
@@ -130,19 +155,16 @@ public class BasePage extends WebPage {
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/javascript/jquery.icolor.js"));
     add(CSSPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
-        "page/style/timePicker.css", screenContainer));
+        "page/style/timePicker.css", CSS_SCREEN));
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/javascript/jquery.timePicker.js"));
 
     // For Date Picker
     add(CSSPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
-        "page/style/datePicker.css", screenContainer));
+        "page/style/datePicker.css", CSS_SCREEN));
     add(JavascriptPackageResource.getHeaderContribution(SolarDecathlonApplication.class,
         "page/javascript/jquery.ui.datepicker.js"));
 
-    // Logo Image
-    // dashboardLink.add(new Image("logo", new ResourceReference(SolarDecathlonApplication.class,
-    // "page/images/logo.png")));
     add(new Image("logo", new ResourceReference(SolarDecathlonApplication.class,
         "page/images/logo.png")));
 
@@ -166,276 +188,69 @@ public class BasePage extends WebPage {
     add(new Image("TableDeleteImage", new ResourceReference(SolarDecathlonApplication.class,
         "page/images/icons/cancel.png")));
     add(new Label("title", "Home Management System"));
+  }
 
-    // Add Dashboard Link to page (tabs)
-    dashboardItem = new WebMarkupContainer("DashboardItem");
-    add(dashboardItem);
-    dashboardItem.add(new Link<String>("DashboardPageLinkTab") {
-      private static final long serialVersionUID = 1L;
+  /**
+   * Sets the link references in onBeforeRender method.
+   */
+  private void linkReference() {
 
-      /** Upon clicking this link, go to FormPage. */
+    // Add the header links to the page.
+    add(new ListView<Item<Class<? extends Page>>>("headerLinkList", pageLinks) {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 3992102347955899398L;
+
+      /**
+       * Populates the links.
+       */
       @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "0");
-        setResponsePage(Dashboard.class);
+      protected void populateItem(ListItem<Item<Class<? extends Page>>> item) {
+        final Item<Class<? extends Page>> modelObj = item.getModelObject();
+
+        BookmarkablePageLink<String> link =
+            new BookmarkablePageLink<String>("link", modelObj.getModelObject());
+        link.add(new Label("name", modelObj.getId()));
+
+        WebMarkupContainer wmc = new WebMarkupContainer("class");
+        wmc.add(link);
+
+        // highlight tab
+        if (currentPage.equals(modelObj.getModel())) {
+          wmc.add(new AttributeModifier("class", true, new Model<String>("active")));
+        }
+
+        item.add(wmc);
       }
     });
 
-    // Add Energy Link to page (tabs)
-    energyItem = new WebMarkupContainer("EnergyItem");
-    add(energyItem);
-    energyItem.add(new Link<String>("EnergyPageLinkTab") {
-      private static final long serialVersionUID = 1L;
+    // Adds the link for the footer.
+    add(new ListView<Item<Class<? extends Page>>>("footerLinkList", pageLinks) {
 
-      /** Upon clicking this link, go to FormPage. */
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 3992102347955899398L;
+
+      /**
+       * Populates the links.
+       */
       @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "1");
-        setResponsePage(Energy.class);
+      protected void populateItem(ListItem<Item<Class<? extends Page>>> item) {
+        final Item<Class<? extends Page>> modelObj = item.getModelObject();
 
-      }
-    });
+        BookmarkablePageLink<String> link =
+            new BookmarkablePageLink<String>("link", modelObj.getModelObject());
+        link.add(new Label("name", modelObj.getId()));
 
-    // Add Aquaponics Link to page (tabs)
-    aquaponicsItem = new WebMarkupContainer("AquaponicsItem");
-    add(aquaponicsItem);
-    aquaponicsItem.add(new Link<String>("AquaponicsPageLinkTab") {
-      private static final long serialVersionUID = 1L;
+        item.add(link);
 
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "2");
-        setResponsePage(Aquaponics.class);
-      }
-    });
-
-    // Add Lighting Link to page (tabs)
-    lightingItem = new WebMarkupContainer("LightingItem");
-    add(lightingItem);
-    lightingItem.add(new Link<String>("LightingPageLinkTab") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "3");
-        setResponsePage(Lighting.class);
-
-      }
-    });
-
-    // Add Temperature Link to page (tabs)
-    temperatureItem = new WebMarkupContainer("TemperatureItem");
-    add(temperatureItem);
-    temperatureItem.add(new Link<String>("TemperaturePageLinkTab") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "4");
-        setResponsePage(Temperature.class);
-
-      }
-    });
-
-    // Add Security Link to page (tabs)
-    securityItem = new WebMarkupContainer("SecurityItem");
-    add(securityItem);
-    securityItem.add(new Link<String>("SecurityPageLinkTab") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "5");
-        setResponsePage(Security.class);
-
-      }
-    });
-
-    // Add Reports Link to page (tabs)
-    reportsItem = new WebMarkupContainer("ReportsItem");
-    add(reportsItem);
-    reportsItem.add(new Link<String>("ReportsPageLinkTab") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "6");
-        setResponsePage(Reports.class);
-      }
-    });
-
-    // Add Settings Link to page (tabs)
-    settingsItem = new WebMarkupContainer("SettingsItem");
-    add(settingsItem);
-    settingsItem.add(new Link<String>("SettingsPageLinkTab") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "7");
-        setResponsePage(Settings.class);
-
-      }
-    });
-
-    // Add Administrator Link to page (tabs)
-    administratorItem = new WebMarkupContainer("AdministratorItem");
-    add(administratorItem);
-    administratorItem.add(new Link<String>("AdministratorPageLinkTab") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "8");
-        setResponsePage(Administrator.class);
-
-      }
-    });
-
-    // Add Help Link to page (tabs)
-    helpItem = new WebMarkupContainer("HelpItem");
-    add(helpItem);
-    helpItem.add(new Link<String>("HelpPageLinkTab") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "9");
-        setResponsePage(new Help());
-
-      }
-    });
-
-    // Footer Links
-
-    add(new Link<String>("DashboardPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "0");
-        setResponsePage(new Dashboard());
-      }
-    });
-
-    add(new Link<String>("EnergyPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "1");
-        setResponsePage(new Energy());
-      }
-    });
-
-    add(new Link<String>("AquaponicsPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "2");
-        setResponsePage(new Aquaponics());
-      }
-    });
-    add(new Link<String>("LightingPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "3");
-        setResponsePage(new Lighting());
-      }
-    });
-    add(new Link<String>("TemperaturePageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "4");
-        setResponsePage(new Temperature());
-      }
-    });
-    add(new Link<String>("SecurityPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "5");
-        setResponsePage(new Security());
-      }
-    });
-    add(new Link<String>("SecurityCamPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "5");
-        setResponsePage(new SecurityCam());
-      }
-    });
-    add(new Link<String>("SecurityRecPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "5");
-        setResponsePage(new SecurityRec());
-      }
-    });
-    add(new Link<String>("ReportsPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "6");
-        setResponsePage(new Reports());
-      }
-    });
-    add(new Link<String>("SettingsPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "7");
-        setResponsePage(new Settings());
-      }
-    });
-    add(new Link<String>("AdministratorPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "8");
-        setResponsePage(new Administrator());
-      }
-    });
-    add(new Link<String>("HelpPageLink") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to FormPage. */
-      @Override
-      public void onClick() {
-        session.setProperty(TABNUM, "9");
-        setResponsePage(new Help());
+        // show divider.
+        Label divider =
+            new Label("divider", (item.getIndex() < pageLinks.size() - 1) ? " | " : null);
+        item.add(divider);
       }
     });
 
@@ -445,7 +260,7 @@ public class BasePage extends WebPage {
       /** Upon clicking this link, go to FormPage. */
       @Override
       public void onClick() {
-        session.setProperty(TABNUM, "7");
+        session.putProperty(TAB_NUM, "7");
         setResponsePage(new Settings());
       }
     });
@@ -460,23 +275,24 @@ public class BasePage extends WebPage {
       }
     });
 
-    // Make the current tab active
-    makeTabActive();
-  }
+    // TODO remove after integration.
+    add(new AjaxLink<String>("blackmagic") {
 
-  /**
-   * Highlights the active tab.
-   */
-  private void makeTabActive() {
-    int i = Integer.valueOf(session.getProperty(TABNUM));
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = -5577357049183345374L;
 
-    WebMarkupContainer container =
-        (i == 1) ? energyItem : (i == 2) ? aquaponicsItem : (i == 3) ? lightingItem
-            : (i == 4) ? temperatureItem : (i == 5) ? securityItem : (i == 6) ? reportsItem
-                : (i == 7) ? settingsItem : (i == 8) ? administratorItem : (i == 9) ? helpItem
-                    : dashboardItem;
-    container
-        .add(new AttributeModifier("class", true, new Model<String>("active")));
+      /**
+       * Calls Black Magic.
+       * 
+       * @param target AjaxRequestTarget
+       */
+      @Override
+      public void onClick(AjaxRequestTarget target) {
+        new BlackMagic(getDAO());
+      }
+    });
   }
 
   /**

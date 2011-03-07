@@ -62,6 +62,7 @@
     <path refid="slf4j.path" />
     <path refid="ihale-api.path" />
   </path>
+	
   <target name="compile" depends="install-ivy, install-libraries" description="Compiles the code and copies resource files to build.classes.dir">
     <!-- Now compile the code into build/classes -->
     <mkdir dir="${build.classes.dir}" />

@@ -1,4 +1,8 @@
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  
+      xmlns:wicket="http://wicket.apache.org/dtds.data/wicket-xhtml1.3-strict.dtd"  
+      xml:lang="en"  
+      lang="en"> 
 <wicket:extend>
 <div class="top-links">
   
@@ -12,41 +16,8 @@
 
 <div class="column-two">
   <div class="inner">
-  	
-    
-    <div class="clear"></div>
-    
-	    <div class="tab-wrapper" id="tabset-2">
-	      <ul class="tabs">
-	        <li class="tab-1"><a href="#">Day</a></li>
-	        <li class="tab-2"><a href="#">Week</a></li>
-	        <li class="tab-3"><a href="#">Month</a></li>
-	        <li class="tab-4"><a href="#">Year</a></li>
-	      </ul>
-	      <ul class="tab-content">
-	        <li class="content-1">
-	          <h5 wicket:id="dayChartType">[Tab 1]</h5>
-          	<p><img wicket:id="dayGraphImage"/></p>
-          	<div class="clear"></div>
-	        </li>
-	        <li class="content-2">
-						<h5 wicket:id="weekChartType">[Tab 1]</h5>
-            <p><img wicket:id="weekGraphImage"/></p>
-            <div class="clear"></div>
-          </li>
-	        <li class="content-3">
-						<h5 wicket:id="monthChartType">[Tab 1]</h5>
-          	<p><img wicket:id="monthGraphImage"/></p>
-          	<div class="clear"></div>
-          </li>
-	        <li class="content-4">
-	          <h5 wicket:id="yearChartType">Tab 4</h5>
-            <p><img wicket:id="yearGraphImage"/></p>
-	        </li>
-	      </ul>	      
-	    </div>	    
-	    <div class="clear"></div>    
-    
+    <div wicket:id="energyGraph" />
+	  <div class="clear"></div>
   </div>
 </div>
 
@@ -58,11 +29,9 @@
     	<tr>
       	<td style="padding-right:40px;">
           <div class="column-button">
-            <a class="gray-button" wicket:id="dayConsumptionGraph" href="#" style="width:150px;">Consumption<br />vs. Production</a>
-            <a class="gray-button" wicket:id="dayBreakdownGraph" href="#" style="width:150px;">Breakdown</a>
-            <a class="gray-button" wicket:id="dayHVACGraph" href="#" style="width:150px;">HVAC</a>
-            <a class="gray-button" wicket:id="dayAquaponicsGraph" href="#" style="width:150px;">Aquaponics</a>
-            <a class="gray-button" wicket:id="dayLightingGraph" href="#" style="width:150px;">Lighting</a>
+            <wicket:container wicket:id="graphType">
+              <a wicket:id="link" style="width:150px;"><wicket:container wicket:id="name"></wicket:container></a>
+            </wicket:container>
           </div>
  				</td>
         <td style="width:100%;">

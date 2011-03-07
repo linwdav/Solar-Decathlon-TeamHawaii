@@ -66,102 +66,21 @@ $(function(){
     </div>
 	  <div class="clear"></div>
 	  
-	  <!-- ONE ROW OF STATUS BOXES -->
-	  <div class="column-two">
-  		<div class="inner">
-  			<div class="box" style="background-color:green;">
-  			  <h4 style="color:white;">Current Temp</h4>
-  			  
-  			  <div class="box" style="padding-bottom:0;">
-	  			  <div class="column-three">
-		  			
-		  			  	<h4>Air:</h4>
-		  			  	<h4>H<sub>2</sub>O:</h4>
-		  			
-	  			  </div>
-	  			  
-	  			  <div class="column-three-two">
-		  			  
-		  			  	<h4>72&deg; F</h4>
-		  			  	<h4>60&deg; F</h4>
-		  			  
-	  			  </div>
-  			  	<div class="clear"></div>  			  	  
-  			  </div>  			  
-  			</div> 	  
-  		</div>
-	  </div>
-	  
-	  <div class="column-two">
-  		<div class="inner">
-  			<div class="box">
-  			  <h5>Recommended Temp</h5>
-  			  
-  			  <div class="box" style="padding-bottom:0;">
-	  			  <div class="column-three">
-		  			
-		  			  	<h5>Air:</h5>
-		  			  	<h5>H<sub>2</sub>O:</h5>
-		  			
-	  			  </div>
-	  			  
-	  			  <div class="column-three-two">
-		  			  
-		  			  	<h5 style="padding-left:10px;">70&deg;F - 77&deg;F</h5>
-		  			  	<h5 style="padding-left:10px;">55&deg;F - 65&deg;F</h5>
-		  			  
-	  			  </div>
-  			  	  <div class="clear"></div>  			  	  
-  			  </div>  			  
-  			</div> 	  
-  		</div>
-	  </div>
-	  <div class="clear"></div>
+    <div wicket:id="tempPanel" class="column-two" />
+    <div wicket:id="tempRefPanel" class="column-two" />
+    <div class="clear" />
       <!-- END ONE ROW OF STATUS BOXES -->
     
       <!-- ONE ROW OF STATUS BOXES -->
-	  <div wicket:id="phPanel" class="column-two">
-	  </div>
-	  
-	  <div class="column-two">
-  		<div class="inner">
-  			<div class="box">
-  			  <h5>Recommended pH</h5>
-  			  
-  			  <div class="box">
-	  			  <h4 style="text-align:center">6.5.- 7.0</h4>  			  	  
-  			  </div> 			  
-  			</div> 	  
-  		</div>
-	  </div>
-	  <div class="clear"></div>
+	  <div wicket:id="phPanel" class="column-two" />
+    <div wicket:id="phRefPanel" class="column-two" />
+    <div class="clear" />
       <!-- END ONE ROW OF STATUS BOXES -->
     
       <!-- ONE ROW OF STATUS BOXES -->
-	  <div class="column-two">
-  		<div class="inner">
-  			<div class="box" style="background-color:#FF9900;">
-  			  <h4 style="color:white;">Electrical Conductivity (EC)</h4>
-  			  
-  			  <div class="box">
-	  			  <h4 style="text-align:center">2.3 <span style="color:#FF6600;">(WARNG)</span></h4>  			  	  
-  			  </div>  			  
-  			</div> 	  
-  		</div>
-	  </div>
-	  
-	  <div class="column-two">
-  		<div class="inner">
-  			<div class="box">
-  			  <h5>Recommended EC</h5>
-  			  
-  			  <div class="box">
-	  			  <h4 style="text-align:center">1.75 - 2.25</h4>  			  	  
-  			  </div> 			  
-  			</div> 	  
-  		</div>
-	  </div>
-	  <div class="clear"></div>
+    <div wicket:id="elecPanel" class="column-two" />
+    <div wicket:id="elecRefPanel" class="column-two" />
+	  <div class="clear" />
       <!-- END ONE ROW OF STATUS BOXES -->
     
     

@@ -97,7 +97,7 @@ div.clear { height: 0px !important; line-height: 0px !important; }
 .column-two { display: inline; float: left; margin: 0 !important; width: 50%; }
 .column-three .inner, .column-three-two .inner, .column-two .inner { margin: 0 10px; }
 .footer { background: #efefef; border-top: 1px solid #aaa; clear: both; padding: 10px 20px; }
-.header { background: url(../images/header-bg.jpg) left center repeat-x; height: 120px; padding: 0 20px 5px; text-align: left; }
+.header { background: url(../images/header-bg.jpg) left center repeat-x; height: 120px; padding: 0 20px 3px; text-align: left; }
 .header-right { display: inline; float: right; margin-top: 10px; text-align: right; }
 .top-links { border-bottom: 1px solid #ccc; margin-bottom: 10px; padding-bottom: 10px; }
 .wrapper { padding: 10px; }
@@ -137,16 +137,17 @@ table.bare tr:hover td { background: none !important; }
 .pagination span.current { background: #2978cc; }
 .pagination + .showing { margin-top: 5px; margin-bottom: 0; }
 
-/* Tab Styles */
-.tab-wrapper { margin-bottom: 20px; }
-ul.tabs { display: inline; float: left; list-style-type: none; margin-bottom: -1px; }
-ul.tabs li { background: #ccc; border: 1px solid #ccc; border-radius: 5px 5px 0 0; -moz-border-radius: 5px 5px 0 0; -webkit-border-radius: 5px 5px 0 0; display: inline; float: left; height: 30px; line-height: 30px; margin-right: 2px; }
-ul.tabs li.current-tab { background: #fff; border-bottom: 1px solid #fff; }
-ul.tabs li a { color: #fff; display: inline; float: left; font-weight: bold; height: 30px; line-height: 30px; padding: 0 10px; }
-ul.tabs li.current-tab a { color: #4c4c4c; }
-ul.tabs li a.tab-close { background: url(../images/tab-close.png) center no-repeat; width: 13px; }
-ul.tab-content { background: #fff; border: 1px solid #ccc; border-radius: 0 5px 5px 5px; -moz-border-radius: 0 5px 5px 5px; -webkit-border-radius: 0 5px 5px 5px; clear: both; list-style-type: none; padding: 20px; }
-ul.tab-content li *:last-child { margin-bottom: 0px; }
+/* Tab Styles : has new styles, then old styles */
+/* TODO Remove old styles (the ones after the comma) when all old tabs are removed*/
+.tab-row, .tab-wrapper { margin-bottom: 20px; }
+.tab-row ul, ul.tabs { display: inline; float: left; list-style-type: none; margin-bottom: -1px; }
+.tab-row ul li, ul.tabs li { background: #ccc; border: 1px solid #ccc; border-radius: 5px 5px 0 0; -moz-border-radius: 5px 5px 0 0; -webkit-border-radius: 5px 5px 0 0; display: inline; float: left; height: 30px; line-height: 30px; margin-right: 2px; }
+.tab-row ul li.selected, ul.tabs li.current-tab { background: #fff; border-bottom: 1px solid #fff; }
+.tab-row ul li a, ul.tabs li a { color: #fff; display: inline; float: left; font-weight: bold; height: 30px; line-height: 30px; padding: 0 10px; }
+.tab-row ul li.selected a, ul.tabs li.current-tab a { color: #4c4c4c; }
+.tab-row ul li a.tab-close, ul.tabs li a.tab-close { background: url(../images/tab-close.png) center no-repeat; width: 13px; }
+.tab-panel, ul.tab-content { background: #fff; border: 1px solid #ccc; border-radius: 0 5px 5px 5px; -moz-border-radius: 0 5px 5px 5px; -webkit-border-radius: 0 5px 5px 5px; clear: both; list-style-type: none; padding: 20px; }
+.tab-panel, ul.tab-content li *:last-child { margin-bottom: 0px; }
 
 /* css for timepicker */
 .ui-timepicker-div .ui-widget-header{ margin-bottom: 8px; }

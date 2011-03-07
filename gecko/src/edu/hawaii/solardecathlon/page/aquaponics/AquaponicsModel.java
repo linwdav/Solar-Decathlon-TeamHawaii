@@ -1,13 +1,13 @@
 package edu.hawaii.solardecathlon.page.aquaponics;
 
-import edu.hawaii.solardecathlon.page.SystemModel;
+import edu.hawaii.solardecathlon.components.BaseModel;
 
 /**
  * Property Model for the Aquaponics System.
  *  
  * @author Bret Ikehara
  */
-public class AquaponicsModel extends SystemModel {
+public class AquaponicsModel extends BaseModel {
 
   /**
    * Serial ID.
@@ -25,26 +25,6 @@ public class AquaponicsModel extends SystemModel {
     this.temp = 0L;
     this.ph = 0.0;
     this.oxygen = 0.0;
-  }
-  
-  /**
-   * Gets this Aquaponics model time stamp.
-   * 
-   * @return String
-   */
-  @Override
-  public Long getTimestamp() {
-    return this.timestamp;
-  }
-
-  /**
-   * Sets this Aquaponics model time stamp.
-   * 
-   * @param timestamp Long
-   */
-  @Override
-  public void setTimestamp(Long timestamp) {
-    this.timestamp = timestamp;
   }
 
   /**

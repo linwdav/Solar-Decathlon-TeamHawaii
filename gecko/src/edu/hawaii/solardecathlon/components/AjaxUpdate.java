@@ -1,4 +1,4 @@
-package edu.hawaii.solardecathlon.page;
+package edu.hawaii.solardecathlon.components;
 
 import org.apache.wicket.ajax.AjaxEventBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,5 +32,6 @@ public class AjaxUpdate extends AjaxEventBehavior {
   @Override
   protected void onEvent(AjaxRequestTarget target) {
     target.addComponent(this.getComponent());
+    this.getComponent().modelChanged();
   }
 }

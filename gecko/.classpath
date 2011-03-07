@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="lib" path="lib/slf4j/slf4j-simple.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j/slf4j-api.jar"/>
-	<classpathentry kind="lib" path="lib/wicket/wicket.jar"/>
+	<classpathentry kind="lib" path="lib/wicket/wicket.jar" sourcepath="lib/wicket/source.zip"/>
 	<classpathentry kind="lib" path="lib/wicket/wicket-extensions.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/jetty-util.jar"/>
 	<classpathentry kind="lib" path="lib/jetty/jetty.jar"/>
