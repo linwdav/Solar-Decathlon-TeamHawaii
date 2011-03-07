@@ -52,7 +52,7 @@ public class IHaleDAO implements SystemStateEntryDB {
       new HashMap<String, ArrayList<String>>();
 
   // List of system state listeners.
-  private List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
+  private static List<SystemStateListener> listeners = new ArrayList<SystemStateListener>();
 
   // PMD complains about use of String literals.
   private String longString = "Long";
@@ -155,7 +155,7 @@ public class IHaleDAO implements SystemStateEntryDB {
    * @param entry The entry instance to store.
    */
   public void putEntry(SystemStateEntry entry) {
-
+        
     // Lower-case the system and device name to keep entries consistent between lower-case
     // format in XML documents and from front-end form submissions.
     String system = lowerCaseFirstLetter(entry.getSystemName());
@@ -305,7 +305,7 @@ public class IHaleDAO implements SystemStateEntryDB {
    * @param listener The listener whose entryAdded method will be called.
    */
   public void addSystemStateListener(SystemStateListener listener) {
-    this.listeners.add(listener);
+    IHaleDAO.listeners.add(listener);
   }
 
   /**

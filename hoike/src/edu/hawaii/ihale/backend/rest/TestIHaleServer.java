@@ -100,6 +100,15 @@ public class TestIHaleServer {
       e.printStackTrace();
     }
   }
+  
+  /**
+   * Test the addListerner() method in IHaleDAO class.
+   */
+  @Test
+  public void testAddListerners() {
+    //IHaleDAO dao = new IHaleDAO();
+    //dao.addSystemStateListener();
+  }
 
   /**
    * Test the timed interval thread that cycles through and sends GET HTTP requests to the system
