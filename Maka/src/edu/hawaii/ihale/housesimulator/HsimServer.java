@@ -2,8 +2,8 @@ package edu.hawaii.ihale.housesimulator;
 
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
@@ -20,11 +20,6 @@ import edu.hawaii.ihale.lights.DiningroomLightsResource;
 import edu.hawaii.ihale.lights.KitchenLightsResource;
 import edu.hawaii.ihale.lights.LivingroomLightsResource;
 import edu.hawaii.ihale.photovoltaics.PhotovoltaicResource;
-
-
-
-//import edu.hawaii.contactservice.server.resource.contact.ContactResource;
-//import edu.hawaii.contactservice.server.resource.contacts.ContactsResource;
 
 /**
  * A simple HTTP server that sets up the routing for the SolarDecathlon house.
@@ -58,8 +53,6 @@ public class HsimServer extends Application {
     // Create a component.  
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, port);
-    // Create an application (this class).
-    // Create an application  
     Application application = null;
     switch (port) {
 
@@ -69,8 +62,6 @@ public class HsimServer extends Application {
           public Restlet createInboundRoot() {  
             // Create a router restlet.
             Router router = new Router(getContext());
-            // Attach the resources to the router.
-            //router.attach("/phMeter/{uniqueID}", DayResource.class);
             router.attach(state, AquaponicsResource.class);
             router.attach(key, AquaponicsResource.class);
             // Return the root router
@@ -155,7 +146,8 @@ public class HsimServer extends Application {
   }
   
   /**
-   * This main method starts up a web application that will listen on port 8111.
+   * This main method starts up a web application that will listen on port 8111. Properties file
+   * code inspired by team kai. Thankyou team kai!
    * @param args Ignored.
    * @throws Exception If problems occur.
    */
@@ -172,14 +164,11 @@ public class HsimServer extends Application {
     runServer(lighting,8007);
     runServer(lighting,8008);
     
-    // Get the users home directory and establish the ".ihale" directory
-    File theDir = new File(System.getProperty("user.home"), ".ihale");
-    // Create the properties file in the ".ihale" directory
-    File propFile = new File(theDir, "device-urls.properties");
-    // Create the properties object to write to file.
-    Properties prop = new Properties();
+    // properties file stuff
+    File directoryFile = new File(System.getProperty("user.home"), ".ihale");
+    File propertiesFile = new File(directoryFile, "device-urls.properties");
+    Properties properties = new Properties();
 
-    // System URI's
     String aquaponics = "http://localhost:8001/";
     String hvac = "http://localhost:8002/";
     String pv = "http://localhost:8003/";
@@ -188,47 +177,47 @@ public class HsimServer extends Application {
     String lightingDining = "http://localhost:8006/";
     String lightingKitchen = "http://localhost:8007/";
     String lightingBathroom = "http://localhost:8008/";
-    /*
-    // Set the properties value.
-    prop.setProperty("aquaponics-state", aquaponics);
-    prop.setProperty("aquaponics-control", aquaponics);
-    prop.setProperty("hvac-state", hvac);
-    prop.setProperty("hvac-control", hvac);
-    prop.setProperty("lighting-living-state", lightingLiving);
-    prop.setProperty("lighting-living-control", lightingLiving);
-    prop.setProperty("lighting-dining-state", lightingDining);
-    prop.setProperty("lighting-dining-control", lightingDining);
-    prop.setProperty("lighting-kitchen-state", lightingKitchen);
-    prop.setProperty("lighting-kitchen-control", lightingKitchen);
-    prop.setProperty("lighting-bathroom-state", lightingBathroom);
-    prop.setProperty("lighting-bathroom-control", lightingBathroom);
-    prop.setProperty("pv-state", pv);
-    prop.setProperty("electrical-state", electrical);
+   
+    properties.setProperty("aquaponics-state", aquaponics);
+    properties.setProperty("aquaponics-control", aquaponics);
+    properties.setProperty("hvac-state", hvac);
+    properties.setProperty("hvac-control", hvac);
+    properties.setProperty("lighting-living-state", lightingLiving);
+    properties.setProperty("lighting-living-control", lightingLiving);
+    properties.setProperty("lighting-dining-state", lightingDining);
+    properties.setProperty("lighting-dining-control", lightingDining);
+    properties.setProperty("lighting-kitchen-state", lightingKitchen);
+    properties.setProperty("lighting-kitchen-control", lightingKitchen);
+    properties.setProperty("lighting-bathroom-state", lightingBathroom);
+    properties.setProperty("lighting-bathroom-control", lightingBathroom);
+    properties.setProperty("pv-state", pv);
+    properties.setProperty("electrical-state", electrical);
     
+    if (!directoryFile.exists()) {
+      directoryFile.mkdir();
+    }
     
-    if (theDir.mkdir()) {
-      // Create the Properties file.
-      if (propFile.createNewFile()) {
-        // Try to store the properties object in the properties file.
-        try {
-          prop.store(new FileOutputStream(propFile), null);
-        }
-        catch (IOException ex) {
-          ex.printStackTrace();
-        }
-      }
-      else {
-        System.out.println("Failed to create properties file: " + propFile.getAbsolutePath());
-        System.exit(1);
-      }
+    if (propertiesFile.exists()) {
+      // delete old properties file if it exists and create a new one
+      propertiesFile.delete();
+      propertiesFile.createNewFile();
+      properties.store(new FileOutputStream(propertiesFile), null);
     }
     else {
-      System.out.println("Failed to create directory: " + theDir.getAbsolutePath());
+      propertiesFile.createNewFile();
+      properties.store(new FileOutputStream(propertiesFile), null);  
+    }
+    
+    if (args.length == 2 && args[0].equalsIgnoreCase("-stepinterval")
+        && args[1].matches("\\d+")) {
+      Refresher refresh = new Refresher();
+      refresh.start(Integer.parseInt(args[1]));
+    }
+    else {
+      System.err.println("Invalid parameters: " + Arrays.toString(args));
+      System.err.println("Usage: java -jar ihale-housesim-maka.jar -stepinterval 5");
       System.exit(1);
     }
-    */
-    //start refreshing
-    Refresher refresh = new Refresher();
-    refresh.start(5000);
+
   }
 }

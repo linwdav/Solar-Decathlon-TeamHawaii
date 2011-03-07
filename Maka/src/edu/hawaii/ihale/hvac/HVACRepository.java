@@ -5,6 +5,9 @@ package edu.hawaii.ihale.hvac;
  * @author Team Maka
  *
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
+  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
+  justification = "Singleton data storage class.")
 public class HVACRepository {
   private static HVACRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;

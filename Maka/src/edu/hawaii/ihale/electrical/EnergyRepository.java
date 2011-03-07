@@ -5,6 +5,9 @@ package edu.hawaii.ihale.electrical;
  * @author Team Maka
  *
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
+  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
+  justification = "Singleton data storage class.")
 public class EnergyRepository {
   private static EnergyRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;
@@ -34,7 +37,7 @@ public class EnergyRepository {
    * Sets the energy level.
    * @param energy the new energy level.
    */
-  public void setEnergy(String energy) {
+  public synchronized void setEnergy(String energy) {
     EnergyRepository.energy = energy;
   }
 
@@ -42,7 +45,7 @@ public class EnergyRepository {
    * Returns the current energy level.
    * @return the current energy level.
    */
-  public  String getEnergy() {
+  public synchronized String getEnergy() {
     return energy;
   }
 
@@ -58,7 +61,7 @@ public class EnergyRepository {
    * Returns the current power value.
    * @return the current power value.
    */
-  public String getPower() {
+  public synchronized String getPower() {
     return power;
   }
 
@@ -74,7 +77,7 @@ public class EnergyRepository {
    * Returns the current joules value.
    * @return the current joules value.
    */
-  public String getJoules() {
+  public synchronized String getJoules() {
     return joules;
   }
 }

@@ -5,6 +5,9 @@ package edu.hawaii.ihale.photovoltaics;
  * @author Team Maka
  *
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
+  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
+  justification = "Singleton data storage class.")
 public class PhotovoltaicRepository {
   private static PhotovoltaicRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;
@@ -34,7 +37,7 @@ public class PhotovoltaicRepository {
    * Sets the energy level.
    * @param energy the energy level.
    */
-  public void setEnergy(String energy) {
+  public synchronized void setEnergy(String energy) {
     PhotovoltaicRepository.energy = energy;
   }
   
@@ -42,7 +45,7 @@ public class PhotovoltaicRepository {
    * Returns the current energy.
    * @return the current engery.
    */
-  public  String getEnergy() {
+  public synchronized String getEnergy() {
     return energy;
   }
 

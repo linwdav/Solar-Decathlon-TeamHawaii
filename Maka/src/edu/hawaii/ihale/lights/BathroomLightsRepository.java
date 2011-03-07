@@ -5,6 +5,9 @@ package edu.hawaii.ihale.lights;
  * @author Team Maka
  *
  */
+@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
+  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
+  justification = "Singleton data storage class.")
 public class BathroomLightsRepository {
   private static BathroomLightsRepository instance = null;
   private static String level;
