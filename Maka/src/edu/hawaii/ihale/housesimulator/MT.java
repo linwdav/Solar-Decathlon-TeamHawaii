@@ -62,7 +62,6 @@ public class MT {
 	private static final int N = 624;
 	private static final int M = 397;
 	private static final int WARM_UP = 2000;
-	@SuppressWarnings("unused")
 	//private static final int DEFAULT_SEED = 5489; 	// Just for documentation purposes
 	private boolean haveSecondGaussian;
 	private double secondGaussian;
