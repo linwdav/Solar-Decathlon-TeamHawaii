@@ -537,7 +537,7 @@ public class IHaleDAO implements SystemStateEntryDB {
       String key = ((Element) stateList.item(i)).getAttribute(keyAttributeName);
       
       // Special case for pH, lower-case it all.
-      if (key.equals("pH")) {
+      if ("pH".equals(key)) {
         key = "ph";
       }
       
