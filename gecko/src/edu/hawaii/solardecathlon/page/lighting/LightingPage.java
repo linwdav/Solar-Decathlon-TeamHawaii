@@ -1,5 +1,6 @@
 package edu.hawaii.solardecathlon.page.lighting;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -14,6 +15,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
 import edu.hawaii.solardecathlon.SolarDecathlonApplication;
 import edu.hawaii.solardecathlon.components.AttributeModifier;
+import edu.hawaii.solardecathlon.listeners.LightingListener;
 import edu.hawaii.solardecathlon.page.BasePage;
 
 /**
@@ -29,7 +31,7 @@ public class LightingPage extends BasePage {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
-  private LightingModel propModel;
+  private transient LightingListener listener;
   private DropDownChoice<RoomModel> dropDown;
   private AjaxFallbackLink<String> onButton;
   private AjaxFallbackLink<String> offButton;
@@ -39,8 +41,8 @@ public class LightingPage extends BasePage {
    * Layout of page.
    */
   public LightingPage() {
-    // Set model for easy reference.
-    propModel = (LightingModel) session.getModel("lighting");
+
+    listener = SolarDecathlonApplication.getLightingListener();
 
     resourceRef();
     formRef();
@@ -90,7 +92,7 @@ public class LightingPage extends BasePage {
     });
     form.add(roomLevel);
 
-    List<RoomModel> roomlist = propModel.getRoomList();
+    List<RoomModel> roomlist = listener.getRoomList();
 
     // Create drop down
     dropDown =
@@ -119,8 +121,12 @@ public class LightingPage extends BasePage {
         // Reflect new value on the slider bar.
         target.prependJavascript("$( '#sliderBright' ).slider('value', "
             + roomModel.getLevel().intValue() + ");");
-      }
 
+        // Sets the database through the backend.
+        List<String> args = new ArrayList<String>();
+        args.add(roomModel.getLevel().toString());
+        dao.doCommand("lighting", roomModel.getDevice(), "setLevel", args);
+      }
     });
     form.add(dropDown);
 
@@ -185,17 +191,16 @@ public class LightingPage extends BasePage {
       System.out.println("test");
     }
 
-    //TODO update status with model.
-    //RoomModel room = dropDown.getModelObject();
+    // TODO update status with model.
+    // RoomModel room = dropDown.getModelObject();
 
     boolean status = false;
     String onClass = (status) ? CLASS_BTN_GREEN : CLASS_BTN_GRAY;
     String offClass = (status) ? CLASS_BTN_GRAY : CLASS_BTN_GREEN;
 
-    onButton.add(new AttributeModifier("class", true, new Model<String>(onClass),
-        CLASS_PAT_BTN));
+    onButton.add(new AttributeModifier("class", true, new Model<String>(onClass), CLASS_PAT_BTN));
 
-    offButton.add(new AttributeModifier("class", true, new Model<String>(offClass),
-        CLASS_PAT_BTN));
+    offButton
+        .add(new AttributeModifier("class", true, new Model<String>(offClass), CLASS_PAT_BTN));
   }
 }

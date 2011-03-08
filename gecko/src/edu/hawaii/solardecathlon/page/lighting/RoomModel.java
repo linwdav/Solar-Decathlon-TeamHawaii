@@ -14,16 +14,28 @@ public class RoomModel implements Serializable {
    */
   private static final long serialVersionUID = -8639610150223419386L;
   private String name;
+  private String device;
   private Long level;
 
   /**
-   * Default Constructor.
+   * Creates a room with a name and an associated Arduino device.
    * 
    * @param name String
+   * @param device String
    */
-  public RoomModel(String name) {
+  public RoomModel(String name, String device) {
     this.name = name;
+    this.device = device;
     this.level = 0L;
+  }
+  
+  /**
+   * Gets the device associated with this room.
+   * 
+   * @return String
+   */
+  public String getDevice() {
+    return this.device;
   }
 
   /**
@@ -78,5 +90,15 @@ public class RoomModel implements Serializable {
     }
 
     return false;
+  }
+  
+  /**
+   * Return the room's name.
+   * 
+   * @return String
+   */
+  @Override
+  public String toString() {
+    return "Room: " + this.name;
   }
 }

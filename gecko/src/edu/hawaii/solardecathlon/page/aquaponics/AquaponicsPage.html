@@ -96,37 +96,39 @@ $(function(){
   	  <div class="column-three">
   			<div class="inner">
           <div class="box-inners">
-            
-            <h2>Temp Control</h2>	
-          
-            <!-- Air TEMP -->  			
-            <div class="column-two">
-              <div class="inner">
-                <div class="box" style="text-align:center;padding:20px 0;">
-                  <h6 style="text-align:center">Air</h6>
-                  <div style="margin:auto;" id="sliderAir"></div>
-                  <div class="clear"></div>
-                  
-                  <div id="amountAir" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">76&deg;F</div>
-                   
-                </div>
-              </div>  			  	
-            </div>
-            
-            <!-- Water TEMP -->
-            <div class="column-two">
-              <div class="inner">
-                <div class="box" style="text-align:center;padding:20px 0;">
-                  <h6 style="text-align:center">Water</h6>
-                  <div style="margin:auto;" id="sliderWater"></div>
-                  <div class="clear"></div>
-                  
-                  <div id="amountWater" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">60&deg;F</div>
-                  
-                </div>
-              </div>
-            </div>
-          
+            <form wicket:id="tempControlForm">
+	            <h2>Temp Control</h2>	
+	          
+	            <!-- Air TEMP -->  			
+	            <div class="column-two">
+	              <div class="inner">
+	                <div class="box" style="text-align:center;padding:20px 0;">
+	                  <h6 style="text-align:center">Air</h6>
+	                  <div style="margin:auto;" id="sliderAir"></div>
+	                  <div class="clear"></div>
+	                  
+	                  <div id="amountAir" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">76&deg;F</div>
+	                   
+	                </div>
+	              </div>  			  	
+	            </div>
+	            
+	            <!-- Water TEMP -->
+	            <div class="column-two">
+	              <div class="inner">
+	                <div class="box" style="text-align:center;padding:20px 0;">
+	                  <h6 style="text-align:center">Water</h6>
+	                  <div style="margin:auto;" id="sliderWater"></div>
+	                  <div class="clear"></div>
+	                  
+	                  <div class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">
+	                    <input wicket:id="amountWater" type="text" value="60&deg;F"/>
+	                  </div>
+	                  
+	                </div>
+	              </div>
+	            </div>
+            </form>
             
             <div class="clear"></div>
           </div> 	  

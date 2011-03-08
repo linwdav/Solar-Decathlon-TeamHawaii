@@ -14,9 +14,10 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.markup.repeater.Item;
 import org.apache.wicket.model.Model;
-import edu.hawaii.ihale.api.SystemStateEntry;
-import edu.hawaii.ihale.api.SystemStateListener;
+import edu.hawaii.solardecathlon.SolarDecathlonApplication;
 import edu.hawaii.solardecathlon.components.AttributeModifier;
+import edu.hawaii.solardecathlon.listeners.ElectricalListener;
+import edu.hawaii.solardecathlon.listeners.PhotovoltaicsListener;
 import edu.hawaii.solardecathlon.page.BasePage;
 
 /**
@@ -33,43 +34,87 @@ public class EnergyPage extends BasePage {
   private static final long serialVersionUID = 2978474992827L;
 
   private AjaxFallbackLink<String> selectedGraphType;
-  
-  private ElectricalModel elecModel;
-  private PhotovoltaicsModel photoModel;
 
+  private transient PhotovoltaicsListener photoList;
+  private transient ElectricalListener elecList;
+  
+  
   /**
    * The page layout.
    */
   public EnergyPage() {
     
-    elecModel = (ElectricalModel) session.getModel("electrical");
-    photoModel = (PhotovoltaicsModel) session.getModel("photovoltaics");
+    photoList = SolarDecathlonApplication.getPhotovoltaicsListener();
+    elecList = SolarDecathlonApplication.getElectricalListener();
     
-    // Add the photovoltaics listener.
-    getDAO().addSystemStateListener(new SystemStateListener("photovoltaics") {
-      
+    CurrentLevels pv = new CurrentLevels("pvValue");
+    pv.add(new Label("title", "Photovoltaics"));
+    pv.add(new Label("energy", new Model<Long>() {
+
       /**
-       * Update model when an entry is added.
+       * Serial ID. 
+       */
+      private static final long serialVersionUID = -3050050104446120146L;
+
+      /**
+       * Gets the energy.
        */
       @Override
-      public void entryAdded(SystemStateEntry entry) {
-        photoModel.setEnergy(entry.getLongValue("energy"));
-        photoModel.setPower(entry.getLongValue("power"));        
+      public Long getObject() {
+        return photoList.getEnergy();
       }
-    });
-    
-    // Add the electrical listener.
-    getDAO().addSystemStateListener(new SystemStateListener("electrical") {
-      
+    }));
+    pv.add(new Label("power", new Model<Long>() {
+
       /**
-       * Update model when an entry is added.
+       * Serial ID.
+       */
+      private static final long serialVersionUID = -3880209505158184935L;
+
+      /**
+       * Gets the energy.
        */
       @Override
-      public void entryAdded(SystemStateEntry entry) {
-        elecModel.setEnergy(entry.getLongValue("energy"));
-        elecModel.setPower(entry.getLongValue("power"));        
+      public Long getObject() {
+        return photoList.getPower();
       }
-    });
+    }));
+    add(pv);
+    
+    CurrentLevels ec = new CurrentLevels("ecValue");
+    ec.add(new Label("title", "Electical Consumption"));
+    ec.add(new Label("energy", new Model<Long>() {
+
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = -1402297542181787240L;
+
+      /**
+       * Gets the energy.
+       */
+      @Override
+      public Long getObject() {
+        return elecList.getEnergy();
+      }
+    }));
+    ec.add(new Label("power", new Model<Long>() {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 7119489925599218149L;
+
+      /**
+       * Gets the energy.
+       */
+      @Override
+      public Long getObject() {
+        return elecList.getPower();
+      }
+    }));
+    add(ec);
     
     tabPanelResource();
     graphTypeResource();

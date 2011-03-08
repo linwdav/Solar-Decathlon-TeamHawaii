@@ -56,12 +56,11 @@ public class BasePage extends WebPage {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
-  private static String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
   private List<Item<Class<? extends Page>>> pageLinks;
 
-  protected transient SystemStateEntryDB database;
   protected Class<? extends BasePage> currentPage;
   protected SolarDecathlonSession session;
+  protected transient SystemStateEntryDB dao;
 
   /**
    * Default constructor.
@@ -70,20 +69,7 @@ public class BasePage extends WebPage {
 
     // Set reference to session.
     this.session = (SolarDecathlonSession) getSession();
-
-    // Setup reference to database.
-    try {
-      this.database = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
-    }
-    catch (InstantiationException e) {
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
+    this.dao = SolarDecathlonApplication.getDAO();
 
     // Links to add to the header and footer.
     pageLinks = new ArrayList<Item<Class<? extends Page>>>();
@@ -290,17 +276,8 @@ public class BasePage extends WebPage {
        */
       @Override
       public void onClick(AjaxRequestTarget target) {
-        new BlackMagic(getDAO());
+        new BlackMagic(SolarDecathlonApplication.getDAO());
       }
     });
-  }
-
-  /**
-   * Gets this database access object.
-   * 
-   * @return SystemStateEntryDB
-   */
-  public SystemStateEntryDB getDAO() {
-    return database;
   }
 }

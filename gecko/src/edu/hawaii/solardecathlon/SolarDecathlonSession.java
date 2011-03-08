@@ -5,13 +5,6 @@ import java.util.Map;
 import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
-import edu.hawaii.solardecathlon.components.BaseModel;
-import edu.hawaii.solardecathlon.page.aquaponics.AquaponicsModel;
-import edu.hawaii.solardecathlon.page.energy.ElectricalModel;
-import edu.hawaii.solardecathlon.page.energy.PhotovoltaicsModel;
-import edu.hawaii.solardecathlon.page.lighting.LightingModel;
-import edu.hawaii.solardecathlon.page.lighting.RoomModel;
-import edu.hawaii.solardecathlon.page.temperature.TemperatureModel;
 
 /**
  * Provide a very simple session data structure, which is just a set of string key-value pairs. The
@@ -27,12 +20,6 @@ public class SolarDecathlonSession extends WebSession {
   /** Each user has a set of properties. */
   private Map<String, String> properties = new HashMap<String, String>();
 
-  protected AquaponicsModel aquaponics;
-  protected LightingModel lighting;
-  protected TemperatureModel temperature;
-  protected ElectricalModel electrical;
-  protected PhotovoltaicsModel photovoltaics;
-
   /**
    * Create a new session for this user. Called automatically by wicket. You always need to define
    * this constructor when implementing your own application-specific Session class.
@@ -46,17 +33,6 @@ public class SolarDecathlonSession extends WebSession {
     this.properties.put("TabNum", "0");
     this.properties.put("PageNum", "0");
     this.properties.put("GraphNum", "0");
-
-    // Initiate all the models.
-    aquaponics = new AquaponicsModel();
-
-    lighting = new LightingModel();
-    lighting.putRoom(new RoomModel("Living Room"));
-    lighting.putRoom(new RoomModel("Dining Room"));
-    lighting.putRoom(new RoomModel("Bathroom"));
-    lighting.putRoom(new RoomModel("Kitchen"));
-
-    temperature = new TemperatureModel();
   }
 
   /**
@@ -125,19 +101,5 @@ public class SolarDecathlonSession extends WebSession {
   public String getProperty(String prop) {
 
     return this.properties.get(prop);
-  }
-
-  /**
-   * Gets this system models.
-   * 
-   * @param systemName String
-   * @return SystemModel
-   */
-  public BaseModel getModel(String systemName) {
-    return ("aquaponics".equalsIgnoreCase(systemName)) ? aquaponics : ("lighting"
-        .equalsIgnoreCase(systemName)) ? lighting
-        : ("temperature".equalsIgnoreCase(systemName)) ? temperature : ("electrical"
-            .equalsIgnoreCase(systemName)) ? electrical : ("photovoltaics"
-            .equalsIgnoreCase(systemName)) ? photovoltaics : null;
   }
 }

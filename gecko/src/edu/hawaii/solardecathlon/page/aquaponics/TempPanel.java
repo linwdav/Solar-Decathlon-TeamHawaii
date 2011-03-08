@@ -79,8 +79,6 @@ public class TempPanel extends StatusPanel {
    * Updates the panel based upon the information in the property model.
    */
   protected void updatePanel() {
-    //AquaponicsModel model =
-    //    (AquaponicsModel) ((SolarDecathlonSession) getSession()).getModel("aquaponics");
     
     //TODO update with property model.
     boolean warning = false;

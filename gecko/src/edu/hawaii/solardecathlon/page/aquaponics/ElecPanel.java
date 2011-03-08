@@ -52,8 +52,6 @@ public class ElecPanel extends StatusPanel {
    * Updates the panel based upon the information in the property model.
    */
   private void updatePanel() {
-    // AquaponicsModel model =
-    // (AquaponicsModel) ((SolarDecathlonSession) getSession()).getModel("aquaponics");
 
     // TODO update with property model.
     double ec = 2.3;
