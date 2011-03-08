@@ -21,7 +21,7 @@ public class ElectricalResource extends EGauge {
   public ElectricalResource() {
     super();
     meterName = "Grid";
-    //repository = EnergyRepository.getInstance();
+    EnergyRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }

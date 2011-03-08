@@ -20,7 +20,7 @@ public class PhotovoltaicResource extends EGauge {
   public PhotovoltaicResource() {
     super();
     meterName = "Solar";
-    //repository = PhotovoltaicRepository.getInstance();
+    PhotovoltaicRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }

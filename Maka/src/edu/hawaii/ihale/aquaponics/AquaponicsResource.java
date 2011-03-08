@@ -29,7 +29,7 @@ public class AquaponicsResource extends Arduino {
    */
   public AquaponicsResource() {
     super("aquaponics","arduino-1");
-    //this.repository = AquaponicsRepository.getInstance();
+    AquaponicsRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }

@@ -19,7 +19,7 @@ public class HVACResource extends Arduino {
   //Maps need to be non-final...
   //These hold the goal state defined by the user.
   static double goalTemp = 79.4;
-  HVACRepository repository;
+  //HVACRepository repository;
   String temp = "temp";
   //Array of known keys 
   String[] localKeys = {temp}; 
@@ -29,7 +29,7 @@ public class HVACResource extends Arduino {
    */
   public HVACResource() {
     super("hvac","arduino-3");
-    repository = HVACRepository.getInstance();
+    HVACRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
