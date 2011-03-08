@@ -8,7 +8,6 @@ import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import edu.hawaii.ihale.aquaponics.AquaponicsRepository;
 import edu.hawaii.ihale.housesimulator.Arduino;
 
 /**
@@ -16,10 +15,6 @@ import edu.hawaii.ihale.housesimulator.Arduino;
  * @author Team Maka.
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
-  justification = "Restlet makes multiple instances of this class, so " +
-  "nonstatic variables are lost.")
 public class HVACResource extends Arduino { 
   //Maps need to be non-final...
   //These hold the goal state defined by the user.
@@ -44,9 +39,9 @@ public class HVACResource extends Arduino {
    */
   @Override
   public void poll() {
-    repository.setTemp(String.valueOf(getTemp()));
-
+    HVACRepository.setTemp(String.valueOf(getTemp()));
   }
+  
   /**
    * Returns the Contact instance requested by the URL. 
    * @return The XML representation of the contact, or CLIENT_ERROR_NOT_ACCEPTABLE if the 
@@ -69,11 +64,11 @@ public class HVACResource extends Arduino {
     rootElement.setAttribute("device", deviceName);
     rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
 
-    AquaponicsRepository repository = AquaponicsRepository.getInstance();
+    //AquaponicsRepository repository = AquaponicsRepository.getInstance();
     Element temperatureElement = doc.createElement("state");
     temperatureElement.setAttribute("key", "temp");
     //System.err.println(repository.valuesMap.get(item));
-    temperatureElement.setAttribute("value", repository.getTemp());
+    temperatureElement.setAttribute("value", HVACRepository.getTemp());
     rootElement.appendChild(temperatureElement);
 
     doc.appendChild(rootElement);
@@ -112,7 +107,7 @@ public class HVACResource extends Arduino {
    * @return An updated temp value.
    */
   private double getTemp() {
-    double currentTemp = sToD(repository.getTemp());
+    double currentTemp = sToD(HVACRepository.getTemp());
     return currentTemp + (goalTemp - currentTemp) / 100 + mt.nextDouble(-.05,.05); 
   }
   

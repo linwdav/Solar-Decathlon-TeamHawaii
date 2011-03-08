@@ -15,10 +15,6 @@ import edu.hawaii.ihale.housesimulator.Arduino;
  * @author Team Maka
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
-  justification = "Restlet makes multiple instances of this class, so " +
-  "nonstatic variables are lost.")
 public class AquaponicsResource extends Arduino {
   //These hold the goal state defined by the user.
   static double goalPH = 7, goalTemp = 78, goalOxygen = .5;
@@ -26,14 +22,14 @@ public class AquaponicsResource extends Arduino {
   /** Local keys used by the resource.*/
   public String[] localKeys = {temp, pH, oxygen};
   //Singleton repository
-  private AquaponicsRepository repository;
+  //private AquaponicsRepository repository;
   
   /**
    * Constructor.
    */
   public AquaponicsResource() {
     super("aquaponics","arduino-1");
-    this.repository = AquaponicsRepository.getInstance();
+    //this.repository = AquaponicsRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
@@ -44,9 +40,9 @@ public class AquaponicsResource extends Arduino {
   @Override
   public void poll() {
     //System.err.println("String value of getPH(): " + repository.getpH());
-    repository.setpH(String.valueOf(getPH()));
-    repository.setTemp(String.valueOf(getTemp()));
-    repository.setOxygen(String.valueOf(getOxygen()));
+    AquaponicsRepository.setpH(String.valueOf(getPH()));
+    AquaponicsRepository.setTemp(String.valueOf(getTemp()));
+    AquaponicsRepository.setOxygen(String.valueOf(getOxygen()));
   }
   
   /**
@@ -70,23 +66,23 @@ public class AquaponicsResource extends Arduino {
     rootElement.setAttribute("device", deviceName);
     rootElement.setAttribute("timestamp", String.valueOf(date.getTime()));
 
-    AquaponicsRepository repository = AquaponicsRepository.getInstance();
+    //AquaponicsRepository repository = AquaponicsRepository.getInstance();
     Element temperatureElement = doc.createElement("state");
     temperatureElement.setAttribute("key", "temp");
     //System.err.println(repository.valuesMap.get(item));
-    temperatureElement.setAttribute("value", repository.getTemp());
+    temperatureElement.setAttribute("value", AquaponicsRepository.getTemp());
     rootElement.appendChild(temperatureElement);
           
     Element phElement = doc.createElement("state");
     phElement.setAttribute("key", "pH");
     //System.err.println(repository.valuesMap.get(item));
-    phElement.setAttribute("value", repository.getpH());
+    phElement.setAttribute("value", AquaponicsRepository.getpH());
     rootElement.appendChild(phElement);
           
     Element oxygenElement = doc.createElement("state");
     oxygenElement.setAttribute("key", "oxygen");
     //System.err.println(repository.valuesMap.get(item));
-    oxygenElement.setAttribute("value", repository.getOxygen());
+    oxygenElement.setAttribute("value", AquaponicsRepository.getOxygen());
     rootElement.appendChild(oxygenElement);
 
     doc.appendChild(rootElement);
@@ -102,15 +98,15 @@ public class AquaponicsResource extends Arduino {
   public void set(String key, String val) {
     double v = sToD(val);
     if (key.equalsIgnoreCase(temp)) {
-      goalTemp = v;
+      AquaponicsResource.goalTemp = v;
       System.out.println("Temp set to" + goalTemp);
     }
     else if (key.equalsIgnoreCase(pH)) {
-      goalPH = v;
+      AquaponicsResource.goalPH = v;
       System.out.println("pH set to" + goalPH);
     }
     else if (key.equalsIgnoreCase(oxygen)) {
-      goalOxygen = v;
+      AquaponicsResource.goalOxygen = v;
       System.out.println("Oxygen set to" + goalOxygen);
     }
   }
@@ -120,7 +116,7 @@ public class AquaponicsResource extends Arduino {
    * @param val String to convert.
    * @return The double represented by the String.
    */
-  private Double sToD(String val) {
+  private static Double sToD(String val) {
     double v = 0;
     try {
       v = Double.valueOf(val);
@@ -136,7 +132,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated pH value.
    */
   private double getPH() {
-    double currentPH = sToD(repository.getpH());
+    double currentPH = sToD(AquaponicsRepository.getpH());
     return currentPH + (goalPH - currentPH) / 100 + mt.nextDouble(-.05,.05);
   }
 
@@ -146,7 +142,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated oxygen value.
    */
   private double getOxygen() {
-    double currentDO = sToD(repository.getOxygen());
+    double currentDO = sToD(AquaponicsRepository.getOxygen());
     return currentDO + (goalOxygen - currentDO) / 100 + mt.nextDouble(-.01,.01);
   }
   
@@ -155,7 +151,7 @@ public class AquaponicsResource extends Arduino {
    * @return An updated temp value.
    */
   private double getTemp() {
-    double currentTemp = sToD(repository.getTemp());
+    double currentTemp = sToD(AquaponicsRepository.getTemp());
     return currentTemp + (goalTemp - currentTemp) / 100 + mt.nextDouble(-.1,.1);
   }
 

@@ -5,9 +5,6 @@ package edu.hawaii.ihale.electrical;
  * @author Team Maka
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
-  justification = "Singleton data storage class.")
 public class EnergyRepository {
   private static EnergyRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;
@@ -25,10 +22,10 @@ public class EnergyRepository {
    */
   public static synchronized EnergyRepository getInstance() {
       if (instance == null) {
-          instance = new EnergyRepository();
-          EnergyRepository.energy = "1443.5";
-          EnergyRepository.power = "2226.2";
-          EnergyRepository.joules = "2130813014";
+        instance = new EnergyRepository();
+        EnergyRepository.energy = "1443.5";
+        EnergyRepository.power = "2226.2";
+        EnergyRepository.joules = "2130813014";
       }
       return instance;
   }
@@ -37,7 +34,7 @@ public class EnergyRepository {
    * Sets the energy level.
    * @param energy the new energy level.
    */
-  public synchronized void setEnergy(String energy) {
+  public static synchronized void setEnergy(String energy) {
     EnergyRepository.energy = energy;
   }
 
@@ -45,7 +42,7 @@ public class EnergyRepository {
    * Returns the current energy level.
    * @return the current energy level.
    */
-  public synchronized String getEnergy() {
+  public static synchronized String getEnergy() {
     return energy;
   }
 
@@ -53,7 +50,7 @@ public class EnergyRepository {
    * Sets the power value.
    * @param power the new power value.
    */
-  public synchronized void setPower(String power) {
+  public static synchronized void setPower(String power) {
     EnergyRepository.power = power;
   }
 
@@ -61,7 +58,7 @@ public class EnergyRepository {
    * Returns the current power value.
    * @return the current power value.
    */
-  public synchronized String getPower() {
+  public static synchronized String getPower() {
     return power;
   }
 
@@ -69,7 +66,7 @@ public class EnergyRepository {
    * Sets the joules value.
    * @param watts the new joules value.
    */
-  public synchronized void setJoules(String watts) {
+  public static synchronized void setJoules(String watts) {
     EnergyRepository.joules = watts;
   }
 
@@ -77,7 +74,7 @@ public class EnergyRepository {
    * Returns the current joules value.
    * @return the current joules value.
    */
-  public synchronized String getJoules() {
+  public static synchronized String getJoules() {
     return joules;
   }
 }

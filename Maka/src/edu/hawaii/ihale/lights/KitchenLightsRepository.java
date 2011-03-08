@@ -5,9 +5,6 @@ package edu.hawaii.ihale.lights;
  * @author Team Maka
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
-  justification = "Singleton data storage class.")
 public class KitchenLightsRepository {
   private static KitchenLightsRepository instance = null;
   private static String level;
@@ -35,7 +32,7 @@ public class KitchenLightsRepository {
    * Sets the lighting level.
    * @param level the new lighting level.
    */
-  public synchronized void setLevel(String level) {
+  public static synchronized void setLevel(String level) {
     KitchenLightsRepository.level = level;
     //valuesMap.put("temp", AquaponicsRepository.temp);
   }
@@ -44,7 +41,7 @@ public class KitchenLightsRepository {
    * Returns the current lighting level.
    * @return the current ligthing level.
    */
-  public synchronized String getLevel() {
+  public static synchronized String getLevel() {
     return level;
   }
 }

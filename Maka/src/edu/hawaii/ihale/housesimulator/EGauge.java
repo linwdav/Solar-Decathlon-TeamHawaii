@@ -89,17 +89,17 @@ public abstract class EGauge extends ServerResource {
       meter.appendChild(e);
     } 
     */
-    PhotovoltaicRepository repository = PhotovoltaicRepository.getInstance();
+    //PhotovoltaicRepository repository = PhotovoltaicRepository.getInstance();
     Element energyElement = doc.createElement("energy");
-    energyElement.appendChild(doc.createTextNode(repository.getEnergy()));
+    energyElement.appendChild(doc.createTextNode(PhotovoltaicRepository.getEnergy()));
     meter.appendChild(energyElement);
     
     Element powerElement = doc.createElement("power");
-    powerElement.appendChild(doc.createTextNode(repository.getPower()));
+    powerElement.appendChild(doc.createTextNode(PhotovoltaicRepository.getPower()));
     meter.appendChild(powerElement);
     
     Element wattsecondsElement = doc.createElement("energyWs");
-    wattsecondsElement.appendChild(doc.createTextNode(repository.getJoules()));
+    wattsecondsElement.appendChild(doc.createTextNode(PhotovoltaicRepository.getJoules()));
     meter.appendChild(wattsecondsElement);
     
     rootElement.appendChild(meter);

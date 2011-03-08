@@ -37,7 +37,7 @@ public class PhotovoltaicRepository {
    * Sets the energy level.
    * @param energy the energy level.
    */
-  public synchronized void setEnergy(String energy) {
+  public static synchronized void setEnergy(String energy) {
     PhotovoltaicRepository.energy = energy;
   }
   
@@ -45,7 +45,7 @@ public class PhotovoltaicRepository {
    * Returns the current energy.
    * @return the current engery.
    */
-  public synchronized String getEnergy() {
+  public static synchronized String getEnergy() {
     return energy;
   }
 
@@ -53,7 +53,7 @@ public class PhotovoltaicRepository {
    * Sets the power level.
    * @param power the new power level.
    */
-  public synchronized void setPower(String power) {
+  public static synchronized void setPower(String power) {
     PhotovoltaicRepository.power = power;
   }
 
@@ -61,7 +61,7 @@ public class PhotovoltaicRepository {
    * Returs the current power level.
    * @return the current power level.
    */
-  public synchronized String getPower() {
+  public static synchronized String getPower() {
     return power;
   }
 
@@ -69,7 +69,7 @@ public class PhotovoltaicRepository {
    * Sets the joules value.
    * @param joules the new joules value.
    */
-  public synchronized void setJoules(String joules) {
+  public static synchronized void setJoules(String joules) {
     PhotovoltaicRepository.joules = joules;
   }
 
@@ -77,7 +77,7 @@ public class PhotovoltaicRepository {
    * Returns the current joules value.
    * @return the current joules value.
    */
-  public synchronized String getJoules() {
+  public static synchronized String getJoules() {
     return joules;
   }
 }

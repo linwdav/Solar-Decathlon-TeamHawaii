@@ -21,7 +21,7 @@ public class KitchenLightsResource extends Arduino {
   String[] localKeys = {"level"};
   String currentLevel;
   //Maps need to be non-final...
-  BathroomLightsRepository repository;
+  //BathroomLightsRepository repository;
 
   
   /**
@@ -29,14 +29,14 @@ public class KitchenLightsResource extends Arduino {
    */
   public KitchenLightsResource() {
     super("lighting","arduino-7");
-    repository = BathroomLightsRepository.getInstance();
+    //repository = BathroomLightsRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
 
   @Override
   public void poll() {
-    repository.setLevel(String.valueOf(mt.nextDouble(0,100)));
+    BathroomLightsRepository.setLevel(String.valueOf(mt.nextDouble(0,100)));
   }
   /**
    * Returns the Contact instance requested by the URL. 
@@ -64,7 +64,7 @@ public class KitchenLightsResource extends Arduino {
     Element levelElement = doc.createElement("state");
     levelElement.setAttribute("key", "level");
     //System.err.println(repository.valuesMap.get(item));
-    levelElement.setAttribute("value", repository.getLevel());
+    levelElement.setAttribute("value", BathroomLightsRepository.getLevel());
     rootElement.appendChild(levelElement);
 
     doc.appendChild(rootElement);
@@ -73,6 +73,6 @@ public class KitchenLightsResource extends Arduino {
   }
   @Override
   public void set(String key, String value) {
-    repository.setLevel(value);
+    BathroomLightsRepository.setLevel(value);
   }
 }

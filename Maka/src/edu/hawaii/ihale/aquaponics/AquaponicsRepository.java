@@ -5,9 +5,6 @@ package edu.hawaii.ihale.aquaponics;
  * @author Team Maka
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
-  justification = "Singleton data storage class.")
 public class AquaponicsRepository {
   private static AquaponicsRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;
@@ -38,7 +35,7 @@ public class AquaponicsRepository {
    * Sets the ph.
    * @param pH the new ph.
    */
-  public synchronized void setpH(String pH) {
+  public static synchronized void setpH(String pH) {
     AquaponicsRepository.pH = pH;
   }
 
@@ -46,7 +43,7 @@ public class AquaponicsRepository {
    * Gets the current pH.
    * @return the current ph.
    */
-  public synchronized String getpH() {
+  public static synchronized String getpH() {
     return pH;
   }
 
@@ -54,7 +51,7 @@ public class AquaponicsRepository {
    * Sets the temp.
    * @param temp the new temp.
    */
-  public synchronized void setTemp(String temp) {
+  public static synchronized void setTemp(String temp) {
     AquaponicsRepository.temp = temp;
   }
 
@@ -62,7 +59,7 @@ public class AquaponicsRepository {
    * Gets the temp.
    * @return the current temp.
    */
-  public synchronized String getTemp() {
+  public static synchronized String getTemp() {
     return temp;
   }
 
@@ -70,7 +67,7 @@ public class AquaponicsRepository {
    * Sets the oxygen level.
    * @param oxygen the new oxygen level.
    */
-  public synchronized void setOxygen(String oxygen) {
+  public static synchronized void setOxygen(String oxygen) {
     AquaponicsRepository.oxygen = oxygen;
   }
 
@@ -78,7 +75,7 @@ public class AquaponicsRepository {
    * Returns the current oxygen level.
    * @return the current oxygen level.
    */
-  public synchronized String getOxygen() {
+  public static synchronized String getOxygen() {
     return oxygen;
   }
 }

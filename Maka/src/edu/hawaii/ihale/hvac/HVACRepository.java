@@ -5,9 +5,6 @@ package edu.hawaii.ihale.hvac;
  * @author Team Maka
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
-  justification = "Singleton data storage class.")
 public class HVACRepository {
   private static HVACRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;
@@ -35,7 +32,7 @@ public class HVACRepository {
    * Sets the temperature in the system.
    * @param temp the new goal temp.
    */
-  public synchronized void setTemp(String temp) {
+  public static void setTemp(String temp) {
     HVACRepository.temp = temp;
     //valuesMap.put("temp", AquaponicsRepository.temp);
   }
@@ -44,7 +41,7 @@ public class HVACRepository {
    * Returns the temp of the system.
    * @return current temp.
    */
-  public synchronized String getTemp() {
-    return temp;
+  public static synchronized String getTemp() {
+    return "" + Double.valueOf(temp) + 10;
   }
 }

@@ -5,12 +5,9 @@ package edu.hawaii.ihale.lights;
  * @author Team Maka
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
-  justification = "Singleton data storage class.")
 public class BathroomLightsRepository {
   private static BathroomLightsRepository instance = null;
-  private static String level;
+  private static String newLevel;
   
   /** 
    * Constructor.
@@ -26,7 +23,7 @@ public class BathroomLightsRepository {
   public static synchronized BathroomLightsRepository getInstance() {
       if (instance == null) {
           instance = new BathroomLightsRepository();
-          BathroomLightsRepository.level = "79.4";
+          newLevel = "79.4";
       }
       return instance;
   }
@@ -35,8 +32,8 @@ public class BathroomLightsRepository {
    * Sets the lighting level.
    * @param level the new level.
    */
-  public synchronized void setLevel(String level) {
-    BathroomLightsRepository.level = level;
+  public static synchronized void setLevel(String level) {
+    newLevel = level;
     //valuesMap.put("temp", AquaponicsRepository.temp);
   }
 
@@ -44,7 +41,7 @@ public class BathroomLightsRepository {
    * Gets the lighting level.
    * @return the current level.
    */
-  public synchronized String getLevel() {
-    return level;
+  public static synchronized String getLevel() {
+    return newLevel;
   }
 }

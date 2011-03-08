@@ -11,7 +11,7 @@ public class PhotovoltaicResource extends EGauge {
   //Maps need to be non-final...
   static double goalEnergy = 1443.5, goalPower = 2226.2, goalWs = 2130813014;
   static final String energy = "energy", ws = "energyWs", power = "power";
-  PhotovoltaicRepository repository;
+  //PhotovoltaicRepository repository;
   /** Local keys used by the resource.*/
   public String[] localKeys = {energy, power, ws};
   /**
@@ -20,7 +20,7 @@ public class PhotovoltaicResource extends EGauge {
   public PhotovoltaicResource() {
     super();
     meterName = "Solar";
-    repository = PhotovoltaicRepository.getInstance();
+    //repository = PhotovoltaicRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
@@ -30,9 +30,9 @@ public class PhotovoltaicResource extends EGauge {
    */
   @Override
   public void poll() {
-    repository.setEnergy(String.valueOf(getEnergy()));
-    repository.setPower(String.valueOf(getPower()));
-    repository.setJoules(String.valueOf(getWs()));
+    PhotovoltaicRepository.setEnergy(String.valueOf(getEnergy()));
+    PhotovoltaicRepository.setPower(String.valueOf(getPower()));
+    PhotovoltaicRepository.setJoules(String.valueOf(getWs()));
   }
   
   /**
@@ -64,7 +64,7 @@ public class PhotovoltaicResource extends EGauge {
    * @return An updated pH value.
    */
   private double getEnergy() {
-    double currentEnergy = sToD(repository.getEnergy());
+    double currentEnergy = sToD(PhotovoltaicRepository.getEnergy());
     return currentEnergy + (goalEnergy - currentEnergy) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -73,7 +73,7 @@ public class PhotovoltaicResource extends EGauge {
    * @return An updated pH value.
    */
   private double getPower() {
-    double currentPH = sToD(repository.getEnergy());
+    double currentPH = sToD(PhotovoltaicRepository.getEnergy());
     return currentPH + (goalPower - currentPH) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -82,7 +82,7 @@ public class PhotovoltaicResource extends EGauge {
    * @return An updated wattage value.
    */
   private double getWs() {
-    double currentWs = sToD(repository.getJoules());
+    double currentWs = sToD(PhotovoltaicRepository.getJoules());
     return currentWs + (goalWs - currentWs) / 100 + mt.nextDouble (-1000,1000);
   }
 }

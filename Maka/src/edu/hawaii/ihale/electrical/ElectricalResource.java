@@ -14,14 +14,14 @@ public class ElectricalResource extends EGauge {
   static final String energy = "energy", ws = "energyWs", power = "power";
   /** Local keys used by the resource.*/
   public String[] localKeys = {energy, power,ws};
-  private EnergyRepository repository;
+  //private EnergyRepository repository;
   /**
    * Constructor.
    */
   public ElectricalResource() {
     super();
     meterName = "Grid";
-    repository = EnergyRepository.getInstance();
+    //repository = EnergyRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
@@ -31,9 +31,9 @@ public class ElectricalResource extends EGauge {
    */
   @Override
   public void poll() {
-    repository.setEnergy(String.valueOf(getEnergy()));
-    repository.setPower(String.valueOf(getPower()));
-    repository.setJoules(String.valueOf(getWs()));
+    EnergyRepository.setEnergy(String.valueOf(getEnergy()));
+    EnergyRepository.setPower(String.valueOf(getPower()));
+    EnergyRepository.setJoules(String.valueOf(getWs()));
   }
   
   /**
@@ -57,7 +57,7 @@ public class ElectricalResource extends EGauge {
    * @return An updated pH value.
    */
   private double getEnergy() {
-    double currentEnergy = sToD(repository.getJoules());
+    double currentEnergy = sToD(EnergyRepository.getJoules());
     return currentEnergy + (goalEnergy - currentEnergy) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -66,7 +66,7 @@ public class ElectricalResource extends EGauge {
    * @return An updated pH value.
    */
   private double getPower() {
-    double currentPower = sToD(repository.getPower());
+    double currentPower = sToD(EnergyRepository.getPower());
     return currentPower + (goalPower - currentPower) / 100 + mt.nextDouble(-.05,.05);
   }
   
@@ -75,7 +75,7 @@ public class ElectricalResource extends EGauge {
    * @return An updated wattage value.
    */
   private double getWs() {
-    double currentWs = sToD(repository.getJoules());
+    double currentWs = sToD(EnergyRepository.getJoules());
     return currentWs + (goalWs - currentWs) / 100 + mt.nextDouble (-1000,1000);
   }
 }
