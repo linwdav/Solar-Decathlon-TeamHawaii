@@ -35,8 +35,8 @@
 				<include name="slf4j-simple.jar" />
 			</fileset>
 			<fileset dir="${basedir}/ihale-api">
-				<include name="ihale-api.jar" />
-				<include name="ihale-backend-example.jar" />
+				<include name="ihale-api" />
+				<include name="ihale-backend-naia.jar" />
 			</fileset>
 		</unjar>
 
@@ -47,7 +47,4 @@
 		</jar>
 		<delete dir="${tmp.dir}" />
 	</target>
-
-
 </project>
-

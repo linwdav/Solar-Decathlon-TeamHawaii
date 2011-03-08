@@ -13,7 +13,7 @@ public class PhotovoltaicsListener extends SystemStateListener {
   private Long timestamp;
   private Long power;
   private Long energy;
-  
+
   /**
    * Default Constructor.
    * 
@@ -25,7 +25,6 @@ public class PhotovoltaicsListener extends SystemStateListener {
     this.power = 0L;
     this.energy = 0L;
   }
-
 
   /**
    * Handles the a new entry. This is called by the backend api to update the values for the user
@@ -40,7 +39,7 @@ public class PhotovoltaicsListener extends SystemStateListener {
     this.power = entry.getLongValue("power");
     this.energy = entry.getLongValue("energy");
   }
-  
+
   /**
    * Gets the System Model time stamp.
    * 

@@ -28,7 +28,7 @@ import edu.hawaii.solardecathlon.page.lighting.RoomModel;
  */
 public class SolarDecathlonApplication extends WebApplication {
 
-  private static String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
+  private static String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
   private static SystemStateEntryDB DAO;
 
   private static AquaponicsListener aquaponicsListener;
@@ -107,7 +107,7 @@ public class SolarDecathlonApplication extends WebApplication {
     getDebugSettings().setComponentUseCheck(false);
 
     // Set mode = deployment
-    return Application.DEVELOPMENT;
+    return Application.DEPLOYMENT;
   }
 
   /**

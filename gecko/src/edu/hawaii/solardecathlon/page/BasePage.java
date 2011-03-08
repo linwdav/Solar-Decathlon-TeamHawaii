@@ -3,6 +3,7 @@ package edu.hawaii.solardecathlon.page;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
+import org.apache.wicket.Application;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Page;
 import org.apache.wicket.ResourceReference;
@@ -262,22 +263,27 @@ public class BasePage extends WebPage {
     });
 
     // TODO remove after integration.
-    add(new AjaxLink<String>("blackmagic") {
+    if (session.getProperty("ConfigType").equalsIgnoreCase(Application.DEVELOPMENT)) {
+      add(new AjaxLink<String>("blackmagic") {
 
-      /**
-       * Serial ID.
-       */
-      private static final long serialVersionUID = -5577357049183345374L;
+        /**
+         * Serial ID.
+         */
+        private static final long serialVersionUID = -5577357049183345374L;
 
-      /**
-       * Calls Black Magic.
-       * 
-       * @param target AjaxRequestTarget
-       */
-      @Override
-      public void onClick(AjaxRequestTarget target) {
-        new BlackMagic(SolarDecathlonApplication.getDAO());
-      }
-    });
+        /**
+         * Calls Black Magic.
+         * 
+         * @param target AjaxRequestTarget
+         */
+        @Override
+        public void onClick(AjaxRequestTarget target) {
+          new BlackMagic(SolarDecathlonApplication.getDAO());
+        }
+      });
+    }
+    else {
+      add(new WebMarkupContainer("blackmagic"));
+    }
   }
 }
