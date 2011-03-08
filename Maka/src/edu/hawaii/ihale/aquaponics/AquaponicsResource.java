@@ -133,7 +133,8 @@ public class AquaponicsResource extends Arduino {
    */
   private double getPH() {
     double currentPH = sToD(AquaponicsRepository.getpH());
-    return currentPH + (AquaponicsRepository.getGoalpH() - currentPH) / 100 + mt.nextDouble(-.05,.05);
+    return currentPH + (AquaponicsRepository.getGoalpH() - currentPH) 
+      / 100 + mt.nextDouble(-.05,.05);
   }
 
   /**
@@ -143,7 +144,8 @@ public class AquaponicsResource extends Arduino {
    */
   private double getOxygen() {
     double currentDO = sToD(AquaponicsRepository.getOxygen());
-    return currentDO + (AquaponicsRepository.getGoalOxygen() - currentDO) / 100 + mt.nextDouble(-.01,.01);
+    return currentDO + (AquaponicsRepository.getGoalOxygen() - currentDO) 
+      / 100 + mt.nextDouble(-.01,.01);
   }
   
   /**
@@ -152,7 +154,8 @@ public class AquaponicsResource extends Arduino {
    */
   private double getTemp() {
     double currentTemp = sToD(AquaponicsRepository.getTemp());
-    return currentTemp + (AquaponicsRepository.getGoalTemp() - currentTemp) / 100 + mt.nextDouble(-.1,.1);
+    return currentTemp + (AquaponicsRepository.getGoalTemp() - currentTemp) 
+      / 100 + mt.nextDouble(-.1,.1);
   }
 
   

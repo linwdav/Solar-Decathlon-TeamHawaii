@@ -12,7 +12,7 @@ import edu.hawaii.ihale.photovoltaics.PhotovoltaicResource;
  * @author Team Maka
  */
 public class Refresher {
-  static Timer time;
+  static Timer time = new Timer();;
   static AquaponicsResource aquaponics = new AquaponicsResource();
   static HVACResource hvac = new HVACResource();
   static PhotovoltaicResource solar = new PhotovoltaicResource();
@@ -33,15 +33,10 @@ public class Refresher {
    * Starts the refresher.
    * @param mils The delay between refreshing.
    */
-  @edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-    "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD",
-    justification = "It's ok, since the affected fields are static " +
-    "and this is the only way, except by calling a set(), that the values " + 
-    "will ever change.")
+
   public void start(long mils) {
     long delay = mils; //milliseconds
     long period = mils;
-    time = new Timer();
     time.scheduleAtFixedRate(new TimerTask() {
       public void run() {
         //lights should never change unless 

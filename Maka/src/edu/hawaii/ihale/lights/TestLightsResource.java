@@ -37,7 +37,7 @@ public class TestLightsResource {
     ClientResource client = new ClientResource(testUrl);  
     DomRepresentation r2 = new DomRepresentation(client.get());
     // make sure we get something
-    assertNotNull("Get works",r2);}
+    assertNotNull("Get works",r2); }
     
   }
 }

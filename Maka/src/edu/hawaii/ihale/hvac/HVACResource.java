@@ -108,7 +108,8 @@ public class HVACResource extends Arduino {
    */
   private double getTemp() {
     double currentTemp = sToD(HVACRepository.getTemp());
-    return currentTemp + (HVACRepository.getGoalTemp() - currentTemp) / 100 + mt.nextDouble(-.05,.05); 
+    return currentTemp + (HVACRepository.getGoalTemp() - currentTemp) 
+      / 100 + mt.nextDouble(-.05,.05); 
   }
   
   /**

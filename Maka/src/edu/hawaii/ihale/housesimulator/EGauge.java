@@ -31,8 +31,6 @@ public abstract class EGauge extends ServerResource {
   public static final MT mt = new MT(Calendar.MILLISECOND);
   protected Date date = new Date();
   /** Magic map that holds all the data.*/
-  @edu.umd.cs.findbugs.annotations.SuppressWarnings(value = "MS_SHOULD_BE_FINAL", 
-    justification = "data Map should definately not be final...")
   public static Map<String, Map<String,String>> data = 
     new ConcurrentHashMap<String, Map<String,String>>();
   /** The array of keys for use in the system.*/

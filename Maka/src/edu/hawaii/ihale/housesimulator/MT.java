@@ -200,16 +200,15 @@ public class MT {
 	*
 	* @param seed from constructor
 	*/
-	@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-	  "INT_VACUOUS_BIT_OPERATION", justification = "shortens the seed.")
+
 	private void randint_mt(int seed) {
 		mt = new int[N];
-		mt[0]= seed & 0xffffffff;   // replace initial value with seed\
+		mt[0]= seed;   // replace initial value with seed\
 		  							// in the default case, seed is already included in the initialization
 									// of mt[].
 		// use the seed with a function to set the rest of the values used in the generator
 		for (mti = 1; mti < N; mti++) {
-			mt[mti] = (69069 * mt[mti-1]) & 0xffffffff;
+			mt[mti] = (69069 * mt[mti-1]);
 		}
 		// mag01[x] = x * MATRIX_A  for x=0,1
 		mag01 = new int[2];

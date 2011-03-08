@@ -5,9 +5,7 @@ package edu.hawaii.ihale.photovoltaics;
  * @author Team Maka
  *
  */
-@edu.umd.cs.findbugs.annotations.SuppressWarnings(value =
-  "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD", 
-  justification = "Singleton data storage class.")
+
 public class PhotovoltaicRepository {
   private static PhotovoltaicRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;
