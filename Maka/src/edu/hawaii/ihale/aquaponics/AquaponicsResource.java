@@ -18,7 +18,7 @@ import edu.hawaii.ihale.housesimulator.Arduino;
 public class AquaponicsResource extends Arduino {
   //These hold the goal state defined by the user.
   static double goalPH = 7, goalTemp = 78, goalOxygen = .5;
-  static final String temp = "temp", pH = "pH", oxygen = "oxygen";
+  static final String temp = "temp", pH = "ph", oxygen = "oxygen";
   /** Local keys used by the resource.*/
   public String[] localKeys = {temp, pH, oxygen};
   //Singleton repository
@@ -74,7 +74,7 @@ public class AquaponicsResource extends Arduino {
     rootElement.appendChild(temperatureElement);
           
     Element phElement = doc.createElement("state");
-    phElement.setAttribute("key", "pH");
+    phElement.setAttribute("key", "ph");
     //System.err.println(repository.valuesMap.get(item));
     phElement.setAttribute("value", AquaponicsRepository.getpH());
     rootElement.appendChild(phElement);

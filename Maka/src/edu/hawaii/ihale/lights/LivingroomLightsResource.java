@@ -29,7 +29,7 @@ public class LivingroomLightsResource extends Arduino {
    */
   public LivingroomLightsResource() {
     super("lighting","arduino-5");
-    BathroomLightsRepository.getInstance();
+    LivingroomLightsRepository.getInstance();
     keys = localKeys; 
     list = Arrays.asList(keys);
   }
