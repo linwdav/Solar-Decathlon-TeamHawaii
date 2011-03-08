@@ -7,20 +7,13 @@
 
   <!-- Library versions -->
   <property name="junit.version" value="4.5" />
-  <property name="berkeleydb.version" value="4.1.7" />
   <property name="restlet.version" value="2.0.4" />
   <property name="findbugs.version" value="1.3.8" />
   <property name="findbugs.install.dir" location="${lib.dir}/findbugs" />
+  
   <target name="install-libraries" description="Install libraries needed for compilation" >
     <ivy:retrieve organisation="org.junit" module="junit" revision="${junit.version}" pattern="${lib.dir}/junit/[artifact].[ext]" sync="true" inline="true" conf="default" log="download-only" transitive="false" type="jar" />
     <path id="junit.path" location="${lib.dir}/junit/junit.jar" />
-
-    <ivy:retrieve organisation="com.sleepycat" module="berkeley-db-java" revision="${berkeleydb.version}" pattern="${lib.dir}/berkeleydb/[artifact].[ext]" sync="true" inline="true" conf="default" log="download-only" transitive="true" type="jar,javadoc" />
-    <path id="berkeleydb.path">
-      <fileset dir="${lib.dir}/berkeleydb">
-        <include name="*.jar" />
-      	</fileset>
-      	</path>
 
   	<ivy:retrieve module="findbugs" organisation="edu.umd.cs" revision="${findbugs.version}" pattern="${lib.dir}/findbugs/[artifact].[ext]" sync="true" inline="true" log="download-only" type="jar,report" /> 
     <path id="findbugs.path">
@@ -40,7 +33,7 @@
 
   <!-- Basic properties for this system. -->
   <property name="system.name" value="ihale-housesim-maka" />
-  <property name="system.main.class" value="edu.hawaii.ihale.api.hsim.HsimServer" />
+  <property name="system.main.class" value="edu.hawaii.ihale.housesimulator.HsimServer" />
   <property name="majorVersionNumber" value="1" />
   <property name="minorVersionNumber" value="1" />
   <tstamp>
@@ -52,14 +45,10 @@
   <!-- The compile classpath is useful to many tools. -->
   <path id="compile.classpath">
     <path refid="junit.path" />
-    <path refid="berkeleydb.path" />
   	<path refid="findbugs.path" />
     <path refid="restlet.path" />
   </path>
 
-
-	  	
-	  	
   <target name="compile" depends="install-ivy, install-libraries" description="Compiles the code and copies resource files to build.classes.dir">
     <!-- Now compile the code into build/classes -->
     <mkdir dir="${build.classes.dir}" />
