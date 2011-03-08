@@ -8,7 +8,7 @@ import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 //import edu.hawaii.ihale.backend.DataGatheringThread;
-//import edu.hawaii.ihale.backend.rest.IHaleServer;
+import edu.hawaii.ihale.backend.rest.IHaleServer;
 
 /**
  * This top-level class is required to specify the Wicket WebApplication.
@@ -21,11 +21,7 @@ import edu.hawaii.ihale.api.SystemStateEntryDB;
  * @author Chuan Lun Hung
  */
 public class SolarDecathlonApplication extends WebApplication {
-  
-  //private static final String NAIA_DB_CLASS_NAME = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
-  // private static final String HOIKE_DB_CLASS_NAME = "edu.hawaii.ihale.backend.rest.IHaleDAO";
-  private static final String BLACKMAGIC_DB_CLASS_NAME = "edu.hawaii.ihale.db.IHaleDB";
-
+    
   private static AquaponicsListener aquaponicsListener;
   private static HvacListener hvacListener;
   private static LightsListener lightsListener;
@@ -45,13 +41,13 @@ public class SolarDecathlonApplication extends WebApplication {
      * Choose 1, 2, or 3 below to test with different systems.
      */
     // 1. for integration with Naia backend
-    //String dbClassName = NAIA_DB_CLASS_NAME;
+    //String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
 
     // 2. for integration with Hoike backend
-    // String dbClassName = HOIKE_DB_CLASS_NAME;
+    String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
 
     // 3. for testing our frontend solely
-    String dbClassName = BLACKMAGIC_DB_CLASS_NAME;
+    //String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
 
     try {
       db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
@@ -76,17 +72,17 @@ public class SolarDecathlonApplication extends WebApplication {
      ***************************************************************/
     // 1. calling the backend naia thread to get readings from sensors
     // DataGatheringThread dataGathering = new DataGatheringThread(10000);
-    // // Create Thread
+    // // // Create Thread
     // Thread dataGatheringThread = new Thread(dataGathering);
-    // // Start Thread
+    // // // Start Thread
     // dataGatheringThread.start();
 
-    // 2. calling the backend Hoike thread to get readings from sensors
-    // IHaleServer iHaleServer = new IHaleServer(10000, Jetty.getSimulationName());
-    // // Create Thread
-    // Thread iHaleServerThread = new Thread(iHaleServer);
-    // // Start Thread
-    // iHaleServerThread.start();
+     //2. calling the backend Hoike thread to get readings from sensors
+     IHaleServer iHaleServer = new IHaleServer(10000);
+     // Create Thread
+     Thread iHaleServerThread = new Thread(iHaleServer);
+     // Start Thread
+     iHaleServerThread.start();
 
     // 3. call BlackMagic
     // Please modify the code in Header.java

@@ -33,10 +33,11 @@ public class Energy extends Header {
   private static final String EGAUGE_1 = "egauge-1";
   private static final String EGAUGE_2 = "egauge-2";
   private static final String PHOTOVOLTAICS = "photovoltaics";
-  private static final String POWER = "power";
+  private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
-
+  private static final String YAXIS = "8000.0";
+  
   /**
    * MarkupContainer for all graphs.
    */
@@ -80,7 +81,7 @@ public class Energy extends Header {
 
       @Override
       public void onClick() {
-        try {
+        try {          
           setResponsePage(new Energy());
         }
         catch (Exception e) {
@@ -101,8 +102,7 @@ public class Energy extends Header {
     currentConsumption.setEscapeModelStrings(false);
     currentGeneration.setEscapeModelStrings(false);
 
-    setCurrentPower(currentConsumption, SolarDecathlonApplication.getElectrical().getPower());
-    setCurrentPower(currentGeneration, SolarDecathlonApplication.getPhotovoltaic().getPower());
+    setCurrentEnergy(currentConsumption, currentGeneration);
     add(currentConsumption);
     add(currentGeneration);
 
@@ -112,6 +112,7 @@ public class Energy extends Header {
       @Override
       public void onClick() {
         try {
+          properties.put(PAGE_DISPLAY, 4);
           setResponsePage(new Temperature());
         }
         catch (Exception e) {
@@ -126,6 +127,7 @@ public class Energy extends Header {
       @Override
       public void onClick() {
         try {
+          properties.put(PAGE_DISPLAY, 2);
           setResponsePage(new AquaPonics());
         }
         catch (Exception e) {
@@ -140,6 +142,7 @@ public class Energy extends Header {
       @Override
       public void onClick() {
         try {
+          properties.put(PAGE_DISPLAY, 3);
           setResponsePage(new Lighting());
         }
         catch (Exception e) {
@@ -155,29 +158,35 @@ public class Energy extends Header {
   } // End Constructor
 
   /**
-   * Set the label for remaining power on this page.
+   * Set the label for energy consumption and generation on this page.
    * 
-   * @param current Label to be set.
-   * @param power value to be set too.
+   * @param consumption The current energy consumption label.
+   * @param generation The current energy generation label.
    */
-  public static void setCurrentPower(Label current, long power) {
+  public static void setCurrentEnergy(Label consumption, Label generation) {
     String fontOpenTag;
-    String fontCloseTag;
-    if (power < 1000) {
-      fontOpenTag = "<font color=\"red\">";
-      fontCloseTag = "</font>";
+    String fontCloseTag = "</font>";
+    String labelValue;
+    
+    if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > 
+          SolarDecathlonApplication.getElectrical().getEnergy()) {
+      fontOpenTag = "<font color=\"green\">";
     }
-    else if (power >= 1000 && power <= 1200) {
-      fontOpenTag = "<font color=\"#FF9900\">";
-      fontCloseTag = "</font>";
+    else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < 
+              SolarDecathlonApplication.getElectrical().getEnergy()) {
+      fontOpenTag = "<font color=\"red\">";
     }
     else {
-      fontOpenTag = "<font color=\"green\">";
-      fontCloseTag = "</font>";
+      fontOpenTag = "<font color=\"#FF9900\">";
     }
 
-    String labelValue = fontOpenTag + power + " kWh" + fontCloseTag;
-    current.setDefaultModelObject(labelValue);
+    labelValue = fontOpenTag + SolarDecathlonApplication.getPhotovoltaic().getEnergy()
+                  + " kWh" + fontCloseTag;
+    generation.setDefaultModelObject(labelValue);
+    
+    labelValue = fontOpenTag + SolarDecathlonApplication.getElectrical().getEnergy()
+                  + " kWh" + fontCloseTag;
+    consumption.setDefaultModelObject(labelValue);
 
   }
 
@@ -193,10 +202,9 @@ public class Energy extends Header {
    */
   private void setDayGraph(WebMarkupContainer wmc) {
     DecimalFormat df = new DecimalFormat("#.##");
-    String yAxis = "50.0";
-    // Google charts yAxis is always from 0-100 even if y-axis is different
+    // Google charts YAXIS is always from 0-100 even if y-axis is different
     // so have to create conversion for values determined later on.
-    double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(YAXIS) / 100.0));
     long usage = 0;
     Calendar current = Calendar.getInstance();
     int currentHour = current.get(Calendar.HOUR_OF_DAY);
@@ -249,7 +257,7 @@ public class Energy extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mHourBegin) - (twoHours * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mHourBegin) - (twoHours * i)))) {
-          cValue += consumptionList.get(j).getLongValue(POWER);
+          cValue += consumptionList.get(j).getLongValue(ENERGY);
           cAverage++;
         }
 
@@ -258,7 +266,7 @@ public class Energy extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mHourBegin) - (twoHours * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mHourBegin) - (twoHours * i)) {
-          gValue += generationList.get(j).getLongValue(POWER);
+          gValue += generationList.get(j).getLongValue(ENERGY);
           gAverage++;
         }
 
@@ -301,7 +309,7 @@ public class Energy extends Header {
     System.out.println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: "
         + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + yAxis
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + YAXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
@@ -318,8 +326,7 @@ public class Energy extends Header {
    */
   private void setWeekGraph(WebMarkupContainer wmc) {
     DecimalFormat df = new DecimalFormat("#.##");
-    String yAxis = "100.0";
-    double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(YAXIS) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
@@ -368,7 +375,7 @@ public class Energy extends Header {
             ((time - mSinceBeginning) - (mInADay * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > 
             ((time - mSinceBeginning) - (mInADay * i)))) {
-          cValue += consumptionList.get(j).getLongValue(POWER);
+          cValue += consumptionList.get(j).getLongValue(ENERGY);
           cAverage++;
         }
 
@@ -377,7 +384,7 @@ public class Energy extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mSinceBeginning) - (mInADay * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mSinceBeginning) - (mInADay * i)) {
-          gValue += generationList.get(j).getLongValue(POWER);
+          gValue += generationList.get(j).getLongValue(ENERGY);
           gAverage++;
         }
 
@@ -420,7 +427,7 @@ public class Energy extends Header {
     System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
         + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + yAxis
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + YAXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
@@ -437,8 +444,7 @@ public class Energy extends Header {
    */
   private void setMonthGraph(WebMarkupContainer wmc) {
     DecimalFormat df = new DecimalFormat("#.##");
-    String yAxis = "100.0";
-    double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(YAXIS) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
@@ -450,7 +456,7 @@ public class Energy extends Header {
     String xAxis = "";
     StringBuffer xBuf = new StringBuffer();
     for (int i = 6; i >= 1; i--) {
-      if ((currentDay - (i * 5)) < 0) {
+      if ((currentDay - (i * 5)) <= 0) {
         xBuf.append((months[currentMonth - 1] - (i * 5 - currentDay)) + "|");
       }
       else {
@@ -493,7 +499,7 @@ public class Energy extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mFive * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mFive * i)))) {
-          cValue += consumptionList.get(j).getLongValue(POWER);
+          cValue += consumptionList.get(j).getLongValue(ENERGY);
           cAverage++;
         }
 
@@ -502,7 +508,7 @@ public class Energy extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mToday) - (mFive * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mToday) - (mFive * i)) {
-          gValue += generationList.get(j).getLongValue(POWER);
+          gValue += generationList.get(j).getLongValue(ENERGY);
           gAverage++;
         }
 
@@ -545,7 +551,7 @@ public class Energy extends Header {
     System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
         + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + yAxis
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + YAXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"

@@ -11,6 +11,11 @@ import edu.hawaii.ihale.api.SystemStateListener;
  * @author Chuan Lun Hung
  */
 public class AquaponicsListener extends SystemStateListener {
+  
+  private static final String SYSTEM_NAME = "aquaponics";
+  private static final String TEMPERATURE_KEY = "temp";;
+  private static final String PH_KEY = "ph";
+  private static final String OXYGEN_KEY = "oxygen";
 
   private long temp = -1;
   private double pH = -1.0;
@@ -20,7 +25,7 @@ public class AquaponicsListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Aquaponics.
    */
   public AquaponicsListener() {
-    super("aquaponics");
+    super(SYSTEM_NAME);
   }
 
   /**
@@ -33,14 +38,14 @@ public class AquaponicsListener extends SystemStateListener {
     System.out.println("Something just happened in Aquaponics: " + entry);
 
     // update instances
-    if (entry.getLongValue("temp") != -1) {
-      temp = entry.getLongValue("temp");
+    if (entry.getLongValue(TEMPERATURE_KEY) != -1) {
+      temp = entry.getLongValue(TEMPERATURE_KEY);
     }
-    if (entry.getDoubleValue("ph") != -1.0) {
-      pH = entry.getDoubleValue("ph");
+    if (entry.getDoubleValue(PH_KEY) != -1.0) {
+      pH = entry.getDoubleValue(PH_KEY);
     }
-    if (entry.getDoubleValue("oxygen") != -1.0) {
-      oxygen = entry.getDoubleValue("oxygen");
+    if (entry.getDoubleValue(OXYGEN_KEY) != -1.0) {
+      oxygen = entry.getDoubleValue(OXYGEN_KEY);
     }
   }
 

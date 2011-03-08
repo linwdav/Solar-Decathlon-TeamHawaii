@@ -1,8 +1,5 @@
 package edu.hawaii.ihale.frontend;
 
-import org.apache.wicket.ResourceReference;
-import org.apache.wicket.markup.html.image.Image;
-
 /**
  * The lighting page.
  * 
@@ -18,12 +15,8 @@ public class Lighting extends Header {
   /**
    * Layout of page.
    */
-  public Lighting() {
-
-    // Add image
-    add(new Image("lighting-graph", new ResourceReference(Header.class,
-        "images/lighting-graph.png")));
-
+  public Lighting() {    
+    // More to come
   }
 
 }

@@ -387,7 +387,7 @@ public class AquaPonics extends Header {
     graphURL =
         "http://chart.apis.google.com/chart" + "?chxl=0:|Temp|pH|Oxygen" + "&chxt=x,y"
             + "&chbh=a,5,15" + "&chs=300x200" + "&cht=bvg" + "&chco=008000,FF9900"
-            + "&chd=t:73,6.8,2|" + tempValue + "," + phValue + "," + oxygenValue
+            + "&chd=t:73,6.8,5|" + tempValue + "," + phValue + "," + oxygenValue
             + "&chdl=Recommended|Actual" + "&chdlp=t";
     wmc.add(new AttributeModifier("src", true, new Model<String>(graphURL)));
 

@@ -31,7 +31,7 @@ public class Header extends WebPage {
 
   // Date format for the time displayed at the top right corner.
   private static final String DATE_FORMAT = "MMMM d, yyyy  hh:mm a";
-  private static final String PAGE_DISPLAY = "ActivePage";
+  static final String PAGE_DISPLAY = "ActivePage";
 
   // Variables to allow the active tab to change.
   protected int activePage = 0;
@@ -75,12 +75,12 @@ public class Header extends WebPage {
      * uncomment this section to test with BlackMagic Note: after uncommenting, you have to comment
      * out the thread in the Application class and use the matching dbClassName for BlackMagic
      *******************************************************************************************/
-    try {
-      new BlackMagic(SolarDecathlonApplication.db);
-    }
-    catch (Exception e1) {
-      e1.printStackTrace();
-    }
+    // try {
+    // new BlackMagic(SolarDecathlonApplication.db);
+    // }
+    // catch (Exception e1) {
+    // e1.printStackTrace();
+    // }
 
     insideTemperatureHeader.setDefaultModelObject(String.valueOf(SolarDecathlonApplication
         .getHvac().getTemp()));

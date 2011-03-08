@@ -56,9 +56,11 @@ public class Dashboard extends Header {
   private static final String EGAUGE_1 = "egauge-1";
   private static final String EGAUGE_2 = "egauge-2";
   private static final String PHOTOVOLTAICS = "photovoltaics";
-  private static final String POWER = "power";
+  private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
+  private static final String yAxis = "8000.0";
+  //private static final String negativeYAxis = "-500";
 
   private static final String classTagName = "class";
 
@@ -195,7 +197,6 @@ public class Dashboard extends Header {
    */
   private void setDayGraph(WebMarkupContainer wmc) {
     DecimalFormat df = new DecimalFormat("#.##");
-    String yAxis = "50.0";
     // Google charts yAxis is always from 0-100 even if y-axis is different
     // so have to create conversion for values determined later on.
     double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
@@ -251,7 +252,7 @@ public class Dashboard extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mHourBegin) - (twoHours * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mHourBegin) - (twoHours * i)))) {
-          cValue += consumptionList.get(j).getLongValue(POWER);
+          cValue += consumptionList.get(j).getLongValue(ENERGY);
           cAverage++;
         }
 
@@ -260,7 +261,7 @@ public class Dashboard extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mHourBegin) - (twoHours * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mHourBegin) - (twoHours * i)) {
-          gValue += generationList.get(j).getLongValue(POWER);
+          gValue += generationList.get(j).getLongValue(ENERGY);
           gAverage++;
         }
 
@@ -323,7 +324,6 @@ public class Dashboard extends Header {
    */
   private void setWeekGraph(WebMarkupContainer wmc) {
     DecimalFormat df = new DecimalFormat("#.##");
-    String yAxis = "100.0";
     double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
@@ -373,7 +373,7 @@ public class Dashboard extends Header {
             ((time - mSinceBeginning) - (mInADay * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > 
             ((time - mSinceBeginning) - (mInADay * i)))) {
-          cValue += consumptionList.get(j).getLongValue(POWER);
+          cValue += consumptionList.get(j).getLongValue(ENERGY);
           cAverage++;
         }
 
@@ -382,7 +382,7 @@ public class Dashboard extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mSinceBeginning) - (mInADay * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mSinceBeginning) - (mInADay * i)) {
-          gValue += generationList.get(j).getLongValue(POWER);
+          gValue += generationList.get(j).getLongValue(ENERGY);
           gAverage++;
         }
 
@@ -445,7 +445,6 @@ public class Dashboard extends Header {
    */
   private void setMonthGraph(WebMarkupContainer wmc) {
     DecimalFormat df = new DecimalFormat("#.##");
-    String yAxis = "100.0";
     double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
@@ -458,7 +457,7 @@ public class Dashboard extends Header {
     String xAxis = "";
     StringBuffer xBuf = new StringBuffer();
     for (int i = 6; i >= 1; i--) {
-      if ((currentDay - (i * 5)) < 0) {
+      if ((currentDay - (i * 5)) <= 0) {
         xBuf.append((months[currentMonth - 1] - (i * 5 - currentDay)) + "|"); 
       }
       else {
@@ -501,7 +500,7 @@ public class Dashboard extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mFive * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mFive * i)))) {
-          cValue += consumptionList.get(j).getLongValue(POWER);
+          cValue += consumptionList.get(j).getLongValue(ENERGY);
           cAverage++;
         }
 
@@ -510,7 +509,7 @@ public class Dashboard extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mToday) - (mFive * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mToday) - (mFive * i)) {
-          gValue += generationList.get(j).getLongValue(POWER);
+          gValue += generationList.get(j).getLongValue(ENERGY);
           gAverage++;
         }
 

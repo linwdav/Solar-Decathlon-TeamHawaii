@@ -31,7 +31,7 @@ public class Temperature extends Header {
   private static final long serialVersionUID = 1L;
 
   // desired room temperature range
-  private static final long TEMPERATURE_RANGE_START = 70L;
+  private static final long TEMPERATURE_RANGE_START = 60L;
   private static final long TEMPERATURE_RANGE_END = 80L;
 
   // temperature labels
@@ -148,13 +148,14 @@ public class Temperature extends Header {
       // support serializable
       private static final long serialVersionUID = 1L;
 
-      /** Display the page again, now with the updated values of field1 and field2. */
+      /** Provide user feeback after they set a new desired temperature */
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         // do a put command
         List<String> list = new ArrayList<String>();
         String temp = (String) textField.getDefaultModelObject();
         long tempLong = 0L;
+        // ensure textfield contatins all digits
         try {
           tempLong = Long.parseLong(temp);
         }
@@ -166,6 +167,7 @@ public class Temperature extends Header {
           target.addComponent(textField);
           return;
         }
+        // avoid user to do multiple doCommand with the same temperature.
         if (tempLong == desiredTemp) {
           textField.setDefaultModelObject("");
           feedback.setDefaultModelObject("<font color=\"#FF9900\">Unnecessary Change:<br />"
@@ -174,12 +176,14 @@ public class Temperature extends Header {
           target.addComponent(feedback);
           return;
         }
+        // avoid user set too low or too high temperature
         if (tempLong < TEMPERATURE_RANGE_START || tempLong > TEMPERATURE_RANGE_END) {
           textField.setDefaultModelObject("");
           feedback
               .setDefaultModelObject("<font color=\"red\">Failure:<br />Recommanded temperature: "
                   + TEMPERATURE_RANGE_START + "-" + TEMPERATURE_RANGE_END + "F&deg</font>");
         }
+        // else do doCommand
         else {
           desiredTemp = tempLong;
           list.add(temp);
