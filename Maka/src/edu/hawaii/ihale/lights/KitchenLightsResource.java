@@ -36,7 +36,7 @@ public class KitchenLightsResource extends Arduino {
 
   @Override
   public void poll() {
-    BathroomLightsRepository.setLevel(String.valueOf(mt.nextDouble(0,100)));
+    KitchenLightsRepository.setLevel(String.valueOf(mt.nextDouble(0,100)));
   }
   /**
    * Returns the Contact instance requested by the URL. 
@@ -73,6 +73,6 @@ public class KitchenLightsResource extends Arduino {
   }
   @Override
   public void set(String key, String value) {
-    BathroomLightsRepository.setLevel(value);
+    KitchenLightsRepository.setLevel(value);
   }
 }

@@ -6,6 +6,9 @@ import edu.hawaii.ihale.aquaponics.AquaponicsResource;
 import edu.hawaii.ihale.electrical.ElectricalResource;
 import edu.hawaii.ihale.hvac.HVACResource;
 import edu.hawaii.ihale.lights.BathroomLightsResource;
+import edu.hawaii.ihale.lights.DiningroomLightsResource;
+import edu.hawaii.ihale.lights.KitchenLightsResource;
+import edu.hawaii.ihale.lights.LivingroomLightsResource;
 import edu.hawaii.ihale.photovoltaics.PhotovoltaicResource;
 /**
  * An external timer class that updates all resources periodically.
@@ -18,9 +21,9 @@ public class Refresher {
   static PhotovoltaicResource solar = new PhotovoltaicResource();
   static ElectricalResource electrical = new ElectricalResource();
   static BathroomLightsResource bathroomLights = new BathroomLightsResource();
-  static BathroomLightsResource kitchenLights = new BathroomLightsResource();
-  static BathroomLightsResource diningroomLights = new BathroomLightsResource();
-  static BathroomLightsResource livingroomLights = new BathroomLightsResource();
+  static KitchenLightsResource kitchenLights = new KitchenLightsResource();
+  static DiningroomLightsResource diningroomLights = new DiningroomLightsResource();
+  static LivingroomLightsResource livingroomLights = new LivingroomLightsResource();
 
   /**
    * Constructor.
