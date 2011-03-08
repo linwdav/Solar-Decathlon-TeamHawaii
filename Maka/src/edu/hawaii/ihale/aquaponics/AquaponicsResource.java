@@ -98,15 +98,15 @@ public class AquaponicsResource extends Arduino {
   public void set(String key, String val) {
     double v = sToD(val);
     if (key.equalsIgnoreCase(temp)) {
-      AquaponicsResource.goalTemp = v;
+      AquaponicsRepository.setGoalTemp(v);
       System.out.println("Temp set to" + goalTemp);
     }
     else if (key.equalsIgnoreCase(pH)) {
-      AquaponicsResource.goalPH = v;
+      AquaponicsRepository.setGoalpH(v);
       System.out.println("pH set to" + goalPH);
     }
     else if (key.equalsIgnoreCase(oxygen)) {
-      AquaponicsResource.goalOxygen = v;
+      AquaponicsRepository.setGoalOxygen(v);
       System.out.println("Oxygen set to" + goalOxygen);
     }
   }
@@ -133,7 +133,7 @@ public class AquaponicsResource extends Arduino {
    */
   private double getPH() {
     double currentPH = sToD(AquaponicsRepository.getpH());
-    return currentPH + (goalPH - currentPH) / 100 + mt.nextDouble(-.05,.05);
+    return currentPH + (AquaponicsRepository.getGoalpH() - currentPH) / 100 + mt.nextDouble(-.05,.05);
   }
 
   /**
@@ -143,7 +143,7 @@ public class AquaponicsResource extends Arduino {
    */
   private double getOxygen() {
     double currentDO = sToD(AquaponicsRepository.getOxygen());
-    return currentDO + (goalOxygen - currentDO) / 100 + mt.nextDouble(-.01,.01);
+    return currentDO + (AquaponicsRepository.getGoalOxygen() - currentDO) / 100 + mt.nextDouble(-.01,.01);
   }
   
   /**
@@ -152,7 +152,7 @@ public class AquaponicsResource extends Arduino {
    */
   private double getTemp() {
     double currentTemp = sToD(AquaponicsRepository.getTemp());
-    return currentTemp + (goalTemp - currentTemp) / 100 + mt.nextDouble(-.1,.1);
+    return currentTemp + (AquaponicsRepository.getGoalTemp() - currentTemp) / 100 + mt.nextDouble(-.1,.1);
   }
 
   

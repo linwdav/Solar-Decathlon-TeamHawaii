@@ -9,6 +9,7 @@ public class HVACRepository {
   private static HVACRepository instance = null;
   //private double goalPH = 7, goalTemp = 78, goalOxygen = .5;
   private static String temp;
+  private static double goalTemp;
   /**
    * Constructor.
    */
@@ -43,5 +44,19 @@ public class HVACRepository {
    */
   public static synchronized String getTemp() {
     return "" + Double.valueOf(temp) + 10;
+  }
+
+  /**
+   * @param goalTemp the goalTemp to set
+   */
+  public static void setGoalTemp(double goalTemp) {
+    HVACRepository.goalTemp = goalTemp;
+  }
+
+  /**
+   * @return the goalTemp
+   */
+  public static double getGoalTemp() {
+    return goalTemp;
   }
 }
