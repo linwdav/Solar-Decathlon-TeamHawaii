@@ -42,14 +42,14 @@ public class SimulatorInterface {
 
       // URI. e.g., http://localhost:3000/
       String uri = location.getValue();
- 
+
       // Parse the system name
       String[] temp = device.split("-");
 
       // System name
-      String deviceType;
+      String deviceType = "";
 
-      // System name/ device type
+      // System name/device type
       if ("pv".equals(temp[0])) {
         deviceType = "photovoltaics";
       }
@@ -115,14 +115,19 @@ public class SimulatorInterface {
       entry = XmlMethods.parseXML(doc);
     }
 
-    // Printing Debugging
-    System.out.println(entry);
+    if (entry == null) {
+      System.out.println("Entry is null!");
+    }
+    else {
+      // Printing Debugging
+      System.out.println (entry);
 
-    // Set the Device Type
-    db.setDevice(deviceType);
+      // Set the Device Type
+      db.setDevice(deviceType);
 
-    // Insert information into database
-    db.putEntry(entry);
+      // Insert information into database
+      db.putEntry(entry);
+    }
 
   } // End Load System State
 

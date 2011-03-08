@@ -132,7 +132,7 @@ public class SystemStateEntryDAO implements SystemStateEntryDB {
     // Generate the URL to send the created XML for controls
     String url = uri + systemName + "/" + valueTitle;
 
-    System.out.println("URL: " + url);
+    System.out.println(url);
 
     try {
       // Send the XML representation of the command to the appropriate device

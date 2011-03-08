@@ -98,9 +98,11 @@ public class XmlMethods {
       for (int j = 0; j < 2; j++) {
         if (j == 0) {
           name = labels.item(j).getTextContent();
+
         }
         else {
           value = labels.item(j).getTextContent();
+
           if ("ph".equalsIgnoreCase(name)) {
             entry.putDoubleValue("ph", Double.parseDouble(value));
           }
@@ -169,14 +171,20 @@ public class XmlMethods {
           System.out.println(schild + eqString + cval);
           timestamp = Long.parseLong(cval.trim());
         }
+        else if ("meter".equalsIgnoreCase(schild)) {
 
-        // Create new SystemStateEntry object
-        entry = new SystemStateEntry(systemName, deviceName, timestamp);
+          // Create new SystemStateEntry object
+          entry = new SystemStateEntry(systemName, deviceName, timestamp);
 
-        // Parse and add Power and Energy value from the PV system (Generation)
-        processEnergyPower(entry, "Solar", child);
-        // Parse and add Power and Energy value from the Electrical (Consumption)
-        processEnergyPower(entry, "Grid", child);
+          if ("photovoltaics".equalsIgnoreCase(systemName)) {
+            // Parse and add Power and Energy value from the PV system (Generation)
+            processEnergyPower(entry, "Solar", child);
+          }
+          else if ("electrical".equalsIgnoreCase(systemName)) {
+            // Parse and add Power and Energy value from the Electrical (Consumption)
+            processEnergyPower(entry, "Grid", child);
+          }
+        }
 
       } // end if (child Node Type)
     } // end for loop (children)
