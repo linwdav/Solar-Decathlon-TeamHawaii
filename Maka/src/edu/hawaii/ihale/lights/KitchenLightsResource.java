@@ -64,7 +64,7 @@ public class KitchenLightsResource extends Arduino {
     Element levelElement = doc.createElement("state");
     levelElement.setAttribute("key", "level");
     //System.err.println(repository.valuesMap.get(item));
-    levelElement.setAttribute("value", BathroomLightsRepository.getLevel());
+    levelElement.setAttribute("value", KitchenLightsRepository.getLevel());
     rootElement.appendChild(levelElement);
 
     doc.appendChild(rootElement);
