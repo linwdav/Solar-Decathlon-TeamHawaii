@@ -28,6 +28,7 @@ public class AquaPonics extends Header {
   private static final String classTagName = "class";
   private static final String styleTagName = "style";
 
+  private static Label tColor;
   private static final String ALERT_MESSAGE = "<font color=\"red\">(ALERT)</font>";
   private static final String WARNG_MESSAGE = "<font color=\"#FF9900\">(WARNG)</font>";
 
@@ -55,7 +56,7 @@ public class AquaPonics extends Header {
    */
   WebMarkupContainer graph = new WebMarkupContainer("graphImage");
 
-  static Label tempStatus = new Label("tempStatus", "");
+  //static Label tempStatus = new Label("tempStatus", "");
   static Label phStatus = new Label("PhStatus", "");
   static Label oxygenStatus = new Label("OxygenStatus", "");
 
@@ -69,21 +70,76 @@ public class AquaPonics extends Header {
    */
   public AquaPonics() throws Exception {
 
-    DecimalFormat df = new DecimalFormat("#.##");
-    Label temp =
-        new Label("Temp", String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp()));
-    Label ph =
-        new Label("PH",
-            String.valueOf(df.format(SolarDecathlonApplication.getAquaponics().getPH())));
-    Label oxygen =
-        new Label("Oxygen", String.valueOf(df.format(SolarDecathlonApplication.getAquaponics()
-            .getOxygen())));
+    Model<String> tempStatus = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public String getObject() {
+        long value = SolarDecathlonApplication.getAquaponics().getTemp();
+        String status;
+        if (value == TEMPERATRUE_RANGE_START || value == TEMPERATRUE_RANGE_END) {
+          status = WARNG_MESSAGE;
+        }
+        else if (value < TEMPERATRUE_RANGE_START || value > TEMPERATRUE_RANGE_END) {
+          status = ALERT_MESSAGE;
+        }
+        else {
+          status = "";
+        }
+        return status;
+      }
+    };
+    
+    Label tStatus = new Label("tempStatus", tempStatus);
+    
+    Model<String> temp = new Model<String>() {
+        
+        private static final long serialVersionUID = 1L;
+        
+      @Override
+      public String getObject() {
+        String temp = String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp());
+        return temp;
+      }
+    };
 
-    setTempStatusColor(SolarDecathlonApplication.getAquaponics().getTemp());
+    Model<String> ph = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public String getObject() {
+        String ph = String.valueOf(SolarDecathlonApplication.getAquaponics().getPH());
+        return ph;
+      }
+    };
+
+    Model<String> oxygen = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public String getObject() {
+        String oxygen = String.valueOf(SolarDecathlonApplication.getAquaponics().getOxygen());
+        return oxygen;
+      }
+    };
+    // DecimalFormat df = new DecimalFormat("#.##");
+    // Label temp =
+    // new Label("Temp", String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp()));
+    // Label ph =
+    // new Label("PH",
+    // String.valueOf(df.format(SolarDecathlonApplication.getAquaponics().getPH())));
+    // Label oxygen =
+    // new Label("Oxygen", String.valueOf(df.format(SolarDecathlonApplication.getAquaponics()
+    // .getOxygen())));
+
+    //setTempStatusColor(SolarDecathlonApplication.getAquaponics().getTemp());
     setPHStatusColor(SolarDecathlonApplication.getAquaponics().getPH());
     setOxygenStatusColor(SolarDecathlonApplication.getAquaponics().getOxygen());
-
-    tempStatus.setEscapeModelStrings(false);
+    
+    tStatus.setEscapeModelStrings(false);
     phStatus.setEscapeModelStrings(false);
     oxygenStatus.setEscapeModelStrings(false);
 
@@ -112,6 +168,29 @@ public class AquaPonics extends Header {
       }
     };
 
+    Model<String> tempColor = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public String getObject() {
+        long value = SolarDecathlonApplication.getAquaponics().getTemp();
+        String color;
+        if(value == TEMPERATRUE_RANGE_END || value == TEMPERATRUE_RANGE_START) {
+          color = "background-color:#FF9900;";
+        }
+        else if (value < TEMPERATRUE_RANGE_START || value > TEMPERATRUE_RANGE_END) {
+          color = "background-color:red;";
+        }
+        else {
+          color = "background-color:green;";
+        }
+        return color;
+      }
+    };
+    
+    tColor = new Label("tcolor", tempColor);
+    
     // Add button to switch to statistics view
     add(statsButton);
 
@@ -127,8 +206,8 @@ public class AquaPonics extends Header {
     WebMarkupContainerWithAssociatedMarkup tempDiv4 =
         new WebMarkupContainerWithAssociatedMarkup("TempDiv4");
 
-    if (Long.parseLong((String) temp.getDefaultModelObject()) > TEMPERATRUE_RANGE_END
-        || Long.parseLong((String) temp.getDefaultModelObject()) < TEMPERATRUE_RANGE_START) {
+//    if (Long.parseLong((String) temp.getObject()) > TEMPERATRUE_RANGE_END
+//        || Long.parseLong((String) temp.getObject()) < TEMPERATRUE_RANGE_START) {
 
       tempDiv.add(new AbstractBehavior() {
 
@@ -139,39 +218,39 @@ public class AquaPonics extends Header {
 
         public void onComponentTag(Component component, ComponentTag tag) {
           tag.put(classTagName, boxTagName);
-          tag.put(styleTagName, "background-color:red");
+          tag.put(styleTagName, tColor.getDefaultModelObjectAsString());
         }
       });
-    }
-    else if (Long.parseLong((String) temp.getDefaultModelObject()) == TEMPERATRUE_RANGE_END
-        || Long.parseLong((String) temp.getDefaultModelObject()) == TEMPERATRUE_RANGE_START) {
-      tempDiv.add(new AbstractBehavior() {
-
-        /**
-         * Add attribute tags to the div.
-         */
-        private static final long serialVersionUID = 1L;
-
-        public void onComponentTag(Component component, ComponentTag tag) {
-          tag.put(classTagName, boxTagName);
-          tag.put(styleTagName, "background-color:#FF9900;");
-        }
-      });
-    }
-    else {
-      tempDiv.add(new AbstractBehavior() {
-
-        /**
-         * Add attribute tags to the div.
-         */
-        private static final long serialVersionUID = 1L;
-
-        public void onComponentTag(Component component, ComponentTag tag) {
-          tag.put(classTagName, boxTagName);
-          tag.put(styleTagName, "background-color:green");
-        }
-      });
-    }
+//    }
+//    else if (Long.parseLong((String) temp.getObject()) == TEMPERATRUE_RANGE_END
+//        || Long.parseLong((String) temp.getObject()) == TEMPERATRUE_RANGE_START) {
+//      tempDiv.add(new AbstractBehavior() {
+//
+//        /**
+//         * Add attribute tags to the div.
+//         */
+//        private static final long serialVersionUID = 1L;
+//
+//        public void onComponentTag(Component component, ComponentTag tag) {
+//          tag.put(classTagName, boxTagName);
+//          tag.put(styleTagName, tColor);
+//        }
+//      });
+//    }
+//    else {
+//      tempDiv.add(new AbstractBehavior() {
+//
+//        /**
+//         * Add attribute tags to the div.
+//         */
+//        private static final long serialVersionUID = 1L;
+//
+//        public void onComponentTag(Component component, ComponentTag tag) {
+//          tag.put(classTagName, boxTagName);
+//          tag.put(styleTagName, tColor);
+//        }
+//      });
+//    }
 
     tempDiv2.add(new AbstractBehavior() {
 
@@ -212,8 +291,8 @@ public class AquaPonics extends Header {
 
     tempDiv2.add(tempDiv3);
 
-    tempDiv4.add(temp);
-    tempDiv4.add(tempStatus);
+    tempDiv4.add(new Label("Temp", temp));
+    tempDiv4.add(tStatus);
 
     tempDiv2.add(tempDiv4);
     tempDiv.add(tempDiv2);
@@ -241,8 +320,8 @@ public class AquaPonics extends Header {
       }
     });
 
-    if (Double.parseDouble((String) ph.getDefaultModelObject()) < PH_RANGE_END
-        && Double.parseDouble((String) ph.getDefaultModelObject()) > PH_RANGE_START) {
+    if (Double.parseDouble((String) ph.getObject()) < PH_RANGE_END
+        && Double.parseDouble((String) ph.getObject()) > PH_RANGE_START) {
       phOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -256,8 +335,8 @@ public class AquaPonics extends Header {
         }
       });
     }
-    else if (Double.parseDouble((String) ph.getDefaultModelObject()) == PH_RANGE_END
-        || Double.parseDouble((String) ph.getDefaultModelObject()) == PH_RANGE_START) {
+    else if (Double.parseDouble((String) ph.getObject()) == PH_RANGE_END
+        || Double.parseDouble((String) ph.getObject()) == PH_RANGE_START) {
       phOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -286,7 +365,7 @@ public class AquaPonics extends Header {
       });
     }
 
-    phInnerDiv.add(ph);
+    phInnerDiv.add(new Label("PH", ph));
     phInnerDiv.add(phStatus);
     phOuterDiv.add(phInnerDiv);
     add(phOuterDiv);
@@ -313,8 +392,8 @@ public class AquaPonics extends Header {
       }
     });
 
-    if (Double.parseDouble((String) oxygen.getDefaultModelObject()) > OXYGEN_RANGE_START
-        && Double.parseDouble((String) oxygen.getDefaultModelObject()) < OXYGEN_RANGE_END) {
+    if (Double.parseDouble((String) oxygen.getObject()) > OXYGEN_RANGE_START
+        && Double.parseDouble((String) oxygen.getObject()) < OXYGEN_RANGE_END) {
       oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -328,8 +407,8 @@ public class AquaPonics extends Header {
         }
       });
     }
-    else if (Double.parseDouble((String) oxygen.getDefaultModelObject()) == OXYGEN_RANGE_START
-        || Double.parseDouble((String) oxygen.getDefaultModelObject()) == OXYGEN_RANGE_END) {
+    else if (Double.parseDouble((String) oxygen.getObject()) == OXYGEN_RANGE_START
+        || Double.parseDouble((String) oxygen.getObject()) == OXYGEN_RANGE_END) {
       oxygenOuterDiv.add(new AbstractBehavior() {
 
         /**
@@ -358,7 +437,7 @@ public class AquaPonics extends Header {
       });
     }
 
-    oxygenInnerDiv.add(oxygen);
+    oxygenInnerDiv.add(new Label("Oxygen", oxygen));
     oxygenInnerDiv.add(oxygenStatus);
     oxygenOuterDiv.add(oxygenInnerDiv);
     add(oxygenOuterDiv);
@@ -398,18 +477,18 @@ public class AquaPonics extends Header {
    * 
    * @param value The temperature.
    */
-  public static void setTempStatusColor(Long value) {
-
-    if (value == TEMPERATRUE_RANGE_START || value == TEMPERATRUE_RANGE_END) {
-      tempStatus.setDefaultModelObject(WARNG_MESSAGE);
-    }
-    else if (value < TEMPERATRUE_RANGE_START || value > TEMPERATRUE_RANGE_END) {
-      tempStatus.setDefaultModelObject(ALERT_MESSAGE);
-    }
-    else {
-      tempStatus.setDefaultModelObject("");
-    }
-  }
+  // public static void setTempStatusColor(Long value) {
+  //
+  // if (value == TEMPERATRUE_RANGE_START || value == TEMPERATRUE_RANGE_END) {
+  // tempStatus.setDefaultModelObject(WARNG_MESSAGE);
+  // }
+  // else if (value < TEMPERATRUE_RANGE_START || value > TEMPERATRUE_RANGE_END) {
+  // tempStatus.setDefaultModelObject(ALERT_MESSAGE);
+  // }
+  // else {
+  // tempStatus.setDefaultModelObject("");
+  // }
+  // }
 
   /**
    * Set the ph value label on this page.
