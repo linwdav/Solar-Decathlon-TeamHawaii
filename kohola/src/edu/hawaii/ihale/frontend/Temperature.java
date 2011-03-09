@@ -34,18 +34,13 @@ public class Temperature extends Header {
   private static final long TEMPERATURE_RANGE_START = 60L;
   private static final long TEMPERATURE_RANGE_END = 80L;
 
-  // temperature labels
-  private static Label insideTemperature = new Label("InsideTemperature",
-      String.valueOf(SolarDecathlonApplication.getAquaponics().getTemp()));
-  private static Label outsideTemperature = new Label("OutsideTemperature", "0");
-
   // for validating user's input for setTemp
   // don't want them perform duplicate doCommand with the same temperature.
   private long desiredTemp = 0L;
-  
+
   // feedback to user after they setTemp, failed or successful
   private Label feedback;
-
+  // textfield for setTemp
   private TextField<String> textField = new TextField<String>("SetTemp", new Model<String>(""));
 
   // values (attributes) for the on off hvac button
@@ -55,7 +50,6 @@ public class Temperature extends Header {
 
   // the on off message to the right of the button.
   private Label hvacState = new Label("hvacState", "<font color=\"red\">OFF</font>");
-
   // to keep track of the state of hvac button
   private boolean hvacOn = false;
 
@@ -65,6 +59,39 @@ public class Temperature extends Header {
    * @throws Exception the Exception
    */
   public Temperature() throws Exception {
+    
+    // model for inside temperature labels
+    Model<String> insideTempModel = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      /**
+       * Override the getObject for dynamic programming and change the text color according to the
+       * temperature value.
+       */
+      @Override
+      public String getObject() {
+        long value = SolarDecathlonApplication.getHvac().getTemp();
+        String original = value + "&deg;F";
+        String closeTag = "</font>";
+        if (value > TEMPERATURE_RANGE_START && value < TEMPERATURE_RANGE_END) {
+          original = "<font color=\"green\">" + original + closeTag;
+        }
+        else if (value == TEMPERATURE_RANGE_START || value == TEMPERATURE_RANGE_END) {
+          original = "<font color=\"#FF9900\">" + original + closeTag;
+        }
+        else {
+          original = "<font color=\"red\">" + original + closeTag;
+        }
+
+        return original;
+      }
+    };
+    
+    // temperature labels
+    Label insideTemperature = new Label("InsideTemperature", insideTempModel);
+    Label outsideTemperature = new Label("OutsideTemperature", "0");
+
     // clear feedback each time the page is refreshed.
     feedback = new Label("Feedback", "");
 
@@ -119,23 +146,16 @@ public class Temperature extends Header {
     // add hvac state label to the page.
     add(hvacState);
 
-    // copy over the temperature values from the header to this page since they should be the same.
-    String insideTempStr = String.valueOf(SolarDecathlonApplication.getHvac().getTemp());
-    insideTemperature.setDefaultModelObject(insideTempStr);
+    // set label for inside temp
+    //insideTemperature = new Label("InsideTemperature", insideTempLabel);
+    insideTemperature.setEscapeModelStrings(false);
+    // set label for outside temp
     String outsideTempStr = (String) outsideTemperatureHeader.getDefaultModelObject();
     outsideTemperature.setDefaultModelObject(outsideTempStr);
-
-    // set the labels for temperatures
-    long insideTemp = Long.parseLong(insideTempStr);
-    insideTemperature.setDefaultModelObject(insideTemp + "&deg;F");
-    insideTemperature.setEscapeModelStrings(false);
     long outsideTemp = Long.parseLong(outsideTempStr);
     outsideTemperature.setDefaultModelObject(outsideTemp + "&deg;F");
     outsideTemperature.setEscapeModelStrings(false);
-
-    // change the label color to green, yellow, or red according to the temperature value.
-    determineInsideTempTextColor(insideTemp);
-
+    // add labels to the page
     add(insideTemperature);
     add(outsideTemperature);
 
@@ -162,7 +182,7 @@ public class Temperature extends Header {
         catch (NumberFormatException e) {
           textField.setDefaultModelObject("");
           feedback.setDefaultModelObject("<font color=\"red\">"
-              + "Failure:<br />Textfield must contain all digits</font>");          
+              + "Failure:<br />Textfield must contain all digits</font>");
           target.addComponent(feedback);
           target.addComponent(textField);
           return;
@@ -210,26 +230,6 @@ public class Temperature extends Header {
     add(new Image("tempW", new ResourceReference(Header.class, "images/tempW.png")));
     add(new Image("tempD", new ResourceReference(Header.class, "images/tempD.png")));
 
-  }
-
-  /**
-   * Set the corresponding color for the inside temperature label according to the value.
-   * 
-   * @param value The room temperature.
-   */
-  private void determineInsideTempTextColor(Long value) {
-    String original = (String) insideTemperature.getDefaultModelObject();
-    String closeTag = "</font>";
-    if (value > TEMPERATURE_RANGE_START && value < TEMPERATURE_RANGE_END) {
-      original = "<font color=\"green\">" + original + closeTag;
-    }
-    else if (value == TEMPERATURE_RANGE_START || value == TEMPERATURE_RANGE_END) {
-      original = "<font color=\"#FF9900\">" + original + closeTag;
-    }
-    else {
-      original = "<font color=\"red\">" + original + closeTag;
-    }
-    insideTemperature.setDefaultModelObject(original);
   }
 
   /**

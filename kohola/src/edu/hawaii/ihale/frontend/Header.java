@@ -31,7 +31,7 @@ public class Header extends WebPage {
 
   // Date format for the time displayed at the top right corner.
   private static final String DATE_FORMAT = "MMMM d, yyyy  hh:mm a";
-  static final String PAGE_DISPLAY = "ActivePage";
+  static String PAGE_DISPLAY = "ActivePage";
 
   // Variables to allow the active tab to change.
   protected int activePage = 0;
@@ -62,7 +62,22 @@ public class Header extends WebPage {
    */
   public Header() {
 
-    Label insideTemperatureHeader = new Label("InsideTemperatureHeader", "0");
+ // model for inside temperature labels
+    Model<String> insideTempModel = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      /**
+       * Override the getObject for dynamic programming and change the text color according to the
+       * temperature value.
+       */
+      @Override
+      public String getObject() {
+        return String.valueOf(SolarDecathlonApplication.getHvac().getTemp());        
+      }
+    };
+    
+    Label insideTemperatureHeader = new Label("InsideTemperatureHeader", insideTempModel);
 
     // This is totally bogus!!
     // Right now there's no outside temp in the dictionary so we just use a random number
@@ -85,9 +100,6 @@ public class Header extends WebPage {
     insideTemperatureHeader.setDefaultModelObject(String.valueOf(SolarDecathlonApplication
         .getHvac().getTemp()));
     
-    // figure out the active page from session properties.
-    int activePage = properties.get(PAGE_DISPLAY);
-
     insideTemperatureHeader.setEscapeModelStrings(false);
     outsideTemperatureHeader.setEscapeModelStrings(false);
 
@@ -168,6 +180,7 @@ public class Header extends WebPage {
       @Override
       public void onClick() {
         properties.put(PAGE_DISPLAY, 0);
+     
         try {
           setResponsePage(new Dashboard());
         }
@@ -492,6 +505,9 @@ public class Header extends WebPage {
       }
     });
 
+ // figure out the active page from session properties.
+    activePage = properties.get(PAGE_DISPLAY);
+    
     // Make the current tab active
     makeTabActive(activePage);
 
@@ -529,7 +545,7 @@ public class Header extends WebPage {
   private void makeTabActive(int i) {
     String classContainer = "class";
     String activeContainer = "active";
-
+    
     switch (i) {
 
     case 1:

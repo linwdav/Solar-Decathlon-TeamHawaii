@@ -36,8 +36,8 @@ public class Energy extends Header {
   private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
-  private static final String YAXIS = "8000.0";
-  
+  private static final String Y_AXIS = "8000.0";
+
   /**
    * MarkupContainer for all graphs.
    */
@@ -57,8 +57,8 @@ public class Energy extends Header {
   Link<String> aquaponicsSetting;
   Link<String> lightingSetting;
 
-  Label currentConsumption = new Label("CurrentConsumption", "0");
-  Label currentGeneration = new Label("CurrentGeneration", "0");
+  // Label currentConsumption = new Label("CurrentConsumption", "0");
+  // Label currentGeneration = new Label("CurrentGeneration", "0");
 
   /**
    * The layout for energy page.
@@ -67,13 +67,6 @@ public class Energy extends Header {
    */
   public Energy() throws Exception {
 
-    // Add listeners to the system. Listeners are the way the UI learns that new state has
-    // been received from some system in the house.
-    // db.addSystemStateListener(((SolarDecathlonApplication) SolarDecathlonApplication.get())
-    // .getPhotovoltaicListener());
-    //
-    // new BlackMagic(db);
-
     // Create button
     // Kept this button in case later on need other buttons
     dayConsumptionGraph = new Link<String>("dayConsumptionGraph") {
@@ -81,7 +74,7 @@ public class Energy extends Header {
 
       @Override
       public void onClick() {
-        try {          
+        try {
           setResponsePage(new Energy());
         }
         catch (Exception e) {
@@ -89,20 +82,125 @@ public class Energy extends Header {
         }
       }
     };
-
     add(dayConsumptionGraph);
-    setDayGraph(dayGraph);
+    Model<String> day = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public String getObject() {
+        String url;
+
+        url = setDayGraph();
+
+        return url;
+      }
+    };
+    Label dayLabel = new Label("dayLabel", day);
+    dayGraph.add(new AttributeModifier(SRC, true, new Model<String>((String) dayLabel
+        .getDefaultModelObject())));
     add(dayGraph);
-    setWeekGraph(weekGraph);
+
+    Model<String> week = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public String getObject() {
+        String url;
+
+        url = setWeekGraph();
+
+        return url;
+      }
+    };
+    Label weekLabel = new Label("weekLabel", week);
+    weekGraph.add(new AttributeModifier(SRC, true, new Model<String>((String) weekLabel
+        .getDefaultModelObject())));
     add(weekGraph);
-    setMonthGraph(monthGraph);
+
+    Model<String> month = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public String getObject() {
+        String url;
+
+        url = setMonthGraph();
+
+        return url;
+      }
+    };
+    Label monthLabel = new Label("monthLabel", month);
+    monthGraph.add(new AttributeModifier(SRC, true, new Model<String>((String) monthLabel
+        .getDefaultModelObject())));
     add(monthGraph);
 
+    Model<String> consumptionModel = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public String getObject() {
+        String fontOpenTag;
+        String fontCloseTag = "</font>";
+        String labelValue;
+
+        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > SolarDecathlonApplication
+            .getElectrical().getEnergy()) {
+          fontOpenTag = "<font color=\"green\">";
+        }
+        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < SolarDecathlonApplication
+            .getElectrical().getEnergy()) {
+          fontOpenTag = "<font color=\"red\">";
+        }
+        else {
+          fontOpenTag = "<font color=\"#FF9900\">";
+        }
+
+        labelValue =
+            fontOpenTag + SolarDecathlonApplication.getElectrical().getEnergy() + " kWh"
+                + fontCloseTag;
+        return labelValue;
+      }
+    };
+    Label currentConsumption = new Label("CurrentConsumption", consumptionModel);
+    
+    Model<String> generationModel = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public String getObject() {
+        String fontOpenTag;
+        String fontCloseTag = "</font>";
+        String labelValue;
+
+        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > SolarDecathlonApplication
+            .getElectrical().getEnergy()) {
+          fontOpenTag = "<font color=\"green\">";
+        }
+        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < SolarDecathlonApplication
+            .getElectrical().getEnergy()) {
+          fontOpenTag = "<font color=\"red\">";
+        }
+        else {
+          fontOpenTag = "<font color=\"#FF9900\">";
+        }
+
+        labelValue =
+            fontOpenTag + SolarDecathlonApplication.getPhotovoltaic().getEnergy() + " kWh"
+                + fontCloseTag;
+        return labelValue;
+      }
+    };
+    Label currentGeneration = new Label("CurrentGeneration", generationModel);
+    
     // enables recognition of html code within the string
     currentConsumption.setEscapeModelStrings(false);
     currentGeneration.setEscapeModelStrings(false);
 
-    setCurrentEnergy(currentConsumption, currentGeneration);
     add(currentConsumption);
     add(currentGeneration);
 
@@ -163,32 +261,33 @@ public class Energy extends Header {
    * @param consumption The current energy consumption label.
    * @param generation The current energy generation label.
    */
-  public static void setCurrentEnergy(Label consumption, Label generation) {
-    String fontOpenTag;
-    String fontCloseTag = "</font>";
-    String labelValue;
-    
-    if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > 
-          SolarDecathlonApplication.getElectrical().getEnergy()) {
-      fontOpenTag = "<font color=\"green\">";
-    }
-    else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < 
-              SolarDecathlonApplication.getElectrical().getEnergy()) {
-      fontOpenTag = "<font color=\"red\">";
-    }
-    else {
-      fontOpenTag = "<font color=\"#FF9900\">";
-    }
-
-    labelValue = fontOpenTag + SolarDecathlonApplication.getPhotovoltaic().getEnergy()
-                  + " kWh" + fontCloseTag;
-    generation.setDefaultModelObject(labelValue);
-    
-    labelValue = fontOpenTag + SolarDecathlonApplication.getElectrical().getEnergy()
-                  + " kWh" + fontCloseTag;
-    consumption.setDefaultModelObject(labelValue);
-
-  }
+  // public static void setCurrentEnergy(Label consumption, Label generation) {
+  // String fontOpenTag;
+  // String fontCloseTag = "</font>";
+  // String labelValue;
+  //
+  // if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > SolarDecathlonApplication
+  // .getElectrical().getEnergy()) {
+  // fontOpenTag = "<font color=\"green\">";
+  // }
+  // else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < SolarDecathlonApplication
+  // .getElectrical().getEnergy()) {
+  // fontOpenTag = "<font color=\"red\">";
+  // }
+  // else {
+  // fontOpenTag = "<font color=\"#FF9900\">";
+  // }
+  //
+  // labelValue =
+  // fontOpenTag + SolarDecathlonApplication.getPhotovoltaic().getEnergy() + " kWh"
+  // + fontCloseTag;
+  // generation.setDefaultModelObject(labelValue);
+  //
+  // labelValue =
+  // fontOpenTag + SolarDecathlonApplication.getElectrical().getEnergy() + " kWh" + fontCloseTag;
+  // consumption.setDefaultModelObject(labelValue);
+  //
+  // }
 
   /**
    * Set the daily graph for production vs consumption. The points on the graph are averages from 1
@@ -198,13 +297,13 @@ public class Energy extends Header {
    * In order to reget points for the graphs have to click on dashboard link in tabs to refresh
    * page.
    * 
-   * @param wmc The container.
+   * @return The day graph url.
    */
-  private void setDayGraph(WebMarkupContainer wmc) {
+  private String setDayGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
-    // Google charts YAXIS is always from 0-100 even if y-axis is different
+    // Google charts Y_AXIS is always from 0-100 even if y-axis is different
     // so have to create conversion for values determined later on.
-    double divisor = Double.valueOf(df.format(Double.valueOf(YAXIS) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
     long usage = 0;
     Calendar current = Calendar.getInstance();
     int currentHour = current.get(Calendar.HOUR_OF_DAY);
@@ -231,8 +330,8 @@ public class Energy extends Header {
           SolarDecathlonApplication.db.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
               (time - lastTwentyFour), time);
       generationList =
-          SolarDecathlonApplication.db.getEntries(PHOTOVOLTAICS, EGAUGE_1,
-              (time - lastTwentyFour), time);
+          SolarDecathlonApplication.db.getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - lastTwentyFour),
+              time);
     }
     catch (SystemStateEntryDBException e) {
       System.out.println("Creating a list of entries in day dashboard.");
@@ -306,15 +405,15 @@ public class Energy extends Header {
     gValues = gBuf.toString();
     printC = cPrintBuf.toString();
     printG = gPrintBuf.toString();
-    System.out.println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: "
-        + printG);
+    System.out
+        .println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: " + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + YAXIS
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    wmc.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    return url;
   }
 
   /**
@@ -322,20 +421,19 @@ public class Energy extends Header {
    * 1 day periods. So from 7 days ago to 6 days ago is one period, 6 days ago to 5 days ago is
    * another period, etc, with the current day being its own period.
    * 
-   * @param wmc The container.
+   * @return The week graph url.
    */
-  private void setWeekGraph(WebMarkupContainer wmc) {
+  private String setWeekGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
-    double divisor = Double.valueOf(df.format(Double.valueOf(YAXIS) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
     int currentDay = current.get(Calendar.DAY_OF_WEEK);
     String[] daysOfWeek = { "Sat", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri" };
     long mWeek =
-        (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L
-            + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND) * 1000L
-            + current.get(Calendar.MILLISECOND);
+        (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE)
+            * 60000L + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
     long mSinceBeginning =
         current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
             + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
@@ -352,8 +450,8 @@ public class Energy extends Header {
     List<SystemStateEntry> consumptionList = null, generationList = null;
     try {
       consumptionList =
-          SolarDecathlonApplication.db.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
-              (time - mWeek), time);
+          SolarDecathlonApplication.db.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek),
+              time);
       generationList =
           SolarDecathlonApplication.db.getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
     }
@@ -427,12 +525,12 @@ public class Energy extends Header {
     System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
         + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + YAXIS
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    wmc.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    return url;
   }
 
   /**
@@ -440,11 +538,11 @@ public class Energy extends Header {
    * 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 days ago is
    * another period, etc, with the current day being its own period.
    * 
-   * @param wmc The container.
+   * @return The month graph url.
    */
-  private void setMonthGraph(WebMarkupContainer wmc) {
+  private String setMonthGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
-    double divisor = Double.valueOf(df.format(Double.valueOf(YAXIS) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
@@ -551,11 +649,11 @@ public class Energy extends Header {
     System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
         + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + YAXIS
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    wmc.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    return url;
   }
 }

@@ -59,12 +59,12 @@ public class Dashboard extends Header {
   private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
-  private static final String yAxis = "8000.0";
-  //private static final String negativeYAxis = "-500";
+  private static final String Y_AXIS = "8000.0";
+  // private static final String negativeYAxis = "-500";
 
   private static final String classTagName = "class";
 
-  static Label insideTemperature = new Label("InsideTemperature", "");
+  //static Label insideTemperature = new Label("InsideTemperature", "");
   static Label outsideTemperature = new Label("OutsideTemperature", "");
   static Label dayUsage = new Label("DayUsage", "");
   static Label dayUsage2 = new Label("DayUsage2", "");
@@ -130,6 +130,60 @@ public class Dashboard extends Header {
       }
     });
 
+    Model<String> day = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public String getObject() {
+        String url;
+
+        url = setDayGraph();
+
+        return url;
+      }
+    };
+    Label dayLabel = new Label("dayLabel", day);
+    dayGraph.add(new AttributeModifier(SRC, true, new Model<String>(dayLabel
+        .getDefaultModelObjectAsString())));
+    add(dayGraph);
+
+    Model<String> week = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public String getObject() {
+        String url;
+
+        url = setWeekGraph();
+
+        return url;
+      }
+    };
+    Label weekLabel = new Label("weekLabel", week);
+    weekGraph.add(new AttributeModifier(SRC, true, new Model<String>(weekLabel
+        .getDefaultModelObjectAsString())));
+    add(weekGraph);
+
+    Model<String> month = new Model<String>() {
+
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public String getObject() {
+        String url;
+
+        url = setMonthGraph();
+
+        return url;
+      }
+    };
+    Label monthLabel = new Label("monthLabel", month);
+    monthGraph.add(new AttributeModifier(SRC, true, new Model<String>(monthLabel
+        .getDefaultModelObjectAsString())));
+    add(monthGraph);
+    
     add(dayUsage2);
     add(weekUsage2);
     add(monthUsage2);
@@ -142,16 +196,18 @@ public class Dashboard extends Header {
     add(dayDiv);
     add(weekDiv);
     add(monthDiv);
-    setDayGraph(dayGraph);
-    add(dayGraph);
-    setWeekGraph(weekGraph);
-    add(weekGraph);
-    setMonthGraph(monthGraph);
-    add(monthGraph);
 
     // inside and outside temperatures are retrieved from Header.java
-    String insideTemp = String.valueOf(SolarDecathlonApplication.getHvac().getTemp());
-    insideTemperature.setDefaultModelObject(insideTemp);
+    Model<String> insideModel = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      @Override
+      public String getObject() {
+        return String.valueOf(SolarDecathlonApplication.getHvac().getTemp());
+      }
+    };
+    Label insideTemperature = new Label("InsideTemperature", insideModel);
 
     String outsideTemp = (String) outsideTemperatureHeader.getDefaultModelObject();
     outsideTemperature.setDefaultModelObject(outsideTemp);
@@ -193,13 +249,13 @@ public class Dashboard extends Header {
    * In order to reget points for the graphs have to click on dashboard link in tabs to refresh
    * page.
    * 
-   * @param wmc The container.
+   * @return The day graph url.
    */
-  private void setDayGraph(WebMarkupContainer wmc) {
+  private String setDayGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
-    // Google charts yAxis is always from 0-100 even if y-axis is different
+    // Google charts Y_AXIS is always from 0-100 even if y-axis is different
     // so have to create conversion for values determined later on.
-    double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
     long usage = 0;
     Calendar current = Calendar.getInstance();
     int currentHour = current.get(Calendar.HOUR_OF_DAY);
@@ -226,8 +282,8 @@ public class Dashboard extends Header {
           SolarDecathlonApplication.db.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
               (time - lastTwentyFour), time);
       generationList =
-          SolarDecathlonApplication.db.getEntries(PHOTOVOLTAICS, EGAUGE_1,
-              (time - lastTwentyFour), time);
+          SolarDecathlonApplication.db.getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - lastTwentyFour),
+              time);
     }
     catch (SystemStateEntryDBException e) {
       System.out.println("Creating a list of entries in day dashboard.");
@@ -304,15 +360,15 @@ public class Dashboard extends Header {
     dayUsage.setDefaultModelObject(usage + " kWh/day");
     dayUsage2.setDefaultModelObject(dayUsage.getDefaultModelObject());
     dayPriceConverter.setDefaultModelObject("$" + df.format(usage * conversion) + "/day");
-    System.out.println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: "
-        + printG);
+    System.out
+        .println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: " + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + yAxis
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    wmc.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    return url;
   }
 
   /**
@@ -320,20 +376,19 @@ public class Dashboard extends Header {
    * 1 day periods. So from 7 days ago to 6 days ago is one period, 6 days ago to 5 days ago is
    * another period, etc, with the current day being its own period.
    * 
-   * @param wmc The container.
+   * @return The url for the week graph.
    */
-  private void setWeekGraph(WebMarkupContainer wmc) {
+  private String setWeekGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
-    double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
     int currentDay = current.get(Calendar.DAY_OF_WEEK);
     String[] daysOfWeek = { "Sat", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri" };
     long mWeek =
-        (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L
-            + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND) * 1000L
-            + current.get(Calendar.MILLISECOND);
+        (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE)
+            * 60000L + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
     long mSinceBeginning =
         current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
             + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
@@ -342,7 +397,7 @@ public class Dashboard extends Header {
     String xAxis = "";
     StringBuffer xBuf = new StringBuffer();
     for (int i = 0; i <= 5; i++) {
-      xBuf.append(daysOfWeek[(currentDay + i + 1) % 7] + "|"); 
+      xBuf.append(daysOfWeek[(currentDay + i + 1) % 7] + "|");
     }
     xBuf.append(daysOfWeek[currentDay % 7]);
     xAxis = xBuf.toString();
@@ -350,8 +405,8 @@ public class Dashboard extends Header {
     List<SystemStateEntry> consumptionList = null, generationList = null;
     try {
       consumptionList =
-          SolarDecathlonApplication.db.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
-              (time - mWeek), time);
+          SolarDecathlonApplication.db.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek),
+              time);
       generationList =
           SolarDecathlonApplication.db.getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
     }
@@ -428,12 +483,12 @@ public class Dashboard extends Header {
     System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
         + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + yAxis
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    wmc.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    return url;
   }
 
   /**
@@ -441,11 +496,11 @@ public class Dashboard extends Header {
    * 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 days ago is
    * another period, etc, with the current day being its own period.
    * 
-   * @param wmc The container.
+   * @return The url for the month graph
    */
-  private void setMonthGraph(WebMarkupContainer wmc) {
+  private String setMonthGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
-    double divisor = Double.valueOf(df.format(Double.valueOf(yAxis) / 100.0));
+    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
     long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
@@ -458,10 +513,10 @@ public class Dashboard extends Header {
     StringBuffer xBuf = new StringBuffer();
     for (int i = 6; i >= 1; i--) {
       if ((currentDay - (i * 5)) <= 0) {
-        xBuf.append((months[currentMonth - 1] - (i * 5 - currentDay)) + "|"); 
+        xBuf.append((months[currentMonth - 1] - (i * 5 - currentDay)) + "|");
       }
       else {
-        xBuf.append((currentDay - (i * 5)) + "|"); 
+        xBuf.append((currentDay - (i * 5)) + "|");
       }
     }
     xBuf.append(currentDay);
@@ -555,11 +610,11 @@ public class Dashboard extends Header {
     System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
         + printG);
     String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + yAxis
+        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
             + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
             + "&chg=25,50" + "&chls=0.75|2"
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    wmc.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    return url;
   }
 }
