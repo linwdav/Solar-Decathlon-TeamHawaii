@@ -1,0 +1,83 @@
+<html>
+<wicket:extend>
+<div class="top-links">
+  
+  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
+  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
+  <div class="clear"></div>
+</div>
+
+<h1>Energy</h1>
+
+<div class="column-two">
+  <div class="inner">
+  	
+    
+    <div class="clear"></div>
+    
+	    <div class="tab-wrapper" id="tabset-2">
+	      <ul class="tabs">
+	        <li class="tab-1"><a href="#">Day</a></li>
+	        <li class="tab-2"><a href="#">Week</a></li>
+	        <li class="tab-3"><a href="#">Month</a></li>
+	      </ul>
+	      <ul class="tab-content">
+	        <li class="content-1">
+	          <h5>Energy Consumption Vs. Production for past 24 hours</h5>
+          	<p><img wicket:id="DayGraph"/></p>
+          	<div class="clear"></div>
+	        </li>
+	        <li class="content-2">
+						<h5>Energy Consumption Vs. Production for past 7 days</h5>
+            <p><img wicket:id="WeekGraph"/></p>
+            <div class="clear"></div>
+          </li>
+	        <li class="content-3">
+						<h5>Energy Consumption Vs. Production for past 30 days</h5>
+          	<p><img wicket:id="MonthGraph"/></p>
+          	<div class="clear"></div>
+          </li>
+	      </ul>	      
+	    </div>	    
+	    <div class="clear"></div>    
+    
+  </div>
+</div>
+
+
+<!-- COLUMN TWO -->
+<div class="column-two">
+  <div class="inner" style="padding-top:30px;">
+  	<table class="bare" style="width:100%;">
+    	<tr>
+        <td style="width:100%;">
+          <div class="box">
+            <h3>Current Levels</h3> 
+            <h6>Current Generation</h6>
+            <h1><strong><span wicket:id="CurrentGeneration"></span>&nbsp;&nbsp;</strong></h1>            
+            <h6>Current Consumption</h6>
+            <h1><strong><span wicket:id="CurrentConsumption"></span>&nbsp;&nbsp;</strong></h1>        
+            <div class="clear"></div>
+            
+          </div>
+          <div class="box">
+            <h3>Settings</h3>
+            <p class="info">Click one of the following buttons to manage the appropriate settings.</p>
+            <div class="column-button">
+              <a style="width:220px;" class="gray-button" wicket:id="HvacSetting" href="#">HVAC</a><div class="clear"></div>
+              <a style="width:220px;" class="gray-button" wicket:id="AquaponicsSetting" href="#">Aquaponics</a><div class="clear"></div>
+              <a style="width:220px;" class="gray-button" wicket:id="LightingSetting" href="#">Lighting</a><div class="clear"></div>
+            </div>
+            <div class="clear"></div>      
+          </div>  
+      	</td>
+      </tr>
+    </table>
+    
+    
+  </div>
+</div>
+  
+</wicket:extend>
+</html>
