@@ -3,14 +3,21 @@ package edu.hawaii.ihale.frontend.page.dashboard;
 import java.io.Serializable;
 
 /**
- * To be Modified.
+ * The dashboard sessions page.
  * 
- * @author Team Kohola
- * 
+ * @author Kylan Hughes
+ * @author Chuan Lun Hung
  */
 public class DashboardSession implements Serializable {
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
-
+  
+  /**
+   * empty for now.
+   */
+  public DashboardSession() {
+    //empty
+  }
+  
 }

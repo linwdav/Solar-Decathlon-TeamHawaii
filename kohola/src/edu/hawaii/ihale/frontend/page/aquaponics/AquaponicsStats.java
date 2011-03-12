@@ -7,7 +7,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.frontend.page.Header;
-//import edu.hawaii.ihale.frontend.SolarDecathlonSession;
+import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 
 /**
  * The Aquaponics Statistics page.
@@ -37,23 +37,27 @@ public class AquaponicsStats extends Header {
   Link<String> dayConductivityGraph;
   Link<String> dayPowerGraph;
   Link<String> dayWaterGraph;
-  
+
   /**
    * Graph to display.
    */
   private static final String GRAPH_NAME = "AquaponicsStatsGraph";
-  //private int currentGraphDisplay = 0;
-  
-  //Map<String, Integer> properties;
 
- /**
-  * Layouts of page.
-  * @throws Exception The exception.
-  */
+  // private int currentGraphDisplay = 0;
+
+  // Map<String, Integer> properties;
+
+  /**
+   * Layouts of page.
+   * 
+   * @throws Exception The exception.
+   */
   public AquaponicsStats() throws Exception {
-        
-    //properties = ((SolarDecathlonSession) getSession()).getProperties();
-    int currentGraphDisplay = properties.get(GRAPH_NAME);
+
+    // properties = ((SolarDecathlonSession) getSession()).getProperties();
+    // int currentGraphDisplay = properties.get(GRAPH_NAME);
+    int currentGraphDisplay =
+        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().getCurrentGraph();
 
     // Button at top of page
     Link<String> mainButton = new Link<String>("mainButton") {
@@ -80,8 +84,8 @@ public class AquaponicsStats extends Header {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        //currentGraphDisplay = 0;
-        properties.put(GRAPH_NAME, 0);
+        // currentGraphDisplay = 0;
+        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(0);
         try {
           setResponsePage(new AquaponicsStats());
         }
@@ -98,8 +102,8 @@ public class AquaponicsStats extends Header {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        //currentGraphDisplay = 1;
-        properties.put(GRAPH_NAME, 1);
+        // currentGraphDisplay = 1;
+        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(1);
         try {
           setResponsePage(new AquaponicsStats());
         }
@@ -116,8 +120,8 @@ public class AquaponicsStats extends Header {
       /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        //currentGraphDisplay = 2;
-        properties.put(GRAPH_NAME, 2);
+        // currentGraphDisplay = 2;
+        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(2);
         try {
           setResponsePage(new AquaponicsStats());
         }
@@ -133,8 +137,8 @@ public class AquaponicsStats extends Header {
 
       @Override
       public void onClick() {
-        //currentGraphDisplay = 3;
-        properties.put(GRAPH_NAME, 3);
+        // currentGraphDisplay = 3;
+        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(3);
         try {
           setResponsePage(new AquaponicsStats());
         }
@@ -150,8 +154,8 @@ public class AquaponicsStats extends Header {
 
       @Override
       public void onClick() {
-        //currentGraphDisplay = 4;
-        properties.put(GRAPH_NAME, 4);
+        // currentGraphDisplay = 4;
+        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(4);
         try {
           setResponsePage(new AquaponicsStats());
         }
@@ -167,8 +171,8 @@ public class AquaponicsStats extends Header {
 
       @Override
       public void onClick() {
-        //currentGraphDisplay = 5;
-        properties.put(GRAPH_NAME, 5);
+        // currentGraphDisplay = 5;
+        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(5);
         try {
           setResponsePage(new AquaponicsStats());
         }
@@ -230,8 +234,7 @@ public class AquaponicsStats extends Header {
     case 1:
       add(new Label("dayChartType", "Water Reserves (Current Status)"));
       add(new Label("detailTitle", "Water Reserves"));
-      add(new Label(
-          "detailsText",
+      add(new Label("detailsText",
           "<h5>Do I need to Replace the Water?</h5><p>Water in hydroponic systems needs to be"
               + " discharged periodically, as the salts and chemicals build up in the water which"
               + " becomes toxic to the plants. This is both inconvenient and problematic as the "
@@ -274,8 +277,8 @@ public class AquaponicsStats extends Header {
     switch (i) {
 
     case 0:
-      dayPhGraph.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
+      dayPhGraph
+          .add(new AttributeModifier(classContainer, true, new Model<String>(buttonContainer)));
       break;
 
     case 1:

@@ -41,7 +41,6 @@ public class SolarDecathlonSession extends WebSession {
    */
   public SolarDecathlonSession(WebApplication application, Request request) {
     super(request);
-    this.properties.put("AquaponicsStatsGraph", 0);
     this.properties.put("EnergyGraph", 0);
     this.properties.put("ActivePage", 0);       
   }
