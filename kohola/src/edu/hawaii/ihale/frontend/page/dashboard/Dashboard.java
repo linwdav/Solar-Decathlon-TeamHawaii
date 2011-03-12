@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Locale;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.behavior.AbstractBehavior;
@@ -21,6 +20,7 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.frontend.page.Header;
+import edu.hawaii.ihale.frontend.weatherparser.WeatherForecast;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
@@ -38,6 +38,8 @@ public class Dashboard extends Header {
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
+  
+  
 
   /**
    * MarkupContainer for all graphs.
@@ -51,7 +53,7 @@ public class Dashboard extends Header {
   private static final double conversion = .2413;
 
   private static final String DATE_FORMAT = "hh:mm:ss a";
-
+    
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
   private static final String ELECTRICAL_CONSUMPTION = "electrical";
@@ -78,15 +80,149 @@ public class Dashboard extends Header {
   static Label weekPriceConverter = new Label("WeekPriceConverter", "");
   static Label monthPriceConverter = new Label("MonthPriceConverter", "");
 
+  private List<WeatherForecast> weathers;
+  
   /**
    * The page layout.
    */
   public Dashboard() {
+    
+    // create label and model for the current weather condition.
+    Model<String> currentWeatherConditionModel = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      /**
+       * Override the getObject for dynamic programming and retrieve the
+       * current weather condition.
+       */
+      @Override
+      public String getObject() {      
+        return currentWeather.getCondition() + "<br />" +  
+          currentWeather.getWindCondition() + "<br />" + 
+          currentWeather.getHumidity();
+      }
+    };    
+    Label currentWeatherConditionLabel = 
+      new Label("CurrentWeatherCondition", currentWeatherConditionModel);
+    currentWeatherConditionLabel.setEscapeModelStrings(false);
+    add(currentWeatherConditionLabel);
 
-    // Temporary Images
-    add(new Image("weather", new ResourceReference(Header.class, "images/weather.jpg")));
-    add(new Image("graph", new ResourceReference(Header.class, "images/graph.jpg")));
+    // below are weather forecast images in localization div.
+    // weather at this moment, the largest image.
+    Image currentWeatherImage = new Image("CurrentWeatherImage");
+    currentWeatherImage.add(new AttributeModifier(SRC, true, new Model<String>
+    (currentWeather.getImageURL())));
+    currentWeatherImage.setOutputMarkupId(true);
+    add(currentWeatherImage);
+    
+    // list of weather conditions for today and the next three days
+    weathers = weatherParser.getWeatherForecast();
+    
+    // today's weather, which is 1st image below the current weather image
+    Image weatherForecastImage1 = new Image("WeatherForecastImage1");
+    weatherForecastImage1.add(new AttributeModifier(SRC, true, new Model<String>
+    (weathers.get(0).getImageURL())));
+    weatherForecastImage1.setOutputMarkupId(true);
+    add(weatherForecastImage1);
+    
+    // tomorrow's weather, which is to the left of today's weather image
+    Image weatherForecastImage2 = new Image("WeatherForecastImage2");
+    weatherForecastImage2.add(new AttributeModifier(SRC, true, new Model<String>
+    (weathers.get(1).getImageURL())));
+    weatherForecastImage2.setOutputMarkupId(true);
+    add(weatherForecastImage2);
+    
+    // The day after tomorrow's weather image
+    Image weatherForecastImage3 = new Image("WeatherForecastImage3");
+    weatherForecastImage3.add(new AttributeModifier(SRC, true, new Model<String>
+    (weathers.get(2).getImageURL())));
+    weatherForecastImage3.setOutputMarkupId(true);
+    add(weatherForecastImage3);
+    
+    // The last weather image
+    Image weatherForecastImage4 = new Image("WeatherForecastImage4");
+    weatherForecastImage4.add(new AttributeModifier(SRC, true, new Model<String>
+    (weathers.get(3).getImageURL())));
+    weatherForecastImage4.setOutputMarkupId(true);
+    add(weatherForecastImage4);
+    
+    // create label and model for today's weather image.
+    Model<String> weatherForecastDayModel1 = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      /**
+       * Override the getObject for dynamic programming and retrieve today's weather.
+       */
+      @Override
+      public String getObject() {      
+        return weathers.get(0).getDayOfWeek();
+      }
+    };    
+    Label weatherForecastDayLabel1 = 
+      new Label("weatherForecastDayLabel1", weatherForecastDayModel1);
+    
+    add(weatherForecastDayLabel1);
+    
+    //  create label and model for tomorrow's weather image.
+    Model<String> weatherForecastDayModel2 = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      /**
+       * Override the getObject for dynamic programming and retrieve tomorrow's  
+       * weather.
+       */
+      @Override
+      public String getObject() {      
+        return weathers.get(1).getDayOfWeek();
+      }
+    };    
+    Label weatherForecastDayLabel2 = 
+      new Label("weatherForecastDayLabel2", weatherForecastDayModel2);
+    
+    add(weatherForecastDayLabel2);
 
+    // create label and model for the third weather image.
+    Model<String> weatherForecastDayModel3 = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      /**
+       * Override the getObject for dynamic programming and retrieve the 
+       * third weather forecast.
+       */
+      @Override
+      public String getObject() {      
+        return weathers.get(2).getDayOfWeek();
+      }
+    };    
+    Label weatherForecastDayLabel3 = 
+      new Label("weatherForecastDayLabel3", weatherForecastDayModel3);
+    
+    add(weatherForecastDayLabel3);
+    
+    // create label and model for today's weather image.
+    Model<String> weatherForecastDayModel4 = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      /**
+       * Override the getObject for dynamic programming and retrieve the
+       * fourth weather forecast.
+       */
+      @Override
+      public String getObject() {      
+        return weathers.get(3).getDayOfWeek();
+      }
+    };    
+    Label weatherForecastDayLabel4 = 
+      new Label("weatherForecastDayLabel4", weatherForecastDayModel4);
+    
+    add(weatherForecastDayLabel4);
+        
+    // Divs for graphs
     WebMarkupContainerWithAssociatedMarkup dayDiv =
         new WebMarkupContainerWithAssociatedMarkup("DayDiv");
 
@@ -98,9 +234,7 @@ public class Dashboard extends Header {
 
     dayDiv.add(new AbstractBehavior() {
 
-      /**
-       * testing.
-       */
+      /** Support serialization. */
       private static final long serialVersionUID = 1L;
 
       public void onComponentTag(Component component, ComponentTag tag) {
@@ -110,9 +244,7 @@ public class Dashboard extends Header {
 
     weekDiv.add(new AbstractBehavior() {
 
-      /**
-       * testing.
-       */
+      /** Support serialization. */
       private static final long serialVersionUID = 1L;
 
       public void onComponentTag(Component component, ComponentTag tag) {
@@ -122,9 +254,7 @@ public class Dashboard extends Header {
 
     monthDiv.add(new AbstractBehavior() {
 
-      /**
-       * testing.
-       */
+      /** Support serialization. */
       private static final long serialVersionUID = 1L;
 
       public void onComponentTag(Component component, ComponentTag tag) {
@@ -495,9 +625,9 @@ public class Dashboard extends Header {
   }
 
   /**
-   * Sets the monthly graph for production vs consumption. The points on the graph are averages from
-   * 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 days ago is
-   * another period, etc, with the current day being its own period.
+   * Sets the monthly graph for production vs consumption. The points on the graph are averages 
+   * from 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 
+   * days ago is another period, etc, with the current day being its own period.
    * 
    * @return The url for the month graph
    */

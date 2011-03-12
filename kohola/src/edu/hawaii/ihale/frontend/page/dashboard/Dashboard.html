@@ -56,16 +56,34 @@
   	<div class="inner">
       <div class="box">
       	<h2>Localization</h2>
-        <div class="move-to-box-header right">[<a href="#">edit</a>]</div>
+        <div class="move-to-box-header right">[<a href="#">edit</a>]</div>        
+        <div class="left" style="width: 40%;">
         <p class="medium black">Honolulu, HI 96816</p>
-        <div class="left" style="width: 50%;">
           <p class="x-large dark-blue no-margin"><span wicket:id="InsideTemperature"></span>&deg; F</p>
-          <p><span wicket:id="OutsideTemperature"></span>&deg; F Outside<br />Sunny, Windy</p>
-          <p class="large blue no-margin"><span wicket:id="Time"></span></p>
-          <p class="small black">Sunrise: 643am<br />Sunset: 7:01pm</p>
+          <br /><p><span wicket:id="OutsideTemperature"></span>&deg; F Outside<br /><span wicket:id="CurrentWeatherCondition" /></p>
+          <p class="large blue no-margin"><span wicket:id="Time"></span></p>          
         </div>
-        <div class="left" style="width: 50%;">
-          <img alt="weather" wicket:id="weather" />
+        <div class="left" style="width: 60%;">
+          <center>
+          <img wicket:id="CurrentWeatherImage" width=120 height=120 />
+          </center>          
+          <table>
+          <tr>
+          <td><center><img wicket:id=WeatherForecastImage1" width=50 height=50 /></center></td>
+          <td><center><img wicket:id=WeatherForecastImage2" width=50 height=50 /></center></td>
+          <td><center><img wicket:id=WeatherForecastImage3" width=50 height=50 /></center></td>
+          <td><center><img wicket:id=WeatherForecastImage4" width=50 height=50 /></center></td>
+          </tr>
+          <tr>
+          
+          <td><center><font size="4"><b><span wicket:id="weatherForecastDayLabel1" /></b></font></center></td>
+          <td><center><font size="4"><b><span wicket:id="weatherForecastDayLabel2" /></b></font></center></td>
+          <td><center><font size="4"><b><span wicket:id="weatherForecastDayLabel3" /></b></font></center></td>
+          <td><center><font size="4"><b><span wicket:id="weatherForecastDayLabel4" /></b></font></center></td>
+          
+          </tr>
+          </table>         
+          
         </div>
         <div class="clear"></div>
       </div>

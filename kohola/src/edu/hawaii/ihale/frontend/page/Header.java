@@ -22,6 +22,8 @@ import edu.hawaii.ihale.frontend.page.dashboard.Dashboard;
 import edu.hawaii.ihale.frontend.page.energy.Energy;
 import edu.hawaii.ihale.frontend.page.hvac.Hvac;
 import edu.hawaii.ihale.frontend.page.lighting.Lighting;
+import edu.hawaii.ihale.frontend.weatherparser.CurrentWeather;
+import edu.hawaii.ihale.frontend.weatherparser.WeatherParser;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 
@@ -40,6 +42,13 @@ public class Header extends WebPage {
   private static final String DATE_FORMAT = "MMMM d, yyyy  hh:mm a";
   /** Key value for session map to be shared among pages. **/
   public static final String PAGE_DISPLAY = "ActivePage";
+  
+  // Variables to find the weather forecast.
+  //made public to share with dashboard.
+  /** A parser for retrieving info from Google Weather API. */
+  public WeatherParser weatherParser;  
+  /** The current weather info to be shared with the dashboard. */
+  public CurrentWeather currentWeather;
 
   // Variables to allow the active tab to change.
   protected int activePage = 0;
@@ -48,11 +57,11 @@ public class Header extends WebPage {
   WebMarkupContainer aquaponicsItem;
   WebMarkupContainer lightingItem;
   WebMarkupContainer temperatureItem;
-//  WebMarkupContainer securityItem;
-//  WebMarkupContainer settingsItem;
-//  WebMarkupContainer reportsItem;
-//  WebMarkupContainer administratorItem;
-//  WebMarkupContainer helpItem;
+  //  WebMarkupContainer securityItem;
+  //  WebMarkupContainer settingsItem;
+  //  WebMarkupContainer reportsItem;
+  //  WebMarkupContainer administratorItem;
+  //  WebMarkupContainer helpItem;
 
   /** Session properties shared between all pages. **/
   public Map<String, Integer> properties = ((SolarDecathlonSession) getSession()).getProperties();
@@ -70,8 +79,30 @@ public class Header extends WebPage {
    * The header page. This is a parent class to all pages.
    */
   public Header() {
+    
+    // find out the info about the current weather. (right now only supports honolulu)
+    // later may have to make DropDownBox for region selection.
+    weatherParser = new WeatherParser("Honolulu");
+    currentWeather = weatherParser.getCurrentWeather();
+    
+    // model for current weather label
+    Model<String> currentWeatherModel = new Model<String>() {
+      
+      private static final long serialVersionUID = 1L;
+      
+      /**
+       * Override the getObject for dynamic programming and retrieve the current weather upon 
+       * refresh.
+       */
+      @Override
+      public String getObject() {      
+        return currentWeather.getCondition() + ", " + currentWeather.getWindCondition() + " ";
+      }
+    };
+    
+    Label currentWeatherHeader = new Label("CurrentWeatherHeader", currentWeatherModel);
 
-    // model for inside temperature labels
+    // model for inside temperature label
     Model<String> insideTempModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -541,7 +572,7 @@ public class Header extends WebPage {
     });
 
     add(time);
-
+    add(currentWeatherHeader);
     add(outsideTemperatureHeader);
     add(insideTemperatureHeader);
   }
@@ -619,5 +650,5 @@ public class Header extends WebPage {
    */
   public Label getOutsideTempLabel() {
     return outsideTemperatureHeader;
-  }
+  }  
 }
