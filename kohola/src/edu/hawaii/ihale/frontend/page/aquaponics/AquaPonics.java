@@ -198,7 +198,7 @@ public class AquaPonics extends Header {
       @Override
       public void onClick() {
         try {
-          setResponsePage(new AquaponicsStats());
+          setResponsePage(AquaponicsStats.class);
         }
         catch (Exception e) {
           e.printStackTrace();

@@ -88,6 +88,7 @@ public class Energy extends Header {
 //      }
 //    };
 //    add(dayConsumptionGraph);
+        
     Model<String> day = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -216,7 +217,7 @@ public class Energy extends Header {
       public void onClick() {
         try {
           properties.put(PAGE_DISPLAY, 4);
-          setResponsePage(new Hvac());
+          setResponsePage(Hvac.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -231,7 +232,7 @@ public class Energy extends Header {
       public void onClick() {
         try {
           properties.put(PAGE_DISPLAY, 2);
-          setResponsePage(new AquaPonics());
+          setResponsePage(AquaPonics.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -246,7 +247,7 @@ public class Energy extends Header {
       public void onClick() {
         try {
           properties.put(PAGE_DISPLAY, 3);
-          setResponsePage(new Lighting());
+          setResponsePage(Lighting.class);
         }
         catch (Exception e) {
           e.printStackTrace();

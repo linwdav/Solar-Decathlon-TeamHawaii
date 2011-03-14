@@ -9,11 +9,16 @@ import org.apache.wicket.protocol.http.WebApplication;
 import edu.hawaii.ihale.api.SystemStateEntryDB;
 //import edu.hawaii.ihale.backend.DataGatheringThread;
 import edu.hawaii.ihale.backend.rest.IHaleServer;
+import edu.hawaii.ihale.frontend.page.aquaponics.AquaPonics;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsListener;
+import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsStats;
 import edu.hawaii.ihale.frontend.page.dashboard.Dashboard;
 import edu.hawaii.ihale.frontend.page.energy.ElectricalListener;
+import edu.hawaii.ihale.frontend.page.energy.Energy;
 import edu.hawaii.ihale.frontend.page.energy.PhotovoltaicListener;
+import edu.hawaii.ihale.frontend.page.hvac.Hvac;
 import edu.hawaii.ihale.frontend.page.hvac.HvacListener;
+import edu.hawaii.ihale.frontend.page.lighting.Lighting;
 import edu.hawaii.ihale.frontend.page.lighting.LightsListener;
 
 /**
@@ -130,6 +135,19 @@ public class SolarDecathlonApplication extends WebApplication {
   @Override
   public Session newSession(Request request, Response response) {
     return new SolarDecathlonSession(this, request);
+  }
+  
+  /**
+   * Do default setup and initialization when this web application is started up. 
+   */
+  @Override
+  public void init() {
+    mountBookmarkablePage("dashboard", Dashboard.class);
+    mountBookmarkablePage("energy", Energy.class);
+    mountBookmarkablePage("aquaponics", AquaPonics.class);
+    mountBookmarkablePage("lighting", Lighting.class);
+    mountBookmarkablePage("hvac", Hvac.class);
+    mountBookmarkablePage("aquaponicsStats", AquaponicsStats.class);
   }
 
   /**

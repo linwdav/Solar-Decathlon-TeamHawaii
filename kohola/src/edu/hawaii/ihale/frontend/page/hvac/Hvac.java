@@ -121,7 +121,7 @@ public class Hvac extends Header {
           setButtonClass("green-button right");
           setButtonColor("background-color:green");
           hvacState.setDefaultModelObject("<font color=\"red\">OFF</font>");
-        }
+        }        
       }
 
     };

@@ -41,7 +41,7 @@ public class AquaponicsStats extends Header {
   /**
    * Graph to display.
    */
-  private static final String GRAPH_NAME = "AquaponicsStatsGraph";
+  //private static final String GRAPH_NAME = "AquaponicsStatsGraph";
 
   // private int currentGraphDisplay = 0;
 
@@ -67,7 +67,7 @@ public class AquaponicsStats extends Header {
       @Override
       public void onClick() {
         try {
-          setResponsePage(new AquaPonics());
+          setResponsePage(AquaPonics.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -87,7 +87,7 @@ public class AquaponicsStats extends Header {
         // currentGraphDisplay = 0;
         ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(0);
         try {
-          setResponsePage(new AquaponicsStats());
+          setResponsePage(AquaponicsStats.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -105,7 +105,7 @@ public class AquaponicsStats extends Header {
         // currentGraphDisplay = 1;
         ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(1);
         try {
-          setResponsePage(new AquaponicsStats());
+          setResponsePage(AquaponicsStats.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -123,7 +123,7 @@ public class AquaponicsStats extends Header {
         // currentGraphDisplay = 2;
         ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(2);
         try {
-          setResponsePage(new AquaponicsStats());
+          setResponsePage(AquaponicsStats.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -140,7 +140,7 @@ public class AquaponicsStats extends Header {
         // currentGraphDisplay = 3;
         ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(3);
         try {
-          setResponsePage(new AquaponicsStats());
+          setResponsePage(AquaponicsStats.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -157,7 +157,7 @@ public class AquaponicsStats extends Header {
         // currentGraphDisplay = 4;
         ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(4);
         try {
-          setResponsePage(new AquaponicsStats());
+          setResponsePage(AquaponicsStats.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -174,7 +174,7 @@ public class AquaponicsStats extends Header {
         // currentGraphDisplay = 5;
         ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(5);
         try {
-          setResponsePage(new AquaponicsStats());
+          setResponsePage(AquaponicsStats.class);
         }
         catch (Exception e) {
           e.printStackTrace();

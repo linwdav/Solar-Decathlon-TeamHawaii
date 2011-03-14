@@ -222,7 +222,7 @@ public class Header extends WebPage {
         properties.put(PAGE_DISPLAY, 0);
 
         try {
-          setResponsePage(new Dashboard());
+          setResponsePage(Dashboard.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -242,7 +242,7 @@ public class Header extends WebPage {
       public void onClick() {
         properties.put(PAGE_DISPLAY, 1);
         try {
-          setResponsePage(new Energy());
+          setResponsePage(Energy.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -262,7 +262,7 @@ public class Header extends WebPage {
       public void onClick() {
         properties.put(PAGE_DISPLAY, 2);
         try {
-          setResponsePage(new AquaPonics());
+          setResponsePage(AquaPonics.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -281,7 +281,7 @@ public class Header extends WebPage {
       @Override
       public void onClick() {
         properties.put(PAGE_DISPLAY, 3);
-        setResponsePage(new Lighting());
+        setResponsePage(Lighting.class);
 
       }
     });
@@ -297,7 +297,7 @@ public class Header extends WebPage {
       public void onClick() {
         properties.put(PAGE_DISPLAY, 4);
         try {
-          setResponsePage(new Hvac());
+          setResponsePage(Hvac.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -389,7 +389,7 @@ public class Header extends WebPage {
       public void onClick() {
         properties.put(PAGE_DISPLAY, 0);
         try {
-          setResponsePage(new Dashboard());
+          setResponsePage(Dashboard.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -405,7 +405,7 @@ public class Header extends WebPage {
       public void onClick() {
         properties.put(PAGE_DISPLAY, 1);
         try {
-          setResponsePage(new Energy());
+          setResponsePage(Energy.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -421,7 +421,7 @@ public class Header extends WebPage {
       public void onClick() {
         properties.put(PAGE_DISPLAY, 2);
         try {
-          setResponsePage(new AquaPonics());
+          setResponsePage(AquaPonics.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -435,7 +435,7 @@ public class Header extends WebPage {
       @Override
       public void onClick() {
         properties.put(PAGE_DISPLAY, 3);
-        setResponsePage(new Lighting());
+        setResponsePage(Lighting.class);
       }
     });
     add(new Link<String>("TemperaturePageLink") {
@@ -446,7 +446,7 @@ public class Header extends WebPage {
       public void onClick() {
         properties.put(PAGE_DISPLAY, 4);
         try {
-          setResponsePage(new Hvac());
+          setResponsePage(Hvac.class);
         }
         catch (Exception e) {
           e.printStackTrace();

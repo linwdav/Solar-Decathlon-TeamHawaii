@@ -40,7 +40,7 @@ public class SolarDecathlonSession extends WebSession {
    * @param request This request.
    */
   public SolarDecathlonSession(WebApplication application, Request request) {
-    super(request);
+    super(request);    
     this.properties.put("EnergyGraph", 0);
     this.properties.put("ActivePage", 0);       
   }
