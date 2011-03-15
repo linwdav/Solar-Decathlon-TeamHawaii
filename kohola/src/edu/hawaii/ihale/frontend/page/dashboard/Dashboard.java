@@ -22,6 +22,7 @@ import org.apache.wicket.util.time.Duration;
 import edu.hawaii.ihale.frontend.page.Header;
 import edu.hawaii.ihale.frontend.weatherparser.WeatherForecast;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
+import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
 
@@ -87,6 +88,8 @@ public class Dashboard extends Header {
    */
   public Dashboard() {
     
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(0);
+
     // create label and model for the current weather condition.
     Model<String> currentWeatherConditionModel = new Model<String>() {
       

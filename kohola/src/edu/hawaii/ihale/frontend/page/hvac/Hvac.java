@@ -16,6 +16,7 @@ import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
+import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.Header;
 
 /**
@@ -61,6 +62,8 @@ public class Hvac extends Header {
    * @throws Exception the Exception
    */
   public Hvac() throws Exception {
+    
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(4);
     
     // model for inside temperature labels
     Model<String> insideTempModel = new Model<String>() {
@@ -121,7 +124,7 @@ public class Hvac extends Header {
           setButtonClass("green-button right");
           setButtonColor("background-color:green");
           hvacState.setDefaultModelObject("<font color=\"red\">OFF</font>");
-        }        
+        }
       }
 
     };

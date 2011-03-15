@@ -5,6 +5,7 @@ import java.util.Map;
 import org.apache.wicket.Request;
 import org.apache.wicket.protocol.http.WebApplication;
 import org.apache.wicket.protocol.http.WebSession;
+import edu.hawaii.ihale.frontend.page.HeaderSession;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsSession;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsStatsSession;
 import edu.hawaii.ihale.frontend.page.dashboard.DashboardSession;
@@ -26,6 +27,7 @@ public class SolarDecathlonSession extends WebSession {
 
   private Map<String, Integer> properties = new HashMap<String, Integer>();
   
+  private HeaderSession headerSession = new HeaderSession();
   private AquaponicsSession aquaponicsSession = new AquaponicsSession();
   private AquaponicsStatsSession aquaponicsStatsSession = new AquaponicsStatsSession();
   private DashboardSession dashboardSession = new DashboardSession();
@@ -40,7 +42,7 @@ public class SolarDecathlonSession extends WebSession {
    * @param request This request.
    */
   public SolarDecathlonSession(WebApplication application, Request request) {
-    super(request);    
+    super(request);
     this.properties.put("EnergyGraph", 0);
     this.properties.put("ActivePage", 0);       
   }
@@ -52,6 +54,14 @@ public class SolarDecathlonSession extends WebSession {
    */
   public Map<String, Integer> getProperties() {
     return this.properties;
+  }
+  
+  /**
+   * Used to get the Header session associated with the user's session.
+   * @return The HeaderSession
+   */
+  public HeaderSession getHeaderSession() {
+    return this.headerSession;
   }
   
   /**
@@ -101,5 +111,5 @@ public class SolarDecathlonSession extends WebSession {
   public LightingSession getLightingSession() {
     return this.lightingSession;
   }
-  
+ 
 }

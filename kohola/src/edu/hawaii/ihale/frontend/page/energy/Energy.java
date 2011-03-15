@@ -14,6 +14,7 @@ import edu.hawaii.ihale.api.SystemStateEntry;
 import edu.hawaii.ihale.api.SystemStateEntryDBException;
 import edu.hawaii.ihale.frontend.page.Header;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
+import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaPonics;
 import edu.hawaii.ihale.frontend.page.hvac.Hvac;
 import edu.hawaii.ihale.frontend.page.lighting.Lighting;
@@ -71,6 +72,8 @@ public class Energy extends Header {
    * @throws Exception The exception.
    */
   public Energy() throws Exception {
+    
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(1);
 
     // Create button
     // Kept this button in case later on need other buttons
@@ -88,7 +91,6 @@ public class Energy extends Header {
 //      }
 //    };
 //    add(dayConsumptionGraph);
-        
     Model<String> day = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -216,8 +218,8 @@ public class Energy extends Header {
       @Override
       public void onClick() {
         try {
-          properties.put(PAGE_DISPLAY, 4);
-          setResponsePage(Hvac.class);
+          ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(4);
+          setResponsePage(new Hvac());
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -231,8 +233,8 @@ public class Energy extends Header {
       @Override
       public void onClick() {
         try {
-          properties.put(PAGE_DISPLAY, 2);
-          setResponsePage(AquaPonics.class);
+          ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(2);
+          setResponsePage(new AquaPonics());
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -246,8 +248,8 @@ public class Energy extends Header {
       @Override
       public void onClick() {
         try {
-          properties.put(PAGE_DISPLAY, 3);
-          setResponsePage(Lighting.class);
+          ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(3);
+          setResponsePage(new Lighting());
         }
         catch (Exception e) {
           e.printStackTrace();

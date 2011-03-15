@@ -11,6 +11,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
+import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.Header;
 
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
@@ -73,6 +74,8 @@ public class AquaPonics extends Header {
    * @throws Exception the exception.
    */
   public AquaPonics() throws Exception {
+    
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(2);
 
     // model for the temperature feedback (WARNG or ALERT) label on page.
     Model<String> tempStatusModel = new Model<String>() {
@@ -198,7 +201,7 @@ public class AquaPonics extends Header {
       @Override
       public void onClick() {
         try {
-          setResponsePage(AquaponicsStats.class);
+          setResponsePage(new AquaponicsStats());
         }
         catch (Exception e) {
           e.printStackTrace();

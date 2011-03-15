@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.frontend.page.lighting;
 
+import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.Header;
 
 /**
@@ -19,6 +20,8 @@ public class Lighting extends Header {
    */
   public Lighting() {    
     // More to come
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(3);
+
   }
 
 }
