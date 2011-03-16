@@ -53,6 +53,8 @@ public class AquaponicsStats extends Header {
    * @throws Exception The exception.
    */
   public AquaponicsStats() throws Exception {
+    
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(2);
 
     // properties = ((SolarDecathlonSession) getSession()).getProperties();
     // int currentGraphDisplay = properties.get(GRAPH_NAME);

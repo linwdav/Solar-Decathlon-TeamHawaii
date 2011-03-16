@@ -219,7 +219,7 @@ public class Energy extends Header {
       public void onClick() {
         try {
           ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(4);
-          setResponsePage(new Hvac());
+          setResponsePage(Hvac.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -234,7 +234,7 @@ public class Energy extends Header {
       public void onClick() {
         try {
           ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(2);
-          setResponsePage(new AquaPonics());
+          setResponsePage(AquaPonics.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -249,7 +249,7 @@ public class Energy extends Header {
       public void onClick() {
         try {
           ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(3);
-          setResponsePage(new Lighting());
+          setResponsePage(Lighting.class);
         }
         catch (Exception e) {
           e.printStackTrace();

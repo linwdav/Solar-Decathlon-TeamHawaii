@@ -82,6 +82,7 @@ public class Header extends WebPage {
     // later may have to make DropDownBox for region selection.
     weatherParser = new WeatherParser("Honolulu");
     currentWeather = weatherParser.getCurrentWeather();
+    outsideTemperatureHeader.setDefaultModelObject(String.valueOf(currentWeather.getTempF()));
     
     // model for current weather label
     Model<String> currentWeatherModel = new Model<String>() {
@@ -120,8 +121,8 @@ public class Header extends WebPage {
     // This is totally bogus!!
     // Right now there's no outside temp in the dictionary so we just use a random number
     // Maybe in milestone 2 we can just do it like how we did insideTemperatureHeader
-    Long rand = (long) (Math.random() * 100);
-    outsideTemperatureHeader.setDefaultModelObject(String.valueOf(rand));
+//    Long rand = (long) (Math.random() * 100);
+//    outsideTemperatureHeader.setDefaultModelObject(String.valueOf(rand));
 
     /*******************************************************************************************
      * for testing purpose, may remove after the integration with backend system. or just simply
