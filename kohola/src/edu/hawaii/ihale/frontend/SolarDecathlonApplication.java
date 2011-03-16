@@ -6,8 +6,11 @@ import org.apache.wicket.Request;
 import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
-import edu.hawaii.ihale.api.SystemStateEntryDB;
+//import edu.hawaii.ihale.api.SystemStateEntryDB;
+import edu.hawaii.ihale.api.repository.IHaleRepository;
+import edu.hawaii.ihale.api.repository.impl.Repository;
 //import edu.hawaii.ihale.backend.DataGatheringThread;
+import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.backend.rest.IHaleServer;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaPonics;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsListener;
@@ -38,9 +41,13 @@ public class SolarDecathlonApplication extends WebApplication {
   private static LightsListener lightsListener;
   private static PhotovoltaicListener photovoltaicListener;
   private static ElectricalListener electricalListener;
-  private static SystemStateEntryDB db;
+  //private static SystemStateEntryDB db;
+  private static IHaleRepository repository;
+  private static IHaleBackend backend;
 
   static {
+    
+    backend = new IHaleBackend();
 
     aquaponicsListener = new AquaponicsListener();
     hvacListener = new HvacListener();
@@ -55,28 +62,29 @@ public class SolarDecathlonApplication extends WebApplication {
     //String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
 
     // 2. for integration with Hoike backend
-    String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
+    //String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
 
     // 3. for testing our frontend solely
     //String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
-
-    try {
-      db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
-    }
-    catch (InstantiationException e) {
-      e.printStackTrace();
-    }
-    catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    }
-    db.addSystemStateListener(aquaponicsListener);
-    db.addSystemStateListener(hvacListener);
-    db.addSystemStateListener(lightsListener);
-    db.addSystemStateListener(photovoltaicListener);
-    db.addSystemStateListener(electricalListener);
+    
+//    try {
+//      db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
+//    }
+//    catch (InstantiationException e) {
+//      e.printStackTrace();
+//    }
+//    catch (IllegalAccessException e) {
+//      e.printStackTrace();
+//    }
+//    catch (ClassNotFoundException e) {
+//      e.printStackTrace();
+//    }
+    repository = new Repository();    
+    repository.addSystemStateListener(aquaponicsListener);
+    repository.addSystemStateListener(hvacListener);
+    repository.addSystemStateListener(lightsListener);
+    repository.addSystemStateListener(photovoltaicListener);
+    repository.addSystemStateListener(electricalListener);
 
     /***************************************************************
      * Choose 1, 2, or 3 below to test with different systems.
@@ -196,11 +204,19 @@ public class SolarDecathlonApplication extends WebApplication {
   }
   
   /**
-   * Returns the database.
-   * @return The database.
+   * Returns the repository.
+   * @return The repository.
    */
-  public static SystemStateEntryDB getDB() {
-    return db;
+  public static IHaleRepository getRepository() {
+    return repository;
+  }
+  
+  /**
+   * Returns the backend.
+   * @return The backend.
+   */
+  public static IHaleBackend getBackend() {
+    return backend;
   }
 
 }

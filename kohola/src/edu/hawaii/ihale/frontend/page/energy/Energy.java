@@ -9,9 +9,10 @@ import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
-import edu.hawaii.ihale.api.SystemStateEntry;
+//import edu.hawaii.ihale.api.SystemStateEntry;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
-import edu.hawaii.ihale.api.SystemStateEntryDBException;
+//import edu.hawaii.ihale.api.SystemStateEntryDBException;
+import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.frontend.page.Header;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
@@ -35,11 +36,11 @@ public class Energy extends Header {
 
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
-  private static final String ELECTRICAL_CONSUMPTION = "electrical";
-  private static final String EGAUGE_1 = "egauge-1";
-  private static final String EGAUGE_2 = "egauge-2";
-  private static final String PHOTOVOLTAICS = "photovoltaics";
-  private static final String ENERGY = "energy";
+  //private static final String ELECTRICAL_CONSUMPTION = "electrical";
+  //private static final String EGAUGE_1 = "egauge-1";
+  //private static final String EGAUGE_2 = "egauge-2";
+  //private static final String PHOTOVOLTAICS = "photovoltaics";
+  //private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
   private static final String Y_AXIS = "8000.0";
@@ -331,19 +332,22 @@ public class Energy extends Header {
     xAxis = xBuf.toString();
     long lastTwentyFour = 24 * 60 * 60 * 1000L;
     long time = (new Date()).getTime();
-    List<SystemStateEntry> consumptionList = null, generationList = null;
+    List<TimestampIntegerPair> consumptionList = null;
+    List<TimestampIntegerPair> generationList = null;
     // Gets all entries for photovoltaics and consumption in the last 24 hours.
-    try {
-      consumptionList =
-          SolarDecathlonApplication.getDB().getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
-              (time - lastTwentyFour), time);
-      generationList =
-          SolarDecathlonApplication.getDB().getEntries(PHOTOVOLTAICS, EGAUGE_1,
-              (time - lastTwentyFour), time);
-    }
-    catch (SystemStateEntryDBException e) {
-      System.out.println("Creating a list of entries in day dashboard.");
-    }
+   
+    consumptionList =
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
+          
+        //.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
+        //    (time - lastTwentyFour), time);
+    generationList =
+      SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
+          
+        //.getEntries(PHOTOVOLTAICS, EGAUGE_1,
+        //    (time - lastTwentyFour), time);
+    
+   
     // milliseconds since beginning of hour
     long mHourBegin =
         current.get(Calendar.MINUTE) * 60000 + current.get(Calendar.SECOND) * 1000
@@ -364,7 +368,7 @@ public class Energy extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mHourBegin) - (twoHours * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mHourBegin) - (twoHours * i)))) {
-          cValue += consumptionList.get(j).getLongValue(ENERGY);
+          cValue += consumptionList.get(j).getValue();
           cAverage++;
         }
 
@@ -373,7 +377,7 @@ public class Energy extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mHourBegin) - (twoHours * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mHourBegin) - (twoHours * i)) {
-          gValue += generationList.get(j).getLongValue(ENERGY);
+          gValue += generationList.get(j).getValue();
           gAverage++;
         }
 
@@ -455,18 +459,18 @@ public class Energy extends Header {
     xBuf.append(daysOfWeek[currentDay % 7]);
     xAxis = xBuf.toString();
     long time = (new Date()).getTime();
-    List<SystemStateEntry> consumptionList = null, generationList = null;
-    try {
-      consumptionList =
-          SolarDecathlonApplication.getDB().getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
-              (time - mWeek), time);
-      generationList =
-          SolarDecathlonApplication.getDB().getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek),
-              time);
-    }
-    catch (SystemStateEntryDBException e) {
-      System.out.println("Creating a list of entries in week dashboard.");
-    }
+    List<TimestampIntegerPair> consumptionList = null;
+    List<TimestampIntegerPair> generationList = null;
+    
+    consumptionList =
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mWeek);
+      
+    //getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,        (time - mWeek), time);
+    generationList =
+        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mWeek);
+          
+        //.getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
+   
 
     long cValue = 0, gValue = 0;
     String cValues = "", gValues = "", printC = "", printG = "";
@@ -482,7 +486,7 @@ public class Energy extends Header {
             ((time - mSinceBeginning) - (mInADay * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > 
             ((time - mSinceBeginning) - (mInADay * i)))) {
-          cValue += consumptionList.get(j).getLongValue(ENERGY);
+          cValue += consumptionList.get(j).getValue();
           cAverage++;
         }
 
@@ -491,7 +495,7 @@ public class Energy extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mSinceBeginning) - (mInADay * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mSinceBeginning) - (mInADay * i)) {
-          gValue += generationList.get(j).getLongValue(ENERGY);
+          gValue += generationList.get(j).getValue();
           gAverage++;
         }
 
@@ -573,22 +577,23 @@ public class Energy extends Header {
     xBuf.append(currentDay);
     xAxis = xBuf.toString();
     long time = (new Date()).getTime();
-    List<SystemStateEntry> consumptionList = null, generationList = null;
+    List<TimestampIntegerPair> consumptionList = null;
+    List<TimestampIntegerPair> generationList = null;
     long mSinceBeginning =
         ((current.get(Calendar.DAY_OF_MONTH) - 1) * mInADay) + current.get(Calendar.HOUR_OF_DAY)
             * 3600000L + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND)
             * 1000L + current.get(Calendar.MILLISECOND);
-    try {
-      consumptionList =
-          SolarDecathlonApplication.getDB().getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
-              (time - mSinceBeginning), time);
-      generationList =
-          SolarDecathlonApplication.getDB().getEntries(PHOTOVOLTAICS, EGAUGE_1,
-              (time - mSinceBeginning), time);
-    }
-    catch (SystemStateEntryDBException e) {
-      System.out.println("Creating a list of entries in month dashboard.");
-    }
+    
+    consumptionList =
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mSinceBeginning);
+          
+        //getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
+    generationList =
+      SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mSinceBeginning);
+          
+        //getEntries(PHOTOVOLTAICS, EGAUGE_1,(time - mSinceBeginning), time);
+    
+    
 
     long cValue = 0, gValue = 0;
     String cValues = "", gValues = "", printC = "", printG = "";
@@ -606,7 +611,7 @@ public class Energy extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mFive * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mFive * i)))) {
-          cValue += consumptionList.get(j).getLongValue(ENERGY);
+          cValue += consumptionList.get(j).getValue();
           cAverage++;
         }
 
@@ -615,7 +620,7 @@ public class Energy extends Header {
 
         if (generationList.get(j).getTimestamp() < (time - mToday) - (mFive * (i - 1))
             && generationList.get(j).getTimestamp() > (time - mToday) - (mFive * i)) {
-          gValue += generationList.get(j).getLongValue(ENERGY);
+          gValue += generationList.get(j).getValue();
           gAverage++;
         }
 

@@ -1,7 +1,7 @@
 package edu.hawaii.ihale.frontend.page.hvac;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -15,6 +15,9 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+//import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.Header;
@@ -177,7 +180,7 @@ public class Hvac extends Header {
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         // do a put command
-        List<String> list = new ArrayList<String>();
+        //List<String> list = new ArrayList<String>();
         String temp = (String) textField.getDefaultModelObject();
         long tempLong = 0L;
         // ensure textfield contatins all digits
@@ -211,8 +214,15 @@ public class Hvac extends Header {
         // else do doCommand
         else {
           desiredTemp = tempLong;
-          list.add(temp);
-          SolarDecathlonApplication.getDB().doCommand("hvac", "arduino-4", "SetTemp", list);
+          //list.add(temp);
+          //SolarDecathlonApplication.getDB().doCommand("hvac", "arduino-4", "SetTemp", list);
+          // maybe should just create the backend instance in application.java
+          
+          IHaleSystem system = IHaleSystem.HVAC;
+          IHaleCommandType command = IHaleCommandType.SET_TEMPERATURE;
+          Long newTemperature = tempLong;
+          SolarDecathlonApplication.getBackend().doCommand(system, null, command, newTemperature);
+          
           textField.setDefaultModelObject("");
           feedback.setDefaultModelObject("<font color=\"green\">"
               + "Success:<br />Desired room temperature is now " + temp + "F&deg</font>");

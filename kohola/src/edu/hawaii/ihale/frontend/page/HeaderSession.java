@@ -1,10 +1,20 @@
 package edu.hawaii.ihale.frontend.page;
 
+import java.io.Serializable;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.model.Model;
 
-public class HeaderSession {
+/**
+ * The session for header.
+ * 
+ * @author Kylan Hughes
+ * @author Chuan Lun Hung
+ */
+public class HeaderSession implements Serializable {
+
+  /** Support serialization. */
+  private static final long serialVersionUID = 1L;
   
   private WebMarkupContainer dashboardItem;
   private WebMarkupContainer energyItem;
@@ -12,6 +22,9 @@ public class HeaderSession {
   private WebMarkupContainer lightingItem;
   private WebMarkupContainer hvacItem;
   
+  /**
+   * The session for header.
+   */
   public HeaderSession() {
     //empty
   }
@@ -96,6 +109,10 @@ public class HeaderSession {
     this.hvacItem = wmc;
   }
   
+  /**
+   * Sets the active tab on top of the page.
+   * @param i The number associated with the current page.
+   */
   public void setActiveTab(int i) {
     String classContainer = "class";
     String activeContainer = "active";

@@ -52,11 +52,11 @@ public class Header extends WebPage {
   /** The current weather info to be shared with the dashboard. */
   public CurrentWeather currentWeather;
 
-  private WebMarkupContainer dashboardItem;
-  private WebMarkupContainer energyItem;
-  private WebMarkupContainer aquaponicsItem;
-  private WebMarkupContainer lightingItem;
-  private WebMarkupContainer hvacItem;
+//  private WebMarkupContainer dashboardItem;
+//  private WebMarkupContainer energyItem;
+//  private WebMarkupContainer aquaponicsItem;
+//  private WebMarkupContainer lightingItem;
+//  private WebMarkupContainer hvacItem;
   
   // WebMarkupContainer securityItem;
   // WebMarkupContainer settingsItem;
@@ -77,6 +77,12 @@ public class Header extends WebPage {
    * The header page. This is a parent class to all pages.
    */
   public Header() {
+    
+    WebMarkupContainer dashboardItem;
+    WebMarkupContainer energyItem;
+    WebMarkupContainer aquaponicsItem;
+    WebMarkupContainer lightingItem;
+    WebMarkupContainer hvacItem;
 
     // find out the info about the current weather. (right now only supports honolulu)
     // later may have to make DropDownBox for region selection.

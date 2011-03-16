@@ -1,7 +1,9 @@
 package edu.hawaii.ihale.frontend.page.energy;
 
-import edu.hawaii.ihale.api.SystemStateEntry;
-import edu.hawaii.ihale.api.SystemStateListener;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.SystemStateListener;
 
 /**
  * A listener that the UI uses to learn when the database has changed state.
@@ -12,9 +14,10 @@ import edu.hawaii.ihale.api.SystemStateListener;
  */
 public class PhotovoltaicListener extends SystemStateListener {
   
-  private static final String SYSTEM_NAME = "photovoltaics";
-  private static final String POWER_KEY = "power";
-  private static final String ENERGY_KEY = "energy";
+
+  // private static final String SYSTEM_NAME = "photovoltaics";
+  // private static final String POWER_KEY = "power";
+  // private static final String ENERGY_KEY = "energy";
 
   private long power = -1;
   private long energy = -1;
@@ -23,23 +26,25 @@ public class PhotovoltaicListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Photovoltaics.
    */
   public PhotovoltaicListener() {
-    super(SYSTEM_NAME);
+    super(IHaleSystem.PHOTOVOLTAIC);
   }
 
   /**
-   * Invoked whenever a new state entry for PV is received by the system.
-   * 
-   * @param entry A SystemStateEntry for the PV system.
+   * Runs when the Photovoltaics state changes. 
+   * @param state One of the Photovoltaics state values. 
+   * @param room Always null for the Photovoltaics system.
+   * @param timestamp The time when this state change occurred.
+   * @param value The value associated with this state change. 
    */
   @Override
-  public void entryAdded(SystemStateEntry entry) {
-    System.out.println("Something just happened in PV: " + entry);
-    if (entry.getLongValue(POWER_KEY) != -1) {
-      power = entry.getLongValue(POWER_KEY);
-    }
-     if (entry.getLongValue(ENERGY_KEY) != -1) {
-     energy = entry.getLongValue(ENERGY_KEY);
-     }
+  public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
+    System.out.println("Something just happened in PV.");
+    // if (entry.getLongValue(POWER_KEY) != -1) {
+    // power = entry.getLongValue(POWER_KEY);
+    // }
+    // if (entry.getLongValue(ENERGY_KEY) != -1) {
+    // energy = entry.getLongValue(ENERGY_KEY);
+    // }
   }
 
   /**

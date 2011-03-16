@@ -1,7 +1,9 @@
 package edu.hawaii.ihale.frontend.page.aquaponics;
 
-import edu.hawaii.ihale.api.SystemStateEntry;
-import edu.hawaii.ihale.api.SystemStateListener;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.SystemStateListener;
 
 /**
  * A listener for aquaponics that the UI uses to learn when the database has changed state.
@@ -11,11 +13,11 @@ import edu.hawaii.ihale.api.SystemStateListener;
  * @author Chuan Lun Hung
  */
 public class AquaponicsListener extends SystemStateListener {
-  
-  private static final String SYSTEM_NAME = "aquaponics";
-  private static final String TEMPERATURE_KEY = "temp";;
-  private static final String PH_KEY = "ph";
-  private static final String OXYGEN_KEY = "oxygen";
+
+  // private static final String SYSTEM_NAME = "aquaponics";
+  // private static final String TEMPERATURE_KEY = "temp";;
+  // private static final String PH_KEY = "ph";
+  // private static final String OXYGEN_KEY = "oxygen";
 
   private long temp = -1;
   private double pH = -1.0;
@@ -25,28 +27,30 @@ public class AquaponicsListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Aquaponics.
    */
   public AquaponicsListener() {
-    super(SYSTEM_NAME);
+    super(IHaleSystem.AQUAPONICS);
   }
 
   /**
-   * Invoked whenever a new state entry for Aquaponics is received by the system.
-   * 
-   * @param entry A SystemStateEntry for the Aquaponics system.
+   * Runs when the Aquaponics state changes. 
+   * @param state One of the aquaponics state values. 
+   * @param room Always null for the Aquaponics system.
+   * @param timestamp The time when this state change occurred.
+   * @param value The value associated with this state change. 
    */
   @Override
-  public void entryAdded(SystemStateEntry entry) {
-    System.out.println("Something just happened in Aquaponics: " + entry);
+  public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
+    System.out.println("Something just happened in Aquaponics.");
 
-    // update instances
-    if (entry.getLongValue(TEMPERATURE_KEY) != -1) {
-      temp = entry.getLongValue(TEMPERATURE_KEY);
-    }
-    if (entry.getDoubleValue(PH_KEY) != -1.0) {
-      pH = entry.getDoubleValue(PH_KEY);
-    }
-    if (entry.getDoubleValue(OXYGEN_KEY) != -1.0) {
-      oxygen = entry.getDoubleValue(OXYGEN_KEY);
-    }
+    // // update instances
+    // if (entry.getLongValue(TEMPERATURE_KEY) != -1) {
+    // temp = entry.getLongValue(TEMPERATURE_KEY);
+    // }
+    // if (entry.getDoubleValue(PH_KEY) != -1.0) {
+    // pH = entry.getDoubleValue(PH_KEY);
+    // }
+    // if (entry.getDoubleValue(OXYGEN_KEY) != -1.0) {
+    // oxygen = entry.getDoubleValue(OXYGEN_KEY);
+    // }    
   }
 
   /**
@@ -75,5 +79,4 @@ public class AquaponicsListener extends SystemStateListener {
   public double getOxygen() {
     return oxygen;
   }
-
 }

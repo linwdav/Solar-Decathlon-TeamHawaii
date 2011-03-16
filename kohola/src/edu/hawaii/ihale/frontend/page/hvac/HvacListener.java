@@ -1,7 +1,9 @@
 package edu.hawaii.ihale.frontend.page.hvac;
 
-import edu.hawaii.ihale.api.SystemStateEntry;
-import edu.hawaii.ihale.api.SystemStateListener;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.SystemStateListener;
 
 /**
  * A listener for Hvac that the UI uses to learn when the database has changed state. 
@@ -11,8 +13,8 @@ import edu.hawaii.ihale.api.SystemStateListener;
  */
 public class HvacListener extends SystemStateListener {
   
-  private static final String SYSTEM_NAME = "hvac";
-  private static final String TEMP_KEY = "temp";
+  //private static final String SYSTEM_NAME = "hvac";
+  //private static final String TEMP_KEY = "temp";
   
   private long temp = -1;
   
@@ -20,19 +22,23 @@ public class HvacListener extends SystemStateListener {
    * Provide a default constructor that indicates that this listener is for Hvac.
    */
   public HvacListener() {
-    super(SYSTEM_NAME);
+    super(IHaleSystem.HVAC);
   }
 
   /**
-   * Invoked whenever a new state entry for Hvac is received by the system.
-   * @param entry A SystemStateEntry for the Hvac system.
+   * Runs when the Hvac state changes. 
+   * @param state One of the Hvac state values. 
+   * @param room Always null for the Hvac system.
+   * @param timestamp The time when this state change occurred.
+   * @param value The value associated with this state change. 
    */
   @Override
-  public void entryAdded(SystemStateEntry entry) {
-    System.out.println("Something just happened in Hvac: " + entry);
-    if (entry.getLongValue(TEMP_KEY) != -1) {  
-      temp = entry.getLongValue(TEMP_KEY);
-    }    
+  public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
+
+    System.out.println("Something just happened in Hvac.");
+    // if (entry.getLongValue(TEMP_KEY) != -1) {
+    // temp = entry.getLongValue(TEMP_KEY);
+    // } 
   }
   
   /**
@@ -41,5 +47,5 @@ public class HvacListener extends SystemStateListener {
    */
   public long getTemp() {
     return temp;
-  }
+  } 
 }
