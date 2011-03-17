@@ -13,7 +13,12 @@ import edu.hawaii.ihale.api.repository.SystemStateListener;
  */
 public class LightsListener extends SystemStateListener {
   
+  private String color = "000000";
   //private static final String SYSTEM_NAME = "lighting";
+  Room living = new Room("living", false, 0, color);
+  Room dining = new Room("dining", false, 0, color);
+  Room kitchen = new Room("kitchen", false, 0, color);
+  Room bathroom = new Room("bathroom", false, 0, color);
   
   /**
    * Provide a default constructor that indicates that this listener is for lighting.
@@ -31,7 +36,124 @@ public class LightsListener extends SystemStateListener {
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
-
-    System.out.println("Something just happened in Lights.");
+    switch(room) {
+    case LIVING:
+      // do swtich statement
+      switch(state) {
+      case LIGHTING_ENABLED:
+        living.setLightingEnabled((Boolean)value);
+        break;
+      
+      case LIGHTING_LEVEL:
+        living.setLightingLevel((Integer)value);
+        break;
+        
+      case LIGHTING_COLOR:
+        living.setLightingColor((String)value);
+        break;
+        
+      default:
+        break;
+      }
+      
+      break;
+      
+    case DINING:
+      
+      switch(state) {
+      case LIGHTING_ENABLED:
+        dining.setLightingEnabled((Boolean)value);
+        break;
+      
+      case LIGHTING_LEVEL:
+        dining.setLightingLevel((Integer)value);
+        break;
+        
+      case LIGHTING_COLOR:
+        dining.setLightingColor((String)value);
+        break;
+        
+      default:
+        break;
+      }
+      break;
+      
+    case KITCHEN:
+      
+      switch(state) {
+      case LIGHTING_ENABLED:
+        kitchen.setLightingEnabled((Boolean)value);
+        break;
+      
+      case LIGHTING_LEVEL:
+        kitchen.setLightingLevel((Integer)value);
+        break;
+        
+      case LIGHTING_COLOR:
+        kitchen.setLightingColor((String)value);
+        break;
+        
+      default:
+        break;
+      }
+      
+      break;
+      
+    case BATHROOM:
+      
+      switch(state) {
+      case LIGHTING_ENABLED:
+        bathroom.setLightingEnabled((Boolean)value);
+        break;
+      
+      case LIGHTING_LEVEL:
+        bathroom.setLightingLevel((Integer)value);
+        break;
+        
+      case LIGHTING_COLOR:
+        bathroom.setLightingColor((String)value);
+        break;
+        
+      default:
+        break;
+      }
+      
+      break;
+      
+    default:
+      break;
+    } 
+  }
+  
+  /**
+   * Returns the state of the living room.
+   * @return living - the state of the living room
+   */
+  public Room getLivingRoom() {
+    return living;
+  }
+  
+  /**
+   * Returns the state of the dining room.
+   * @return dining - the state of the dining room
+   */
+  public Room getDiningRoom() {
+    return dining;
+  }
+  
+  /**
+   * Returns the state of the kitchen room.
+   * @return kitchen - the state of the kitchen room
+   */
+  public Room getKitchenRoom() {
+    return kitchen;
+  }
+  
+  /**
+   * Returns the state of the bathroom.
+   * @return bathroom - the state of the bathroom
+   */
+  public Room getBathroom() {
+    return bathroom;
   }
 }

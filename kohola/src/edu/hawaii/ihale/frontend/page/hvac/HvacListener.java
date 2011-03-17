@@ -34,11 +34,11 @@ public class HvacListener extends SystemStateListener {
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
-
-    System.out.println("Something just happened in Hvac.");
-    // if (entry.getLongValue(TEMP_KEY) != -1) {
-    // temp = entry.getLongValue(TEMP_KEY);
-    // } 
+    
+    if (state.equals(IHaleState.TEMPERATURE)) {
+      temp = (Long) value;
+      System.out.println("New Hvac temperature is: " + temp);
+    }
   }
   
   /**

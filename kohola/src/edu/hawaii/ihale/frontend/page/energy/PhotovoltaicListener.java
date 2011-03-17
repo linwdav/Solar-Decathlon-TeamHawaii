@@ -19,8 +19,8 @@ public class PhotovoltaicListener extends SystemStateListener {
   // private static final String POWER_KEY = "power";
   // private static final String ENERGY_KEY = "energy";
 
-  private long power = -1;
-  private long energy = -1;
+  private Integer power = -1;
+  private Integer energy = -1;
 
   /**
    * Provide a default constructor that indicates that this listener is for Photovoltaics.
@@ -38,13 +38,21 @@ public class PhotovoltaicListener extends SystemStateListener {
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
-    System.out.println("Something just happened in PV.");
-    // if (entry.getLongValue(POWER_KEY) != -1) {
-    // power = entry.getLongValue(POWER_KEY);
-    // }
-    // if (entry.getLongValue(ENERGY_KEY) != -1) {
-    // energy = entry.getLongValue(ENERGY_KEY);
-    // }
+    switch (state) {
+    case ENERGY: 
+      energy = (Integer) value;
+      System.out.println("Photovoltaics energy level is: " + energy);
+      break;
+    
+    case POWER: 
+      power = (Integer) value;
+      System.out.println("Photovoltaics power level is: " + power);
+      break;
+    
+    default: 
+      System.out.println("Unhandled Photovoltaics state: " + state);
+    
+    }
   }
 
   /**
