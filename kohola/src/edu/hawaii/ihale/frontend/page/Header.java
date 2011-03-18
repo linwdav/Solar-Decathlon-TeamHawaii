@@ -19,6 +19,7 @@ import org.apache.wicket.util.time.Duration;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaPonics;
 import edu.hawaii.ihale.frontend.page.dashboard.Dashboard;
 import edu.hawaii.ihale.frontend.page.energy.Energy;
+import edu.hawaii.ihale.frontend.page.help.Help;
 import edu.hawaii.ihale.frontend.page.hvac.Hvac;
 import edu.hawaii.ihale.frontend.page.lighting.Lighting;
 import edu.hawaii.ihale.frontend.weatherparser.CurrentWeather;
@@ -52,18 +53,6 @@ public class Header extends WebPage {
   /** The current weather info to be shared with the dashboard. */
   public CurrentWeather currentWeather;
 
-//  private WebMarkupContainer dashboardItem;
-//  private WebMarkupContainer energyItem;
-//  private WebMarkupContainer aquaponicsItem;
-//  private WebMarkupContainer lightingItem;
-//  private WebMarkupContainer hvacItem;
-  
-  // WebMarkupContainer securityItem;
-  // WebMarkupContainer settingsItem;
-  // WebMarkupContainer reportsItem;
-  // WebMarkupContainer administratorItem;
-  // WebMarkupContainer helpItem;
-
   /**
    * labels for the header, aka basepage. after the simulator and backend add outsideTemp can remove
    * this line and put it in the constructor along with insideTemperatureHeader
@@ -83,6 +72,12 @@ public class Header extends WebPage {
     WebMarkupContainer aquaponicsItem;
     WebMarkupContainer lightingItem;
     WebMarkupContainer hvacItem;
+    
+    // WebMarkupContainer securityItem;
+    // WebMarkupContainer settingsItem;
+    // WebMarkupContainer reportsItem;
+    // WebMarkupContainer administratorItem;
+    WebMarkupContainer helpItem;
 
     // find out the info about the current weather. (right now only supports honolulu)
     // later may have to make DropDownBox for region selection.
@@ -284,6 +279,20 @@ public class Header extends WebPage {
       }
     });
     ((SolarDecathlonSession)getSession()).getHeaderSession().setHvacItem(hvacItem);
+    
+    // Add help Link to page (tabs)
+    helpItem = new WebMarkupContainer("HelpItem");
+    add(helpItem);
+    helpItem.add(new Link<String>("HelpPageLinkTab") {
+      private static final long serialVersionUID = 1L;
+
+      /** Upon clicking this link, go to help page. */
+      @Override
+      public void onClick() {
+        setResponsePage(Help.class);
+      }
+    });
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setHelpItem(helpItem);
 
     // // Add Security Link to page (tabs)
     // securityItem = new WebMarkupContainer("SecurityItem");
@@ -369,7 +378,7 @@ public class Header extends WebPage {
       public void onClick() {
         ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(0);
         try {
-          setResponsePage(new Dashboard());
+          setResponsePage(Dashboard.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -385,7 +394,7 @@ public class Header extends WebPage {
       public void onClick() {
         ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(1);
         try {
-          setResponsePage(new Energy());
+          setResponsePage(Energy.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -401,7 +410,7 @@ public class Header extends WebPage {
       public void onClick() {
         ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(2);
         try {
-          setResponsePage(new AquaPonics());
+          setResponsePage(AquaPonics.class);
         }
         catch (Exception e) {
           e.printStackTrace();
@@ -416,7 +425,7 @@ public class Header extends WebPage {
       @Override
       public void onClick() {
         ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(3);
-        setResponsePage(new Lighting());
+        setResponsePage(Lighting.class);
       }
     });
     
@@ -428,7 +437,23 @@ public class Header extends WebPage {
       public void onClick() {
         ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(4);
         try {
-          setResponsePage(new Hvac());
+          setResponsePage(Hvac.class);
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    });
+    
+    add(new Link<String>("HelpPageLink") {
+      private static final long serialVersionUID = 1L;
+
+      /** Upon clicking this link, go to help page. */
+      @Override
+      public void onClick() {
+        ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(5);
+        try {
+          setResponsePage(Help.class);
         }
         catch (Exception e) {
           e.printStackTrace();

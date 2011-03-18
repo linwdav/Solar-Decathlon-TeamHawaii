@@ -10,6 +10,7 @@ import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsSession;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsStatsSession;
 import edu.hawaii.ihale.frontend.page.dashboard.DashboardSession;
 import edu.hawaii.ihale.frontend.page.energy.EnergySession;
+import edu.hawaii.ihale.frontend.page.help.HelpSession;
 import edu.hawaii.ihale.frontend.page.hvac.HvacSession;
 import edu.hawaii.ihale.frontend.page.lighting.LightingSession;
 
@@ -34,6 +35,7 @@ public class SolarDecathlonSession extends WebSession {
   private EnergySession energySession = new EnergySession();
   private HvacSession hvacSession = new HvacSession();
   private LightingSession lightingSession = new LightingSession();
+  private HelpSession helpSession = new HelpSession();
 
   /**
    * Create default values for the application.
@@ -106,10 +108,18 @@ public class SolarDecathlonSession extends WebSession {
   
   /**
    * Used to get the Lighting session associated with the user's session.
-   * @return The LightingSession
+   * @return The HelpSession
    */
   public LightingSession getLightingSession() {
     return this.lightingSession;
+  }
+  
+  /**
+   * Used to get the Help session associated with the user's session.
+   * @return The HelpSession.
+   */
+  public HelpSession getHelpSession() {
+    return this.helpSession;
   }
  
 }

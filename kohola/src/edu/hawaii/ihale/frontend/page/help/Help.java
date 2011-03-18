@@ -4,6 +4,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.Header;
 
 /**
@@ -30,11 +31,11 @@ public class Help extends Header {
   Link<String> energyButton;
   Link<String> aquaponicsButton;
   Link<String> lightingButton;
-  Link<String> temperatureButton;
-  Link<String> securityButton;
-  Link<String> reportsButton;
-  Link<String> settingsButton;
-  Link<String> adminButton;
+  Link<String> hvacButton;
+  // Link<String> securityButton;
+  // Link<String> reportsButton;
+  // Link<String> settingsButton;
+  // Link<String> adminButton;
 
   /**
    * Tile portion of Help Screen.
@@ -50,6 +51,8 @@ public class Help extends Header {
    * Layout of page.
    */
   public Help() {
+    
+    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(5);
 
     // Buttons on left of page
     overviewButton = new Link<String>("overviewButton") {
@@ -116,7 +119,7 @@ public class Help extends Header {
       }
     };
 
-    temperatureButton = new Link<String>("temperatureButton") {
+    hvacButton = new Link<String>("hvacButton") {
       private static final long serialVersionUID = 1L;
 
       @Override
@@ -132,69 +135,69 @@ public class Help extends Header {
       }
     };
 
-    securityButton = new Link<String>("securityButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        currentPageDisplay = 5;
-        try {
-          setResponsePage(new Help());
-        }
-        catch (Exception e) {
-          
-          e.printStackTrace();
-        }
-      }
-    };
-
-    reportsButton = new Link<String>("reportsButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        currentPageDisplay = 6;
-        try {
-          setResponsePage(new Help());
-        }
-        catch (Exception e) {
-          
-          e.printStackTrace();
-        }
-      }
-    };
-
-    settingsButton = new Link<String>("settingsButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        currentPageDisplay = 7;
-        try {
-          setResponsePage(new Help());
-        }
-        catch (Exception e) {
-          
-          e.printStackTrace();
-        }
-      }
-    };
-
-    adminButton = new Link<String>("adminButton") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        currentPageDisplay = 8;
-        try {
-          setResponsePage(new Help());
-        }
-        catch (Exception e) {
-          
-          e.printStackTrace();
-        }
-      }
-    };
+    // securityButton = new Link<String>("securityButton") {
+    // private static final long serialVersionUID = 1L;
+    //
+    // @Override
+    // public void onClick() {
+    // currentPageDisplay = 5;
+    // try {
+    // setResponsePage(new Help());
+    // }
+    // catch (Exception e) {
+    //
+    // e.printStackTrace();
+    // }
+    // }
+    // };
+    //
+    // reportsButton = new Link<String>("reportsButton") {
+    // private static final long serialVersionUID = 1L;
+    //
+    // @Override
+    // public void onClick() {
+    // currentPageDisplay = 6;
+    // try {
+    // setResponsePage(new Help());
+    // }
+    // catch (Exception e) {
+    //
+    // e.printStackTrace();
+    // }
+    // }
+    // };
+    //
+    // settingsButton = new Link<String>("settingsButton") {
+    // private static final long serialVersionUID = 1L;
+    //
+    // @Override
+    // public void onClick() {
+    // currentPageDisplay = 7;
+    // try {
+    // setResponsePage(new Help());
+    // }
+    // catch (Exception e) {
+    //
+    // e.printStackTrace();
+    // }
+    // }
+    // };
+    //
+    // adminButton = new Link<String>("adminButton") {
+    // private static final long serialVersionUID = 1L;
+    //
+    // @Override
+    // public void onClick() {
+    // currentPageDisplay = 8;
+    // try {
+    // setResponsePage(new Help());
+    // }
+    // catch (Exception e) {
+    //
+    // e.printStackTrace();
+    // }
+    // }
+    // };
 
     Model<String> titleModel = new Model<String>() {
       private static final long serialVersionUID = 1L;
@@ -222,11 +225,11 @@ public class Help extends Header {
     add(energyButton);
     add(aquaponicsButton);
     add(lightingButton);
-    add(temperatureButton);
-    add(securityButton);
-    add(reportsButton);
-    add(settingsButton);
-    add(adminButton);
+    add(hvacButton);
+    // add(securityButton);
+    // add(reportsButton);
+    // add(settingsButton);
+    // add(adminButton);
 
     makeButtonActive(currentPageDisplay);
 
@@ -309,20 +312,20 @@ public class Help extends Header {
       title = "Hvac";
       break;
 
-    case 5:
-      title = "Security";
-      break;
-
-    case 6:
-      title = "Reports";
-      break;
-
-    case 7:
-      title = "Settings";
-      break;
-    case 8:
-      title = "Administrator";
-      break;
+    // case 5:
+    // title = "Security";
+    // break;
+    //
+    // case 6:
+    // title = "Reports";
+    // break;
+    //
+    // case 7:
+    // title = "Settings";
+    // break;
+    // case 8:
+    // title = "Administrator";
+    // break;
 
     default:
       break;
@@ -362,28 +365,28 @@ public class Help extends Header {
           buttonContainer)));
       break;
     case 4:
-      temperatureButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+      hvacButton.add(new AttributeModifier(classContainer, true, new Model<String>(
           "green-button")));
       break;
 
-    case 5:
-      securityButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 6:
-      reportsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 7:
-      settingsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-    case 8:
-      adminButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
+    // case 5:
+    // securityButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+    // buttonContainer)));
+    // break;
+    //
+    // case 6:
+    // reportsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+    // buttonContainer)));
+    // break;
+    //
+    // case 7:
+    // settingsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+    // buttonContainer)));
+    // break;
+    // case 8:
+    // adminButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+    // buttonContainer)));
+    // break;
     default:
       break;
     } // End switch

@@ -19,6 +19,7 @@ import edu.hawaii.ihale.frontend.page.dashboard.Dashboard;
 import edu.hawaii.ihale.frontend.page.energy.ElectricalListener;
 import edu.hawaii.ihale.frontend.page.energy.Energy;
 import edu.hawaii.ihale.frontend.page.energy.PhotovoltaicListener;
+import edu.hawaii.ihale.frontend.page.help.Help;
 import edu.hawaii.ihale.frontend.page.hvac.Hvac;
 import edu.hawaii.ihale.frontend.page.hvac.HvacListener;
 import edu.hawaii.ihale.frontend.page.lighting.Lighting;
@@ -156,6 +157,7 @@ public class SolarDecathlonApplication extends WebApplication {
     mountBookmarkablePage("lighting", Lighting.class);
     mountBookmarkablePage("hvac", Hvac.class);
     mountBookmarkablePage("aquaponicsStats", AquaponicsStats.class);
+    mountBookmarkablePage("help", Help.class);
   }
 
   /**

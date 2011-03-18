@@ -21,6 +21,7 @@ public class HeaderSession implements Serializable {
   private WebMarkupContainer aquaponicsItem;
   private WebMarkupContainer lightingItem;
   private WebMarkupContainer hvacItem;
+  private WebMarkupContainer helpItem;
   
   /**
    * The session for header.
@@ -70,8 +71,16 @@ public class HeaderSession implements Serializable {
   }
   
   /**
+   * Get method for help tab.
+   * @return The help container.
+   */
+  public WebMarkupContainer getHelpItem() {
+    return this.helpItem;
+  }
+  
+  /**
    * Mutator method for dashboard tab.
-   * @param wmc the value to set dashboard too.
+   * @param wmc the value to set dashboard to.
    */
   public void setDashboardItem(WebMarkupContainer wmc) {
     this.dashboardItem = wmc;
@@ -79,7 +88,7 @@ public class HeaderSession implements Serializable {
   
   /**
    * Mutator method for energy tab.
-   * @param wmc the value to set energy too.
+   * @param wmc the value to set energy to.
    */
   public void setEnergyItem(WebMarkupContainer wmc) {
     this.energyItem = wmc;
@@ -87,7 +96,7 @@ public class HeaderSession implements Serializable {
   
   /**
    * Mutator method for aquaponics tab.
-   * @param wmc the value to set aquaponics too.
+   * @param wmc the value to set aquaponics to.
    */
   public void setAquaponicsItem(WebMarkupContainer wmc) {
     this.aquaponicsItem = wmc;
@@ -95,7 +104,7 @@ public class HeaderSession implements Serializable {
   
   /**
    * Mutator method for lighting tab.
-   * @param wmc the value to set lighting too.
+   * @param wmc the value to set lighting to.
    */
   public void setLightingItem(WebMarkupContainer wmc) {
     this.lightingItem = wmc;
@@ -103,10 +112,18 @@ public class HeaderSession implements Serializable {
   
   /**
    * Mutator method for hvac tab.
-   * @param wmc the value to set hvac too.
+   * @param wmc the value to set hvac to.
    */
   public void setHvacItem(WebMarkupContainer wmc) {
     this.hvacItem = wmc;
+  }
+  
+  /**
+   * Mutator method for help tab.
+   * @param wmc the value to set help to.
+   */
+  public void setHelpItem(WebMarkupContainer wmc) {
+    this.helpItem = wmc;
   }
   
   /**
@@ -136,6 +153,11 @@ public class HeaderSession implements Serializable {
       hvacItem.add(new AttributeModifier(classContainer, true, new Model<String>(
           activeContainer)));
       break;
+      
+    case 5:
+       helpItem.add(new AttributeModifier(classContainer, true,
+           new Model<String>(activeContainer)));
+       break;
     // case 5:
     // securityItem.add(new AttributeModifier(classContainer, true, new Model<String>(
     // activeContainer)));
