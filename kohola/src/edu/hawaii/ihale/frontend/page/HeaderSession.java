@@ -134,7 +134,7 @@ public class HeaderSession implements Serializable {
     String classContainer = "class";
     String activeContainer = "active";
 
-    System.out.println("tab to be active: " + i);
+    //System.out.println("tab to be active: " + i);
     switch (i) {
 
     case 1:

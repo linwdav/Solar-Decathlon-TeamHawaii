@@ -19,15 +19,27 @@ public class Help extends Header {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
+  // for normal fonts
+  private static final String P_OPEN_TAG = "<p style=\"line-height:25px;\">";
+  // bigger and different color font for title of each paragraph
+  private static final String P_OPEN_TAG2 =
+      "<p class=\"medium-large dark-blue\" style=\"line-height:35px;\">";
+  private static final String P_CLOSE_TAG = "</p>";
+
+  // private static final String P_OPEN_TAG3 =
+  // "<p class=\"large dark-blue\" style=\"line-height:35px;\">";
+  private static final String LINEBREAK = "<br/>";
+
   /**
    * Graph to display.
    */
-  private int currentPageDisplay = 0;
+  // private int currentPageDisplay = 0;
 
   /**
    * Buttons.
    */
   Link<String> overviewButton;
+  Link<String> dashboardButton;
   Link<String> energyButton;
   Link<String> aquaponicsButton;
   Link<String> lightingButton;
@@ -51,8 +63,11 @@ public class Help extends Header {
    * Layout of page.
    */
   public Help() {
-    
-    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(5);
+    // set the tab to light up for the header
+    ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(5);
+
+    // set which tab to light up on the left
+    int currentTab = ((SolarDecathlonSession) getSession()).getHelpSession().getCurrentTab();
 
     // Buttons on left of page
     overviewButton = new Link<String>("overviewButton") {
@@ -60,12 +75,30 @@ public class Help extends Header {
 
       @Override
       public void onClick() {
-        currentPageDisplay = 0;
+        // currentPageDisplay = 0;
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(0);
         try {
-          setResponsePage(new Help());
+          setResponsePage(Help.class);
         }
         catch (Exception e) {
-          
+
+          e.printStackTrace();
+        }
+      }
+    };
+
+    dashboardButton = new Link<String>("dashboardButton") {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public void onClick() {
+        // currentPageDisplay = 1;
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(1);
+        try {
+          setResponsePage(Help.class);
+        }
+        catch (Exception e) {
+
           e.printStackTrace();
         }
       }
@@ -76,12 +109,13 @@ public class Help extends Header {
 
       @Override
       public void onClick() {
-        currentPageDisplay = 1;
+        // currentPageDisplay = 1;
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(2);
         try {
-          setResponsePage(new Help());
+          setResponsePage(Help.class);
         }
         catch (Exception e) {
-          
+
           e.printStackTrace();
         }
       }
@@ -92,12 +126,13 @@ public class Help extends Header {
 
       @Override
       public void onClick() {
-        currentPageDisplay = 2;
+        // currentPageDisplay = 2;
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(3);
         try {
-          setResponsePage(new Help());
+          setResponsePage(Help.class);
         }
         catch (Exception e) {
-          
+
           e.printStackTrace();
         }
       }
@@ -108,12 +143,13 @@ public class Help extends Header {
 
       @Override
       public void onClick() {
-        currentPageDisplay = 3;
+        // currentPageDisplay = 3;
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(4);
         try {
-          setResponsePage(new Help());
+          setResponsePage(Help.class);
         }
         catch (Exception e) {
-          
+
           e.printStackTrace();
         }
       }
@@ -124,12 +160,13 @@ public class Help extends Header {
 
       @Override
       public void onClick() {
-        currentPageDisplay = 4;
+        // currentPageDisplay = 4;
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(5);
         try {
-          setResponsePage(new Help());
+          setResponsePage(Help.class);
         }
         catch (Exception e) {
-          
+
           e.printStackTrace();
         }
       }
@@ -203,7 +240,7 @@ public class Help extends Header {
       private static final long serialVersionUID = 1L;
 
       public String getObject() {
-        updateTitle(currentPageDisplay);
+        updateTitle(((SolarDecathlonSession) getSession()).getHelpSession().getCurrentTab());
         return title;
       }
     };
@@ -212,7 +249,7 @@ public class Help extends Header {
       private static final long serialVersionUID = 1L;
 
       public String getObject() {
-        updateInfo(currentPageDisplay);
+        updateInfo(((SolarDecathlonSession) getSession()).getHelpSession().getCurrentTab());
         return info;
       }
     };
@@ -222,6 +259,7 @@ public class Help extends Header {
 
     // Add buttons to page
     add(overviewButton);
+    add(dashboardButton);
     add(energyButton);
     add(aquaponicsButton);
     add(lightingButton);
@@ -231,7 +269,7 @@ public class Help extends Header {
     // add(settingsButton);
     // add(adminButton);
 
-    makeButtonActive(currentPageDisplay);
+    makeButtonActive(currentTab);
 
   } // End Help Constructor
 
@@ -243,42 +281,289 @@ public class Help extends Header {
   private void updateInfo(int i) {
     switch (i) {
 
-    // Buttons
+    // overview
     case 0:
       info =
-          "<p><strong>Dashboard</strong> - The dashboard provides a quick look"
+          P_OPEN_TAG2 + "Dashboard" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The dashboard provides a quick look"
               + " at essential statistics and status of all main systems.  The page also includes "
-              + "system alerts as well.</p>"
-              + "<p><strong>Energy</strong> - Shows power cosumption and power"
-              + " balances. Also provides the user with a breakdown of power consumption by system "
-              + " as well as a portal to change settings to increase energy efficiency.</p>"
-              + "<p><strong>Aquaponics</strong> - Shows the status of all essential aquaponics "
-              + " related"
+              + "system alerts as well.</p>" + LINEBREAK + P_OPEN_TAG2 + "Energy" + P_CLOSE_TAG
+              + P_OPEN_TAG + "Shows current power cosumption and current power"
+              + " balances as well as historical comparison of the two.</p>" + LINEBREAK
+              + P_OPEN_TAG2 + "Aquaponics" + P_CLOSE_TAG + P_OPEN_TAG
+              + "Shows the status of all essential aquaponics " + " related"
               + " parameters.  Offers real-time monitoring and solutions to problematic areas.</p>"
-              + "<p><strong>Lighting</strong> - Allows the user to select between different "
-              + " lighting modes (follow me, manual, visualizer, and strobe), control lighting, "
-              + " and configure a timer to set automated lighting schedules.</p>"
-              + "<p><strong>Hvac</strong> - Lets the user set the temperature for the house"
+              + LINEBREAK + P_OPEN_TAG2 + "Lighting" + P_CLOSE_TAG + P_OPEN_TAG
+              + "Allows the user to control the lighting in each room. </p> " + LINEBREAK
+              + P_OPEN_TAG2 + "Hvac" + P_CLOSE_TAG + P_OPEN_TAG
+              + "Lets the user set the temperature for the house"
               + " and aquaponics area.  Also monitors temperature at the various areas of the "
-              + "house.</p>"
-              + "<p><strong>Security</strong> - Manages the alarm (disabling/enabling), locks, "
-              + "and security cameras.  This module also contains a viewer to select and review "
-              + "recorded sessions from and camera.</p>"
-              + "<p><strong>Reports</strong> - Allows for exporting of detailed statistical "
-              + "reports on each system in the house.</p>"
-              + "<p><strong>Settings</strong> - Modify and manage presets for temperature and "
-              + "lighting.</p>"
-              + "<p><strong>Administrator</strong> - View settings and options available only to "
-              + "administrators.</p>";
+              + "house.</p>";
+
+      break;
+    // dashboard
+    case 1:
+      info =
+          P_OPEN_TAG2 + "System Energy Statistics" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The graphs on the left show the comparison between the power generation"
+              + " and the power consumption in kWh over a period of time "
+              + "(Daily, Weekly, or Monthly)." + P_CLOSE_TAG + P_OPEN_TAG + "<strong>Day</strong>"
+              + " - This graph contains the entries of power generation"
+              + " and consumption over the last 24 hours." + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Week</strong>" + " - This graph contains the entries of power generation"
+              + " and consumption over the last 7 days." + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Month</strong>" + " - This graph contains the entries of power generation"
+              + " and consumption over the last 30 days." + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2
+              + "Localization" + P_CLOSE_TAG + P_OPEN_TAG
+              + "Shows the current inside and outside temperatures as well as the weather"
+              + " forecasts for the next few days. Note that all information regarding weather"
+              + " is obtained from Google Weather API." + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2
+              + "System Log" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The system log provides the historical system status"
+              + " messages for each house system (PV, Aquaponics, Lighting, and Hvac). A new"
+              + " entry is added each time a user performs a command to the house or the house"
+              + " itself detects there is some system that needs immediate attention. "
+              + P_CLOSE_TAG;
+      break;
+    // energy
+    case 2:
+      info =
+          P_OPEN_TAG2 + "System Energy Statistics" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The graphs on the left show the comparison of the power generation "
+              + "and the power consumption in kWh over a period of time"
+              + " (Daily, Weekly, or Monthly). They also give the users a sense of"
+              + " how much money they are saving approximately." + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Day</strong> - This graph contains the entries of power generation"
+              + " and consumption over the last 24 hours." + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Week</strong> - This graph contains the entries of power generation"
+              + " and consumption over the last 7 days." + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Month</strong> - This graph contains the entries of power generation"
+              + " and consumption over the last 30 days." + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2
+              + "Current Levels" + P_CLOSE_TAG + P_OPEN_TAG
+              + "This section shows the current power generation and current"
+              + " power consumption which helps the users become more aware of their power usage"
+              + ". Whether the values are good or bad is indicated by the following colors:"
+              + P_CLOSE_TAG + P_OPEN_TAG + "<font color=\"red\"><strong>Red</strong></font>:"
+              + " - When the power consumption is greater than the power generation." + P_CLOSE_TAG
+              + P_OPEN_TAG + "<font color=\"#FF9900\"><strong>Orange</strong></font>:"
+              + " - When the power consumption is the same as the power generation." + P_CLOSE_TAG
+              + P_OPEN_TAG + "<font color=\"green\"><strong>Green</strong></font>:"
+              + " - When the power consumption is smaller than the power generation." + P_CLOSE_TAG
+              + P_OPEN_TAG2 + LINEBREAK + "Settings" + P_CLOSE_TAG + P_OPEN_TAG
+              + "When the current consumption"
+              + " is abnormally high, the users can simply click on any link and direct themselves"
+              + " to the pages for other house systems and turn them off to cut back the power"
+              + " usage." + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2 + "Energy Status Messages"
+              + P_CLOSE_TAG + P_OPEN_TAG
+              + "The energy status messages section provides the historical system status"
+              + " messages for PV and electrical systems. A new"
+              + " entry is added each time the house detects abnormal power generation or "
+              + "consumption from the sensors." + P_CLOSE_TAG;
+      break;
+    // aquaponics
+    case 3:
+      info =
+          P_OPEN_TAG2
+              + "Status"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "The status section shows the status of all essential aquaponics related "
+              + "parameters listed at the bottom of this page along with their descriptions"
+              + " and recommanded range. Whether the values are good or bad is indicated by"
+              + " the following colors:"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<font color=\"red\"><strong>Red</strong></font>:"
+              + " - When the value is far outside the optimal range."
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<font color=\"#FF9900\"><strong>Orange</strong></font>:"
+              + " - When the value is close to the borderline of the optimal range."
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<font color=\"green\"><strong>Green</strong></font>:"
+              + " - When the value is within the optimal range."
+              + P_CLOSE_TAG
+
+              + LINEBREAK
+              // the controls
+              + P_OPEN_TAG2
+              + "Controls"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "This section provides ways to interact with the aquaponics system. The users "
+              + "can set the desired values for different parameters. There is also an option to"
+              + "set a fish-feeding schedule so the users will never have to worry about forgeting"
+              + " to feed the fish again!"
+              + P_CLOSE_TAG
+              + LINEBREAK
+              + P_OPEN_TAG2
+              // the graphs
+              + "Water Quality Graphs"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "This section shows the current overall status of the aquaponics system as well as"
+              + " the historical data over a period of time (Week, Month, or Year)."
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<strong>Week</strong> - This graph shows the overall status of the aquaponics"
+              + " system over the last 7 days."
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<strong>Month</strong> - This graph shows the overall status of the aquaponics"
+              + " system over the last 30 days."
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<strong>Year</strong> - This graph shows the overall status of the aquaponics"
+              + " system over the last 12 months."
+              + P_CLOSE_TAG
+              + LINEBREAK
+              // aquaponics status messages
+              + P_OPEN_TAG2
+              + "Aquaponics Status Messages"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "The aquaponics status messages section provides the historical system status"
+              + " messages for the aquaponics system. A new entry is added each time a user"
+              + " performs a command to the aquaponics system or the house"
+              + " itself detects some abnormal readings from the aquaponics system sensors that is"
+              + " critical to the health of aquatic plant and animal life."
+              + P_CLOSE_TAG
+              + LINEBREAK
+              + LINEBREAK
+              + LINEBREAK
+              + LINEBREAK
+              + LINEBREAK
+              + LINEBREAK
+              // parameters start from here
+              // ph
+              + P_OPEN_TAG2
+              + "<u>pH</u>"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "In chemistry, pH is a measure of the acidity or basicity of a solution."
+              + "Pure water is said to be neutral, with a pH close to 7.0 at 25°C (77°F)"
+              + ". Solutions with a pH less than 7 are said to be acidic and solutions with a"
+              + " pH greater than 7 are said to be basic or alkaline."
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<strong>Optimal pH range</strong>: 6.5 to 7.5"
+              + P_CLOSE_TAG
+              + LINEBREAK
+              // temperature
+              + P_OPEN_TAG2
+              + "<u>Temperature</u>"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "Temperature indicates the degree of hotness or coldness of the water."
+              + "The amount of oxygen which can dissolved in water depends on "
+              + "temperature. The colder the water the more oxygen it can hold. It's "
+              + "important to keep the temperature within the appropriate range."
+              + "Unit used: Fahrenheit (F&deg;)"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<strong>Optimal temperature range</strong>: 70F&deg; to 85F&deg;"
+              + P_CLOSE_TAG
+              + LINEBREAK
+              // oxygen
+              + P_OPEN_TAG2
+              + "<u>Dissolved Oxygen</u>"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "Dissolved oxygen is the amount of oxygen that is dissolved in the water"
+              + ". It's an indication of how well the water can support aquatic"
+              + " plan and animal life. In most cases, higher dissolved oxygen level "
+              + "means better water quality. Unit used:"
+              + " Parts Per Million (ppm)"
+              + P_OPEN_TAG
+              + "<strong>Optimal DO range</strong>: 8.0ppm to 12.0ppm"
+              + P_CLOSE_TAG
+              + P_CLOSE_TAG
+              + LINEBREAK
+              +
+
+              // electrical conductivity
+              P_OPEN_TAG2
+              + "<u>Electrical conductivity</u>"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "Electrical conductivity estimates the amount of total dissolved"
+              + " salts or ions in the water. Unit used: uS/cm"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<strong>Optimal EC range</strong>: TBA by David"
+              + P_CLOSE_TAG
+              + LINEBREAK
+              // circulation
+              + P_OPEN_TAG2
+              + "<u>Circulation</u>"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "Circulation indicates the total amount of time the pump has been"
+              + "on in one day divided by the total water volume. Unit used: hours/gallons."
+              + P_OPEN_TAG
+              + "<strong>Optimal range</strong>:"
+              + " TBA by David"
+              + P_CLOSE_TAG
+              + P_CLOSE_TAG
+              + LINEBREAK
+              // turbidity
+              + P_OPEN_TAG2
+              + "<u>Turbidity</u>"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "Turbidity is the cloudiness of a fluid caused by individual particles."
+              + "The measurement of turbidity indicates the water quality. Unit used: Formazin "
+              + "Turbidity Unit (FTU)."
+              + P_OPEN_TAG
+              + "<strong>Optimal turbidity range</strong>: TBA by David"
+              + P_CLOSE_TAG
+              + P_CLOSE_TAG
+              + LINEBREAK
+              // water level
+              + P_OPEN_TAG2 + "<u>Water Level</u>" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The measurement of water level indicates the amount of water in the"
+              + " aquaponics system. Unit used: gallons" + P_OPEN_TAG
+              + "<strong>Optimal water level range</strong>: TBA by David"
+              + P_CLOSE_TAG
+              + P_CLOSE_TAG
+              + LINEBREAK
+              // nutrient
+              + P_OPEN_TAG2 + "<u>Nutrient</u>" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The measurement of nutrients indicated the amount of nutirents in" + " the water."
+              + P_CLOSE_TAG + P_OPEN_TAG + "<strong>Optimal nutrient range</strong>: TBA by David"
+              + P_CLOSE_TAG;
+
       break;
 
-    case 1: // pass-through
-    case 2:
-    case 3:
-    default:
+    // lighting
+    case 4:
       info =
-          "Information on this page is similar to the Overview page but specific"
-              + " to a particular section of the Home Management System.";
+          P_OPEN_TAG2 + "General Settings" + P_CLOSE_TAG + P_OPEN_TAG
+              + "This section allows the user to control the lighting (e.g. light switch"
+              + ", light brightness, light color) in each room." + P_CLOSE_TAG;      
+      break;
+
+    case 5:
+      info =
+          P_OPEN_TAG2 + "Temperature Settings" + P_CLOSE_TAG + P_OPEN_TAG
+              + "This section allows the user to set the desired temperature for the house."
+              + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2 + "Inside vs Outside Temperature"
+              + P_CLOSE_TAG + P_OPEN_TAG + "The graphs show the comparison of the inside "
+              + "and the outside temperatures over a period of time"
+              + " (Daily, Weekly, or Monthly). " + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Day</strong> - This graph contains the entries of inside and"
+              + " outside temperatures over the last 24 hours." + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Week</strong> - This graph contains the entries of inside and"
+              + " outside temperatures over the last 7 days." + P_CLOSE_TAG + P_OPEN_TAG
+              + "<strong>Month</strong> - This graph contains the entries of inside and"
+              + " outside temperatures over the last 30 days." + P_CLOSE_TAG;      
+      break;
+
+    default:
+      // info =
+      // "Information on this page is similar to the Overview page but specific"
+      // + " to a particular section of the Home Management System.";
       break;
 
     } // End switch
@@ -298,17 +583,22 @@ public class Help extends Header {
       break;
 
     case 1:
-      title = "Energy";
+      title = "Dashboard";
       break;
 
     case 2:
-      title = "Aquaponics";
+      title = "Energy";
       break;
 
     case 3:
+      title = "Aquaponics";
+      break;
+
+    case 4:
       title = "Lighting";
       break;
-    case 4:
+
+    case 5:
       title = "Hvac";
       break;
 
@@ -351,22 +641,27 @@ public class Help extends Header {
       break;
 
     case 1:
-      energyButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+      dashboardButton.add(new AttributeModifier(classContainer, true, new Model<String>(
           buttonContainer)));
       break;
 
     case 2:
-      aquaponicsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+      energyButton.add(new AttributeModifier(classContainer, true, new Model<String>(
           buttonContainer)));
       break;
 
     case 3:
+      aquaponicsButton.add(new AttributeModifier(classContainer, true, new Model<String>(
+          buttonContainer)));
+      break;
+
+    case 4:
       lightingButton.add(new AttributeModifier(classContainer, true, new Model<String>(
           buttonContainer)));
       break;
-    case 4:
-      hvacButton.add(new AttributeModifier(classContainer, true, new Model<String>(
-          "green-button")));
+    case 5:
+      hvacButton
+          .add(new AttributeModifier(classContainer, true, new Model<String>("green-button")));
       break;
 
     // case 5:

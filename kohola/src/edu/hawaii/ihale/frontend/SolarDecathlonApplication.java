@@ -11,7 +11,7 @@ import edu.hawaii.ihale.api.repository.IHaleRepository;
 import edu.hawaii.ihale.api.repository.impl.Repository;
 //import edu.hawaii.ihale.backend.DataGatheringThread;
 import edu.hawaii.ihale.backend.IHaleBackend;
-import edu.hawaii.ihale.backend.rest.IHaleServer;
+//import edu.hawaii.ihale.backend.rest.IHaleServer;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaPonics;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsListener;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsStats;
@@ -97,12 +97,12 @@ public class SolarDecathlonApplication extends WebApplication {
     // // // Start Thread
     // dataGatheringThread.start();
 
-     //2. calling the backend Hoike thread to get readings from sensors
-     IHaleServer iHaleServer = new IHaleServer(10000);
-     // Create Thread
-     Thread iHaleServerThread = new Thread(iHaleServer);
-     // Start Thread
-     iHaleServerThread.start();
+//     //2. calling the backend Hoike thread to get readings from sensors
+//     IHaleServer iHaleServer = new IHaleServer(10000);
+//     // Create Thread
+//     Thread iHaleServerThread = new Thread(iHaleServer);
+//     // Start Thread
+//     iHaleServerThread.start();
 
     // 3. call BlackMagic
     // Please modify the code in Header.java
