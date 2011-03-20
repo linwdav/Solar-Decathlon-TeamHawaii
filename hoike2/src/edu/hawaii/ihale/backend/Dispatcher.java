@@ -1,11 +1,11 @@
 package edu.hawaii.ihale.backend;
 
 import java.util.Map;
+import org.restlet.resource.ClientResource;
 
-/** A class that creates and manages the resource classes.  This
- * Class controls the interval between the polling of data.  One
- * instance of this class should be created and started by 
- * IHaleBackend.java.
+/** A Class that controls the timed polling, parsing and storing of data
+ * from the house simulator.  One instance of this class should be created 
+ * by IHaleBackend.java.
  * @author Backend
  *
  */
@@ -26,11 +26,14 @@ public class Dispatcher {
    * Creates resource classes and continuously preforms gets on them.
    */
   public void start() {
-    //Using the URI map, create the resource classes. (AquaponicsResource,HVACResource)
+    //Using the URI map, create an array/list of ClientResources.
       //create lights
-      //create aquaponics
+      //create aquaponics 
+      ClientResource aquaponics = new ClientResource(map.get("aquaponics-state"));
       //create HVAC
     
-    //Start a timed main loop that calls getData() on each resource class.
+    //Start a timed main loop that calls getData() on each resource class in the array/list.
+      //either parse the data in this loop (if it can be done in a nice, dynamic way), or call
+      //another method to handle each respective system's xml parsing and storing.
   }
 }
