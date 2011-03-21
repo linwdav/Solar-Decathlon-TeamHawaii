@@ -16,7 +16,7 @@ public class HvacListener extends SystemStateListener {
   //private static final String SYSTEM_NAME = "hvac";
   //private static final String TEMP_KEY = "temp";
   
-  private long temp = -1;
+  private int temp = -1;
   
   /**
    * Provide a default constructor that indicates that this listener is for Hvac.
@@ -34,10 +34,17 @@ public class HvacListener extends SystemStateListener {
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
-    
-    if (state.equals(IHaleState.TEMPERATURE)) {
-      temp = (Long) value;
+    switch (state) {
+    case TEMPERATURE :
+      temp = (Integer) value;
       System.out.println("New Hvac temperature is: " + temp);
+      break;
+    case SET_TEMPERATURE_COMMAND :
+      temp = (Integer) value;
+      System.out.println("Hvac temperature set to: " + temp);
+      break;
+    default:
+      System.out.println("Unhandled aquaponics state: " + state);
     }
   }
   
