@@ -10,6 +10,7 @@ import org.restlet.data.MediaType;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.FileRepresentation;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 
 /**
  * JUnit tests for the Parser class.
@@ -80,8 +81,8 @@ public class TestParser {
       e.printStackTrace();
     }
 
-    assertEquals("Oxygen Level", "1.8", attr.get("oxygen"));
-    assertEquals("Temperature", "62", attr.get("temp"));
-    assertEquals("pH Level", "8.5", attr.get("ph"));
+    assertEquals("Oxygen Level", "7.0", attr.get(IHaleState.OXYGEN.toString()));
+    assertEquals("Temperature", "25", attr.get(IHaleState.TEMPERATURE.toString()));
+    assertEquals("pH Level", "4.5", attr.get(IHaleState.PH.toString()));
   }
 }
