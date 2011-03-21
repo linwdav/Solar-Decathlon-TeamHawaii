@@ -45,27 +45,44 @@ public class AquaponicsListener extends SystemStateListener {
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
+    Double feedFishAmount = -1.0;
+    Integer fishToHarvest = -1;
+    
     switch (state) {
     case CIRCULATION : 
       circulation = (Double)value;
       System.out.println("Aquaponics circulation is: " + circulation);
       break;
-    
     case DEAD_FISH : 
       deadFish = (Integer)value;
       System.out.println("Aquaponics dead fish is: " + deadFish);
       break;
-    
+      
+    case FEED_FISH_COMMAND :
+      feedFishAmount = (Double)value;
+      System.out.println("Aquaponics feed fish amount: " + feedFishAmount);
+      break;
+      
     case ELECTRICAL_CONDUCTIVITY: 
       conductivity = (Double)value;
       System.out.println("Aquaponics conductivity is: " + conductivity);
       break;
     
+    case HARVEST_FISH_COMMAND:
+      fishToHarvest = (Integer)value;
+      System.out.println("Aquaponics fish harvested: " + fishToHarvest);
+      break;
+      
     case NUTRIENTS: 
       nutrients = (Double)value;
       System.out.println("Aquaponics nutrients is: " + nutrients);
       break;
     
+    case SET_NUTRIENTS_COMMAND: 
+      nutrients = (Double)value;
+      System.out.println("Aquaponics nutrients is set to: " + nutrients);
+      break;
+      
     case OXYGEN: 
       oxygen = (Double)value;
       System.out.println("Aquaponics oxygen is: " + oxygen);
@@ -76,19 +93,34 @@ public class AquaponicsListener extends SystemStateListener {
       System.out.println("Aquaponics pH is: " + pH);
       break;
     
+    case SET_PH_COMMAND: 
+      pH = (Double)value;
+      System.out.println("Aquaponics pH is set to: " + pH);
+      break;
+      
     case TEMPERATURE: 
       temp = (Integer)value;
       System.out.println("Aquaponics temperature is: " + temp);
       break;
     
+    case SET_TEMPERATURE_COMMAND:
+      temp = (Integer)value;
+      System.out.println("Aquaponics temperature is set to: " + temp);
+      break;
+      
     case TURBIDITY: 
       turbidity = (Double)value;
       System.out.println("Aquaponics turbidity is: " + turbidity);
       break;
-    
+      
     case WATER_LEVEL: 
       waterLevel = (Integer)value;
       System.out.println("Aquaponics water level is: " + waterLevel);
+      break;
+    
+    case SET_WATER_LEVEL_COMMAND:
+      waterLevel = (Integer)value;
+      System.out.println("Aquaponics water level is set to: " + waterLevel);
       break;
     
     default: 

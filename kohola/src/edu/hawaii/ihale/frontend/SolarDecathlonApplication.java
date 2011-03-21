@@ -43,9 +43,10 @@ public class SolarDecathlonApplication extends WebApplication {
   private static PhotovoltaicListener photovoltaicListener;
   private static ElectricalListener electricalListener;
   //private static SystemStateEntryDB db;
-  private static IHaleRepository repository;
+ // private static IHaleRepository repository;
+  private static Repository repository;
   private static IHaleBackend backend;
-
+  
   static {
     
     backend = new IHaleBackend();
@@ -90,6 +91,14 @@ public class SolarDecathlonApplication extends WebApplication {
     /***************************************************************
      * Choose 1, 2, or 3 below to test with different systems.
      ***************************************************************/
+    RepositoryRefresher refresh = new RepositoryRefresher(backend,repository);
+    refresh.start(5000);
+    /*
+    Object x = new Integer(2);
+    if (x instanceof Integer) {
+      
+    }
+    */
     // 1. calling the backend naia thread to get readings from sensors
     // DataGatheringThread dataGathering = new DataGatheringThread(10000);
     // // // Create Thread
