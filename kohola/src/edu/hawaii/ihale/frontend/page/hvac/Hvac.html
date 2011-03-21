@@ -30,14 +30,14 @@
 			orientation : "vertical",
 			range : "min",
 			min : 45,
-			max : 85,
-			value : 73,
-			slide : function(event, ui) {
-				$("#amountAir").html(ui.value + "&deg;F");
+			max : 95,
+			value: parseInt($( "#airTemperature").val(), 10),
+			change: function( event, ui ) {
+				$( "#airTemperature" ).val( ui.value + "°F" );
+				$( "#airTemperature" ).change();
 			}
 		});
-		$("#amountAir").html($("#sliderAir").slider("value") + "&deg;F");
-
+		
 		// Slider for Water
 		$('#sliderWater').slider({
 			orientation : "vertical",
@@ -112,15 +112,19 @@
 	Control</h4>
 	<div class="clear"></div>
 	<!-- Air TEMP -->
-	<div class="box">
+	<div style="background: #fff; border: 1px solid #ccc; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; clear: both; margin-bottom: -60px; padding: 40px;">
 
 	<center>
 	<form wicket:id="form">
-	<p><font size="3">Set House Temperature: </font></p>
-	<p><input wicket:id="SetTemp" type="text"
-		style="background-color:#E0E0E0;border: 1px solid black;height:25px;" value="Input value here"/>
-	<input wicket:id="SubmitTemp" class="gray-button right" type="submit" value="Change" style="color: #333333;"/></p>	
+	<p style="margin-top: -20px;"><font size="3">Set House Temperature: </font></p>
+	<div style="margin:auto; margin-top: -10px;" id="sliderAir"></div>
+	<div class="clear"></div>
+	<div class="dark-purple" style="margin-top:10px;font-weight:bold;">
+	  <p style="margin-left: 120px;"><input wicket:id="airTemperature" type="text" /></p>
+	</div>
+	<p style="margin-right: 100px;"><input wicket:id="SubmitTemp" class="gray-button right" type="submit" value="Change" style="color: #333333;"/></p>
 	</form>
+	<div class="clear"></div>
 	</center>
 	<span wicket:id="Feedback" />
 

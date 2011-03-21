@@ -2,9 +2,12 @@ package edu.hawaii.ihale.frontend.page.hvac;
 
 //import java.util.ArrayList;
 //import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
@@ -37,17 +40,19 @@ public class Hvac extends Header {
   private static final long serialVersionUID = 1L;
 
   // desired room temperature range
-  private static final int TEMPERATURE_RANGE_START = 60;
-  private static final int TEMPERATURE_RANGE_END = 80;
+  private static final long TEMPERATURE_RANGE_START = 60L;
+  private static final long TEMPERATURE_RANGE_END = 80L;
 
   // for validating user's input for setTemp
   // don't want them perform duplicate doCommand with the same temperature.
   private int desiredTemp = 0;
 
+  private int setTemp = 45;
+
   // feedback to user after they setTemp, failed or successful
   private Label feedback;
   // textfield for setTemp
-  private TextField<String> textField = new TextField<String>("SetTemp", new Model<String>(""));
+  private TextField<String> airTemp;
 
   // values (attributes) for the on off hvac button
   private String buttonLabel = "Activate HVAC";
@@ -65,9 +70,9 @@ public class Hvac extends Header {
    * @throws Exception the Exception
    */
   public Hvac() throws Exception {
-    
-    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(4);
-    
+
+    ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(4);
+
     // model for inside temperature label
     Model<String> insideTempModel = new Model<String>() {
 
@@ -79,7 +84,7 @@ public class Hvac extends Header {
        */
       @Override
       public String getObject() {
-        int value = SolarDecathlonApplication.getHvac().getTemp();
+        long value = SolarDecathlonApplication.getHvac().getTemp();
         String original = value + "&deg;F";
         String closeTag = "</font>";
         if (value > TEMPERATURE_RANGE_START && value < TEMPERATURE_RANGE_END) {
@@ -94,9 +99,9 @@ public class Hvac extends Header {
 
         return original;
       }
-    };    
+    };
     Label insideTemperature = new Label("InsideTemperature", insideTempModel);
-    
+
     // model for outside temperature label
     Model<String> outsideModel = new Model<String>() {
       private static final long serialVersionUID = 1L;
@@ -163,9 +168,9 @@ public class Hvac extends Header {
     add(hvacState);
 
     // set label for inside temp
-    //insideTemperature = new Label("InsideTemperature", insideTempLabel);
+    // insideTemperature = new Label("InsideTemperature", insideTempLabel);
     insideTemperature.setEscapeModelStrings(false);
-    // set label for outside temp    
+    // set label for outside temp
     outsideTemperature.setEscapeModelStrings(false);
     // add labels to the page
     add(insideTemperature);
@@ -173,8 +178,31 @@ public class Hvac extends Header {
 
     Form<String> form = new Form<String>("form");
 
-    textField.setOutputMarkupId(true);
-    form.add(textField);
+    // Add the control for the air temp slider
+    airTemp =
+        new TextField<String>("airTemperature", new Model<String>(setTemp + "°F"));
+
+    // Added for jquery control.
+    airTemp.setMarkupId(airTemp.getId());
+    airTemp.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 1L;
+
+      /**
+       * Updates the model when the value is changed on screen.
+       */
+      @Override
+      protected void onUpdate(AjaxRequestTarget target) {
+        setTemp = Integer.valueOf(airTemp.getValue().substring(0, airTemp.getValue().length() - 2));
+        System.out.println("onUpdate setTemp: " + setTemp);
+      }
+    });
+
+    // airTemp.setOutputMarkupId(true);
+    form.add(airTemp);
     form.add(new AjaxButton("SubmitTemp") {
 
       // support serializable
@@ -184,55 +212,51 @@ public class Hvac extends Header {
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         // do a put command
-        //List<String> list = new ArrayList<String>();
-        String temp = (String) textField.getDefaultModelObject();
-        int tempInt = 0;
-        // ensure textfield contatins all digits
-        try {
-          tempInt = Integer.parseInt(temp);
-        }
-        catch (NumberFormatException e) {
-          textField.setDefaultModelObject("");
-          feedback.setDefaultModelObject("<font color=\"red\">"
-              + "Failure:<br />Textfield must contain all digits</font>");
-          target.addComponent(feedback);
-          target.addComponent(textField);
-          return;
-        }
+        // List<String> list = new ArrayList<String>();
+        // String temp = String.valueOf(desiredTemp);
+        // long tempLong = 0L;
+        // // ensure textfield contatins all digits
+        // try {
+        // tempLong = Long.parseLong(temp);
+        // }
+        // catch (NumberFormatException e) {
+        // feedback.setDefaultModelObject("<font color=\"red\">"
+        // + "Failure:<br />Textfield must contain all digits</font>");
+        // target.addComponent(feedback);
+        // target.addComponent(textField);
+        // return;
+        // }
         // avoid user to do multiple doCommand with the same temperature.
-        if (tempInt == desiredTemp) {
-          textField.setDefaultModelObject("");
+        if (setTemp == desiredTemp) {
           feedback.setDefaultModelObject("<font color=\"#FF9900\">Unnecessary Change:<br />"
-              + "Same as the original desired temperature (" + desiredTemp + "F&deg)</font>");
-          target.addComponent(textField);
+              + "Same as the original desired temperature (" + desiredTemp + "°F)</font>");
+          // target.addComponent(textField);
           target.addComponent(feedback);
           return;
         }
         // avoid user set too low or too high temperature
-        if (tempInt < TEMPERATURE_RANGE_START || tempInt > TEMPERATURE_RANGE_END) {
-          textField.setDefaultModelObject("");
-          feedback
-              .setDefaultModelObject("<font color=\"red\">Failure:<br />Recommanded temperature: "
-                  + TEMPERATURE_RANGE_START + "-" + TEMPERATURE_RANGE_END + "F&deg</font>");
-        }
+        // Should not be able to set too low or too high with slider.
+        // if (setTemp < TEMPERATURE_RANGE_START || setTemp > TEMPERATURE_RANGE_END) {
+        // feedback
+        // .setDefaultModelObject("<font color=\"red\">Failure:<br />Recommanded temperature: "
+        // + TEMPERATURE_RANGE_START + "-" + TEMPERATURE_RANGE_END + "F&deg</font>");
+        // }
         // else do doCommand
         else {
-          desiredTemp = tempInt;
-          //list.add(temp);
-          //SolarDecathlonApplication.getDB().doCommand("hvac", "arduino-4", "SetTemp", list);
+          desiredTemp = setTemp;
+          // list.add(temp);
+          // SolarDecathlonApplication.getDB().doCommand("hvac", "arduino-4", "SetTemp", list);
           // maybe should just create the backend instance in application.java
-          
+
           IHaleSystem system = IHaleSystem.HVAC;
           IHaleCommandType command = IHaleCommandType.SET_TEMPERATURE;
-          int newTemperature = tempInt;
-          SolarDecathlonApplication.getBackend().doCommand(system, null, command, 
-              (Object)newTemperature);
-          
-          textField.setDefaultModelObject("");
+          Integer newTemperature = setTemp;
+          SolarDecathlonApplication.getBackend().doCommand(system, null, command, newTemperature);
+
           feedback.setDefaultModelObject("<font color=\"green\">"
-              + "Success:<br />Desired room temperature is now " + temp + "F&deg</font>");
+              + "Success:<br />Desired room temperature is now " + desiredTemp + "°F</font>");
         }
-        target.addComponent(textField);
+        // target.addComponent(textField);
         target.addComponent(feedback);
       }
     });
