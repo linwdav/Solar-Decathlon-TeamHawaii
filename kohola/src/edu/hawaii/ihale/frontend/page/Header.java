@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
@@ -40,6 +41,7 @@ public class Header extends WebPage {
 
   // Date format for the time displayed at the top right corner.
   private static final String DATE_FORMAT = "MMMM d, yyyy  hh:mm a";
+    
   /** Key value for session map to be shared among pages. **/
   //public static final String PAGE_DISPLAY = "ActivePage";
 
@@ -47,17 +49,21 @@ public class Header extends WebPage {
   //protected int activePage = -1;
   
   // Variables to find the weather forecast.
-  //made public to share with dashboard.
+  // made public to share with dashboard.
   /** A parser for retrieving info from Google Weather API. */
   public WeatherParser weatherParser;  
   /** The current weather info to be shared with the dashboard. */
   public CurrentWeather currentWeather;
-
+  // the parser takes the city as a parameter
+  private static String cityName = "Honolulu";
+  // the timer should also change for different city selection.
+  private static String timeZone = "US/Hawaii";
+  
   /**
    * labels for the header, aka basepage. after the simulator and backend add outsideTemp can remove
    * this line and put it in the constructor along with insideTemperatureHeader
    */
-  private static Label outsideTemperatureHeader = new Label("OutsideTemperatureHeader", "0");
+  //private static Label outsideTemperatureHeader = new Label("OutsideTemperatureHeader", "0");
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
@@ -65,7 +71,7 @@ public class Header extends WebPage {
   /**
    * The header page. This is a parent class to all pages.
    */
-  public Header() {
+  public Header() {    
     
     WebMarkupContainer dashboardItem;
     WebMarkupContainer energyItem;
@@ -81,9 +87,9 @@ public class Header extends WebPage {
 
     // find out the info about the current weather. (right now only supports honolulu)
     // later may have to make DropDownBox for region selection.
-    weatherParser = new WeatherParser("Honolulu");
+    weatherParser = new WeatherParser(cityName);
     currentWeather = weatherParser.getCurrentWeather();
-    outsideTemperatureHeader.setDefaultModelObject(String.valueOf(currentWeather.getTempF()));
+    //outsideTemperatureHeader.setDefaultModelObject(String.valueOf(currentWeather.getTempF()));
     
     // model for current weather label
     Model<String> currentWeatherModel = new Model<String>() {
@@ -119,11 +125,20 @@ public class Header extends WebPage {
 
     Label insideTemperatureHeader = new Label("InsideTemperatureHeader", insideTempModel);
 
-    // This is totally bogus!!
-    // Right now there's no outside temp in the dictionary so we just use a random number
-    // Maybe in milestone 2 we can just do it like how we did insideTemperatureHeader
-//    Long rand = (long) (Math.random() * 100);
-//    outsideTemperatureHeader.setDefaultModelObject(String.valueOf(rand));
+    Model<String> outsideTempModel = new Model<String>() {
+      private static final long serialVersionUID = 1L;
+      
+      /**
+       * Override the getObject for dynamic programming and change the text color according to the
+       * temperature value.
+       */
+      @Override
+      public String getObject() {
+        return String.valueOf(currentWeather.getTempF());
+      }
+    };
+    
+    Label outsideTemperatureHeader = new Label("OutsideTemperatureHeader", outsideTempModel);
 
     /*******************************************************************************************
      * for testing purpose, may remove after the integration with backend system. or just simply
@@ -558,8 +573,9 @@ public class Header extends WebPage {
 //    makeTabActive(activePage);
 
     // the info on top right of the page
-    Calendar cal = Calendar.getInstance();
+    Calendar cal = Calendar.getInstance();      
     final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+    dateFormat.setTimeZone(TimeZone.getTimeZone(timeZone));
     String currentTime = dateFormat.format(cal.getTime());
 
     final Label time = new Label("Calendar", currentTime);
@@ -655,8 +671,39 @@ public class Header extends WebPage {
    * 
    * @return The outside temp label.
    */
-  public Label getOutsideTempLabel() {
-    return outsideTemperatureHeader;
-  }
+//  public Label getOutsideTempLabel() {
+//    return outsideTemperatureHeader;
+//  }
 
+  /**
+   * Set the city name.
+   * @param newCity The city name.
+   */
+  public static void setCityName(String newCity) {
+    cityName = newCity;
+  }
+  
+  /**
+   * Returns the city name.
+   * @return The city name.
+   */
+  public String getCityName() {
+    return cityName;
+  }
+  
+  /**
+   * Set the time zone (e.g. "US/Hawaii")
+   * @param newTimeZone The time zone.
+   */
+  public static void setTimeZone(String newTimeZone) {
+    timeZone = newTimeZone;
+  }
+  
+  /**
+   * Returns the time zone.
+   * @return The time zone.
+   */
+  public String getTimeZone() {
+    return timeZone;
+  }
 }

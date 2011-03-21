@@ -68,7 +68,7 @@ public class Hvac extends Header {
     
     ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(4);
     
-    // model for inside temperature labels
+    // model for inside temperature label
     Model<String> insideTempModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -94,11 +94,19 @@ public class Hvac extends Header {
 
         return original;
       }
-    };
-    
-    // temperature labels
+    };    
     Label insideTemperature = new Label("InsideTemperature", insideTempModel);
-    Label outsideTemperature = new Label("OutsideTemperature", "0");
+    
+ // model for outside temperature label
+    Model<String> outsideModel = new Model<String>() {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      public String getObject() {
+        return String.valueOf(currentWeather.getTempF() + "&deg;F");
+      }
+    };
+    Label outsideTemperature = new Label("OutsideTemperature", outsideModel);
 
     // clear feedback each time the page is refreshed.
     feedback = new Label("Feedback", "");
@@ -157,11 +165,7 @@ public class Hvac extends Header {
     // set label for inside temp
     //insideTemperature = new Label("InsideTemperature", insideTempLabel);
     insideTemperature.setEscapeModelStrings(false);
-    // set label for outside temp
-    String outsideTempStr = (String) getOutsideTempLabel().getDefaultModelObject();
-    outsideTemperature.setDefaultModelObject(outsideTempStr);
-    long outsideTemp = Long.parseLong(outsideTempStr);
-    outsideTemperature.setDefaultModelObject(outsideTemp + "&deg;F");
+    // set label for outside temp    
     outsideTemperature.setEscapeModelStrings(false);
     // add labels to the page
     add(insideTemperature);

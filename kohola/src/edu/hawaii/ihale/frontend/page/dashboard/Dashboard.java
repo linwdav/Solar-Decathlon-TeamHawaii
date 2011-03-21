@@ -2,10 +2,12 @@ package edu.hawaii.ihale.frontend.page.dashboard;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -15,8 +17,10 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainerWithAssociatedMarkup;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
+import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.frontend.page.Header;
@@ -70,8 +74,6 @@ public class Dashboard extends Header {
 
   private static final String classTagName = "class";
 
-  // static Label insideTemperature = new Label("InsideTemperature", "");
-  static Label outsideTemperature = new Label("OutsideTemperature", "");
   static Label dayUsage = new Label("DayUsage", "");
   static Label dayUsage2 = new Label("DayUsage2", "");
   static Label weekUsage = new Label("WeekUsage", "");
@@ -84,12 +86,48 @@ public class Dashboard extends Header {
 
   private List<WeatherForecast> weathers;
   
+  private static final List<String> cities = Arrays.asList(new String[] {"Honolulu", "Washington"});
+  private String selectedCity;
+ 
   /**
    * The page layout.
    */
   public Dashboard() {
     
     ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(0);
+    
+    selectedCity = this.getCityName();
+    
+    // support city selection for weather parsing
+    DropDownChoice<String> cityChoice = new DropDownChoice<String>("Cities", 
+        new PropertyModel<String>(this, "selectedCity"), cities) {
+
+          /**
+           * 
+           */
+          private static final long serialVersionUID = 1L;
+          
+          @Override
+          protected boolean wantOnSelectionChangedNotifications() {
+            return true;
+          }
+          
+          @Override
+          protected void onSelectionChanged(String newSelection) {
+            
+            setCityName(newSelection);
+            if ("Honolulu".equals(newSelection)) {
+              setTimeZone("US/Hawaii");
+            }
+            else if ("Washington".equals(newSelection)) {
+              setTimeZone("US/Washington");
+            }            
+            selectedCity = getCityName();
+            setResponsePage(Dashboard.class);            
+          }
+      
+    };
+    add(cityChoice);
 
     // create label and model for the current weather condition.
     Model<String> currentWeatherConditionModel = new Model<String>() {
@@ -345,19 +383,27 @@ public class Dashboard extends Header {
     };
     Label insideTemperature = new Label("InsideTemperature", insideModel);
 
-    String outsideTemp = (String) getOutsideTempLabel().getDefaultModelObject();
-    outsideTemperature.setDefaultModelObject(outsideTemp);
+    Model<String> outsideModel = new Model<String>() {
+      private static final long serialVersionUID = 1L;
 
+      @Override
+      public String getObject() {
+        return String.valueOf(currentWeather.getTempF());
+      }
+    };
+    Label outsideTemperature = new Label("OutsideTemperature", outsideModel);
+    
     insideTemperature.setEscapeModelStrings(false);
-
     outsideTemperature.setEscapeModelStrings(false);
 
+    add(cityChoice);
     add(insideTemperature);
     add(outsideTemperature);
 
     // updates the ajax clock on the dashboard every second
     Calendar cal = Calendar.getInstance();
     final SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.US);
+    dateFormat.setTimeZone(TimeZone.getTimeZone(getTimeZone()));
     String currentTime = dateFormat.format(cal.getTime());
 
     final Label time = new Label("Time", currentTime);
@@ -754,5 +800,13 @@ public class Dashboard extends Header {
             + "&chg=25,50" + "&chls=0.75|2"
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
     return url;
+  }
+    
+  /**
+   * Returns the selected city for the drop down choice.
+   * @return THe selected city.
+   */
+  public String getSelectedCity() {
+    return selectedCity;
   }
 }
