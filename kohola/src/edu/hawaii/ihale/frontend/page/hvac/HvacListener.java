@@ -52,7 +52,7 @@ public class HvacListener extends SystemStateListener {
    * The house temperature.
    * @return The temperature in Fahrenheit.
    */
-  public long getTemp() {
+  public int getTemp() {
     return temp;
   } 
 }

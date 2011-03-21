@@ -37,12 +37,12 @@ public class Hvac extends Header {
   private static final long serialVersionUID = 1L;
 
   // desired room temperature range
-  private static final long TEMPERATURE_RANGE_START = 60L;
-  private static final long TEMPERATURE_RANGE_END = 80L;
+  private static final int TEMPERATURE_RANGE_START = 60;
+  private static final int TEMPERATURE_RANGE_END = 80;
 
   // for validating user's input for setTemp
   // don't want them perform duplicate doCommand with the same temperature.
-  private long desiredTemp = 0L;
+  private int desiredTemp = 0;
 
   // feedback to user after they setTemp, failed or successful
   private Label feedback;
@@ -79,7 +79,7 @@ public class Hvac extends Header {
        */
       @Override
       public String getObject() {
-        long value = SolarDecathlonApplication.getHvac().getTemp();
+        int value = SolarDecathlonApplication.getHvac().getTemp();
         String original = value + "&deg;F";
         String closeTag = "</font>";
         if (value > TEMPERATURE_RANGE_START && value < TEMPERATURE_RANGE_END) {
@@ -97,7 +97,7 @@ public class Hvac extends Header {
     };    
     Label insideTemperature = new Label("InsideTemperature", insideTempModel);
     
- // model for outside temperature label
+    // model for outside temperature label
     Model<String> outsideModel = new Model<String>() {
       private static final long serialVersionUID = 1L;
 
@@ -186,10 +186,10 @@ public class Hvac extends Header {
         // do a put command
         //List<String> list = new ArrayList<String>();
         String temp = (String) textField.getDefaultModelObject();
-        long tempLong = 0L;
+        int tempInt = 0;
         // ensure textfield contatins all digits
         try {
-          tempLong = Long.parseLong(temp);
+          tempInt = Integer.parseInt(temp);
         }
         catch (NumberFormatException e) {
           textField.setDefaultModelObject("");
@@ -200,7 +200,7 @@ public class Hvac extends Header {
           return;
         }
         // avoid user to do multiple doCommand with the same temperature.
-        if (tempLong == desiredTemp) {
+        if (tempInt == desiredTemp) {
           textField.setDefaultModelObject("");
           feedback.setDefaultModelObject("<font color=\"#FF9900\">Unnecessary Change:<br />"
               + "Same as the original desired temperature (" + desiredTemp + "F&deg)</font>");
@@ -209,7 +209,7 @@ public class Hvac extends Header {
           return;
         }
         // avoid user set too low or too high temperature
-        if (tempLong < TEMPERATURE_RANGE_START || tempLong > TEMPERATURE_RANGE_END) {
+        if (tempInt < TEMPERATURE_RANGE_START || tempInt > TEMPERATURE_RANGE_END) {
           textField.setDefaultModelObject("");
           feedback
               .setDefaultModelObject("<font color=\"red\">Failure:<br />Recommanded temperature: "
@@ -217,15 +217,16 @@ public class Hvac extends Header {
         }
         // else do doCommand
         else {
-          desiredTemp = tempLong;
+          desiredTemp = tempInt;
           //list.add(temp);
           //SolarDecathlonApplication.getDB().doCommand("hvac", "arduino-4", "SetTemp", list);
           // maybe should just create the backend instance in application.java
           
           IHaleSystem system = IHaleSystem.HVAC;
           IHaleCommandType command = IHaleCommandType.SET_TEMPERATURE;
-          Long newTemperature = tempLong;
-          SolarDecathlonApplication.getBackend().doCommand(system, null, command, newTemperature);
+          int newTemperature = tempInt;
+          SolarDecathlonApplication.getBackend().doCommand(system, null, command, 
+              (Object)newTemperature);
           
           textField.setDefaultModelObject("");
           feedback.setDefaultModelObject("<font color=\"green\">"
