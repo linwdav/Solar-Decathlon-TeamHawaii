@@ -9,6 +9,7 @@ import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 import org.restlet.routing.VirtualHost;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsSystem;
 import edu.hawaii.ihale.housesimulator.electrical.ElectricalSystem;
 import edu.hawaii.ihale.housesimulator.hvac.HVACSystem;
@@ -99,6 +100,11 @@ public class SimulatorServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
+    
+    // Delete these lines. Was to test the addition of ihale-api library and running jar.build.xml.
+    IHaleSystem system = IHaleSystem.HVAC;
+    System.out.println("The system name is: " + system);
+    
     if (args.length == 2 && "-stepinterval".equalsIgnoreCase(args[0])) {
 
       // Get the users home directory and establish the ".ihale" directory

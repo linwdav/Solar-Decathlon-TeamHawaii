@@ -5,5 +5,6 @@
 	<classpathentry kind="lib" path="lib/restlet/org.restlet.ext.xml.jar"/>
 	<classpathentry kind="lib" path="lib/restlet/org.restlet.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/Leonardo/workspace/ihale-housesim-kai2/ihale-api/ihale-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

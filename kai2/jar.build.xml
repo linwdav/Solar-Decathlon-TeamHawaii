@@ -24,6 +24,13 @@
 			</fileset>
 		</unjar>
 
+	  <!-- ihale-api library -->
+    <unjar dest="${tmp.dir}">
+      <fileset dir="${basedir}/ihale-api">
+        <include name="*.jar" />
+      </fileset>
+    </unjar>
+	  
 		<jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="${system.main.class}" />
