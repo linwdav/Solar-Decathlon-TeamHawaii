@@ -20,20 +20,21 @@ import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsData;
 
 /**
  * Tests the HTTP operations of the system.
- * @author Anthony Kinsey
- * @author Michael Cera
+ * 
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class TestElectrical {
 
   /**
    * Start up a test server before testing any of the operations on this resource.
-   * @throws Exception If problems occur starting up the server. 
+   * @throws Exception If problems occur starting up the server.
    */
   @BeforeClass
-  public static void startServer () throws Exception {
+  public static void startServer() throws Exception {
     SimulatorServer.runServer();
   }
-  
+
   /**
    * Tests that we can GET a value from the system.
    * @throws Exception If GET fails
@@ -41,7 +42,6 @@ public class TestElectrical {
   @Test
   public void testGet() throws Exception {
 
-    
     // Speed up time simulation to see if our value falls within the desired range.
     for (int i = 0; i < 50; i++) {
       DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
@@ -52,13 +52,13 @@ public class TestElectrical {
       HVACData.modifySystemState();
       LightingData.modifySystemState();
       PhotovoltaicsData.modifySystemState();
-      ElectricalData.modifySystemState();   
-    }  
-    
+      ElectricalData.modifySystemState();
+    }
+
     // Set up the GET client
     String getUrl = "http://localhost:7002/electrical/state";
     ClientResource getClient = new ClientResource(getUrl);
-    
+
     // Get the XML representation.
     DomRepresentation domRep = new DomRepresentation(getClient.get());
     Document domDoc = domRep.getDocument();
@@ -77,10 +77,10 @@ public class TestElectrical {
 
     // Check that we are returning the correct title.
     assertEquals("Checking that title is \"Grid\"", title, "Grid");
-    
+
     // Check that the returned value is within a delta of our value.
-    assertEquals(1500.0, Double.parseDouble(energy), 1000); 
-    assertEquals(1500.0, Double.parseDouble(power), 1000); 
+    assertEquals(1500.0, Double.parseDouble(energy), 1000);
+    assertEquals(1500.0, Double.parseDouble(power), 1000);
 
   }
 }

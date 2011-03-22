@@ -8,8 +8,8 @@ import org.restlet.resource.ServerResource;
  * A server resource that will handle requests regarding the Aquaponics system. Supported
  * operations: GET. Supported representations: XML.
  * 
- * @author Michael Cera
- * @author Anthony Kinsey
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class AquaponicsGetResource extends ServerResource {
   /**

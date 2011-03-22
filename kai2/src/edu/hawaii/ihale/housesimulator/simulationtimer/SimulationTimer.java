@@ -15,8 +15,8 @@ import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsData;
 /**
  * Allows user to specify how often the house should change it system states.
  * 
- * @author Michael Cera
- * @author Anthony Kinsey
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class SimulationTimer {
 

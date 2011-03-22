@@ -23,8 +23,8 @@ import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsData;
 /**
  * Tests the HTTP operations of the system.
  * 
- * @author Anthony Kinsey
- * @author Michael Cera
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class TestHVAC {
 

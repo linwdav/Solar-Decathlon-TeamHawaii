@@ -13,8 +13,8 @@ import edu.hawaii.ihale.housesimulator.lighting.LightingData;
  * A server resource that will handle requests regarding the Lighting system. Supported operations:
  * PUT. Supported representations: XML.
  * 
- * @author Michael Cera
- * @author Anthony Kinsey
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class LightingLivingPutResource extends ServerResource {
 

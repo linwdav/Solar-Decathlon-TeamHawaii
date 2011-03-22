@@ -7,8 +7,8 @@ import org.restlet.routing.Router;
 /**
  * Provides access to the HVAC system.
  * 
- * @author Michael Cera
- * @author Anthony Kinsey
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class HVACSystem extends Application {
 

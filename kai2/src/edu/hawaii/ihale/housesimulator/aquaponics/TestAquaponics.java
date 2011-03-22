@@ -25,8 +25,8 @@ import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsData;
 /**
  * Tests the HTTP operations of the system.
  * 
- * @author Anthony Kinsey
- * @author Michael Cera
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class TestAquaponics {
 
@@ -78,7 +78,7 @@ public class TestAquaponics {
     NodeList xmlList = domDoc.getElementsByTagName("state");
 
     // Grabs attributes from tags.
-    String keyStr = "key"; //PMD WHY ARE YOU SO PICKY? :(
+    String keyStr = "key"; // PMD WHY ARE YOU SO PICKY? :(
     String valStr = "value";
     String tempKey = ((Element) xmlList.item(0)).getAttribute(keyStr);
     String tempValue = ((Element) xmlList.item(0)).getAttribute(valStr);

@@ -22,8 +22,8 @@ import edu.hawaii.ihale.housesimulator.simulationtimer.SimulationTimer;
 /**
  * An HTTP server that provides access to simulator data via a REST interface.
  * 
- * @author Michael Cera
- * @author Anthony Kinsey
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class SimulatorServer extends Application {
 
@@ -67,9 +67,8 @@ public class SimulatorServer extends Application {
     host.attach("/hvac", new HVACSystem());
     component.getHosts().add(host);
 
-    
     String lighting = "/lighting"; // To satisfy PMD
-    
+
     host = new VirtualHost(component.getContext());
     host.setHostPort("7103");
     host.attach(lighting, new LightingLivingSystem());
@@ -79,17 +78,17 @@ public class SimulatorServer extends Application {
     host.setHostPort("7104");
     host.attach(lighting, new LightingDiningSystem());
     component.getHosts().add(host);
-    
+
     host = new VirtualHost(component.getContext());
     host.setHostPort("7105");
     host.attach(lighting, new LightingKitchenSystem());
     component.getHosts().add(host);
-    
+
     host = new VirtualHost(component.getContext());
     host.setHostPort("7106");
     host.attach(lighting, new LightingBathroomSystem());
     component.getHosts().add(host);
-    
+
     component.start();
   }
 
@@ -118,7 +117,7 @@ public class SimulatorServer extends Application {
       String lightingBathroom = "http://localhost:7106/";
       String pv = "http://localhost:7001/";
       String electrical = "http://localhost:7002/";
-      
+
       // Set the properties value.
       prop.setProperty("aquaponics-state", aquaponics);
       prop.setProperty("aquaponics-control", aquaponics);

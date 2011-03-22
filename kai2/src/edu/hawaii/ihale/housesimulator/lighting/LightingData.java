@@ -11,8 +11,8 @@ import org.w3c.dom.Element;
 /**
  * Provides data on the Lighting system, as well as an XML representation.
  * 
- * @author Michael Cera
- * @author Anthony Kinsey
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class LightingData {
 

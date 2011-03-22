@@ -13,8 +13,8 @@ import org.w3c.dom.NodeList;
  * A server resource that will handle requests regarding the Aquaponics system. Supported
  * operations: PUT. Supported representations: XML.
  * 
- * @author Michael Cera
- * @author Anthony Kinsey
+ * @author Anthony Kinsey, Michael Cera
+ * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class AquaponicsPutResource extends ServerResource {
 
