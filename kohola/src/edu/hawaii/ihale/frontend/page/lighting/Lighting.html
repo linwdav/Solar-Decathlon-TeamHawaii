@@ -85,20 +85,22 @@ function toggleOnOff(x) {
       <div class="column-three">
       	<h5 class="dark-purple">Room</h5>
         <div class="clear"></div>
-        <select id="room">
-          <option>All Rooms</option>
-          <option>Bedroom</option>
-          <option>Living Room</option>
-          <option>Bath Room</option>
-          <option>Kitchen</option>
-          <option>Common Room</option>
-        </select>
-      </div>
-      <div class="column-three">
-     		<h5 class="dark-purple">Lights</h5>
-        <div class="clear"></div>
-        <a id="on" onClick="toggleOnOff(1);" class="green-button" style="cursor: pointer; float: center;">On</a>&nbsp;
-        <a id="off" onClick="toggleOnOff(0);" class="gray-button" style="cursor: pointer; float: center;">Off</a>
+        <form wicket:id="form">
+          <tr wicket:id="room-wmc">
+            <td>
+              <select wicket:id="room">
+                <option>Bedroom</option>
+                <option>Living Room</option>
+              </select>
+            </td>
+          <div class="column-three">
+            <h5 class="dark-purple">Lights</h5>
+            <div class="clear"></div>
+              <a wicket:id="OnButton" onClick="toggleOnOff(1);" class="green-button" style="cursor: pointer; float: center;">On</a>&nbsp;
+              <a wicket:id="OffButton" onClick="toggleOnOff(0);" class="gray-button" style="cursor: pointer; float: center;">Off</a>
+          </div>
+          </tr>
+        </form>
       </div>
       <div class="column-three">
       	<h5 class="dark-purple">Brightness</h5>
