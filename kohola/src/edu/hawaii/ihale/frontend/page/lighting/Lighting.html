@@ -2,8 +2,19 @@
 <wicket:extend>
 
 <script>
-$(function(){			
-
+$(function(){
+	
+    $("#icolor").icolor({
+    	flat:true,
+    	onSelect:function(c){
+    		this.$tb.css("background-color",c);
+    		$("#colorchange").val(c);
+    		$("#colorchange").change();
+    	},
+    	showInput:false,
+    	title:false
+    });
+  
 	// Slider for brightness
 	$('#sliderBright').slider({
 		orientation: "horizontal",
@@ -114,18 +125,14 @@ function toggleOnOff(x) {
       </div>
       <div class="clear"></div>
       <h5 class="dark-purple" style="margin-top:20px;">Color</h5>
-      <div id="icolor" class="icolorC"></div>
-      <script type="text/javascript">
-        $("#icolor").icolor({
-        flat:true,
-        onSelect:function(c){this.$tb.css("background-color",c);},
-        showInput:false,
-        title:false
-        });
-      </script>
+      <div id="icolor" class="icolorC">
+      	<input wicket:id="colorchange" type="hidden"/>
+      	<div style="position:  absolute;  bottom:  0;">
+      	  <span wicket:id="feedback" />
+        </div>
+      </div>
       <div class="clear"></div>
     </div>
-
   </div>
 </div>
       
