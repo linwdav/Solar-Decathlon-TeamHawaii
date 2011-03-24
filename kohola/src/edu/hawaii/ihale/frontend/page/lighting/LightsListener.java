@@ -51,7 +51,18 @@ public class LightsListener extends SystemStateListener {
       case LIGHTING_COLOR:
         living.setLightingColor((String)value);
         break;
+      case SET_LIGHTING_ENABLED_COMMAND:
+        living.setLightingEnabled((Boolean)value);
+        break;
+      
+      case SET_LIGHTING_LEVEL_COMMAND:
+        living.setLightingLevel((Integer)value);
+        break;
         
+      case SET_LIGHTING_COLOR_COMMAND:
+        living.setLightingColor((String)value);
+        break;
+      
       default:
         break;
       }
@@ -92,6 +103,18 @@ public class LightsListener extends SystemStateListener {
       case LIGHTING_COLOR:
         kitchen.setLightingColor((String)value);
         break;
+      
+      case SET_LIGHTING_ENABLED_COMMAND:
+        kitchen.setLightingEnabled((Boolean)value);
+        break;
+      
+      case SET_LIGHTING_LEVEL_COMMAND:
+        kitchen.setLightingLevel((Integer)value);
+        break;
+        
+      case SET_LIGHTING_COLOR_COMMAND:
+        kitchen.setLightingColor((String)value);
+        break;
         
       default:
         break;
@@ -113,7 +136,18 @@ public class LightsListener extends SystemStateListener {
       case LIGHTING_COLOR:
         bathroom.setLightingColor((String)value);
         break;
+      
+      case SET_LIGHTING_ENABLED_COMMAND:
+        bathroom.setLightingEnabled((Boolean)value);
+        break;
+      
+      case SET_LIGHTING_LEVEL_COMMAND:
+        bathroom.setLightingLevel((Integer)value);
+        break;
         
+      case SET_LIGHTING_COLOR_COMMAND:
+        bathroom.setLightingColor((String)value);
+        break;
       default:
         break;
       }
