@@ -85,36 +85,25 @@ function toggleOnOff(x) {
 <div class="column-two">
   <div class="inner">
     <div class="box">
-      <h2>General Settings</h2>
-      <div style="border-bottom: 1px solid #ccc; margin-bottom: 25px; padding-bottom: 55px;">
-        <a id="manual" class="green-button" onClick="toggleMode(0);" style="cursor: pointer;">Manual</a> 
-        <a id="follow" class="gray-button" onClick="toggleMode(1);" style="cursor: pointer;">Follow Me</a> 
-        <a id="visual" class="gray-button" onClick="toggleMode(2);" style="cursor: pointer;">Visualizer</a>
-        <a id="strobe" class="gray-button" onClick="toggleMode(3);" style="cursor: pointer;">Strobe</a>
-      </div>
+      <h2>General Settings</h2>     
       <div class="clear"></div>
       <div class="column-three">
       	<h5 class="dark-purple">Room</h5>
-        <div class="clear"></div>
-        <form wicket:id="form">
-          <tr wicket:id="room-wmc">
-            <td>
-              <select wicket:id="room">
-                <option>Bedroom</option>
-                <option>Living Room</option>
-              </select>
-            </td>
-          <div class="column-three">
-            <h5 class="dark-purple">Lights</h5>
-            <div class="clear"></div>
-              <a wicket:id="OnButton" onClick="toggleOnOff(1);" class="green-button" style="cursor: pointer; float: center;">On</a>&nbsp;
-              <a wicket:id="OffButton" onClick="toggleOnOff(0);" class="gray-button" style="cursor: pointer; float: center;">Off</a>
-          </div>
-          </tr>
-        </form>
-      </div>
+       <div class="clear"></div>
+
+           <select wicket:id="room">               
+           </select>
+            </div>
       <div class="column-three">
-      	<h5 class="dark-purple">Brightness</h5>
+                <h5 class="dark-purple">Lights</h5>
+        <div class="clear"></div>
+
+              <a wicket:id="OnButton" onClick="toggleOnOff(1);" class="green-button" >On</a>&nbsp;
+              <a wicket:id="OffButton" onClick="toggleOnOff(0);" class="gray-button" >Off</a>
+         </div>
+      <div class="column-three">
+        <h5 class="dark-purple">Brightness</h5>
+
         <div class="clear"></div>
         <table class="bare" style="width:100%;">
         	<tr>
@@ -125,11 +114,12 @@ function toggleOnOff(x) {
       </div>
       <div class="clear"></div>
       <h5 class="dark-purple" style="margin-top:20px;">Color</h5>
+      <span wicket:id="feedback" />
       <div id="icolor" class="icolorC">
       	<input wicket:id="colorchange" type="hidden"/>
       	<div style="position:  absolute;  bottom:  0;">
-      	  <span wicket:id="feedback" />
-        </div>
+      	  
+        </div>        
       </div>
       <div class="clear"></div>
     </div>

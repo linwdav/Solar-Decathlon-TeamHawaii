@@ -16,7 +16,7 @@ public class LightingSession implements Serializable {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
-  private String room;
+  private String room = "Living Room";
 
   private List<String> rooms = Arrays.asList(new String[] { "Living Room", "Dining Room",
       "Kitchen", "Bathroom" });

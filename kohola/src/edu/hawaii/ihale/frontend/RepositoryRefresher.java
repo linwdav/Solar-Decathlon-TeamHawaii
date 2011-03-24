@@ -13,6 +13,7 @@ import edu.hawaii.ihale.backend.IHaleBackend;
 
 /**
  * An external timer class that updates all resources periodically.
+ * 
  * @author Team Maka
  */
 public class RepositoryRefresher {
@@ -25,28 +26,30 @@ public class RepositoryRefresher {
 
   /**
    * Constructor.
+   * 
    * @param backend IHaleBackend
    * @param repository Repository.
    */
   public RepositoryRefresher(IHaleBackend backend, Repository repository) {
     this.backend = backend;
     this.repository = repository;
-    
+
   }
-  
+
   /**
    * Starts the refresher.
+   * 
    * @param mils The delay between refreshing.
    */
   public void start(long mils) {
-    long delay = mils; //milliseconds
+    long delay = mils; // milliseconds
     long period = mils;
-    
+
     time.scheduleAtFixedRate(new TimerTask() {
       public void run() {
         long timestamp = new Date().getTime();
         String color = "#FFFFFF";
-        
+
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH,
             getRandomDouble(14, 0));
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.FEED_FISH,
@@ -84,6 +87,50 @@ public class RepositoryRefresher {
         backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE,
             getRandomInteger(100, 1));
 
+        repository.store(IHaleRoom.LIVING, IHaleState.LIGHTING_LEVEL, timestamp, 100);
+        repository.store(IHaleRoom.LIVING, IHaleState.LIGHTING_COLOR, timestamp, "#FFFF00");
+        repository
+            .store(IHaleRoom.LIVING, IHaleState.LIGHTING_ENABLED, timestamp, getRandomState());
+
+        repository.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+        repository.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
+            "#FFFF01");
+        repository.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
+            getRandomState());
+
+        repository.store(IHaleRoom.DINING, IHaleState.LIGHTING_LEVEL, timestamp, 1);
+        repository.store(IHaleRoom.DINING, IHaleState.LIGHTING_COLOR, timestamp, "#779900");
+        repository
+            .store(IHaleRoom.DINING, IHaleState.LIGHTING_ENABLED, timestamp, getRandomState());
+        
+        repository.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+        repository.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
+            "#FFFF02");
+        repository.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
+            getRandomState());
+
+        repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_LEVEL, timestamp, 50);
+        repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_COLOR, timestamp, "#66FF00");
+        repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_ENABLED, timestamp,
+            getRandomState());
+
+        repository.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+        repository.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
+            "#FFFF03");
+        repository.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
+            getRandomState());
+        
+        repository.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_LEVEL, timestamp, 50);
+        repository.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_COLOR, timestamp, "#FF9900");
+        repository.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_ENABLED, timestamp,
+            getRandomState());
+        
+        repository.store(IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+        repository.store(IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
+            "#FFFF04");
+        repository.store(IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
+            getRandomState());
+
         // switch lights on and off, alternating each refresh
         if (enabled) {
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
@@ -113,7 +160,7 @@ public class RepositoryRefresher {
               IHaleCommandType.SET_LIGHTING_LEVEL, getRandomInteger(100, 1));
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.KITCHEN,
               IHaleCommandType.SET_LIGHTING_COLOR, color);
-          
+
           enabled = false;
         }
         else {
@@ -125,13 +172,13 @@ public class RepositoryRefresher {
               IHaleCommandType.SET_LIGHTING_ENABLED, false);
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.KITCHEN,
               IHaleCommandType.SET_LIGHTING_ENABLED, false);
-          
+
           enabled = true;
         }
       }
     }, delay, period);
   }
-  
+
   /**
    * @param high Integer high value
    * @param low Integer low value
@@ -139,11 +186,9 @@ public class RepositoryRefresher {
    */
   public double getRandomDouble(int high, int low) {
     final DecimalFormat twoDForm = new DecimalFormat("#.##");
-    double randomValue = Double.parseDouble(
-        twoDForm.format(Math.random() * (high - low) + low));
-    return randomValue;
+    return Double.parseDouble(twoDForm.format(Math.random() * (high - low) + low));    
   }
-  
+
   /**
    * @param high Integer high value
    * @param low Integer low value
@@ -152,6 +197,13 @@ public class RepositoryRefresher {
   public int getRandomInteger(int high, int low) {
     return (int) (Math.random() * (high - low) + low);
   }
+
+  /**
+   * Returns a random boolean value.
+   * 
+   * @return a random boolean value
+   */
+  public boolean getRandomState() {   
+    return (Math.random() >= 0.5);
+  }
 }
-
-

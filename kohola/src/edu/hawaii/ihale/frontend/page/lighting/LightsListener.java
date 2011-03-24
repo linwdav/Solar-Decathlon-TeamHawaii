@@ -37,121 +37,20 @@ public class LightsListener extends SystemStateListener {
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
     switch(room) {
-    case LIVING:
-      // do swtich statement
-      switch(state) {
-      case LIGHTING_ENABLED:
-        living.setLightingEnabled((Boolean)value);
-        break;
-      
-      case LIGHTING_LEVEL:
-        living.setLightingLevel((Integer)value);
-        break;
-        
-      case LIGHTING_COLOR:
-        living.setLightingColor((String)value);
-        break;
-      case SET_LIGHTING_ENABLED_COMMAND:
-        living.setLightingEnabled((Boolean)value);
-        break;
-      
-      case SET_LIGHTING_LEVEL_COMMAND:
-        living.setLightingLevel((Integer)value);
-        break;
-        
-      case SET_LIGHTING_COLOR_COMMAND:
-        living.setLightingColor((String)value);
-        break;
-      
-      default:
-        break;
-      }
-      
+    case LIVING:      
+      changeLighting(state, living, value);      
       break;
       
-    case DINING:
-      
-      switch(state) {
-      case LIGHTING_ENABLED:
-        dining.setLightingEnabled((Boolean)value);
-        break;
-      
-      case LIGHTING_LEVEL:
-        dining.setLightingLevel((Integer)value);
-        break;
-        
-      case LIGHTING_COLOR:
-        dining.setLightingColor((String)value);
-        break;
-        
-      default:
-        break;
-      }
+    case DINING:      
+      changeLighting(state, dining, value);
       break;
       
-    case KITCHEN:
-      
-      switch(state) {
-      case LIGHTING_ENABLED:
-        kitchen.setLightingEnabled((Boolean)value);
-        break;
-      
-      case LIGHTING_LEVEL:
-        kitchen.setLightingLevel((Integer)value);
-        break;
-        
-      case LIGHTING_COLOR:
-        kitchen.setLightingColor((String)value);
-        break;
-      
-      case SET_LIGHTING_ENABLED_COMMAND:
-        kitchen.setLightingEnabled((Boolean)value);
-        break;
-      
-      case SET_LIGHTING_LEVEL_COMMAND:
-        kitchen.setLightingLevel((Integer)value);
-        break;
-        
-      case SET_LIGHTING_COLOR_COMMAND:
-        kitchen.setLightingColor((String)value);
-        break;
-        
-      default:
-        break;
-      }
-      
+    case KITCHEN:      
+      changeLighting(state, kitchen, value);      
       break;
       
-    case BATHROOM:
-      
-      switch(state) {
-      case LIGHTING_ENABLED:
-        bathroom.setLightingEnabled((Boolean)value);
-        break;
-      
-      case LIGHTING_LEVEL:
-        bathroom.setLightingLevel((Integer)value);
-        break;
-        
-      case LIGHTING_COLOR:
-        bathroom.setLightingColor((String)value);
-        break;
-      
-      case SET_LIGHTING_ENABLED_COMMAND:
-        bathroom.setLightingEnabled((Boolean)value);
-        break;
-      
-      case SET_LIGHTING_LEVEL_COMMAND:
-        bathroom.setLightingLevel((Integer)value);
-        break;
-        
-      case SET_LIGHTING_COLOR_COMMAND:
-        bathroom.setLightingColor((String)value);
-        break;
-      default:
-        break;
-      }
-      
+    case BATHROOM:      
+      changeLighting(state, bathroom, value);      
       break;
       
     default:
@@ -189,5 +88,41 @@ public class LightsListener extends SystemStateListener {
    */
   public Room getBathroom() {
     return bathroom;
+  }
+  
+  /**
+   * Change the setting for parameter room.
+   * @param state The IHaleState.
+   * @param room The room.
+   * @param value The value.
+   */
+  public void changeLighting(IHaleState state, Room room, Object value) {
+    switch(state) {
+    case LIGHTING_ENABLED:      
+      room.setLightingEnabled((Boolean)value);
+      break;
+    
+    case LIGHTING_LEVEL:      
+      room.setLightingLevel((Integer)value);
+      break;
+      
+    case LIGHTING_COLOR:      
+      room.setLightingColor((String)value);
+      break;
+    case SET_LIGHTING_ENABLED_COMMAND:
+      room.setLightingEnabled((Boolean)value);
+      break;
+    
+    case SET_LIGHTING_LEVEL_COMMAND:
+      room.setLightingLevel((Integer)value);
+      break;
+      
+    case SET_LIGHTING_COLOR_COMMAND:
+      room.setLightingColor((String)value);
+      break;
+    
+    default:
+      break;
+    }
   }
 }
