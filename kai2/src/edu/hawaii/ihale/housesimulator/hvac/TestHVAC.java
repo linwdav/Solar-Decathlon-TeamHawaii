@@ -1,10 +1,6 @@
 package edu.hawaii.ihale.housesimulator.hvac;
 
 import static org.junit.Assert.assertEquals;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.junit.BeforeClass;
@@ -14,11 +10,10 @@ import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.housesimulator.SimulatorServer;
-import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsData;
-import edu.hawaii.ihale.housesimulator.electrical.ElectricalData;
-import edu.hawaii.ihale.housesimulator.lighting.LightingData;
-import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsData;
 
 /**
  * Tests the HTTP operations of the system.
@@ -39,14 +34,14 @@ public class TestHVAC {
   }
 
   /**
-   * Tests that we can PUT a value and then GET the value and check that it is within a certain
-   * delta of the PUT value.
+   * Tests that are our GET and PUT operations are compliant with milestone 2's HTTP API 2.0.
    * 
    * @throws Exception If GET or PUT fails
    */
   @Test
   public void testGetAndPut() throws Exception {
-    String putUrl = "http://localhost:7102/hvac/temp";
+    
+    String putUrl = "http://localhost:7102/hvac/temperature";
     ClientResource putClient = new ClientResource(putUrl);
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -54,14 +49,16 @@ public class TestHVAC {
     docBuilder = factory.newDocumentBuilder();
     Document doc = docBuilder.newDocument();
 
+    String command = IHaleCommandType.SET_TEMPERATURE.toString();
+    
     // Create root tag
     Element rootElement = doc.createElement("command");
-    rootElement.setAttribute("name", "setTemp");
+    rootElement.setAttribute("name", command);
     doc.appendChild(rootElement);
 
     // Create state tag.
     Element temperatureElement = doc.createElement("arg");
-    temperatureElement.setAttribute("value", "80");
+    temperatureElement.setAttribute("value", "24");
     rootElement.appendChild(temperatureElement);
 
     // Convert Document to DomRepresentation.
@@ -69,20 +66,7 @@ public class TestHVAC {
     result.setDocument(doc);
 
     putClient.put(result);
-
-    // Speed up time simulation to see if our value falls within the desired range.
-    for (int i = 0; i < 50; i++) {
-      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
-      Date date = new Date();
-      System.out.println("**********************");
-      System.out.println(dateFormat.format(date));
-      AquaponicsData.modifySystemState();
-      HVACData.modifySystemState();
-      LightingData.modifySystemState();
-      PhotovoltaicsData.modifySystemState();
-      ElectricalData.modifySystemState();
-    }
-
+    
     // Set up the GET client
     String getUrl = "http://localhost:7102/hvac/state";
     ClientResource getClient = new ClientResource(getUrl);
@@ -91,18 +75,25 @@ public class TestHVAC {
     DomRepresentation domRep = new DomRepresentation(getClient.get());
     Document domDoc = domRep.getDocument();
 
-    // Grabs tags from XML.
+    String systemNameAttributeName = "system";
+    String deviceNameAttributeName = "device";
+    
+    // Get the root element, in this case would be state-data element.
+    Element stateData = domDoc.getDocumentElement();
+    // Retrieve the attributes from state-data element, the system and device name.
+    String systemName = stateData.getAttribute(systemNameAttributeName);
+    String deviceName = stateData.getAttribute(deviceNameAttributeName);
+    
+    assertEquals("Checking for system name", IHaleSystem.HVAC.toString(), systemName);
+    assertEquals("Checking for device name", "arduino-3", deviceName);
+    
+    // Retrieve a child node from the Document object. Represents state data.
     NodeList xmlList = domDoc.getElementsByTagName("state");
 
-    // Grabs attributes from tags.
+    // Retrieve an attributes key.
     String key = ((Element) xmlList.item(0)).getAttribute("key");
-    String value = ((Element) xmlList.item(0)).getAttribute("value");
-
-    // Check that we are returning the correct key
-    assertEquals("Checking that key is temp", key, "temp");
-
-    // Check that the returned value is within a delta of our PUT value.
-    assertEquals(80.0, Double.parseDouble(value), 3);
-
+    String temperatureString = IHaleState.TEMPERATURE.toString();
+    
+    assertEquals("Checking that key is temp", key, temperatureString);
   }
 }

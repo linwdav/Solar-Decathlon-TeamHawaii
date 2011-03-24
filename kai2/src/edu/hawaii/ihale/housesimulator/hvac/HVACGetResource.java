@@ -1,11 +1,13 @@
 package edu.hawaii.ihale.housesimulator.hvac;
 
+import java.util.Date;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
 /**
- * A server resource that will handle requests regarding the HVAC system. Supported operations: GET.
+ * A server resource that will handle requests regarding the HVAC system. 
+ * Supported operations: GET.
  * Supported representations: XML.
  * 
  * @author Anthony Kinsey, Michael Cera
@@ -21,6 +23,6 @@ public class HVACGetResource extends ServerResource {
   @Get
   public Representation getState() throws Exception {
     // Return the representation.
-    return HVACData.toXml();
+    return HVACData.toXml(new Date().getTime());
   }
 }

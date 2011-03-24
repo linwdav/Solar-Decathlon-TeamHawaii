@@ -8,9 +8,11 @@ import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 
 /**
- * A server resource that will handle requests regarding the HVAC system. Supported operations: PUT.
+ * A server resource that will handle requests regarding the HVAC system. 
+ * Supported operations: PUT.
  * Supported representations: XML.
  * 
  * @author Anthony Kinsey, Michael Cera
@@ -19,15 +21,16 @@ import org.w3c.dom.NodeList;
 public class HVACPutResource extends ServerResource {
 
   /**
-   * Changes the values of house systems based on received XML.
+   * Changes the values of HVAC house system based on received XML. Currently only supports the
+   * setting of the desired home temperature.
    * 
-   * @param representation The XML representation of the new Contact to add.
+   * @param representation The XML representation of the command to execute on the HVAC system.
    * @return null.
    * @throws Exception If problems occur unpacking the representation.
    */
   @Put
   public Representation putValue(Representation representation) throws Exception {
-    // Get the XML representation of the Contact.
+    
     DomRepresentation domRep = new DomRepresentation(representation);
     Document domDoc = domRep.getDocument();
 
@@ -41,14 +44,13 @@ public class HVACPutResource extends ServerResource {
 
     String putCommand = (String) this.getRequestAttributes().get("putcommand");
 
-    if ("temp".equalsIgnoreCase(putCommand) && "setTemp".equalsIgnoreCase(command)) {
-      HVACData.setDesiredTemperature(Long.parseLong(arg));
+    if ("temperature".equals(putCommand) && 
+        IHaleCommandType.SET_TEMPERATURE.toString().equals(command)) {
+      HVACData.setDesiredTemperature(Integer.parseInt(arg));
     }
     else {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
-
     return null;
   }
-
 }
