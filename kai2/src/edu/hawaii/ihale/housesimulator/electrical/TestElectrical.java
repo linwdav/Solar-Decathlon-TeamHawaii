@@ -63,6 +63,15 @@ public class TestElectrical {
     DomRepresentation domRep = new DomRepresentation(getClient.get());
     Document domDoc = domRep.getDocument();
 
+    
+//    //Working on XPath version
+//    XPathFactory factory = XPathFactory.newInstance();
+//    XPath xpath = factory.newXPath();
+//    XPathExpression expr = xpath.compile("//book[author='Neal Stephenson']/title/text()");
+//    Object result = expr.evaluate(domDoc, XPathConstants.NODESET);
+
+    
+    
     // Grabs tags from XML.
     NodeList meterList = domDoc.getElementsByTagName("meter");
     NodeList energyList = domDoc.getElementsByTagName("energy");
