@@ -5,6 +5,7 @@ import java.io.StringReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.swing.SwingWorker.StateValue;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,22 +21,30 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.ihale.api.repository.TimestampDoublePair;
 import edu.hawaii.ihale.api.repository.impl.Repository;;
 
 /**
  * Handles parsing XML documents and storing to the repository.
  * @author Tony Gaskell
  */
-public class XmlTranslator {
+public class XmlHandler {
+  static Repository repository = new Repository();
   private static XPathFactory factory = XPathFactory.newInstance(); 
   private static XPath xpath = factory.newXPath();
   
-  public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+/*
+ *  This is just for testing purposes.
+ *  
+    public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
     String stateSample =
-      "<state-data system=\"SystemName\" device=\"DeviceName\" timestamp=\"2345789\">" +
-      "<state key=\"key1\" value=\"value1\"/>" +
-      "<state key=\"key2\" value=\"value2\"/>" +
-      "<state key=\"key3\" value=\"value3\"/>" +
+      "<state-data system=\"LIGHTING\" device=\"arduino-5\" timestamp=\"1297446335\">" +
+        "<state key=\"LIGHTING_LEVEL\" value=\"20\"/>" +
+        "<state key=\"LIGHTING_ENABLED\" value=\"true\"/>" +
+        "<state key=\"LIGHTING_COLOR\" value=\"#FF0000\"/>" +
       "</state-data>";
     String historySample =
       "<state-history>" +
@@ -76,14 +85,28 @@ public class XmlTranslator {
     DocumentBuilder builder = factory.newDocumentBuilder();
 
     Document document =
-     builder.parse(new InputSource(new StringReader(stateSample)));
+     builder.parse(new InputSource(new StringReader(historySample)));
 
     xml2StateEntry(document);
     
   }
+  */
   
-  public static Boolean xml2StateEntry(Document doc)
+  /**
+   * Takes in an XML document formatted according to the System-H REST API specified here:
+   * <url>http://code.google.com/p/solar-decathlon-teamhawaii/wiki/HouseSystemRestAPI</url>
+   * as of March 15, 2011, and stores it to the IHaleRepository.
+   * 
+   * @author Tony Gaskell
+   */
+  public Boolean xml2StateEntry(Document doc)
     throws IOException, XPathExpressionException {
+
+//    This currently only works with getHistory() which may be all we need it to work with.
+//    Suggest making another xml2StateEntry that takes in a Representation object for poll().
+
+//    In theory this method should be all-or-nothing.
+//    If something fails to load, they should ALL fail.  Source: ICS 321.
 
 //    Repository repository = new Repository();
 //    DomRepresentation dom = new DomRepresentation(rep);
@@ -93,26 +116,81 @@ public class XmlTranslator {
     XPathExpression systemPath = xpath.compile("//state-data");
     Object result = systemPath.evaluate(doc, XPathConstants.NODESET);
     NodeList stateData = (NodeList) result;
+
+    // An unhealthy amount of temporary variables.
     String system;
-    Double timestamp;
+    String device = null;
+    String room;
+    Long timestamp;
     NodeList state;
     String key;
     String value;
+    IHaleSystem systemEnum;
+    IHaleState stateEnum;
+    IHaleRoom roomEnum = null;
+    Object finalVal = null;
+    
     for (int i = 0; i < stateData.getLength(); i++) {
       system = stateData.item(i).getAttributes().getNamedItem("system").getTextContent();
-      timestamp = Double.parseDouble(stateData.item(i).getAttributes().getNamedItem("timestamp").getTextContent());
-      System.out.print (system + " " + timestamp);
+      systemEnum = Enum.valueOf(IHaleSystem.class, system);
+      try {
+        // Try to parse room attribute from XML.
+        room = stateData.item(i).getAttributes().getNamedItem("room").getTextContent();
+        if (room.equals(IHaleRoom.LIVING.toString())) {
+          roomEnum = IHaleRoom.LIVING;
+        }
+        else if (room.equals(IHaleRoom.DINING.toString())) {
+          roomEnum = IHaleRoom.DINING;
+        }
+        else if (room.equals(IHaleRoom.KITCHEN.toString())) {
+          roomEnum = IHaleRoom.KITCHEN;
+        }
+        else if (room.equals(IHaleRoom.BATHROOM.toString())) {
+          roomEnum = IHaleRoom.BATHROOM;
+        }
+        else {
+          System.err.println("Unknown room attribute: " + room);
+        }
+        roomEnum = Enum.valueOf(IHaleRoom.class, room);
+      }
+      catch (Exception e) {
+        // No room attribute was found, skip.
+      }
+
+      timestamp = Long.parseLong(stateData.item(i).getAttributes().
+          getNamedItem("timestamp").getTextContent());
+//      System.out.println (system + " " + timestamp);
       state = stateData.item(i).getChildNodes();
-      System.out.println(state.getLength());
+
+      // Storing the XML node as a StateEntry.
       for (int j = 0; j < state.getLength(); j++) {
         key = state.item(j).getAttributes().getNamedItem("key").getTextContent();
+        stateEnum = Enum.valueOf(IHaleState.class, key);
         value = state.item(j).getAttributes().getNamedItem("value").getTextContent();
-        System.out.println(key + " " + value);
-//        ret.put(stateData.item(j).getAttributes().getNamedItem("key").getTextContent(), // test
-//          stateData.item(j).getAttributes().getNamedItem("value").getTextContent()); // test
+        if (stateEnum.getType().equals(Double.class)) {
+          finalVal = Double.parseDouble(value);
+        }
+        else if (stateEnum.getType().equals(Integer.class)) {
+          finalVal = Integer.parseInt(value);
+        }
+        else if (stateEnum.getType().equals(Boolean.class)) {
+          finalVal = Boolean.parseBoolean(value);
+        }
+        else if (stateEnum.getType().equals(String.class)) {
+          finalVal = value;
+        }
+        else {
+          System.err.println("ERROR: Could not parse value: " + value + 
+              " for IHaleState: " + stateEnum.toString());
+        }
+//        System.out.println(key + " " + String.valueOf(finalVal));
       }
+      // Set the room to null since it is not guaranteed to be in the next state-data node.
+      roomEnum = null;
     }
-//    System.out.println(ret); //test
+    // This return value is supposed to be for testing purposes,
+    // but I need to come up with an instance of when this thing would fail.
+    // It's useless right now.
     return true;
   }
 }
