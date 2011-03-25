@@ -76,7 +76,9 @@ public class TestPhotovoltaics {
     String power = ((Element) powerList.item(0)).getTextContent();
 
     // Check that we are returning the correct title.
-    assertEquals("Checking that title is \"Grid\"", title, "Solar");
+    assertEquals("Checking that title is \"Grid\"", title, "Grid");
+//    // originally 
+//    assertEquals("Checking that title is \"Grid\"", title, "Solar");
     
     // Check that the returned value is within a delta of our value.
     assertEquals(5750.0, Double.parseDouble(energy), 1000); 
