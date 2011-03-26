@@ -21,9 +21,10 @@ $(function(){
 		range: "min",
 		min: 1,
 		max: 100,
-		value: 75,
-		slide: function( event, ui ) {
-			$( "#amountBright" ).html( ui.value );	
+		value: parseInt($( "#amountBright").val(), 10),
+		change: function( event, ui ) {
+			$( "#amountBright" ).val( ui.value + "%" );
+			$( "#amountBright" ).change();
 		}
 	});
 	$( "#amountBright" ).html( $( "#sliderBright" ).slider( "value" ) );
@@ -74,9 +75,9 @@ function toggleOnOff(x) {
 </script>
 
 <div class="top-links">
-  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
-  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
-  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
+  <a class="icon-right" href="#" ><img wicket:id="help" /></a>
+  <a class="icon-right" href="#" ><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" ><img wicket:id="printer" /></a>
   <div class="clear"></div>
 </div>
 
@@ -98,33 +99,47 @@ function toggleOnOff(x) {
                 <h5 class="dark-purple">Lights</h5>
         <div class="clear"></div>
 
-              <a wicket:id="OnButton" onClick="toggleOnOff(1);" class="green-button" >On</a>&nbsp;
-              <a wicket:id="OffButton" onClick="toggleOnOff(0);" class="gray-button" >Off</a>
+              <a wicket:id="OnButton"  class="green-button" >On</a>&nbsp;
+
+              <a wicket:id="OffButton"  class="gray-button" >Off</a>
          </div>
       <div class="column-three">
         <h5 class="dark-purple">Brightness</h5>
 
         <div class="clear"></div>
+        <form wicket:id="form">
         <table class="bare" style="width:100%;">
-        	<tr>
+
+          <tr>
           	<td style="width:100%;"><div id="sliderBright"></div></td>
-            <td style="padding-left:10px !important;"><span id="amountBright">75</span>%</td>
+          </tr>
+          <tr>
+            <td align="right" >
+              <p><input wicket:id="amountBright" type="text" /></p>
+              <p style="margin-right: 100px;"><input wicket:id="SubmitIntensity" class="gray-button right" type="submit" value="Change" style="color: #333333;"/></p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <span wicket:id="intensityfeedback"></span>
+          	</td>
           </tr>
         </table>
+
+        </form>
       </div>
       <div class="clear"></div>
       <h5 class="dark-purple" style="margin-top:20px;">Color</h5>
-      <span wicket:id="feedback" />
+      <span wicket:id="colorfeedback" />
       <div id="icolor" class="icolorC">
-      	<input wicket:id="colorchange" type="hidden"/>
-      	<div style="position:  absolute;  bottom:  0;">
-      	  
-        </div>        
+      	<input wicket:id="colorchange" type="hidden"/>    
       </div>
       <div class="clear"></div>
+
     </div>
   </div>
 </div>
+
       
 
 
