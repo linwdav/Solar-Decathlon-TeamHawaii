@@ -48,7 +48,6 @@ public class RepositoryRefresher {
     time.scheduleAtFixedRate(new TimerTask() {
       public void run() {
         long timestamp = new Date().getTime();
-        String color = "#FFFFFF";
 
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH,
             getRandomDouble(14, 0));
@@ -87,47 +86,56 @@ public class RepositoryRefresher {
         backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE,
             getRandomInteger(100, 1));
 
-        repository.store(IHaleRoom.LIVING, IHaleState.LIGHTING_LEVEL, timestamp, 100);
-        repository.store(IHaleRoom.LIVING, IHaleState.LIGHTING_COLOR, timestamp, "#FFFF00");
+        repository.store(IHaleRoom.LIVING, IHaleState.LIGHTING_LEVEL, timestamp,
+            getRandomInteger(100, 1));
+        repository.store(IHaleRoom.LIVING, IHaleState.LIGHTING_COLOR, timestamp, getRandomColor());
         repository
             .store(IHaleRoom.LIVING, IHaleState.LIGHTING_ENABLED, timestamp, getRandomState());
 
-        repository.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+        repository.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp,
+            getRandomInteger(100, 1));
         repository.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
-            "#FFFF01");
+            getRandomColor());
         repository.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
             getRandomState());
 
-        repository.store(IHaleRoom.DINING, IHaleState.LIGHTING_LEVEL, timestamp, 1);
-        repository.store(IHaleRoom.DINING, IHaleState.LIGHTING_COLOR, timestamp, "#779900");
+        repository.store(IHaleRoom.DINING, IHaleState.LIGHTING_LEVEL, timestamp,
+            getRandomInteger(100, 1));
+        repository.store(IHaleRoom.DINING, IHaleState.LIGHTING_COLOR, timestamp, getRandomColor());
         repository
             .store(IHaleRoom.DINING, IHaleState.LIGHTING_ENABLED, timestamp, getRandomState());
-        
-        repository.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+
+        repository.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp,
+            getRandomInteger(100, 1));
         repository.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
-            "#FFFF02");
+            getRandomColor());
         repository.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
             getRandomState());
 
-        repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_LEVEL, timestamp, 50);
-        repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_COLOR, timestamp, "#66FF00");
+        repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_LEVEL, timestamp,
+            getRandomInteger(100, 1));
+        repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_COLOR, timestamp, getRandomColor());
         repository.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_ENABLED, timestamp,
             getRandomState());
 
-        repository.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+        repository.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp,
+            getRandomInteger(100, 1));
         repository.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
-            "#FFFF03");
+            getRandomColor());
         repository.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
             getRandomState());
-        
-        repository.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_LEVEL, timestamp, 50);
-        repository.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_COLOR, timestamp, "#FF9900");
+
+        repository.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_LEVEL, timestamp,
+            getRandomInteger(100, 1));
+        repository
+            .store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_COLOR, timestamp, getRandomColor());
         repository.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_ENABLED, timestamp,
             getRandomState());
-        
-        repository.store(IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+
+        repository.store(IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp,
+            getRandomInteger(100, 1));
         repository.store(IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp,
-            "#FFFF04");
+            getRandomColor());
         repository.store(IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp,
             getRandomState());
 
@@ -138,28 +146,28 @@ public class RepositoryRefresher {
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
               IHaleCommandType.SET_LIGHTING_LEVEL, getRandomInteger(100, 1));
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
-              IHaleCommandType.SET_LIGHTING_COLOR, color);
+              IHaleCommandType.SET_LIGHTING_COLOR, getRandomColor());
 
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.DINING,
               IHaleCommandType.SET_LIGHTING_ENABLED, true);
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.DINING,
               IHaleCommandType.SET_LIGHTING_LEVEL, getRandomInteger(100, 1));
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.DINING,
-              IHaleCommandType.SET_LIGHTING_COLOR, color);
+              IHaleCommandType.SET_LIGHTING_COLOR, getRandomColor());
 
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.LIVING,
               IHaleCommandType.SET_LIGHTING_ENABLED, true);
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.LIVING,
               IHaleCommandType.SET_LIGHTING_LEVEL, getRandomInteger(100, 1));
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.LIVING,
-              IHaleCommandType.SET_LIGHTING_COLOR, color);
+              IHaleCommandType.SET_LIGHTING_COLOR, getRandomColor());
 
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.KITCHEN,
               IHaleCommandType.SET_LIGHTING_ENABLED, true);
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.KITCHEN,
               IHaleCommandType.SET_LIGHTING_LEVEL, getRandomInteger(100, 1));
           backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.KITCHEN,
-              IHaleCommandType.SET_LIGHTING_COLOR, color);
+              IHaleCommandType.SET_LIGHTING_COLOR, getRandomColor());
 
           enabled = false;
         }
@@ -186,7 +194,7 @@ public class RepositoryRefresher {
    */
   public double getRandomDouble(int high, int low) {
     final DecimalFormat twoDForm = new DecimalFormat("#.##");
-    return Double.parseDouble(twoDForm.format(Math.random() * (high - low) + low));    
+    return Double.parseDouble(twoDForm.format(Math.random() * (high - low) + low));
   }
 
   /**
@@ -203,7 +211,19 @@ public class RepositoryRefresher {
    * 
    * @return a random boolean value
    */
-  public boolean getRandomState() {   
+  public boolean getRandomState() {
     return (Math.random() >= 0.5);
+  }
+
+  /**
+   * Returns a random color for lighting. Now only support black and white.
+   * 
+   * @return The color.
+   */
+  public String getRandomColor() {
+    if (Math.random() >= 0.5) {
+      return "#000000";
+    }
+    return "#FFFFFF";
   }
 }

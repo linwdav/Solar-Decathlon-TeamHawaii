@@ -99,14 +99,17 @@ public class LightsListener extends SystemStateListener {
   public void changeLighting(IHaleState state, Room room, Object value) {
     switch(state) {
     case LIGHTING_ENABLED:      
+      System.out.println(room.getName() + " state set to: " + value);
       room.setLightingEnabled((Boolean)value);
       break;
     
-    case LIGHTING_LEVEL:      
+    case LIGHTING_LEVEL:   
+      System.out.println(room.getName() + " level set to: " + value);
       room.setLightingLevel((Integer)value);
       break;
       
     case LIGHTING_COLOR:      
+      System.out.println(room.getName() + " color set to: " + value);
       room.setLightingColor((String)value);
       break;
     case SET_LIGHTING_ENABLED_COMMAND:
