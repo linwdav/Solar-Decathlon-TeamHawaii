@@ -104,7 +104,34 @@ public class IHaleBackend implements IHaleCommand {
    * string if the command is color.
    */
   private void handleLightingCommand(IHaleRoom room, IHaleCommandType command, Object arg) {
-    // Left as an exercise for the reader.
+
+    if (command.toString().equals("SET_LIGHTING_ENABLED")) {
+      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
+        // TODO Genereate XML and send
+      }
+      else {
+        // TODO Error message
+      }
+    }
+    else if (command.toString().equals("SET_LIGHTING_LEVEL")) {
+      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
+        // TODO Genereate XML and send
+      }
+      else {
+        // TODO Error message
+      }
+
+    }
+    else if (command.toString().equals("SET_LIGHTING_COLOR")) {
+      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
+        // TODO Genereate XML and send
+      }
+      else {
+        // TODO Error message
+      }
+
+    }
+
   }
 
   /**
@@ -115,27 +142,39 @@ public class IHaleBackend implements IHaleCommand {
    * @throws Exception
    */
   private void handleHvacCommand(IHaleCommandType command, Object arg) throws Exception {
-    // Create document.
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = null;
-    docBuilder = factory.newDocumentBuilder();
-    Document doc = docBuilder.newDocument();
 
-    // Create root tag
-    Element rootElement = doc.createElement("command");
-    rootElement.setAttribute("name", command.toString());
-    doc.appendChild(rootElement);
+    if (command.toString().equals("SET_TEMPERATURE")) {
+      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
 
-    // Create state tag.
-    Element temperatureElement = doc.createElement("state");
-    temperatureElement.setAttribute("key", arg.toString());
-    rootElement.appendChild(temperatureElement);
+        // Create document.
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = null;
+        docBuilder = factory.newDocumentBuilder();
+        Document doc = docBuilder.newDocument();
 
-    // Convert Document to DomRepresentation.
-    DomRepresentation representation = new DomRepresentation();
-    representation.setDocument(doc);
+        // Create root tag
+        Element rootElement = doc.createElement("command");
+        rootElement.setAttribute("name", command.toString());
+        doc.appendChild(rootElement);
 
-    // TODO Send representation to device.
+        // Create state tag.
+        Element temperatureElement = doc.createElement("state");
+        temperatureElement.setAttribute("key", arg.toString());
+        rootElement.appendChild(temperatureElement);
+
+        // Convert Document to DomRepresentation.
+        DomRepresentation representation = new DomRepresentation();
+        representation.setDocument(doc);
+
+        // TODO Send representation to device.
+      }
+      else {
+        // TODO Error message
+      }
+    }
+    else {
+      // TODO Error message
+    }
   }
 
   /**
