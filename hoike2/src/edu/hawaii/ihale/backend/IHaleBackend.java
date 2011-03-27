@@ -1,11 +1,11 @@
 package edu.hawaii.ihale.backend;
 
+import java.io.IOException;
 import java.util.Date;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import org.restlet.ext.xml.DomRepresentation;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.util.logging.Logger;
+import javax.xml.parsers.ParserConfigurationException;
+import org.restlet.data.Method;
+import org.restlet.resource.ClientResource;
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
@@ -15,6 +15,7 @@ import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
 import edu.hawaii.ihale.api.command.IHaleCommand;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.xml.PutCommand;
 
 /**
  * Provides a sample illustration of IHale backend functionality as it relates to the iHale API
@@ -33,14 +34,20 @@ import edu.hawaii.ihale.api.repository.impl.Repository;
  * 
  * @author Philip Johnson
  * @author Michael Cera
+ * @author Bret K. Ikehara
  */
 public class IHaleBackend implements IHaleCommand {
+
+  private Logger log;
 
   /** The repository that can store all the data for the iHale system. */
   Repository repository = new Repository();
 
   /** Constructor. Initializes history and reads .properties file. **/
   public IHaleBackend() {
+
+    this.log = Logger.getLogger(this.getClass().toString());
+
     // parse property / URI file
     // parse historical xml file
     // store historical xml data.
@@ -71,6 +78,9 @@ public class IHaleBackend implements IHaleCommand {
         new SystemStatusMessage(timestamp, system, SystemStatusMessageType.INFO, msg);
     repository.store(message);
 
+    this.log
+        .info(system.toString() + " command: " + command.toString() + " arg: " + arg.toString());
+
     // Of course, you also have to actually emit the HTTP request to send the command to the
     // relevant system. It might look something like the following.
     // Note the PV and ELECTRIC systems do not current support commands.
@@ -83,7 +93,6 @@ public class IHaleBackend implements IHaleCommand {
         handleHvacCommand(command, arg);
       }
       catch (Exception e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
       break;
@@ -135,45 +144,52 @@ public class IHaleBackend implements IHaleCommand {
   }
 
   /**
-   * Emit an HTTP command to the HVAC system.
+   * Creates the HTTP command for the HVAC system.
    * 
    * @param command Currently the only supported command is SET_TEMPERATURE.
    * @param arg An integer representing the new number.
-   * @throws Exception
+   * @return String
+   * @throws RuntimeException Thrown creation of XML document fails.
    */
-  private void handleHvacCommand(IHaleCommandType command, Object arg) throws Exception {
+  private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException {
 
-    if (command.toString().equals("SET_TEMPERATURE")) {
+    ClientResource client = null;
+    PutCommand doc = null;
+    String url = null;
+
+    if (command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)) {
       if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
 
-        // Create document.
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder docBuilder = null;
-        docBuilder = factory.newDocumentBuilder();
-        Document doc = docBuilder.newDocument();
+        // Creates the command.
+        try {
+          doc = new PutCommand(command);
+        }
+        catch (ParserConfigurationException e) {
+          throw new RuntimeException("Failed to create command XML.", e);
+        }
 
-        // Create root tag
-        Element rootElement = doc.createElement("command");
-        rootElement.setAttribute("name", command.toString());
-        doc.appendChild(rootElement);
+        // Adds the argument.
+        doc.addArgument("arg", arg);
 
-        // Create state tag.
-        Element temperatureElement = doc.createElement("state");
-        temperatureElement.setAttribute("key", arg.toString());
-        rootElement.appendChild(temperatureElement);
-
-        // Convert Document to DomRepresentation.
-        DomRepresentation representation = new DomRepresentation();
-        representation.setDocument(doc);
-
-        // TODO Send representation to device.
+        // TODO update with URLs.
+        url = "";
       }
       else {
-        // TODO Error message
+        throw new RuntimeException("Argument type is invalid.");
       }
     }
     else {
-      // TODO Error message
+      throw new RuntimeException("IHaleCommandType is invalid.");
+    }
+    
+    // Send the xml representation to the device.
+    client = new ClientResource(Method.PUT, url);
+
+    try {
+      client.put(doc.getRepresentation());
+    }
+    catch (IOException e) {
+      throw new RuntimeException("Failed to create Dom Representation.", e);
     }
   }
 
@@ -229,5 +245,4 @@ public class IHaleBackend implements IHaleCommand {
     IHaleBackend backend = new IHaleBackend();
     backend.exampleStateFromHouseSystems();
   }
-
 }
