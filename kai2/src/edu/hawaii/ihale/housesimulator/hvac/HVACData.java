@@ -46,9 +46,15 @@ public class HVACData {
   
   private static boolean occupantsHome = false;
   
-  private static final int summerEfficientTemp = 88;
+  private static final int summerEfficientTempWhenOccupantHome = 78;
   
-  private static final int winterEfficientTemp = 58;
+  private static final int summerEfficientTempWhenOccupantNotHome = 88;
+  
+  private static final int winterEfficientTempWhenOccupantHome = 68;
+  
+  private static final int winterEfficientTempWhenOccupantNotHome = 58;
+  
+  private static int currentHomeTemp = 0;
   
   /** END - NEW FIELDS. **/
   
@@ -168,11 +174,16 @@ public class HVACData {
     // If the HVAC system has had a desired temperature to maintain the home at.
     if (desiredTempHasBeenSet) {
      
+      
+      
+      
+      
       System.out.println(); // QA complaints.
       
     }
     // Situation 2:
     // No desired temperature to maintain the home at, HVAC system will undergo self-automation.
+    // Home temperatures will be influenced by the outside temperature.
     else {
       
       /** Initialize fields to generate the home temperature for Situation 2. **/
@@ -203,9 +214,7 @@ public class HVACData {
               ((24 - currentHour) * degreeChangeFromHighTempPtToSunrise));
         }
       }
-      
-      System.out.println(currentOutsideTemp); // QA complaints.
-      
+            
       // Occupants are assumed to be out of the home for work on the weekdays from 9:00 AM to 
       // 5:00 PM for AM/PM system or 0900 to 1700 hour system.
       if ((currentHour >= 9 && currentHour <= 17) && (currentDay > 1 && currentDay < 7)) {
@@ -219,8 +228,27 @@ public class HVACData {
       // level.
       if (occupantsHome) {
         
-        System.out.println("1"); // QA complaints.
-        
+        // Most HVAC systems can't keep a difference in outside and inside temperature of greater
+        // than ~15-20 degrees F when high temperatures exceed 95 degrees F.
+        if (currentOutsideTemp > 95) {
+          currentHomeTemp = currentOutsideTemp - 18;
+        }
+        // Some HVAC sites suggest 78 degrees F is ideal to maintain the home at for energy 
+        // efficiency when the outside weather is hot.
+        else if (currentOutsideTemp >= 78 && currentOutsideTemp <= 95) { 
+          currentHomeTemp = summerEfficientTempWhenOccupantHome;
+        }
+        // This is the ideal home temperature ranges for the solar decathlon contest. No need to
+        // run the HVAC strongly and instead allow the outside and inside home temperatures to
+        // converge to equilibrium temperature state.
+        else if (currentOutsideTemp < 78 && currentOutsideTemp >= 72) {
+          currentHomeTemp = currentOutsideTemp;
+        }
+        // Some HVAC sites suggest 68 degrees F is ideal to maintain the home at for energy
+        // energy efficiency when the outside weather is cold.
+        else if (currentOutsideTemp < 72) {
+          currentHomeTemp = winterEfficientTempWhenOccupantHome;
+        }
       }
       
       // Situation 2b:
@@ -228,11 +256,26 @@ public class HVACData {
       // home temperature higher (in the summer) or lower (in the dinner).
       else {
        
-        System.out.println("2"); // QA complaints.
-        
+        if (currentOutsideTemp > 95) {
+          currentHomeTemp = currentOutsideTemp - 18;
+        }
+        // Since the occupants are not home, the home temperature can be hotter than the ideal
+        // home temperature to conserve energy. It is suggested to be 10 degrees F higher than
+        // normal.
+        else if (currentOutsideTemp >= 88 && currentOutsideTemp <= 95) {
+          currentHomeTemp = summerEfficientTempWhenOccupantNotHome;
+        }
+        // Since the occupants are not home, the home temperature can be colder than the ideal
+        // home temperature to conserve energy, but not too cold so that instruments are damaged.
+        // It is suggested to be 10 degrees F lower than normal.
+        else if (currentOutsideTemp <= 68) {
+          currentHomeTemp = winterEfficientTempWhenOccupantNotHome;
+        }
+        else {
+          currentHomeTemp = currentOutsideTemp;
+        }
       }
     }
-    
     /** End of additional portion. **/
   }
 
