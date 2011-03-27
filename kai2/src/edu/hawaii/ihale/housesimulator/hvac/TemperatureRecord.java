@@ -1,14 +1,13 @@
 package edu.hawaii.ihale.housesimulator.hvac;
 
 /**
- * Provides a record of average high and average low temperatures for a given month.
+ * Provides a record of average high and average low temperatures.
  *
  * @author Leonardo Nguyen
  * @version Java 1.6.0_21
  */
-public class MonthlyTemperatureRecord {
+public class TemperatureRecord {
 
-  private String month;
   private int avgHighTemp;
   private int avgLowTemp;
   private int meanTemp;
@@ -16,24 +15,13 @@ public class MonthlyTemperatureRecord {
   /**
    * Main constructor.
    * 
-   * @param month The month in String format.
    * @param avgHighTemp Average high temperature for the month.
    * @param avgLowTemp Average low temperature for the month.
    */
-  public MonthlyTemperatureRecord(String month, int avgHighTemp, int avgLowTemp) {
-    this.month = month;
+  public TemperatureRecord(int avgHighTemp, int avgLowTemp) {
     this.avgHighTemp = avgHighTemp;
     this.avgLowTemp = avgLowTemp;
     meanTemp = (avgHighTemp + avgLowTemp) / 2;
-  }
-  
-  /**
-   * Returns the month.
-   *
-   * @return The month.
-   */
-  public String getMonth() {
-    return this.month;
   }
   
   /**
@@ -50,7 +38,7 @@ public class MonthlyTemperatureRecord {
    *
    * @return Average low temperature.
    */
-  public int getAvgLowHighTemp() {
+  public int getAvgLowTemp() {
     return this.avgLowTemp;
   }
   

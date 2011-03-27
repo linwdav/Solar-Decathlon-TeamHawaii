@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.housesimulator.hvac;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -32,25 +33,56 @@ public class HVACData {
   /** The max value temperature will increment by in F. */
   private static final int temperatureIncrement = 1;
 
-  private static Map<String, MonthlyTemperatureRecord> washingtonMonthlyWeather = 
-    new HashMap<String, MonthlyTemperatureRecord>();  
+  /** START - NEW FIELDS. **/
   
-  // Washington D.C. monthly weather history taken from: 
-  // http://www.weather.com/weather/wxclimatology/monthly/graph/USDC0001
-  // Initialize the monthly average high and low temperatures in F.
+  private static Map<String, TemperatureRecord> washingtonMonthlyTemps = 
+    new HashMap<String, TemperatureRecord>();  
+ 
+  private static Map<String, Integer> washingtonMonthlySunrise = new HashMap<String, Integer>();
+  
+  private static boolean desiredTempHasBeenSet = false;
+  
+  private static int desiredTempValue = 0;
+  
+  private static boolean occupantsHome = false;
+  
+  private static final int summerEfficientTemp = 88;
+  
+  private static final int winterEfficientTemp = 58;
+  
+  /** END - NEW FIELDS. **/
+  
   static {
-    washingtonMonthlyWeather.put("JANUARY", new MonthlyTemperatureRecord("JANUARY", 42, 27));
-    washingtonMonthlyWeather.put("FEBRUARY", new MonthlyTemperatureRecord("FEBRUARY", 47, 30));
-    washingtonMonthlyWeather.put("MARCH", new MonthlyTemperatureRecord("MARCH", 56, 37));
-    washingtonMonthlyWeather.put("APRIL", new MonthlyTemperatureRecord("APRIL", 66, 46));
-    washingtonMonthlyWeather.put("MAY", new MonthlyTemperatureRecord("MAY", 75, 56));
-    washingtonMonthlyWeather.put("JUNE", new MonthlyTemperatureRecord("JUNE", 84, 65));
-    washingtonMonthlyWeather.put("JULY", new MonthlyTemperatureRecord("JULY", 88, 76));
-    washingtonMonthlyWeather.put("AUGUST", new MonthlyTemperatureRecord("AUGUST", 86, 69));
-    washingtonMonthlyWeather.put("SEPTEMBER", new MonthlyTemperatureRecord("SEPTEMBER", 79, 62));
-    washingtonMonthlyWeather.put("OCTOBER", new MonthlyTemperatureRecord("OCTOBER", 68, 50));
-    washingtonMonthlyWeather.put("NOVEMBER", new MonthlyTemperatureRecord("NOVEMBER", 57, 40));
-    washingtonMonthlyWeather.put("DECEMBER", new MonthlyTemperatureRecord("DECEMBER", 47, 32));
+    // Washington D.C. monthly weather history taken from: 
+    // http://www.weather.com/weather/wxclimatology/monthly/graph/USDC0001
+    // Initialize the monthly average high and low temperatures in F.
+    washingtonMonthlyTemps.put("JANUARY", new TemperatureRecord(42, 27));
+    washingtonMonthlyTemps.put("FEBRUARY",  new TemperatureRecord(47, 30));
+    washingtonMonthlyTemps.put("MARCH", new TemperatureRecord(56, 37));
+    washingtonMonthlyTemps.put("APRIL", new TemperatureRecord(66, 46));
+    washingtonMonthlyTemps.put("MAY", new TemperatureRecord(75, 56));
+    washingtonMonthlyTemps.put("JUNE", new TemperatureRecord(84, 65));
+    washingtonMonthlyTemps.put("JULY", new TemperatureRecord(88, 76));
+    washingtonMonthlyTemps.put("AUGUST", new TemperatureRecord(86, 69));
+    washingtonMonthlyTemps.put("SEPTEMBER", new TemperatureRecord(79, 62));
+    washingtonMonthlyTemps.put("OCTOBER", new TemperatureRecord(68, 50));
+    washingtonMonthlyTemps.put("NOVEMBER", new TemperatureRecord(57, 40));
+    washingtonMonthlyTemps.put("DECEMBER", new TemperatureRecord(47, 32));
+    
+    // Generalize sunrise hour for Washington D.C. provided by aid of:
+    // http://www.timeanddate.com/worldclock/astronomy.html?n=263
+    washingtonMonthlySunrise.put("JANURARY", 7);
+    washingtonMonthlySunrise.put("FEBRUARY", 7);
+    washingtonMonthlySunrise.put("MARCH", 7);
+    washingtonMonthlySunrise.put("APRIL", 6);
+    washingtonMonthlySunrise.put("MAY", 6);
+    washingtonMonthlySunrise.put("JUNE", 5);
+    washingtonMonthlySunrise.put("JULY", 6);
+    washingtonMonthlySunrise.put("AUGUST", 6);
+    washingtonMonthlySunrise.put("SEPTEMBER", 7);
+    washingtonMonthlySunrise.put("OCTOBER", 7);
+    washingtonMonthlySunrise.put("NOVEMBER", 7);
+    washingtonMonthlySunrise.put("DECEMBER", 7);
   }
   
   /**
@@ -79,9 +111,12 @@ public class HVACData {
      *  realistic HVAC value modeling. **/
     
     // Temperature influenced by seasonal months primarily summer and winter.
+    // Coldest part of the day is just before and during sunrise.
+    // Hottest part of the day is on average 3:00 PM or 1500 hour.
     // Need to check if occupants are home.
     // HVAC system should maintain temperatures approximately 78 in the summer and 68 in the
-    // winter, deviating by 10 degrees higher or lower if occupants aren't home.
+    // winter, adjusted by 10 degrees higher or lower if occupants aren't home for energy
+    // efficiency.
     // Lacking home insulation value (the R-value); will assume static 5 min/degree change
     // for simplicity.
     // Lacking specifications of HVAC system, primarily its BTU/hour to determine energy usage
@@ -91,6 +126,113 @@ public class HVACData {
     // If occupants haven't set a desired temperature, HVAC will undergo automation process,
     // home temperature needs to then have a relationship with current outside temperature.
   
+    Calendar calendar = Calendar.getInstance();
+    calendar.set(Calendar.YEAR, 2011);
+    int monthNum = calendar.get(Calendar.MONTH);
+    String month = "";
+    
+    switch (monthNum) {
+      case 0: month = "JANUARY"; break;
+      case 1: month = "FEBRUARY"; break;
+      case 2: month = "MARCH"; break;
+      case 3: month = "APRIL"; break;
+      case 4: month = "MAY"; break;
+      case 5: month = "JUNE"; break;
+      case 6: month = "JULY"; break;
+      case 7: month = "AUGUST"; break;
+      case 8: month = "SEPTEMBER"; break;
+      case 9: month = "OCTOBER"; break;
+      case 10: month = "NOVEMBER"; break;
+      case 11: month = "DECEMBER"; break;
+      // Should never reach this point, valid month from Calendar object is 0 to 11.
+      default: month = ""; return;
+    }
+    
+    TemperatureRecord record = washingtonMonthlyTemps.get(month);
+    int avgLowTemp = record.getAvgLowTemp();
+    int avgHighTemp = record.getAvgHighTemp();
+    int sunriseHour = washingtonMonthlySunrise.get(month);
+    int hottestHourInDay = 15;
+    
+    // The rate the outside temperature increases from sunrise (coldest part of the day) to the
+    // hottest point in the day (3:00 PM or 1500 hour). Degree unit is in Farenheit.
+    double degreeChangeFromSunriseToHighTempPt = 
+      (avgHighTemp - avgLowTemp) / (double) (hottestHourInDay - sunriseHour);    
+    
+    // The rate the outside temperature decreases from the hottest point in the day to the next
+    // day before the new sunrise.
+    double degreeChangeFromHighTempPtToSunrise = 
+      (avgHighTemp - avgLowTemp) / (double) (24 - hottestHourInDay - sunriseHour);
+    
+    // Situation 1:
+    // If the HVAC system has had a desired temperature to maintain the home at.
+    if (desiredTempHasBeenSet) {
+     
+      System.out.println(); // QA complaints.
+      
+    }
+    // Situation 2:
+    // No desired temperature to maintain the home at, HVAC system will undergo self-automation.
+    else {
+      
+      /** Initialize fields to generate the home temperature for Situation 2. **/
+      
+      int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+      int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+      int currentOutsideTemp;
+      
+      // Trend for currentTemp is to rise, beginning from sunrise to the hottest point in the day.
+      if (currentHour >= sunriseHour && currentHour <= hottestHourInDay) {
+        currentOutsideTemp = (int) ((currentHour - sunriseHour) * 
+            degreeChangeFromSunriseToHighTempPt) + avgLowTemp;
+      }
+      // Trend for currentTemp is to fall, beginning from the hottest point in the day until
+      // to the sunrise of the next day.
+      else {
+        
+        // Handle the case when the currentHour of the day is within the next day, beyond
+        // midnight.
+        if (currentHour < sunriseHour) {
+          currentOutsideTemp = (int) (avgHighTemp - 
+              ((24 - hottestHourInDay + currentHour) * degreeChangeFromHighTempPtToSunrise));
+        }
+        // The currentHour is still within the current day, after the hottest point in the day, but
+        // before midnight.
+        else {
+          currentOutsideTemp = (int) (avgHighTemp - 
+              ((24 - currentHour) * degreeChangeFromHighTempPtToSunrise));
+        }
+      }
+      
+      System.out.println(currentOutsideTemp); // QA complaints.
+      
+      // Occupants are assumed to be out of the home for work on the weekdays from 9:00 AM to 
+      // 5:00 PM for AM/PM system or 0900 to 1700 hour system.
+      if ((currentHour >= 9 && currentHour <= 17) && (currentDay > 1 && currentDay < 7)) {
+        occupantsHome = false;
+      }
+      
+      /** End of the initialize of fields to generate the home temperature for Situation 2. **/
+
+      // Situation 2a:
+      // If the home has occupants, the home temperature should be maintained at a comfortable
+      // level.
+      if (occupantsHome) {
+        
+        System.out.println("1"); // QA complaints.
+        
+      }
+      
+      // Situation 2b:
+      // If occupants aren't home, then the HVAC system can be energy efficient by setting the
+      // home temperature higher (in the summer) or lower (in the dinner).
+      else {
+       
+        System.out.println("2"); // QA complaints.
+        
+      }
+    }
+    
     /** End of additional portion. **/
   }
 
