@@ -114,33 +114,27 @@ public class IHaleBackend implements IHaleCommand {
    */
   private void handleLightingCommand(IHaleRoom room, IHaleCommandType command, Object arg) {
 
-    if (command.toString().equals("SET_LIGHTING_ENABLED")) {
-      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
-        // TODO Genereate XML and send
+    if (command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_ENABLED)
+        || command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_LEVEL)
+        || command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_COLOR)) {
+
+      PutCommand doc = generateCommandXml(command, arg);
+
+      // Send the XML representation to the device.
+      // TODO Generate url according to IHaleRoom.
+      String url = "";
+
+      ClientResource client = new ClientResource(Method.PUT, url);
+      try {
+        client.put(doc.getRepresentation());
       }
-      else {
-        // TODO Error message
+      catch (IOException e) {
+        throw new RuntimeException("Failed to create Dom Representation.", e);
       }
     }
-    else if (command.toString().equals("SET_LIGHTING_LEVEL")) {
-      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
-        // TODO Genereate XML and send
-      }
-      else {
-        // TODO Error message
-      }
-
+    else {
+      throw new RuntimeException("IHaleCommandType is invalid.");
     }
-    else if (command.toString().equals("SET_LIGHTING_COLOR")) {
-      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
-        // TODO Genereate XML and send
-      }
-      else {
-        // TODO Error message
-      }
-
-    }
-
   }
 
   /**
@@ -153,14 +147,13 @@ public class IHaleBackend implements IHaleCommand {
    */
   private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException {
 
-    ClientResource client = null;
     PutCommand doc = null;
     String url = null;
 
     if (command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)) {
       if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
 
-        // Creates the command.
+        // Generates the XML for the command.
         try {
           doc = new PutCommand(command);
         }
@@ -181,9 +174,9 @@ public class IHaleBackend implements IHaleCommand {
     else {
       throw new RuntimeException("IHaleCommandType is invalid.");
     }
-    
+
     // Send the xml representation to the device.
-    client = new ClientResource(Method.PUT, url);
+    ClientResource client = new ClientResource(Method.PUT, url);
 
     try {
       client.put(doc.getRepresentation());
@@ -202,7 +195,60 @@ public class IHaleBackend implements IHaleCommand {
    * otherwise.
    */
   private void handleAquaponicsCommand(IHaleCommandType command, Object arg) {
-    // Left as an exercise for the reader.
+
+    if (command.equals(ApiDictionary.IHaleCommandType.FEED_FISH)
+        || command.equals(ApiDictionary.IHaleCommandType.HARVEST_FISH)
+        || command.equals(ApiDictionary.IHaleCommandType.SET_PH)
+        || command.equals(ApiDictionary.IHaleCommandType.SET_WATER_LEVEL)) {
+
+      PutCommand doc = generateCommandXml(command, arg);
+
+      // Send the XML representation to the device.
+      // TODO Generate url according to IHaleRoom.
+      String url = "";
+
+      ClientResource client = new ClientResource(Method.PUT, url);
+      try {
+        client.put(doc.getRepresentation());
+      }
+      catch (IOException e) {
+        throw new RuntimeException("Failed to create Dom Representation.", e);
+      }
+    }
+    else {
+      throw new RuntimeException("IHaleCommandType is invalid.");
+    }
+  }
+
+  /**
+   * Generates the XML for doCommand.
+   * 
+   * @param command The IHaleCommandType.
+   * @param arg String, Integer, Double, or Boolean according to the IHaleCommandType Supplied.
+   * @return
+   */
+  private PutCommand generateCommandXml(IHaleCommandType command, Object arg) {
+
+    PutCommand doc = null;
+
+    if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
+
+      // Generates the XML for the command.
+      try {
+        doc = new PutCommand(command);
+      }
+      catch (ParserConfigurationException e) {
+        throw new RuntimeException("Failed to create command XML.", e);
+      }
+
+      // Adds the argument.
+      doc.addArgument("arg", arg);
+
+    }
+    else {
+      throw new RuntimeException("Argument type is invalid.");
+    }
+    return doc;
   }
 
   /**
