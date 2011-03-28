@@ -3,6 +3,9 @@ package edu.hawaii.ihale.housesimulator;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
 import javax.xml.parsers.DocumentBuilder;
@@ -17,7 +20,9 @@ import org.restlet.Component;
 import org.restlet.data.Protocol;
 import org.restlet.routing.VirtualHost;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsSystem;
+import edu.hawaii.ihale.housesimulator.electrical.ElectricalData;
 import edu.hawaii.ihale.housesimulator.electrical.ElectricalSystem;
 import edu.hawaii.ihale.housesimulator.hvac.HVACSystem;
 import edu.hawaii.ihale.housesimulator.lighting.bathroom.LightingBathroomSystem;
@@ -241,7 +246,7 @@ public class SimulatorServer extends Application {
    *                   or transforming the Document object.
    */
   private static void createInitialDataXml(String dir, String filename) throws Exception {
-    
+//    long timestamp = new Date().getTime();
     // Get the users home directory and "dir" sub-directory
     File theDir = new File(System.getProperty("user.home"), dir);
     File xmlFile = new File(theDir, filename);
@@ -284,7 +289,7 @@ public class SimulatorServer extends Application {
            *        This block could probably be partitioned to its own method.
            */
           
-          try {
+//          try {
             
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
@@ -295,18 +300,30 @@ public class SimulatorServer extends Application {
              */
             
             // Transform the document object to a XML file stored within the user-defined directory.
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-            DOMSource source = new DOMSource(doc);
-            StreamResult result =  new StreamResult(xmlFile);
-            transformer.transform(source, result);
-          }
-          catch (ParserConfigurationException pce) {
-            pce.printStackTrace();
-          }
-          catch (TransformerException tfe) {
-            tfe.printStackTrace();
-          }
+//            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+//            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+//            DOMSource source = new DOMSource(doc);
+//            StreamResult result =  new StreamResult(xmlFile);
+//            transformer.transform(source, result);
+            Element rootElement = doc.createElement("state-history");
+            doc.appendChild(rootElement);
+            Map<String, Integer> baseTime = new HashMap<String, Integer>();
+            baseTime.put("year", Calendar.YEAR);
+            baseTime.put("month", Calendar.MONTH);
+            baseTime.put("date", Calendar.DATE);
+            baseTime.put("hour", Calendar.HOUR_OF_DAY);
+            baseTime.put("minute", Calendar.MINUTE);
+            baseTime.put("second", Calendar.SECOND);
+            
+            // historic points are appended while passed to electric data generation
+            doc = ElectricalData.generateHistoricData(baseTime, doc);
+//          }
+//          catch (ParserConfigurationException pce) {
+//            pce.printStackTrace();
+//          }
+//          catch (TransformerException tfe) {
+//            tfe.printStackTrace();
+//          }
         }
         // Leave existing file alone.
         else if ("n".equalsIgnoreCase(input)) {

@@ -1,13 +1,16 @@
 package edu.hawaii.ihale.housesimulator.electrical;
 
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 /**
  * Provides data on the ElectricalData system, as well as an XML representation.
@@ -40,41 +43,8 @@ public class ElectricalData {
    * pre-determined daily averages in hourlyAverage.
    */
   public static void modifySystemState() {
-    Random random = new Random();
     int hour = Calendar.HOUR_OF_DAY;
-    int randP = random.nextInt(10);
-    int randE = random.nextInt(10);
-
-    long changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 2;
-    if (changeValue < -50) {
-      changeValue = -50;
-    }
-    if (changeValue > 50) {
-      changeValue = 50;
-    }
-    if (randP < 5) {
-      energy = hourlyAverage[hour] - changeValue;
-    }
-    else {
-      energy = hourlyAverage[hour] + changeValue;
-    }
-
-    changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 4;
-    if (changeValue < -25) {
-      changeValue = -25;
-    }
-    if (changeValue > 25) {
-      changeValue = 25;
-    }
-    if (hour <= 6 || hour >= 18) {
-      power = changeValue;
-    }
-    else if (randE < 5) {
-      power = changeValue;
-    }
-    else {
-      power = -1 * changeValue;
-    }
+    changePoints(hour);
 
     System.out.println("----------------------");
     System.out.println("System: Electrical");
@@ -267,6 +237,41 @@ public class ElectricalData {
   }
 
   /**
+   * Works backwards to generate historic electrical data.
+   * 
+   * @param baseTime The original time to work backwards from.
+   * @param doc The document before historic data is appended.
+   * @return doc The updated document..
+   */
+  public static Document generateHistoricData(Map<String, Integer> baseTime, Document doc) {
+    int year = baseTime.get("year");
+    int month = baseTime.get("month");
+    int date = baseTime.get("date");
+    int hour = baseTime.get("hour");
+    int minute = baseTime.get("minute");
+    int second = baseTime.get("second");
+
+    changePoints(hour);
+    Node parent = doc.getParentNode();
+    // 12 state data points at 5 min intervals (to compose 1 hour report)
+    for (int i = 0; i < 12; i++) {
+      Element temp = doc.createElement("state-data");
+      String timeString =
+          year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
+      Timestamp tempTime = Timestamp.valueOf(timeString);
+      temp.setAttribute("system", "electrical");
+      temp.setAttribute("timestamp", "" + tempTime);
+      parent.appendChild(temp);
+    }
+
+    // 24 state data points at 1 hour intervals (to compose 1 day report)
+    // 7 state data points at 1 day intervals (to compose 1 week report)
+    // 21-24 additional state data points at 1 day intervals (to compose 1 month report)
+
+    return doc;
+  }
+
+  /**
    * Returns the average energy consumption in watts per hour. Used primarily for testing.
    * 
    * @param hour The hour to get the hourly consumption for.
@@ -274,5 +279,47 @@ public class ElectricalData {
    */
   public static long getHourlyAverage(int hour) {
     return hourlyAverage[hour];
+  }
+
+  /**
+   * Changes the data points based upon the hour provided.
+   * 
+   * @param hour The hour to base electricity consumption around.
+   */
+  public static void changePoints(int hour) {
+    Random random = new Random();
+    int randP = random.nextInt(10);
+    int randE = random.nextInt(10);
+
+    long changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 2;
+    if (changeValue < -50) {
+      changeValue = -50;
+    }
+    if (changeValue > 50) {
+      changeValue = 50;
+    }
+    if (randP < 5) {
+      energy = hourlyAverage[hour] - changeValue;
+    }
+    else {
+      energy = hourlyAverage[hour] + changeValue;
+    }
+
+    changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 4;
+    if (changeValue < -25) {
+      changeValue = -25;
+    }
+    if (changeValue > 25) {
+      changeValue = 25;
+    }
+    if (hour <= 6 || hour >= 18) {
+      power = changeValue;
+    }
+    else if (randE < 5) {
+      power = changeValue;
+    }
+    else {
+      power = -1 * changeValue;
+    }
   }
 }
