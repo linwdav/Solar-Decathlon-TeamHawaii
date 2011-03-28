@@ -23,6 +23,8 @@ public class LightingBathroomSystem extends Application {
     // Attach the resources to the router.
     router.attach("/state", LightingBathroomGetResource.class);
     router.attach("/level", LightingBathroomPutResource.class);
+    router.attach("/color", LightingBathroomPutResource.class);
+    router.attach("/enable", LightingBathroomPutResource.class);
     // Return the root router
     return router;
   }

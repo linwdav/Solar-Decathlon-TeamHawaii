@@ -39,10 +39,23 @@ public class LightingBathroomPutResource extends ServerResource {
     String command = ((Element) commandList.item(0)).getAttribute("name");
     String arg = ((Element) argList.item(0)).getAttribute("value");
 
+    //allows user to set the level
     String setLevel = "setLevel";
+    
+    //allows user to turn (enable) lights on/off
+    String enableLight = "enableLight";
+    
+    //allows user to set the colors
+    String setColor = "setColor";
+    
     // Call mutator corresponding to room.
     if (setLevel.equalsIgnoreCase(command)) {
       LightingData.setBathroomLevel(Long.parseLong(arg));
+    }
+    
+    // Call mutator corresponding to room.
+    if (setColor.equalsIgnoreCase(command)) {
+      LightingData.setBathroomColor(setColor);
     }
 
     return null;
