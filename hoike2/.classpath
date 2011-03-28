@@ -3,8 +3,12 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="ihale-api/ihale-api.jar"/>
 	<classpathentry kind="lib" path="lib/restlet/org.restlet.ext.xml.jar"/>
-	<classpathentry kind="lib" path="lib/restlet/org.restlet.jar"/>
+	<classpathentry kind="lib" path="lib/restlet/org.restlet.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/hoike2/lib/restlet/api.zip!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="ihale-api/ihale-api.jar" sourcepath="/ihale-api/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
