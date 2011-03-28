@@ -25,8 +25,8 @@ public abstract class SelectModalWindow extends ModalWindow {
         // Set sizes of this ModalWindow. You can also do this
         // from the HomePage but its not a bad idea to set some
         // good default values.
-        setInitialWidth(450);
-        setInitialHeight(300);
+        setInitialWidth(300);
+        setInitialHeight(150);
 
         // Set the content panel, implementing the abstract methods
         setContent(new SelectContentPanel(this.getContentId(), systemChecker) {
