@@ -37,6 +37,7 @@ import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
  * @author Anthony Kinsey
  * @author Kylan Hughes
  * @author Chuan Lun Hung
+ * @author Kurt Teichman
  */
 public class Header extends WebPage {
 
