@@ -1,10 +1,13 @@
 package edu.hawaii.ihale.backend;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;
-import org.restlet.data.Method;
+import javax.xml.parsers.ParserConfigurationException; 
 import org.restlet.resource.ClientResource;
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
@@ -33,26 +36,75 @@ import edu.hawaii.ihale.backend.xml.PutCommand;
  * Frontend could display in the interface by attaching a listener.
  * 
  * @author Philip Johnson
- * @author Michael Cera
- * @author Bret K. Ikehara
+ * @author Backend Team
  */
 public class IHaleBackend implements IHaleCommand {
-
+  //A logger.
   private Logger log;
-
-  /** The repository that can store all the data for the iHale system. */
+  //The repository that can store all the data for the iHale system. 
   Repository repository = new Repository();
+  //Object that polls data from HSIM
+  public static Dispatcher dispatch;
+  //to hold the URI data.
+  public static Map<String,String> uris;
+  public static Map<String,ClientResource> commandMap;
+  //delay between polling hsim
+  public long interval = 5000;
+  //==========================================================
+  //============.properties file location=====================
+  //==========================================================
+  private static String currentDirectory = System.getProperty("user.home");
+  // Sub-directory containing system device properties file.
+  private static String folder = ".ihale";
+  // System device properties file name.
+  private static String configurationFile = "device-urls.properties"; 
+  // Full path to the system device properties file.
+  private static String configFilePath = currentDirectory + "/" + folder + "/" + configurationFile;
+  //============================================================
+  //============================================================
 
+  
+  
+  
   /** Constructor. Initializes history and reads .properties file. **/
   public IHaleBackend() {
 
     this.log = Logger.getLogger(this.getClass().toString());
-
-    // parse property / URI file
+    //instantiate the uris map.
+    uris = new HashMap<String,String>();
+    //puts URI data into "uris"
+    makeURIMap();
     // parse historical xml file
     // store historical xml data.
+    dispatch = new Dispatcher(uris,interval);
+    commandMap = dispatch.getCommandMap();
   }
 
+  /**
+   * Parses URI properties file.  Taken from team Hoike's backend files.
+   * @author Team Hoike
+   */
+  public static void makeURIMap() {
+    
+    try {
+      FileInputStream is = new FileInputStream(configFilePath);
+      Properties prop = new Properties();
+      prop.load(is);
+      String key = "";
+      String value = "";
+      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
+        key = (String) propItem.getKey();
+        value = (String) propItem.getValue();
+        uris.put(key, value);
+      }
+      System.out.println(configurationFile);
+      is.close();
+    }
+    catch (IOException e) {
+      System.out.println("Failed to read properties file.");
+      System.out.println(configFilePath);
+    }
+  } 
   /**
    * Implements a request from the front-end to send off a command to a house system. The backend
    * must store this command request in the repository, indicate that it occurred as a status
@@ -120,13 +172,9 @@ public class IHaleBackend implements IHaleCommand {
 
       PutCommand doc = generateCommandXml(command, arg);
 
-      // Send the XML representation to the device.
-      // TODO Generate url according to IHaleRoom.
-      String url = "";
-
-      ClientResource client = new ClientResource(Method.PUT, url);
+      // Send the XML representation to the device.  
       try {
-        client.put(doc.getRepresentation());
+        commandMap.get(room.toString().toLowerCase()).put(doc.getRepresentation());
       }
       catch (IOException e) {
         throw new RuntimeException("Failed to create Dom Representation.", e);
@@ -147,8 +195,7 @@ public class IHaleBackend implements IHaleCommand {
    */
   private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException {
 
-    PutCommand doc = null;
-    String url = null;
+    PutCommand doc = null; 
 
     if (command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)) {
       if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
@@ -163,9 +210,7 @@ public class IHaleBackend implements IHaleCommand {
 
         // Adds the argument.
         doc.addArgument("arg", arg);
-
-        // TODO update with URLs.
-        url = "";
+ 
       }
       else {
         throw new RuntimeException("Argument type is invalid.");
@@ -174,12 +219,10 @@ public class IHaleBackend implements IHaleCommand {
     else {
       throw new RuntimeException("IHaleCommandType is invalid.");
     }
-
-    // Send the xml representation to the device.
-    ClientResource client = new ClientResource(Method.PUT, url);
-
+ 
     try {
-      client.put(doc.getRepresentation());
+      // Send the xml representation to the device.
+      commandMap.get("hvac").put(doc.getRepresentation());
     }
     catch (IOException e) {
       throw new RuntimeException("Failed to create Dom Representation.", e);
@@ -203,13 +246,10 @@ public class IHaleBackend implements IHaleCommand {
 
       PutCommand doc = generateCommandXml(command, arg);
 
-      // Send the XML representation to the device.
-      // TODO Generate url according to IHaleRoom.
-      String url = "";
-
-      ClientResource client = new ClientResource(Method.PUT, url);
+ 
+ 
       try {
-        client.put(doc.getRepresentation());
+        commandMap.get("aquaponics").put(doc.getRepresentation());
       }
       catch (IOException e) {
         throw new RuntimeException("Failed to create Dom Representation.", e);
@@ -282,6 +322,7 @@ public class IHaleBackend implements IHaleCommand {
     repository.store(message);
   }
 
+  
   /**
    * A sample main program.
    * 
