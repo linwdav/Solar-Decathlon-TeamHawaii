@@ -59,6 +59,8 @@ public class Header extends WebPage {
   // the timer should also change for different city selection.
   private static String timeZone = "US/Hawaii";
   
+  private int activeTab;
+  
   /**
    * labels for the header, aka basepage. after the simulator and backend add outsideTemp can remove
    * this line and put it in the constructor along with insideTemperatureHeader
@@ -71,7 +73,11 @@ public class Header extends WebPage {
   /**
    * The header page. This is a parent class to all pages.
    */
-  public Header() {    
+  public Header() {   
+    
+    activeTab = ((SolarDecathlonSession)getSession()).getHeaderSession().getActiveTab();
+    
+    //System.out.println("\n\nUSER IS VIEWING PAGE" + activeTab + "\n\n");
     
     WebMarkupContainer dashboardItem;
     WebMarkupContainer energyItem;
@@ -705,5 +711,13 @@ public class Header extends WebPage {
    */
   public String getTimeZone() {
     return timeZone;
+  }
+  
+  /**
+   * Returns an integer associate to the page the user is currently viewing.
+   * @return activeTab;
+   */
+  public int getActiveTab() {
+    return activeTab;
   }
 }

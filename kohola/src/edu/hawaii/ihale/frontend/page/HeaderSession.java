@@ -16,6 +16,8 @@ public class HeaderSession implements Serializable {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
   
+  private int activeTab;
+  
   private WebMarkupContainer dashboardItem;
   private WebMarkupContainer energyItem;
   private WebMarkupContainer aquaponicsItem;
@@ -133,6 +135,8 @@ public class HeaderSession implements Serializable {
   public void setActiveTab(int i) {
     String classContainer = "class";
     String activeContainer = "active";
+    
+    activeTab = i;
 
     //System.out.println("tab to be active: " + i);
     switch (i) {
@@ -184,5 +188,13 @@ public class HeaderSession implements Serializable {
           activeContainer)));
       break;
     }
+  }
+  
+  /**
+   * Returns an integer that corresponds to the page the user is viewing currently.
+   * @return activeTab
+   */
+  public int getActiveTab() {
+    return activeTab;
   }
 }
