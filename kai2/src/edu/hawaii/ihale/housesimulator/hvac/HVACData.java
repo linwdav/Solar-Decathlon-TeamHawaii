@@ -203,8 +203,16 @@ public class HVACData {
         initialRoomTemperatureSet = true;
       }
       
+      // The desired temperature has been reached.
+      if (currentHomeTemp == desiredTemp) {
+        initialRoomTemperatureSet = false;
+        // Reset if it has been a day since a desired temperature value has been set.
+        if ((new Date().getTime()) - whenDesiredTempCommandIssued >= 86400000) {
+          desiredTempHasBeenSet = false;
+        }   
+      }
       // Desired temperature not reached.
-      if (currentHomeTemp != desiredTemp) {
+      else {
         // If desired temperature is greater than currentHomeTemp, the trend is heating the room,
         if (desiredTemp > currentHomeTemp) {
           // Determine the amount of milliseconds have elapsed since the HVAC command has been
@@ -213,22 +221,14 @@ public class HVACData {
           // obtain how much the temperature has changed in the home.
           currentHomeTemp = baseHomeTemp + (int) (
               ((new Date().getTime()) - whenDesiredTempCommandIssued) 
-                    / (1000 * 60 * numMinOneDegreeCelChange));
+                    / (1000 * 30));//60 * numMinOneDegreeCelChange));
         }
         // otherwise the trend is to cool down the room.
         else if (desiredTemp < currentHomeTemp) {
           currentHomeTemp = baseHomeTemp - (int) (
               ((new Date().getTime()) - whenDesiredTempCommandIssued) 
-              / (1000 * 60 * numMinOneDegreeCelChange));       
+              / (1000 * 30));//60 * numMinOneDegreeCelChange));       
         }
-      }
-      // The desired temperature has been reached.
-      else {
-        initialRoomTemperatureSet = false;
-        // Reset if it has been a day since a desired temperature value has been set.
-        if ((new Date().getTime()) - whenDesiredTempCommandIssued >= 86400000) {
-          desiredTempHasBeenSet = false;
-        }            
       }
     }
     
