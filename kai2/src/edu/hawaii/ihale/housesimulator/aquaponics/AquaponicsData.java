@@ -52,10 +52,10 @@ public class AquaponicsData {
   /** The desired pH. */
   private static double desiredPh = (randomGenerator.nextDouble() * 3) + 6.5;
 
-  // /** The max value temperature will increment by. */
-  // private static final long temperatureIncrement = 1;
-  // /** The max value pH will increment by. */
-  // private static double phIncrement = 0.2;
+  /** The max value temperature will increment by. */
+  private static final long temperatureIncrement = 1;
+  /** The max value pH will increment by. */
+  private static double phIncrement = 0.2;
 
   // Items not in API. These values are useful for modeling the system.
   /** The number of fish in the tank. */
@@ -76,29 +76,29 @@ public class AquaponicsData {
    */
   public static void modifySystemState() {
 
-    // // Increments temperature within range of the desired temperature.
-    // if (temperature > (desiredTemperature - temperatureIncrement)
-    // && temperature < (desiredTemperature + temperatureIncrement)) {
-    // temperature +=
-    // randomGenerator.nextInt(((int) temperatureIncrement * 2) + 1) - temperatureIncrement;
-    // }
-    // else if (temperature < desiredTemperature) {
-    // temperature += randomGenerator.nextInt((int) temperatureIncrement + 1);
-    // }
-    // else {
-    // temperature -= (randomGenerator.nextInt((int) temperatureIncrement + 1));
-    // }
-    //
-    // // Increments pH within range of the desired pH.
-    // if (ph > (desiredPh - phIncrement) && ph < (desiredPh + phIncrement)) {
-    // ph += (randomGenerator.nextDouble() * (phIncrement * 2)) - phIncrement;
-    // }
-    // else if (ph < desiredPh) {
-    // ph += (randomGenerator.nextDouble() * phIncrement);
-    // }
-    // else {
-    // ph -= (randomGenerator.nextDouble() * phIncrement);
-    // }
+    // Increments temperature within range of the desired temperature.
+    if (temperature > (desiredTemperature - temperatureIncrement)
+        && temperature < (desiredTemperature + temperatureIncrement)) {
+      temperature +=
+          randomGenerator.nextInt(((int) temperatureIncrement * 2) + 1) - temperatureIncrement;
+    }
+    else if (temperature < desiredTemperature) {
+      temperature += randomGenerator.nextInt((int) temperatureIncrement + 1);
+    }
+    else {
+      temperature -= (randomGenerator.nextInt((int) temperatureIncrement + 1));
+    }
+
+    // Increments pH within range of the desired pH.
+    if (ph > (desiredPh - phIncrement) && ph < (desiredPh + phIncrement)) {
+      ph += (randomGenerator.nextDouble() * (phIncrement * 2)) - phIncrement;
+    }
+    else if (ph < desiredPh) {
+      ph += (randomGenerator.nextDouble() * phIncrement);
+    }
+    else {
+      ph -= (randomGenerator.nextDouble() * phIncrement);
+    }
 
     final String desired = " (Desired: "; // PMD pickiness
     System.out.println("----------------------");
@@ -113,12 +113,11 @@ public class AquaponicsData {
     System.out.println("Water level: " + water_level + desired + desiredWaterLevel + ")");
     System.out.println("pH: " + roundSingleDecimal(ph) + desired + roundSingleDecimal(desiredPh)
         + ")");
-    System.out.println();
     System.out.println("Dead fish: " + dead_fish);
     System.out.println("Oxygen level: " + roundSingleDecimal(oxygen));
     System.out.println("Fish feed: " + roundSingleDecimal(fish_feed));
-    System.out.println("Nutrients: " + roundSingleDecimal(nutrients) + desired + desiredNutrients
-        + ")");
+    System.out.println("Nutrients: " + roundSingleDecimal(nutrients) + desired
+        + roundSingleDecimal(desiredNutrients) + ")");
   }
 
   /**
@@ -196,7 +195,7 @@ public class AquaponicsData {
     final String state = "state"; // PMD pickiness
     final String key = "key"; // PMD pickiness
     final String value = "value"; // PMD pickiness
-    
+
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();

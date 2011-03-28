@@ -41,11 +41,26 @@ public class AquaponicsPutResource extends ServerResource {
 
     String putCommand = (String) this.getRequestAttributes().get("putcommand");
 
-    if ("temp".equalsIgnoreCase(putCommand) && "setTemp".equalsIgnoreCase(command)) {
+    if ("temperature".equalsIgnoreCase(putCommand) && "SET_TEMPERATURE".equalsIgnoreCase(command)) {
       AquaponicsData.setDesiredTemperature(Integer.parseInt(arg));
     }
-    else if ("ph".equalsIgnoreCase(putCommand) && "setPh".equalsIgnoreCase(command)) {
+    else if ("fish/feed".equalsIgnoreCase(putCommand) && "FEED_FISH".equalsIgnoreCase(command)) {
+      AquaponicsData.addFishFeed(Double.parseDouble(arg));
+    }
+    else if ("fish/harvest".equalsIgnoreCase(putCommand)
+        && "HARVEST_FISH".equalsIgnoreCase(command)) {
+      AquaponicsData.harvestFish(Integer.parseInt(arg));
+    }
+    else if ("nutrients".equalsIgnoreCase(putCommand)
+        && "SET_NUTRIENTS".equalsIgnoreCase(command)) {
+      AquaponicsData.setNutrients(Double.parseDouble(arg));
+    }
+    else if ("ph".equalsIgnoreCase(putCommand) && "SET_PH".equalsIgnoreCase(command)) {
       AquaponicsData.setDesiredPh(Double.parseDouble(arg));
+    }
+    else if ("water/level".equalsIgnoreCase(putCommand)
+        && "SET_WATER_LEVEL".equalsIgnoreCase(command)) {
+      AquaponicsData.setDesiredWaterLevel(Integer.parseInt(arg));
     }
     else {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
