@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.extensions.ajax.markup.html.modal.ModalWindow;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.JavascriptPackageResource;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -60,6 +61,7 @@ public class Header extends WebPage {
   private static String timeZone = "US/Hawaii";
   
   private int activeTab;
+
   
   /**
    * labels for the header, aka basepage. after the simulator and backend add outsideTemp can remove
@@ -599,6 +601,76 @@ public class Header extends WebPage {
       }
     });
 
+    // The ModalWindow, showing some choices for the user to select.
+    final SystemChecker systemChecker = new SystemChecker();  
+    final ModalWindow selectModalWindow = new SelectModalWindow("modalwindow",
+        systemChecker) {
+        /** */
+      private static final long serialVersionUID = 1L;
+        /*
+        void onSelect(AjaxRequestTarget target, String selection) {
+            // Handle Select action
+            //resultLabel.setModelObject(selection);
+            //target.addComponent(resultLabel);
+            close(target);
+        }
+
+        void onCancel(AjaxRequestTarget target) {
+            // Handle Cancel action
+            //resultLabel.setModelObject("ModalWindow cancelled.");
+            //target.addComponent(resultLabel);
+            close(target);
+        }
+        */
+    };
+  
+  selectModalWindow.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(10)) {
+   /** */
+  private static final long serialVersionUID = 1L;
+
+      @Override
+      protected void onPostProcessTarget(AjaxRequestTarget target) {
+        if (systemChecker.foundError()) {
+          int activeTabNumber = 
+             ((SolarDecathlonSession)getSession()).getHeaderSession().getActiveTab();
+          String erroneousSystem = systemChecker.getErroroneousSystem();
+          selectModalWindow.setTitle("System Malfunction: " + erroneousSystem);
+          
+          switch (activeTabNumber) {
+          case 0:
+            if (!erroneousSystem.equalsIgnoreCase("Dashboard")) {
+              selectModalWindow.show(target);
+            }
+            break;
+          case 1:
+            if (!erroneousSystem.equalsIgnoreCase("Energy")) {
+              selectModalWindow.show(target);
+            }
+            break;
+          case 2:
+            if (!erroneousSystem.equalsIgnoreCase("Aquaponics")) {
+              selectModalWindow.show(target);
+            }
+            break;
+          case 3:
+            if (!erroneousSystem.equalsIgnoreCase("Lighting")) {
+              selectModalWindow.show(target);
+            }
+            break;
+          case 4:
+            if (!erroneousSystem.equalsIgnoreCase("Hvac")) {
+              selectModalWindow.show(target);
+            }
+            break;
+          default:
+            selectModalWindow.show(target);
+          }
+        }
+      }
+    });
+    
+    add(selectModalWindow);
+    
     add(time);
 
     add(currentWeatherHeader);
