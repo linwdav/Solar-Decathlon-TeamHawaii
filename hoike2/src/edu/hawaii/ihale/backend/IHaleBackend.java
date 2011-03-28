@@ -1,13 +1,12 @@
 package edu.hawaii.ihale.backend;
 
 import java.io.FileInputStream;
-import java.io.IOException; 
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
-import javax.xml.parsers.ParserConfigurationException;  
 import org.restlet.resource.ClientResource;
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
@@ -34,66 +33,67 @@ import edu.hawaii.ihale.backend.xml.PutCommand;
  * 
  * In addition, the doCommand illustrates how to create and store a system status message which the
  * Frontend could display in the interface by attaching a listener.
- *  
+ * 
+ * @author Philip Johnson
  * @author Backend Team
  */
 public class IHaleBackend implements IHaleCommand {
-  //A logger.
+  // A logger.
   private Logger log;
-  //The repository that can store all the data for the iHale system. 
+  // The repository that can store all the data for the iHale system.
   Repository repository = new Repository();
-  //Object that polls data from HSIM
+  // Object that polls data from HSIM
   public static Dispatcher dispatch;
-  //to hold the URI data.
-  public static Map<String,String> uris;
-  public static Map<String,String> commandMap;
-  public static Map<String,String> aquaMap;
-  public static Map<String,String> lightMap;
-  //delay between polling hsim
+  // to hold the URI data.
+  public static Map<String, String> uris;
+  public static Map<String, String> commandMap;
+  public static Map<String, String> aquaMap;
+  public static Map<String, String> lightMap;
+  // delay between polling hsim
   public long interval = 5000;
-  //==========================================================
-  //============.properties file location=====================
-  //==========================================================
+  // ==========================================================
+  // ============.properties file location=====================
+  // ==========================================================
   private static String currentDirectory = System.getProperty("user.home");
   // Sub-directory containing system device properties file.
   private static String folder = ".ihale";
   // System device properties file name.
-  private static String configurationFile = "device-urls.properties"; 
+  private static String configurationFile = "device-urls.properties";
   // Full path to the system device properties file.
   private static String configFilePath = currentDirectory + "/" + folder + "/" + configurationFile;
-  //============================================================
-  //============================================================
 
-  
-  
-  
+  // ============================================================
+  // ============================================================
+
   /** Constructor. Initializes history and reads .properties file. **/
   public IHaleBackend() {
 
     this.log = Logger.getLogger(this.getClass().toString());
-    //instantiate the uris map.
-    uris = new HashMap<String,String>();
-    //puts URI data into "uris"
-    makeURIMap(); 
-    
-    //make the dispatcher
-    dispatch = new Dispatcher(uris,interval);
-    //grab all data before it starts
+    // instantiate the uris map.
+    uris = new HashMap<String, String>();
+    // puts URI data into "uris"
+    makeURIMap();
+    // TODO parse historical xml file
+    // TODO store historical xml data.
+
+    // make a dispatcher
+    dispatch = new Dispatcher(uris, interval);
+    // grab all data before it starts
     commandMap = dispatch.getCommandMap();
     lightMap = dispatch.getLightMap();
     aquaMap = dispatch.getAquaMap();
-    
-    //create a new thread to run the polling loop.
+    // pop a new thread to run forever
     Thread poll = new Thread(dispatch);
     poll.start();
   }
 
   /**
-   * Parses URI properties file.  Taken from team Hoike's backend files.
+   * Parses URI properties file. Taken from team Hoike's backend files.
+   * 
    * @author Team Hoike
    */
   public static void makeURIMap() {
-    
+
     try {
       FileInputStream is = new FileInputStream(configFilePath);
       Properties prop = new Properties();
@@ -112,7 +112,8 @@ public class IHaleBackend implements IHaleCommand {
       System.out.println("Failed to read properties file.");
       System.out.println(configFilePath);
     }
-  } 
+  }
+
   /**
    * Implements a request from the front-end to send off a command to a house system. The backend
    * must store this command request in the repository, indicate that it occurred as a status
@@ -140,13 +141,21 @@ public class IHaleBackend implements IHaleCommand {
 
     this.log
         .info(system.toString() + " command: " + command.toString() + " arg: " + arg.toString());
- 
+
+    // Of course, you also have to actually emit the HTTP request to send the command to the
+    // relevant system. It might look something like the following.
+    // Note the PV and ELECTRIC systems do not current support commands.
     switch (system) {
     case AQUAPONICS:
       handleAquaponicsCommand(command, arg);
       break;
-    case HVAC: 
-      handleHvacCommand(command, arg); 
+    case HVAC:
+      try {
+        handleHvacCommand(command, arg);
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
       break;
     case LIGHTING:
       handleLightingCommand(room, command, arg);
@@ -165,22 +174,36 @@ public class IHaleBackend implements IHaleCommand {
    * string if the command is color.
    */
   private void handleLightingCommand(IHaleRoom room, IHaleCommandType command, Object arg) {
- 
+
+    PutCommand doc = null;
+    String url = null;
+    ClientResource client = null;
+
     if (command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_ENABLED)
         || command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_LEVEL)
         || command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_COLOR)) {
 
-      PutCommand doc = generateCommandXml(command, arg);
+      // Create client resource
+      url = commandMap.get(room.toString()) + lightMap.get(command.toString());
+      client = new ClientResource(url);
 
-      // Send the XML representation to the device. 
-      ClientResource client = new ClientResource(commandMap.get(room.toString().toLowerCase())+ 
-          lightMap.get(command.toString()));
+      // Generates the XML for the command.
       try {
+        doc = new PutCommand(command);
+        doc.addArgument("arg", arg);
+        doc.addArgument("room", room);
+
+        // Send the xml representation to the device.
         client.put(doc.getRepresentation());
-        client.release();
       }
       catch (IOException e) {
         throw new RuntimeException("Failed to create Dom Representation.", e);
+      }
+      catch (Exception e) {
+        throw new RuntimeException("Failed to create command XML.", e);
+      }
+      finally {
+        client.release();
       }
     }
     else {
@@ -197,38 +220,37 @@ public class IHaleBackend implements IHaleCommand {
    * @throws RuntimeException Thrown creation of XML document fails.
    */
   private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException {
- 
-    PutCommand doc = null;  
+
+    PutCommand doc = null;
+    String url = null;
+    ClientResource client = null;
+
     if (command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)) {
-      if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
 
-        // Generates the XML for the command.
-        try {
-          doc = new PutCommand(command);
-        }
-        catch (ParserConfigurationException e) {
-          throw new RuntimeException("Failed to create command XML.", e);
-        }
+      // Create client resource
+      url = commandMap.get("hvac") + "hvac/temp";
+      client = new ClientResource(url);
 
-        // Adds the argument.
+      // Generates the XML for the command.
+      try {
+        doc = new PutCommand(command);
         doc.addArgument("arg", arg);
- 
+
+        // Send the xml representation to the device.
+        client.put(doc.getRepresentation());
       }
-      else {
-        throw new RuntimeException("Argument type is invalid.");
+      catch (IOException e) {
+        throw new RuntimeException("Failed to create Dom Representation.", e);
+      }
+      catch (Exception e) {
+        throw new RuntimeException("Failed to create command XML.", e);
+      }
+      finally {
+        client.release();
       }
     }
     else {
       throw new RuntimeException("IHaleCommandType is invalid.");
-    } 
-    ClientResource client = new ClientResource(commandMap.get("hvac") + "hvac/temp");
-    try {
-      // Send the xml representation to the device.
-      client.put(doc.getRepresentation());
-      client.release();
-    }
-    catch (IOException e) {
-      throw new RuntimeException("Failed to create Dom Representation.", e);
     }
   }
 
@@ -240,55 +262,43 @@ public class IHaleBackend implements IHaleCommand {
    * @param arg An integer for feed fish, harvest fish, water level, and temperature, a double
    * otherwise.
    */
-  private void handleAquaponicsCommand(IHaleCommandType command, Object arg) { 
+  private void handleAquaponicsCommand(IHaleCommandType command, Object arg) {
+
+    PutCommand doc = null;
+    String url = null;
+    ClientResource client = null;
+
     if (command.equals(ApiDictionary.IHaleCommandType.FEED_FISH)
         || command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)
         || command.equals(ApiDictionary.IHaleCommandType.HARVEST_FISH)
         || command.equals(ApiDictionary.IHaleCommandType.SET_PH)
         || command.equals(ApiDictionary.IHaleCommandType.SET_WATER_LEVEL)) {
 
-      PutCommand doc = generateCommandXml(command, arg);
-  
-      ClientResource client = new ClientResource(commandMap.get("aquaponics") + aquaMap.get(command.toString()));
+      // Create client resource
+      url = commandMap.get("aquaponics") + aquaMap.get(command.toString());
+      client = new ClientResource(url);
+
+      // Generates the XML for the command.
       try {
+        doc = new PutCommand(command);
+        doc.addArgument("arg", arg);
+
+        // Send the xml representation to the device.
         client.put(doc.getRepresentation());
-        client.release();
       }
       catch (IOException e) {
         throw new RuntimeException("Failed to create Dom Representation.", e);
+      }
+      catch (Exception e) {
+        throw new RuntimeException("Failed to create command XML.", e);
+      }
+      finally {
+        client.release();
       }
     }
     else {
       throw new RuntimeException("IHaleCommandType is invalid.");
     }
-  }
-
-  /**
-   * Generates the XML for doCommand.
-   * 
-   * @param command The IHaleCommandType.
-   * @param arg String, Integer, Double, or Boolean according to the IHaleCommandType Supplied.
-   * @return
-   */
-  private PutCommand generateCommandXml(IHaleCommandType command, Object arg) {
-
-    PutCommand doc = null; 
-    if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
-      // Generates the XML for the command.
-      try {
-        doc = new PutCommand(command);
-      }
-      catch (ParserConfigurationException e) {
-        throw new RuntimeException("Failed to create command XML.", e);
-      }
-      // Adds the argument.
-      doc.addArgument("arg", arg);
-    }
-    
-    else {
-      throw new RuntimeException("Argument type is invalid.");
-    }
-    return doc;
   }
 
   /**
@@ -322,16 +332,15 @@ public class IHaleBackend implements IHaleCommand {
     repository.store(message);
   }
 
-  
   /**
    * A sample main program.
    * 
    * @param args Ignored.
    */
   public static void main(String[] args) {
-    IHaleBackend backend = new IHaleBackend(); 
-    //backend.exampleStateFromHouseSystems();
+    IHaleBackend backend = new IHaleBackend();
+    // backend.exampleStateFromHouseSystems();
     System.out.println(commandMap);
-    backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7 );
+    backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7);
   }
 }
