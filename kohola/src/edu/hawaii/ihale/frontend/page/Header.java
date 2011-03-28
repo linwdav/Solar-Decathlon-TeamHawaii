@@ -634,7 +634,7 @@ public class Header extends WebPage {
         if (systemChecker.foundError()) {
           int activeTabNumber = 
              ((SolarDecathlonSession)getSession()).getHeaderSession().getActiveTab();
-          String erroneousSystem = systemChecker.getErroroneousSystem();
+          String erroneousSystem = systemChecker.getErroneousSystem();
           selectModalWindow.setTitle("System Malfunction: " + erroneousSystem);
           
           switch (activeTabNumber) {

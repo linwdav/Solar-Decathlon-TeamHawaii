@@ -32,7 +32,7 @@ public class SystemChecker implements Serializable {
    * create a list of erroneous systems.
    * @return A string representing the erroneous system.
    */
-  public String getErroroneousSystem() {
+  public String getErroneousSystem() {
     if (aquaponicsError) {
       return "Aquaponics";
     }
@@ -45,7 +45,7 @@ public class SystemChecker implements Serializable {
    * @return boolean describing whether there is an error associated
    * with the aquaponics system.
    */
-  private boolean aquaponicsError() {
+  private synchronized boolean aquaponicsError() {
     AquaponicsListener aquaponicsListener =
       SolarDecathlonApplication.getAquaponics();
     int temp = aquaponicsListener.getTemp();
