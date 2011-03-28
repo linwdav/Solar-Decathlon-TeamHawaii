@@ -208,49 +208,49 @@ public class AquaponicsData {
     rootElement.setAttribute("timestamp", String.valueOf(new Date().getTime()));
     doc.appendChild(rootElement);
 
-    // Create state tag.
+    // Create circulation state tag.
     Element circulationElement = doc.createElement(state);
     circulationElement.setAttribute(key, "CIRCULATION");
     circulationElement.setAttribute(value, String.valueOf(circulation));
     rootElement.appendChild(circulationElement);
 
-    // Create state tag.
+    // Create dead fish state tag.
     Element deadFishElement = doc.createElement(state);
     deadFishElement.setAttribute(key, "DEAD_FISH");
     deadFishElement.setAttribute(value, String.valueOf(dead_fish));
     rootElement.appendChild(deadFishElement);
 
-    // Create state tag.
+    // Create electrical conductivity state tag.
     Element electricalConductivityElement = doc.createElement(state);
     electricalConductivityElement.setAttribute(key, "ELECTRICAL_CONDUCTIVITY");
     electricalConductivityElement.setAttribute(value, String.valueOf(electrical_conductivity));
     rootElement.appendChild(electricalConductivityElement);
 
-    // Create state tag.
+    // Create temperature state tag.
     Element temperatureElement = doc.createElement(state);
     temperatureElement.setAttribute(key, "TEMPERATURE");
     temperatureElement.setAttribute(value, String.valueOf(temperature));
     rootElement.appendChild(temperatureElement);
 
-    // Create state tag.
+    // Create turbidity state tag.
     Element turbidityElement = doc.createElement(state);
     turbidityElement.setAttribute(key, "TURBIDITY");
     turbidityElement.setAttribute(value, String.valueOf(turbidity));
     rootElement.appendChild(turbidityElement);
 
-    // Create state tag.
+    // Create water state tag.
     Element waterLevelElement = doc.createElement(state);
     waterLevelElement.setAttribute(key, "WATER_LEVEL");
     waterLevelElement.setAttribute(value, String.valueOf(water_level));
     rootElement.appendChild(waterLevelElement);
 
-    // Create state tag.
+    // Create PH state tag.
     Element phElement = doc.createElement(state);
     phElement.setAttribute(key, "PH");
     phElement.setAttribute(value, String.valueOf(roundSingleDecimal(ph)));
     rootElement.appendChild(phElement);
 
-    // Create state tag.
+    // Create oxygen state tag.
     Element oxygenElement = doc.createElement(state);
     oxygenElement.setAttribute(key, "OXYGEN");
     oxygenElement.setAttribute(value, String.valueOf(oxygen));
