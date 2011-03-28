@@ -46,7 +46,11 @@ public class TestAquaponics {
   public void testGetAndPut() throws Exception {
     // Put the values to our system.
     putValue("temperature", "SET_TEMPERATURE", "70");
+    putValue("feed", "FEED_FISH", "10.0");
+    putValue("harvest", "HARVEST_FISH", "1");
+    putValue("nutrients", "SET_NUTRIENTS", "20.0");
     putValue("ph", "SET_PH", "7.4");
+    putValue("water/level", "SET_WATER_LEVEL", "250");
 
     // Speed up time simulation to see if our value falls within the desired range.
     for (int i = 0; i < 50; i++) {
@@ -75,14 +79,33 @@ public class TestAquaponics {
     // Grabs attributes from tags.
     String keyStr = "key"; // PMD WHY ARE YOU SO PICKY? :(
     String valStr = "value";
+    
+    String circKey = ((Element) xmlList.item(0)).getAttribute(keyStr);
+    //String circValue = ((Element) xmlList.item(0)).getAttribute(valStr);
+    String deadFishKey = ((Element) xmlList.item(1)).getAttribute(keyStr);
+    //String deadFishValue = ((Element) xmlList.item(1)).getAttribute(valStr);
+    String ecKey = ((Element) xmlList.item(2)).getAttribute(keyStr);
+    //String ecValue = ((Element) xmlList.item(2)).getAttribute(valStr);
     String tempKey = ((Element) xmlList.item(3)).getAttribute(keyStr);
     String tempValue = ((Element) xmlList.item(3)).getAttribute(valStr);
+    String turbKey = ((Element) xmlList.item(4)).getAttribute(keyStr);
+    //String turbValue = ((Element) xmlList.item(4)).getAttribute(valStr);
+    String waterKey = ((Element) xmlList.item(5)).getAttribute(keyStr);
+    //String waterValue = ((Element) xmlList.item(5)).getAttribute(valStr);
     String phKey = ((Element) xmlList.item(6)).getAttribute(keyStr);
     String phValue = ((Element) xmlList.item(6)).getAttribute(valStr);
+    String oxygenKey = ((Element) xmlList.item(7)).getAttribute(keyStr);
+    //String oxygenValue = ((Element) xmlList.item(7)).getAttribute(valStr);
 
     // Check that we are returning the correct key
-    assertEquals("Checking that key is temp", tempKey, "TEMPERATURE");
-    assertEquals("Checking that key is pH", phKey, "PH");
+    assertEquals("Checking that key is CIRCULATION", circKey, "CIRCULATION");
+    assertEquals("Checking that key is DEAD_FISH", deadFishKey, "DEAD_FISH");
+    assertEquals("Checking that key is ELECTRICAL_CONDUCTIVITY", ecKey, "ELECTRICAL_CONDUCTIVITY");
+    assertEquals("Checking that key is TEMPERATURE", tempKey, "TEMPERATURE");
+    assertEquals("Checking that key is TURBIDITY", turbKey, "TURBIDITY");
+    assertEquals("Checking that key is WATER_LEVEL", waterKey, "WATER_LEVEL");
+    assertEquals("Checking that key is PH", phKey, "PH");
+    assertEquals("Checking that key is OXYGEN", oxygenKey, "OXYGEN");
 
     // Check that the returned value is within a delta of our PUT value.
     assertEquals(70.0, Double.parseDouble(tempValue), 3);
