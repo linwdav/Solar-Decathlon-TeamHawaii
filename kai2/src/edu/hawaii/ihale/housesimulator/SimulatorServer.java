@@ -272,23 +272,6 @@ public class SimulatorServer extends Application {
         // Overwrite the file.
         if ("y".equalsIgnoreCase(input)) {
 
-          /**
-           * TO-DO: Simulate and retrieve initial data for each system device dependent on the
-           * front-end data requirements. For instance the Energy system requires state values
-           * framed within -> 12 state points of 5 minute intervals to represent 1 hour, 24 state
-           * points of 1 hour intervals to represent 1 day, 7 state points of 1 day intervals to
-           * represent 1 week, and finally 21-24 state points of 1 day intervals to represent 1
-           * month (variation of 21-24 due to day-to-month variety).
-           * 
-           * Then store that information into the XML file.
-           * 
-           * Suggestion to have each System Model provide a method that takes a timestamp and XML
-           * document object as parameters, so polling can be done easy in a loop by appending state
-           * information to the XML document and transformed to a file on local directory.
-           * 
-           * This block could probably be partitioned to its own method.
-           */
-
           try {
 
           DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -297,65 +280,7 @@ public class SimulatorServer extends Application {
 
           /** Process of appending the initial system device state information occurs here. */
 
-          Element rootElement = doc.createElement("state-history");
-          doc.appendChild(rootElement);
-          
-       // Decrement a timestamp by 5 minutes.
-          long timestampDecrement = 1000 * 60 * 5;
-          // timestampPast is a timestamp value that gets decremented on to reflect
-          // past timestamp values.
-          long timestampPast = timestamp;
-          
-          // Append 12 state points of 5 minute intervals to represent 1 hour of past state data 
-          // for all house system but Lighting.
-          for (int i = 0; i < 12; i++) {
-            // doc = ...Aquaponics System...
-            doc = HVACData.toXmlByTimestamp(doc, timestampPast);
-            // doc = ...Electric System...
-            // doc = ...PV System...              
-            timestampPast -= timestampDecrement;
-          }
-          
-          // Decrement a timestamp by 60 minutes or 1 hour.
-          timestampDecrement = 1000 * 60 * 60;
-          timestampPast = timestamp;
-          
-          // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
-          // all house system but Lighting.
-          for (int i = 0; i < 24; i++) {
-            // doc = ...Aquaponics System...
-            doc = HVACData.toXmlByTimestamp(doc, timestampPast);
-            // doc = ...Electric System...
-            // doc = ...PV System...              
-            timestampPast -= timestampDecrement;
-          }
-          
-          // Decrement a timestamp by 1 day.
-          timestampDecrement = 1000 * 60 * 60 * 24;
-          timestampPast = timestamp;
-          
-          // Append 31 state points of 1 day intervals to represent both at least 1 week of past 
-          // state data and for a total of 1 month of state data for all house systems but 
-          // Lighting.
-          for (int i = 0; i < 31; i++) {
-            // doc = ...Aquaponics System...
-            doc = HVACData.toXmlByTimestamp(doc, timestampPast);
-            // doc = ...Electric System...
-            // doc = ...PV System...              
-            timestampPast -= timestampDecrement;
-          }
-                    
-          Map<String, Integer> baseTime = new HashMap<String, Integer>();
-          baseTime.put("year", Calendar.YEAR);
-          baseTime.put("month", Calendar.MONTH);
-          baseTime.put("date", Calendar.DATE);
-          baseTime.put("hour", Calendar.HOUR_OF_DAY);
-          baseTime.put("minute", Calendar.MINUTE);
-          baseTime.put("second", Calendar.SECOND);
-          baseTime.put("timestamp", (int) timestamp / 1000);
-
-          // historic points are appended while passed to electric data generation
-          doc = ElectricalData.generateHistoricData(baseTime, doc);
+          doc = appendStateDataToXml(doc, timestamp);
           
           /** End of appending the initial system device state information. **/
           
@@ -386,25 +311,6 @@ public class SimulatorServer extends Application {
 
       System.out.println("Creating properties file: " + xmlFile.getAbsolutePath());
 
-      // Create the directory.
-
-      /**
-       * TO-DO: Simulate and retrieve initial data for each system device dependent on the front-end
-       * data requirements. For instance the Energy system requires state values framed within -> 12
-       * state points of 5 minute intervals to represent 1 hour, 24 state points of 1 hour intervals
-       * to represent 1 day, 7 state points of 1 day intervals to represent 1 week, and finally
-       * 21-24 state points of 1 day intervals to represent 1 month (variation of 21-24 due to
-       * day-to-month variety).
-       * 
-       * Then store that information into the XML file.
-       * 
-       * Suggestion to have each System Model provide a method that takes a timestamp and XML
-       * document object as parameters, so polling can be done easy in a loop by appending state
-       * information to the XML document and transformed to a file on local directory.
-       * 
-       * This block could probably be partitioned to its own method.
-       */
-
       try {
 
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
@@ -412,66 +318,8 @@ public class SimulatorServer extends Application {
         Document doc = docBuilder.newDocument();
 
         /** Process of appending the initial system device state information occurs here. */
-
-        Element rootElement = doc.createElement("state-history");
-        doc.appendChild(rootElement);
         
-     // Decrement a timestamp by 5 minutes.
-        long timestampDecrement = 1000 * 60 * 5;
-        // timestampPast is a timestamp value that gets decremented on to reflect
-        // past timestamp values.
-        long timestampPast = timestamp;
-        
-        // Append 12 state points of 5 minute intervals to represent 1 hour of past state data 
-        // for all house system but Lighting.
-        for (int i = 0; i < 12; i++) {
-          // doc = ...Aquaponics System...
-          doc = HVACData.toXmlByTimestamp(doc, timestampPast);
-          // doc = ...Electric System...
-          // doc = ...PV System...              
-          timestampPast -= timestampDecrement;
-        }
-        
-        // Decrement a timestamp by 60 minutes or 1 hour.
-        timestampDecrement = 1000 * 60 * 60;
-        timestampPast = timestamp;
-        
-        // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
-        // all house system but Lighting.
-        for (int i = 0; i < 24; i++) {
-          // doc = ...Aquaponics System...
-          doc = HVACData.toXmlByTimestamp(doc, timestampPast);
-          // doc = ...Electric System...
-          // doc = ...PV System...              
-          timestampPast -= timestampDecrement;
-        }
-        
-        // Decrement a timestamp by 1 day.
-        timestampDecrement = 1000 * 60 * 60 * 24;
-        timestampPast = timestamp;
-        
-        // Append 31 state points of 1 day intervals to represent both at least 1 week of past 
-        // state data and for a total of 1 month of state data for all house systems but 
-        // Lighting.
-        for (int i = 0; i < 31; i++) {
-          // doc = ...Aquaponics System...
-          doc = HVACData.toXmlByTimestamp(doc, timestampPast);
-          // doc = ...Electric System...
-          // doc = ...PV System...              
-          timestampPast -= timestampDecrement;
-        }
-                  
-        Map<String, Integer> baseTime = new HashMap<String, Integer>();
-        baseTime.put("year", Calendar.YEAR);
-        baseTime.put("month", Calendar.MONTH);
-        baseTime.put("date", Calendar.DATE);
-        baseTime.put("hour", Calendar.HOUR_OF_DAY);
-        baseTime.put("minute", Calendar.MINUTE);
-        baseTime.put("second", Calendar.SECOND);
-        baseTime.put("timestamp", (int) timestamp / 1000);
-
-        // historic points are appended while passed to electric data generation
-        doc = ElectricalData.generateHistoricData(baseTime, doc);
+        doc = appendStateDataToXml(doc, timestamp);
         
         /** End of appending the initial system device state information. **/
 
@@ -489,5 +337,80 @@ public class SimulatorServer extends Application {
         tfe.printStackTrace();
       }
     }
+  }
+  
+  /**
+   * Appends system state information to the passed-in Document object.
+   *
+   * @param doc Document object to append house system state data as child nodes.
+   * @param timestamp The timestamp of when the appending process started at. Influences the
+   *                  snap-shots of state data of each house system.
+   * @return Document object with appended house system state data.
+   */
+  public static Document appendStateDataToXml(Document doc, long timestamp) {
+    
+    Document returnDoc = doc;
+    Element rootElement = returnDoc.createElement("state-history");
+    returnDoc.appendChild(rootElement);
+    
+    // Decrement a timestamp by 5 minutes.
+    long timestampDecrement = 1000 * 60 * 5;
+    // timestampPast is a timestamp value that gets decremented on to reflect
+    // past timestamp values.
+    long timestampPast = timestamp;
+    
+    // Append 12 state points of 5 minute intervals to represent 1 hour of past state data 
+    // for all house system but Lighting.
+    for (int i = 0; i < 12; i++) {
+      // returnDoc = ...Aquaponics System...
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      // returnDoc = ...Electric System...
+      // returnDoc = ...PV System...              
+      timestampPast -= timestampDecrement;
+    }
+    
+    // Decrement a timestamp by 60 minutes or 1 hour.
+    timestampDecrement = 1000 * 60 * 60;
+    timestampPast = timestamp;
+    
+    // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
+    // all house system but Lighting.
+    for (int i = 0; i < 24; i++) {
+      // returnDoc = ...Aquaponics System...
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      // returnDoc = ...Electric System...
+      // returnDoc = ...PV System...              
+      timestampPast -= timestampDecrement;
+    }
+    
+    // Decrement a timestamp by 1 day.
+    timestampDecrement = 1000 * 60 * 60 * 24;
+    timestampPast = timestamp;
+    
+    // Append 31 state points of 1 day intervals to represent both at least 1 week of past 
+    // state data and for a total of 1 month of state data for all house systems but 
+    // Lighting.
+    for (int i = 0; i < 31; i++) {
+      // returnDoc = ...Aquaponics System...
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      // returnDoc = ...Electric System...
+      // returnDoc = ...PV System...              
+      timestampPast -= timestampDecrement;
+    }
+              
+    Map<String, Integer> baseTime = new HashMap<String, Integer>();
+    baseTime.put("year", Calendar.YEAR);
+    baseTime.put("month", Calendar.MONTH);
+    baseTime.put("date", Calendar.DATE);
+    baseTime.put("hour", Calendar.HOUR_OF_DAY);
+    baseTime.put("minute", Calendar.MINUTE);
+    baseTime.put("second", Calendar.SECOND);
+    //baseTime.put("timestamp", (int) (new Date()).getTime() / 1000);
+    baseTime.put("timestamp", (int) timestamp / 1000);
+
+    // Historic points are appended while passed to electric data generation.
+    returnDoc = ElectricalData.generateHistoricData(baseTime, returnDoc);
+    
+    return returnDoc;
   }
 }
