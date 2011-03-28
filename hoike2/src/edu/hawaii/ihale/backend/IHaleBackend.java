@@ -47,7 +47,9 @@ public class IHaleBackend implements IHaleCommand {
   public static Dispatcher dispatch;
   //to hold the URI data.
   public static Map<String,String> uris;
-  public static Map<String,ClientResource> commandMap;
+  public static Map<String,String> commandMap;
+  public static Map<String,String> aquaMap;
+  public static Map<String,String> lightMap;
   //delay between polling hsim
   public long interval = 5000;
   //==========================================================
@@ -74,10 +76,18 @@ public class IHaleBackend implements IHaleCommand {
     uris = new HashMap<String,String>();
     //puts URI data into "uris"
     makeURIMap();
-    // parse historical xml file
-    // store historical xml data.
+    //TODO parse historical xml file
+    //TODO store historical xml data.
+    
+    //make a dispatcher
     dispatch = new Dispatcher(uris,interval);
+    //grab all data before it starts
     commandMap = dispatch.getCommandMap();
+    lightMap = dispatch.getLightMap();
+    aquaMap = dispatch.getAquaMap();
+    //pop a new thread to run forever
+    Thread poll = new Thread(dispatch);
+    poll.start();
   }
 
   /**
@@ -165,16 +175,18 @@ public class IHaleBackend implements IHaleCommand {
    * string if the command is color.
    */
   private void handleLightingCommand(IHaleRoom room, IHaleCommandType command, Object arg) {
-
+    String url;
     if (command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_ENABLED)
         || command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_LEVEL)
         || command.equals(ApiDictionary.IHaleCommandType.SET_LIGHTING_COLOR)) {
 
       PutCommand doc = generateCommandXml(command, arg);
 
-      // Send the XML representation to the device.  
+      // Send the XML representation to the device. 
+      url = commandMap.get(room.toString().toLowerCase())+ lightMap.get(command.toString());
+      ClientResource client = new ClientResource(url);
       try {
-        commandMap.get(room.toString().toLowerCase()).put(doc.getRepresentation());
+        client.put(doc.getRepresentation());
       }
       catch (IOException e) {
         throw new RuntimeException("Failed to create Dom Representation.", e);
@@ -194,7 +206,7 @@ public class IHaleBackend implements IHaleCommand {
    * @throws RuntimeException Thrown creation of XML document fails.
    */
   private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException {
-
+    String url;
     PutCommand doc = null; 
 
     if (command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)) {
@@ -219,10 +231,11 @@ public class IHaleBackend implements IHaleCommand {
     else {
       throw new RuntimeException("IHaleCommandType is invalid.");
     }
- 
+    url = commandMap.get("hvac") + "hvac/temp";
+    ClientResource client = new ClientResource(url);
     try {
       // Send the xml representation to the device.
-      commandMap.get("hvac").put(doc.getRepresentation());
+      client.put(doc.getRepresentation());
     }
     catch (IOException e) {
       throw new RuntimeException("Failed to create Dom Representation.", e);
@@ -238,18 +251,20 @@ public class IHaleBackend implements IHaleCommand {
    * otherwise.
    */
   private void handleAquaponicsCommand(IHaleCommandType command, Object arg) {
-
+    String url;
     if (command.equals(ApiDictionary.IHaleCommandType.FEED_FISH)
+        || command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)
         || command.equals(ApiDictionary.IHaleCommandType.HARVEST_FISH)
         || command.equals(ApiDictionary.IHaleCommandType.SET_PH)
         || command.equals(ApiDictionary.IHaleCommandType.SET_WATER_LEVEL)) {
 
       PutCommand doc = generateCommandXml(command, arg);
-
  
- 
+      url = commandMap.get("aquaponics") + aquaMap.get(command.toString());
+      System.out.println(url);
+      ClientResource client = new ClientResource(url);
       try {
-        commandMap.get("aquaponics").put(doc.getRepresentation());
+        client.put(doc.getRepresentation());
       }
       catch (IOException e) {
         throw new RuntimeException("Failed to create Dom Representation.", e);
@@ -329,7 +344,9 @@ public class IHaleBackend implements IHaleCommand {
    * @param args Ignored.
    */
   public static void main(String[] args) {
-    IHaleBackend backend = new IHaleBackend();
-    backend.exampleStateFromHouseSystems();
+    IHaleBackend backend = new IHaleBackend(); 
+    //backend.exampleStateFromHouseSystems();
+    System.out.println(commandMap);
+    backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7);
   }
 }
