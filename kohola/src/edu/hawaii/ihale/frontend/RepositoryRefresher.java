@@ -50,7 +50,7 @@ public class RepositoryRefresher {
         long timestamp = new Date().getTime();
 
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH,
-            getRandomDouble(14, 0));
+            getRandomDouble(8, 6));
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.FEED_FISH,
             getRandomDouble(14, 0));
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_NUTRIENTS,
@@ -60,7 +60,7 @@ public class RepositoryRefresher {
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.HARVEST_FISH,
             getRandomInteger(10, 1));
         backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE,
-            getRandomInteger(100, 1));
+            getRandomInteger(90, 65));
         // will not be able to store directly to the repository like this later
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.CIRCULATION, timestamp,
             getRandomDouble(14, 0));
@@ -69,7 +69,7 @@ public class RepositoryRefresher {
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.ELECTRICAL_CONDUCTIVITY, timestamp,
             getRandomDouble(14, 0));
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.OXYGEN, timestamp,
-            getRandomDouble(14, 0));
+            getRandomDouble(13, 7));
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.TURBIDITY, timestamp,
             getRandomDouble(14, 0));
 
