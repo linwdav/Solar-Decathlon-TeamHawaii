@@ -24,6 +24,9 @@ public class LightingData {
   private static long kitchenLevel = 0;
   /** The bathroom lighting level. */
   private static long bathroomLevel = 0;
+  
+  /** Flag for if the occupants are home or away. **/
+  private static boolean occupantsHome  = false;
 
   /**
    * Modifies the state of the system.
@@ -137,6 +140,7 @@ public class LightingData {
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
     Document doc = docBuilder.newDocument();
+    modifySystemState();
 
     // Create root tag
     Element rootElement = doc.createElement("state-data");
