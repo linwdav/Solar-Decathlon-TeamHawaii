@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.housesimulator.electrical;
 
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
@@ -10,7 +9,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
 
 /**
  * Provides data on the ElectricalData system, as well as an XML representation.
@@ -43,8 +41,7 @@ public class ElectricalData {
    * pre-determined daily averages in hourlyAverage.
    */
   public static void modifySystemState() {
-    int hour = Calendar.HOUR_OF_DAY;
-    changePoints(hour);
+    changePoints(Calendar.HOUR_OF_DAY);
 
     System.out.println("----------------------");
     System.out.println("System: Electrical");
@@ -244,26 +241,45 @@ public class ElectricalData {
    * @return doc The updated document..
    */
   public static Document generateHistoricData(Map<String, Integer> baseTime, Document doc) {
-    int year = baseTime.get("year");
-    int month = baseTime.get("month");
     int date = baseTime.get("date");
     int hour = baseTime.get("hour");
     int minute = baseTime.get("minute");
-    int second = baseTime.get("second");
+    int timestamp = baseTime.get("timestamp");
 
     changePoints(hour);
-    Node parent = doc.getParentNode();
+    Element parent = doc.getDocumentElement();
+    long tempTime = timestamp;
     // 12 state data points at 5 min intervals (to compose 1 hour report)
     for (int i = 0; i < 12; i++) {
       Element temp = doc.createElement("state-data");
-      String timeString =
-          year + "-" + month + "-" + date + " " + hour + ":" + minute + ":" + second;
-      Timestamp tempTime = Timestamp.valueOf(timeString);
       temp.setAttribute("system", "electrical");
       temp.setAttribute("timestamp", "" + tempTime);
+      Element tempElectric = doc.createElement("state-key");
+      tempElectric.setAttribute("key", "electrical");
+      tempElectric.setAttribute("value", "" + energy);
+      temp.appendChild(tempElectric);
+      Element tempPower = doc.createElement("state-key");
+      tempPower.setAttribute("key", "power");
+      tempPower.setAttribute("value", "" + power);
+      temp.appendChild(tempPower);
       parent.appendChild(temp);
-    }
+      // subtract 5 minutes in unix time
+      tempTime = tempTime - 300;
+      minute = minute - 5;
+      // adjust in case hour must change
+      if (minute < 0) {
+        minute = 60 + minute;
+        hour = hour - 1;
+      }
+      // adjust in case day must change
+      if (hour < 0) {
+        hour = 23 + hour;
+        date = date - 1;
+      }
+      changePoints(hour);
+      
 
+    }
     // 24 state data points at 1 hour intervals (to compose 1 day report)
     // 7 state data points at 1 day intervals (to compose 1 week report)
     // 21-24 additional state data points at 1 day intervals (to compose 1 month report)
