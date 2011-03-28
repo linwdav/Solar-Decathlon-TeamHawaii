@@ -2,10 +2,7 @@ package edu.hawaii.ihale.backend;
 
 import java.io.IOException;
 import java.io.StringReader;
-import java.util.HashMap;
-import java.util.Map;
 
-import javax.swing.SwingWorker.StateValue;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -24,8 +21,7 @@ import org.xml.sax.SAXException;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
-import edu.hawaii.ihale.api.repository.TimestampDoublePair;
-import edu.hawaii.ihale.api.repository.impl.Repository;;
+import edu.hawaii.ihale.api.repository.impl.Repository;
 
 /**
  * Handles parsing XML documents and storing to the repository.
@@ -37,8 +33,8 @@ public class XmlHandler {
   private static XPath xpath = factory.newXPath();
   
 /*
- *  This is just for testing purposes.
- *  
+ * Test method
+ * 
     public static void main(String[] args) throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
     String stateSample =
       "<state-data system=\"LIGHTING\" device=\"arduino-5\" timestamp=\"1297446335\">" +
@@ -78,16 +74,60 @@ public class XmlHandler {
         "<state key=\"PH\" value=\"8.5\"/>" +
         "<state key=\"OXYGEN\" value=\"17.0\"/>" +
       "</state-data>" +
+      "<state-data system=\"LIGHTING\" room=\"KITCHEN\" timestamp=\"130016535721\">" +
+      "<state key=\"CIRCULATION\" value=\"28.4\"/>" +
+      "<state key=\"DEAD_FISH\" value=\"12\"/>" +
+      "<state key=\"ELECTRICAL_CONDUCTIVITY\" value=\"14.2\"/>" +
+      "<state key=\"TEMPERATURE\" value=\"30\"/>" +
+      "<state key=\"TURBIDITY\" value=\"22.9\"/>" +
+      "<state key=\"WATER_LEVEL\" value=\"20\"/>" +
+      "<state key=\"PH\" value=\"8.5\"/>" +
+      "<state key=\"OXYGEN\" value=\"17.0\"/>" +
+    "</state-data>" +
     "</state-history>";
+    String eGaugeSample =
+      "<measurements>" +
+        "<timestamp>1284607004</timestamp>" +
+        "<cpower src=\"Grg&amp;Bth (PHEV)\" i=\"11\" u=\"1\">-988.9</cpower>" +
+        "<cpower src=\"Solar\" i=\"5\" u=\"8\">-1.9</cpower>" +
+        "<cpower src=\"Grid\" i=\"3\" u=\"1\">1621.5</cpower>" +
+        "<meter title=\"Grid\">" +
+          "<energy>1443.5</energy>" +
+          "<energyWs>5196771697</energyWs>" +
+          "<power>2226.2</power>" +
+        "</meter>" +
+        "<meter title=\"Solar\">" +
+          "<energy>5918.9</energy>" +
+          "<energyWs>21308130148</energyWs>" +
+          "<power>-3.5</power>" +
+        "</meter>" +
+        "<meter title=\"Grg&amp;Bth (PHEV)\">" +
+        	"<energy>4889.2</energy>" +
+        	"<energyWs>17601054087</energyWs>" +
+        	"<power>-988.9</power>" +
+        	"</meter>" +
+        	"<frequency>59.98</frequency>" +
+        	"<voltage>119.0</voltage>" +
+        	"<voltage>118.3</voltage>" +
+        	"<current>5.495</current>" +
+        	"<current>14.152</current>" +
+        	"<current>0.223</current>" +
+        	"<current>0.136</current>" +
+       "</measurements>";
     DocumentBuilderFactory factory =
       DocumentBuilderFactory.newInstance();
 
     DocumentBuilder builder = factory.newDocumentBuilder();
 
     Document document =
-     builder.parse(new InputSource(new StringReader(historySample)));
+     builder.parse(new InputSource(new StringReader(eGaugeSample)));
 
     xml2StateEntry(document);
+
+//    eGauge2StateEntry(document);
+    
+//    System.out.println(repository.getElectricalEnergy().getValue());
+//    System.out.println(repository.getElectricalPower().getValue());
     
   }
   */
@@ -97,21 +137,15 @@ public class XmlHandler {
    * <url>http://code.google.com/p/solar-decathlon-teamhawaii/wiki/HouseSystemRestAPI</url>
    * as of March 15, 2011, and stores it to the IHaleRepository.
    * 
-   * @author Tony Gaskell
+   * @author Gregory Burgess, Tony Gaskell
    */
-  public Boolean xml2StateEntry(Document doc)
+  public static Boolean xml2StateEntry(Document doc)
     throws IOException, XPathExpressionException {
 
 //    This currently only works with getHistory() which may be all we need it to work with.
-//    Suggest making another xml2StateEntry that takes in a Representation object for poll().
 
 //    In theory this method should be all-or-nothing.
 //    If something fails to load, they should ALL fail.  Source: ICS 321.
-
-//    Repository repository = new Repository();
-//    DomRepresentation dom = new DomRepresentation(rep);
-//    Document doc = dom.getDocument();
-//    Map<String,String> ret = new HashMap <String,String>();  // Don't need this
 
     XPathExpression systemPath = xpath.compile("//state-data");
     Object result = systemPath.evaluate(doc, XPathConstants.NODESET);
@@ -119,10 +153,9 @@ public class XmlHandler {
 
     // An unhealthy amount of temporary variables.
     String system;
-    String device = null;
-    String room;
     Long timestamp;
     NodeList state;
+    String device;
     String key;
     String value;
     IHaleSystem systemEnum;
@@ -133,25 +166,20 @@ public class XmlHandler {
     for (int i = 0; i < stateData.getLength(); i++) {
       system = stateData.item(i).getAttributes().getNamedItem("system").getTextContent();
       systemEnum = Enum.valueOf(IHaleSystem.class, system);
+      device = stateData.item(i).getAttributes().getNamedItem("device").getTextContent();
       try {
-        // Try to parse room attribute from XML.
-        room = stateData.item(i).getAttributes().getNamedItem("room").getTextContent();
-        if (room.equals(IHaleRoom.LIVING.toString())) {
+        if (device.equals("arduino-5")) {
           roomEnum = IHaleRoom.LIVING;
         }
-        else if (room.equals(IHaleRoom.DINING.toString())) {
+        else if (device.equals("arduino-6")) {
           roomEnum = IHaleRoom.DINING;
         }
-        else if (room.equals(IHaleRoom.KITCHEN.toString())) {
+        else if (device.equals("arduino-7")) {
           roomEnum = IHaleRoom.KITCHEN;
         }
-        else if (room.equals(IHaleRoom.BATHROOM.toString())) {
+        else if (device.equals("arduino-8")) {
           roomEnum = IHaleRoom.BATHROOM;
         }
-        else {
-          System.err.println("Unknown room attribute: " + room);
-        }
-        roomEnum = Enum.valueOf(IHaleRoom.class, room);
       }
       catch (Exception e) {
         // No room attribute was found, skip.
@@ -184,6 +212,8 @@ public class XmlHandler {
               " for IHaleState: " + stateEnum.toString());
         }
 //        System.out.println(key + " " + String.valueOf(finalVal));
+
+        repository.store(systemEnum, roomEnum, stateEnum, timestamp, finalVal);
       }
       // Set the room to null since it is not guaranteed to be in the next state-data node.
       roomEnum = null;
@@ -193,4 +223,19 @@ public class XmlHandler {
     // It's useless right now.
     return true;
   }
+  
+  public Boolean xml2StateEntry(Representation rep)
+  throws IOException, XPathExpressionException {
+
+//  This should handle all poll() requests
+
+//  In theory this method should be all-or-nothing.
+//  If something fails to load, they should ALL fail.  Source: ICS 321.
+
+    // Convert Representation to Document so we can operate on it with XPath.
+    DomRepresentation dom = new DomRepresentation(rep);
+    Document doc = dom.getDocument();
+    return xml2StateEntry(doc);
+  }
+
 }
