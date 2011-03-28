@@ -50,7 +50,5 @@ public class SimulationTimer {
         ElectricalData.modifySystemState();
       }
     }, 0, stepValue * 1000);
-
   }
-
 }

@@ -322,7 +322,7 @@ public class HVACData {
       }
     }
 
-    /*
+    
     System.out.println("----------------------");
     System.out.println("System: HVAC");
     System.out.println("Current time is: " + (new Date().getTime()));
@@ -341,7 +341,7 @@ public class HVACData {
       System.out.println("No desired temperature has been set.");
     }
     System.out.println("currentOutsideTemp is: " + currentOutsideTemp + "C");
-    */
+    
   }
   
   /**
@@ -425,5 +425,45 @@ public class HVACData {
 
     // Return the XML in DomRepresentation form.
     return result;
+  }
+  
+  /**
+   * Appends HVAC state data at a specific timestamp snap-shot to the Document object
+   * passed to this method.
+   *
+   * @param doc Document object to append HVAC state data as child nodes.
+   * @param timestamp The specific time snap-shot the HVAC state data interested to be appended.
+   * @return Document object with appended HVAC state data.
+   */
+  public static Document toXmlByTimestamp(Document doc, Long timestamp) {
+
+    // Set the current HVAC system to reflect the state of the passed timestamp.
+    setCurrentTime(timestamp);
+    // Re-initialize temperature values.
+    modifySystemState();
+    
+    String system = IHaleSystem.HVAC.toString();
+    String device = "arduino-3";
+    String timestampString = timestamp.toString();
+    String temperatureString = IHaleState.TEMPERATURE.toString();
+    int celsiusTemp = currentHomeTemp;
+    
+    // Get the root element, in this case would be <state-history> element.
+    Element rootElement = doc.getDocumentElement();
+    
+    // Create state-data tag.
+    Element stateDataElement = doc.createElement("state-data");
+    stateDataElement.setAttribute("system", system);
+    stateDataElement.setAttribute("device", device);
+    stateDataElement.setAttribute("timestamp", timestampString);
+    rootElement.appendChild(stateDataElement);
+
+    // Create state tag.
+    Element temperatureElement = doc.createElement("state");
+    temperatureElement.setAttribute("key", temperatureString);
+    temperatureElement.setAttribute("value", String.valueOf(celsiusTemp));
+    stateDataElement.appendChild(temperatureElement);
+    
+    return doc;
   }
 }
