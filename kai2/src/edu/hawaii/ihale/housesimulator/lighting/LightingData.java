@@ -134,7 +134,7 @@ public class LightingData {
   /**
    * Sets the bathroom lighting colors.
    * 
-   * @param newBathroomColors the colors
+   * @param newBathroomColor the colors
    */
   public static void setBathroomColor(String newBathroomColor) {
     bathroomColor = newBathroomColor;
