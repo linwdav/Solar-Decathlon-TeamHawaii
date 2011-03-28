@@ -17,6 +17,7 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainerWithAssociatedMarkup;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.model.Model;
@@ -24,6 +25,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.frontend.page.Header;
+import edu.hawaii.ihale.frontend.page.messages.Messages;
 import edu.hawaii.ihale.frontend.weatherparser.WeatherForecast;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
@@ -102,9 +104,6 @@ public class Dashboard extends Header {
     DropDownChoice<String> cityChoice = new DropDownChoice<String>("Cities", 
         new PropertyModel<String>(this, "selectedCity"), cities) {
 
-          /**
-           * 
-           */
           private static final long serialVersionUID = 1L;
           
           @Override
@@ -418,10 +417,26 @@ public class Dashboard extends Header {
 
       }
     });
-
     add(time);
+    
 
-  }
+    // Messages
+    // Allows page to update messages on refresh
+    Model<String> messages = new Model<String>() {
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public String getObject() {
+          return Messages.messagesToString(SolarDecathlonApplication.getMessages()
+        		  .getAllMessages());
+        }
+      };
+      
+    // Add a label
+    MultiLineLabel statusMessages = new MultiLineLabel("StatusMessages", messages);
+    add(statusMessages);
+
+  } // End Dashboard constructor
 
   /**
    * Set the daily graph for production vs consumption. The points on the graph are averages from 1
@@ -809,4 +824,5 @@ public class Dashboard extends Header {
   public String getSelectedCity() {
     return selectedCity;
   }
-}
+  
+} // End Dashboard Class

@@ -24,6 +24,8 @@ import edu.hawaii.ihale.frontend.page.hvac.Hvac;
 import edu.hawaii.ihale.frontend.page.hvac.HvacListener;
 import edu.hawaii.ihale.frontend.page.lighting.Lighting;
 import edu.hawaii.ihale.frontend.page.lighting.LightsListener;
+import edu.hawaii.ihale.frontend.page.messages.Messages;
+import edu.hawaii.ihale.frontend.page.messages.MessagesListener;
 
 /**
  * This top-level class is required to specify the Wicket WebApplication.
@@ -42,10 +44,16 @@ public class SolarDecathlonApplication extends WebApplication {
   private static LightsListener lightsListener;
   private static PhotovoltaicListener photovoltaicListener;
   private static ElectricalListener electricalListener;
+  
+  // Supports status messages and updates to messages
+  private static MessagesListener messagesListener;
+  private static Messages messages;
+  
   //private static SystemStateEntryDB db;
  // private static IHaleRepository repository;
   private static Repository repository;
   private static IHaleBackend backend;
+ 
   
   static {
     
@@ -56,7 +64,11 @@ public class SolarDecathlonApplication extends WebApplication {
     lightsListener = new LightsListener();
     photovoltaicListener = new PhotovoltaicListener();
     electricalListener = new ElectricalListener();
-
+    
+    // For message log
+    messagesListener = new MessagesListener();
+    messages = new Messages();
+    
     /**
      * Choose 1, 2, or 3 below to test with different systems.
      */
@@ -87,6 +99,7 @@ public class SolarDecathlonApplication extends WebApplication {
     repository.addSystemStateListener(lightsListener);
     repository.addSystemStateListener(photovoltaicListener);
     repository.addSystemStateListener(electricalListener);
+    repository.addSystemStatusMessageListener(messagesListener);
 
     /***************************************************************
      * Choose 1, 2, or 3 below to test with different systems.
@@ -228,6 +241,22 @@ public class SolarDecathlonApplication extends WebApplication {
    */
   public static IHaleBackend getBackend() {
     return backend;
+  }
+  
+  /**
+   * Returns the Messages Listener.
+   * @return The messages listener.
+   */
+  public static MessagesListener getMessagesListener() {
+    return messagesListener;
+  }
+  
+  /**
+   * Returns the Messages object that stores all system status messages.
+   * @return The messages object.
+   */
+  public static Messages getMessages() {
+    return messages;
   }
 
 }
