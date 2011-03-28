@@ -14,41 +14,69 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 
 /**
  * Provides data on the HVAC system, as well as an XML representation. Temperature values returned
- * in the XML representation is in Celsius.
+ * in the XML representation are in Celsius.
  * 
  * @author Anthony Kinsey, Michael Cera
  * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class HVACData {
-    
+  
+  /** The current date defaulted to a value when this class is first instantiated. **/
+  private static Date currentTime = new Date();
+  
+  /** Map of monthly average high and average low temperatures in Washington D.C. **/
   private static Map<String, TemperatureRecord> washingtonMonthlyTemps = 
     new HashMap<String, TemperatureRecord>();  
- 
+  
+  /** Map of when sunrise occurs in Washington D.C. monthly throughout the year. **/
   private static Map<String, Integer> washingtonMonthlySunrise = new HashMap<String, Integer>();
   
+  /** Flag for when the HVAC system is to set the home to a certain temperature via PUT method. **/
   private static boolean desiredTempHasBeenSet = false;
   
+  /** Time-stamp for when the HVAC system needs to regulate the home to a certain temperature. **/
   private static long whenDesiredTempCommandIssued = 0;
   
+  /** The temperature the HVAC system has been commanded to maintain the home at. **/
   private static int desiredTemp = 0;
-    
+  
+  /** Flag for when occupants are within the home or away. **/ 
   private static boolean occupantsHome = false;
   
+  /** The efficient temperature to maintain the home at when occupants are home with energy
+   *  consumption in mind and the outside temperatures is really hot 
+   *  (i.e., temperatures during summer season). **/
   private static final int summerEfficientTempWhenOccupantHome = fahrenToCelsius(78);
   
+  /** The efficient temperature to maintain the home at when occupants are not home with energy
+   *  consumption in mind and the outside temperatures is really hot 
+   *  (i.e., temperatures during summer season). **/
   private static final int summerEfficientTempWhenOccupantNotHome = fahrenToCelsius(88);
   
+  /** The efficient temperature to maintain the home at when occupants are home with energy
+   *  consumption in mind and the outside temperatures is really cold 
+   *  (i.e., temperatures during winter season). **/
   private static final int winterEfficientTempWhenOccupantHome = fahrenToCelsius(68);
   
+  /** The efficient temperature to maintain the home at when occupants are not home with energy
+   *  consumption in mind and the outside temperatures is really hot 
+   *  (i.e., temperatures during summer season). **/
   private static final int winterEfficientTempWhenOccupantNotHome = fahrenToCelsius(58);
   
-  /** The amount of minutes the HVAC requires to change the home temperature 1 degree C. **/
+  /** The amount of minutes the HVAC system requires to change the home temperature 1 degree C. **/
   private static final int numMinOneDegreeCelChange = 3;
   
+  /** The current home temperature, defaulted to -1000 to imply it hasn't been initialized to a
+   *  valid value. **/
   private static int currentHomeTemp = -1000;
   
+  /** Used to determine a baseline home temperature that will be influenced by insulation values
+   *  and the current outside temperature to help determine rate of temperature in the home when
+   *  the HVAC system has been issued a command to increase or decrease the current temperature. **/
   private static int baseHomeTemp;
   
+  /** Flag to determine if certain values related to determining the current home temperature has
+   *  been initialized. Used for re-initializing values. **/
   private static boolean initialRoomTemperatureSet = false;
   
   static {
@@ -85,30 +113,27 @@ public class HVACData {
   }
   
   /**
-   * Modifies the state of the system. F temperature units are used.
+   * Modifies the state of the system. Resulting temperature units are in Celsius.
+   * Outside and home temperatures are influenced by time of day and the corresponding current 
+   * month's average high and average low temperatures as reflected by temperature data gathered
+   * from 2010 for Washington D.C. 
+   * The coldest part of the day is defined as just before and during sunrise. 
+   * The hottest part of the day is defined to be at 3:00 PM or 15th hour of the day.
+   * HVAC system should maintain temperatures approximately 78 in the summer and 68 in the winter,
+   * adjusted by 10 degrees F higher or lower if occupants aren't home for energy usage efficiency
+   * stated by some HVAC web-sites.
+   * Lacking the home insulation value (R-value), this model assumes a static 3 min/C degree change
+   * for simplicity.
+   * Home temperature values will change over time to meet the desired temperature when commanded.
+   * Otherwise the home will have its home temperature influenced purely by the outside temperature
+   * and hour of the day.
    */
   public static void modifySystemState() {
-    
-    // Temperature influenced by seasonal months primarily summer and winter.
-    // Coldest part of the day is just before and during sunrise.
-    // Hottest part of the day is on average 3:00 PM or 1500 hour.
-    // Need to check if occupants are home.
-    // HVAC system should maintain temperatures approximately 78 in the summer and 68 in the
-    // winter, adjusted by 10 degrees higher or lower if occupants aren't home for energy
-    // efficiency.
-    // Lacking home insulation value (the R-value); will assume static 5 min/degree change
-    // for simplicity.
-    // Lacking specifications of HVAC system, primarily its BTU/hour to determine energy usage
-    // to heat and cool the home.
-    // Need to model temperature delta over time if occupants have set a desired temperature
-    // and current home temperature is different.
-    // If occupants haven't set a desired temperature, HVAC will undergo automation process,
-    // home temperature needs to then have a relationship with current outside temperature.
     
     /** Initialize fields to generate the home temperature. **/
     
     Calendar calendar = Calendar.getInstance();
-    calendar.set(Calendar.YEAR, 2011);
+    calendar.setTime(currentTime);
     int monthNum = calendar.get(Calendar.MONTH);
     String month = "";
     
@@ -125,7 +150,6 @@ public class HVACData {
       case 9: month = "OCTOBER"; break;
       case 10: month = "NOVEMBER"; break;
       case 11: month = "DECEMBER"; break;
-      // Should never reach this point, valid month from Calendar object is 0 to 11.
       default: month = ""; return;
     }
     
@@ -186,14 +210,12 @@ public class HVACData {
       // The home maintains a cooler temperature than the outside temperature when its hot.
       // This process should occur only once per PUT command issued to change the temperature.
       if (currentOutsideTemp >= 50 && !initialRoomTemperatureSet && currentHomeTemp == -1000) {
-        //currentHomeTemp = currentOutsideTemp - insulationValue;
         baseHomeTemp = currentOutsideTemp - insulationValue;
         initialRoomTemperatureSet = true;
       }
       // The home maintains a warmer temperature than the outside temperature when its cold.
       // This process should occur only once per PUT command issued to change the temperature.
       else if (currentOutsideTemp < 50 && !initialRoomTemperatureSet && currentHomeTemp == -1000) {
-        //currentHomeTemp = currentOutsideTemp + insulationValue;
         baseHomeTemp = currentOutsideTemp + insulationValue;
         initialRoomTemperatureSet = true;
       }
@@ -221,13 +243,13 @@ public class HVACData {
           // obtain how much the temperature has changed in the home.
           currentHomeTemp = baseHomeTemp + (int) (
               ((new Date().getTime()) - whenDesiredTempCommandIssued) 
-                    / (1000 * 30));//60 * numMinOneDegreeCelChange));
+                    / (1000 * 60 * numMinOneDegreeCelChange));
         }
         // otherwise the trend is to cool down the room.
         else if (desiredTemp < currentHomeTemp) {
           currentHomeTemp = baseHomeTemp - (int) (
               ((new Date().getTime()) - whenDesiredTempCommandIssued) 
-              / (1000 * 30));//60 * numMinOneDegreeCelChange));       
+              / (1000 * 60 * numMinOneDegreeCelChange));       
         }
       }
     }
@@ -300,6 +322,7 @@ public class HVACData {
       }
     }
 
+    /*
     System.out.println("----------------------");
     System.out.println("System: HVAC");
     System.out.println("Current time is: " + (new Date().getTime()));
@@ -318,6 +341,18 @@ public class HVACData {
       System.out.println("No desired temperature has been set.");
     }
     System.out.println("currentOutsideTemp is: " + currentOutsideTemp + "C");
+    */
+  }
+  
+  /**
+   * Sets the current time to a new time. Used for reproducing historical or future temperature
+   * records.
+   *
+   * @param time The new date in milliseconds that have passed since 
+   *             January 1, 1970 00:00:00.000 GMT. 
+   */
+  public static void setCurrentTime(long time) {
+    currentTime = new Date(time);
   }
   
   /**
