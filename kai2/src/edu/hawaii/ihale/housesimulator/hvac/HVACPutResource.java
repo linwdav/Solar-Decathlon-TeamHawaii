@@ -46,7 +46,8 @@ public class HVACPutResource extends ServerResource {
 
     if ("temperature".equals(putCommand) && 
         IHaleCommandType.SET_TEMPERATURE.toString().equals(command)) {
-      HVACData.setDesiredTemperature(Integer.parseInt(arg));
+      HVACData.setDesiredTemp(Integer.parseInt(arg));
+      HVACData.modifySystemState();
     }
     else {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
