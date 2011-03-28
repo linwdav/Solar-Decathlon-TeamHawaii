@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.housesimulator.electrical;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
@@ -16,51 +17,63 @@ import org.w3c.dom.Element;
  */
 public class ElectricalData {
 
-  /** Random generator. */
-  private static final Random randomGenerator = new Random();
-  
-  /** Each index represents an estimated hourly average of electricity consumption. 
-  Values based around those found in the following link and scalled from MW to W- 
-  http://www.ferc.gov/market-oversight/mkt-electric/california/CAISO-rto-dly-rpt.pdf.*/
-  private static long[] hourlyAverage = {
-    164, 162, 155, 150, 158, 164, 189, 212, 
-    199, 191, 197, 198, 191, 190, 189, 188, 
-    185, 186, 191, 223, 208, 207, 198, 188};
+  // by the EIA -
+  // In 2005, the average monthly residential electricity consumption was 938 kilowatt hours (kWh),
+  // according to the Energy Information Administration.
+  // ~34 kWh a day or 34000 Wh
+  /**
+   * Each index represents an estimated hourly average of electricity consumption. Values based
+   * around those found in the following link and adjusted from MW to W-
+   * http://www.ferc.gov/market-oversight/mkt-electric/california/CAISO-rto-dly-rpt.pdf.
+   */
+  private static long[] hourlyAverage = { // in watts per hour
+      1640, 1620, 1550, 1500, 1580, 1640, 1890, 2120, 1990, 1910, 1970, 1980, 1910, 1900, 1890,
+          1880, 1850, 1860, 1910, 2230, 2080, 2070, 1980, 1880 };
 
   /** The current energy. */
-  private static long energy = hourlyAverage[0];//randomGenerator.nextInt(1001) + 1000;
+  private static long energy = hourlyAverage[0];// randomGenerator.nextInt(1001) + 1000;
   /** The current power. */
-  private static long power = hourlyAverage[0];//randomGenerator.nextInt(1001) + 1000;
+  private static long power = hourlyAverage[0];// randomGenerator.nextInt(1001) + 1000;
 
-  /** The max value energy will increment by. */
-  private static final long energyIncrement = 50;
-  /** The max value power will increment by. */
-  private static final long powerIncrement = 50;
-  
   /**
-   * Modifies the state of the system.
+   * Modifies the state of the system. Energy values fluctuate within 100 watts around
+   * pre-determined daily averages in hourlyAverage.
    */
   public static void modifySystemState() {
+    Random random = new Random();
+    int hour = Calendar.HOUR_OF_DAY;
+    int randP = random.nextInt(10);
+    int randE = random.nextInt(10);
 
-    if (energy > 1000 && energy < 2000) {
-      energy += (randomGenerator.nextInt((int) energyIncrement * 2) - energyIncrement);
+    long changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 2;
+    if (changeValue < -50) {
+      changeValue = -50;
     }
-    else if (energy < 1000) {
-      energy += randomGenerator.nextInt((int) energyIncrement + 1);
+    if (changeValue > 50) {
+      changeValue = 50;
+    }
+    if (randP < 5) {
+      energy = hourlyAverage[hour] - changeValue;
     }
     else {
-      energy -= randomGenerator.nextInt((int) energyIncrement + 1);
+      energy = hourlyAverage[hour] + changeValue;
     }
 
-    // Increments power randomly
-    if (power > 1000 && power < 2000) {
-      power += randomGenerator.nextInt((int) powerIncrement * 2) - powerIncrement;
+    changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 4;
+    if (changeValue < -25) {
+      changeValue = -25;
     }
-    else if (power < 1000) {
-      power = power + randomGenerator.nextInt((int) powerIncrement + 1);
+    if (changeValue > 25) {
+      changeValue = 25;
+    }
+    if (hour <= 6 || hour >= 18) {
+      power = changeValue;
+    }
+    else if (randE < 5) {
+      power = changeValue;
     }
     else {
-      power = power - randomGenerator.nextInt((int) powerIncrement + 1);
+      power = -1 * changeValue;
     }
 
     System.out.println("----------------------");
@@ -70,7 +83,8 @@ public class ElectricalData {
   }
 
   /**
-   * Returns the data as an XML Document instance.
+   * Returns the data as an XML Document instance. JavaApiDataDictionary only asks for power and
+   * energy, so other e-gauge tags are currently commented out.
    * 
    * @return The data as XML.
    * @throws Exception If problems occur creating the XML.
@@ -79,69 +93,68 @@ public class ElectricalData {
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
-    long calcCpower;
-    Document doc = docBuilder.newDocument();
-    String cpower = "cpower";
-    String srcTag = "src";
-    String meterTag = "meter";
-    String energyTag = "energy";
-    String energyWsTag = "energyWs";
-    String powerTag = "power";
-    String solarTag = "Solar";
     String gridTag = "Grid";
     String titleAttr = "title";
-    String typeAttr = "type";
-    String voltageTag = "voltage";
-    String currentTag = "current";
-    
+    Document doc = docBuilder.newDocument();
+    String meterTag = "meter";
+    String energyTag = "energy";
+    String powerTag = "power";
+    // long calcCpower;
+    // String cpower = "cpower";
+    // String srcTag = "src";
+    // String energyWsTag = "energyWs";
+    // String solarTag = "Solar";
+    // String typeAttr = "type";
+    // String voltageTag = "voltage";
+    // String currentTag = "current";
+
     doc.setXmlVersion("1.0");
 
     // Create root tag.
     Element rootElement = doc.createElement("measurements");
     doc.appendChild(rootElement);
 
-    
     // Create timestamp tag.
     Element timestampElement = doc.createElement("timestamp");
     timestampElement.setTextContent(String.valueOf(new Date().getTime()));
     rootElement.appendChild(timestampElement);
 
-    // Create first cpower tag.
-    Element cpowerElementA = doc.createElement(cpower);
-    cpowerElementA.setAttribute(srcTag, gridTag);
-    cpowerElementA.setAttribute("i", "2");
-    cpowerElementA.setAttribute("u", "8");
-    calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    cpowerElementA.setTextContent(String.valueOf(calcCpower));
-    rootElement.appendChild(cpowerElementA);
-    
-    // Second cpower tag.
-    Element cpowerElementB = doc.createElement(cpower);
-    cpowerElementB.setAttribute(srcTag, solarTag);
-    cpowerElementB.setAttribute("i", "4");
-    cpowerElementB.setAttribute("u", "8");
-    calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    cpowerElementB.setTextContent(String.valueOf(calcCpower));
-    rootElement.appendChild(cpowerElementB);     
+    // // Create first cpower tag.
+    // Element cpowerElementA = doc.createElement(cpower);
+    // cpowerElementA.setAttribute(srcTag, gridTag);
+    // cpowerElementA.setAttribute("i", "2");
+    // cpowerElementA.setAttribute("u", "8");
+    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
+    // cpowerElementA.setTextContent(String.valueOf(calcCpower));
+    // rootElement.appendChild(cpowerElementA);
+    //
+    // // Second cpower tag.
+    // Element cpowerElementB = doc.createElement(cpower);
+    // cpowerElementB.setAttribute(srcTag, solarTag);
+    // cpowerElementB.setAttribute("i", "4");
+    // cpowerElementB.setAttribute("u", "8");
+    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
+    // cpowerElementB.setTextContent(String.valueOf(calcCpower));
+    // rootElement.appendChild(cpowerElementB);
+    //
+    // // Third cpower tag.
+    // Element cpowerElementC = doc.createElement(cpower);
+    // cpowerElementC.setAttribute(srcTag, gridTag);
+    // cpowerElementC.setAttribute("i", "3");
+    // cpowerElementC.setAttribute("u", "8");
+    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
+    // cpowerElementC.setTextContent(String.valueOf(calcCpower));
+    // rootElement.appendChild(cpowerElementC);
+    //
+    // // Fourth cpower tag.
+    // Element cpowerElementD = doc.createElement(cpower);
+    // cpowerElementD.setAttribute(srcTag, solarTag);
+    // cpowerElementD.setAttribute("i", "4");
+    // cpowerElementD.setAttribute("u", "8");
+    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
+    // cpowerElementD.setTextContent(String.valueOf(calcCpower));
+    // rootElement.appendChild(cpowerElementD);
 
-    // Third cpower tag.
-    Element cpowerElementC = doc.createElement(cpower);
-    cpowerElementC.setAttribute(srcTag, gridTag);
-    cpowerElementC.setAttribute("i", "3");
-    cpowerElementC.setAttribute("u", "8");
-    calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    cpowerElementC.setTextContent(String.valueOf(calcCpower));
-    rootElement.appendChild(cpowerElementC);
-    
-    // Fourth cpower tag.
-    Element cpowerElementD = doc.createElement(cpower);
-    cpowerElementD.setAttribute(srcTag, solarTag);
-    cpowerElementD.setAttribute("i", "4");
-    cpowerElementD.setAttribute("u", "8");
-    calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    cpowerElementD.setTextContent(String.valueOf(calcCpower));
-    rootElement.appendChild(cpowerElementD);  
-    
     // First meter tag for Grid.
     Element meterElementA = doc.createElement(meterTag);
     meterElementA.setAttribute(titleAttr, gridTag);
@@ -150,109 +163,116 @@ public class ElectricalData {
     Element energyElementA = doc.createElement(energyTag);
     energyElementA.setTextContent(String.valueOf(energy));
     meterElementA.appendChild(energyElementA);
-    // Create energyWs tag.
-    Element energyWsElementA = doc.createElement(energyWsTag);
-    long conversionRatioA = (long) 2.777777;
-    energyWsElementA.setTextContent(String.valueOf(energy / conversionRatioA));
-    meterElementA.appendChild(energyWsElementA);
+    // // Create energyWs tag.
+    // Element energyWsElementA = doc.createElement(energyWsTag);
+    // long conversionRatioA = (long) 2.777777;
+    // energyWsElementA.setTextContent(String.valueOf(energy / conversionRatioA));
+    // meterElementA.appendChild(energyWsElementA);
     // Create power tag.
     Element powerElementA = doc.createElement(powerTag);
     powerElementA.setTextContent(String.valueOf(power));
     meterElementA.appendChild(powerElementA);
 
-    
-    // Second meter tag for Solar.
-    Element meterElementB = doc.createElement(meterTag);
-    meterElementB.setAttribute(titleAttr, solarTag);
-    rootElement.appendChild(meterElementB);
-    // Create energy tag.
-    Element energyElementB = doc.createElement(energyTag);
-    energyElementB.setTextContent(String.valueOf(energy));
-    meterElementB.appendChild(energyElementB);
-    // Create energyWs tag.
-    Element energyWsElement = doc.createElement(energyWsTag);
-    long conversionRatioB = (long) 2.777777;
-    energyWsElement.setTextContent(String.valueOf(energy / conversionRatioB));
-    meterElementB.appendChild(energyWsElement);
-    // Create power tag.
-    Element powerElementB = doc.createElement(powerTag);
-    powerElementB.setTextContent(String.valueOf(power));
-    meterElementB.appendChild(powerElementB);
-    
-    
-    // Third meter tag for Grid.
-    Element meterElementC = doc.createElement(meterTag);
-    meterElementC.setAttribute(typeAttr, "total");
-    meterElementC.setAttribute("title", "Total Usage");
-    rootElement.appendChild(meterElementC);
-    // Create energy tag.
-    Element energyElementC = doc.createElement(energyTag);
-    energyElementC.setTextContent(String.valueOf(energy));
-    meterElementC.appendChild(energyElementC);
-    // Create energyWs tag.
-    Element energyWsElementC = doc.createElement(energyWsTag);
-    long conversionRatioC = (long) 2.777777;
-    energyWsElementC.setTextContent(String.valueOf(energy / conversionRatioC));
-    meterElementC.appendChild(energyWsElementC);
-    // Create power tag.
-    Element powerElementC = doc.createElement(powerTag);
-    powerElementC.setTextContent(String.valueOf(power));
-    meterElementC.appendChild(powerElementC);
-    
-    
-    // Fourth meter tag for Solar.
-    Element meterElementD = doc.createElement(meterTag);
-    meterElementD.setAttribute(typeAttr, "total");
-    meterElementD.setAttribute("title", "Total Generation");
-    rootElement.appendChild(meterElementD);
-    // Create energy tag.
-    Element energyElementD = doc.createElement(energyTag);
-    energyElementD.setTextContent(String.valueOf(energy));
-    meterElementD.appendChild(energyElementD);
-    // Create energyWs tag.
-    Element energyWsElementD = doc.createElement(energyWsTag);
-    long conversionRatioD = (long) 2.777777;
-    energyWsElementD.setTextContent(String.valueOf(energy / conversionRatioD));
-    meterElementD.appendChild(energyWsElementD);
-    // Create power tag.
-    Element powerElementD = doc.createElement(powerTag);
-    powerElementD.setTextContent(String.valueOf(power));
-    meterElementD.appendChild(powerElementD);
-    
-    
-    // Frequency tag.
-    Element frequencyElement = doc.createElement("frequency");
-    frequencyElement.setTextContent("value here");
-    rootElement.appendChild(frequencyElement);
-    // First voltage tag.
-    Element voltageElementA = doc.createElement(voltageTag);
-    timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    rootElement.appendChild(voltageElementA);
-    // Second voltage tag.
-    Element voltageElementB = doc.createElement(voltageTag);
-    timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    rootElement.appendChild(voltageElementB);
-    // First current tag.
-    Element currentElementA = doc.createElement(currentTag);
-    timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    rootElement.appendChild(currentElementA);
-    // Second current tag.
-    Element currentElementB = doc.createElement(currentTag);
-    timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    rootElement.appendChild(currentElementB);
-    // Third current tag.
-    Element currentElementC = doc.createElement(currentTag);
-    timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    rootElement.appendChild(currentElementC);
-    
-    
+    // // Second meter tag for Solar.
+    // Element meterElementB = doc.createElement(meterTag);
+    // meterElementB.setAttribute(titleAttr, solarTag);
+    // rootElement.appendChild(meterElementB);
+    // // Create energy tag.
+    // Element energyElementB = doc.createElement(energyTag);
+    // energyElementB.setTextContent(String.valueOf(energy));
+    // meterElementB.appendChild(energyElementB);
+    // // Create energyWs tag.
+    // Element energyWsElement = doc.createElement(energyWsTag);
+    // long conversionRatioB = (long) 2.777777;
+    // energyWsElement.setTextContent(String.valueOf(energy / conversionRatioB));
+    // meterElementB.appendChild(energyWsElement);
+    // // Create power tag.
+    // Element powerElementB = doc.createElement(powerTag);
+    // powerElementB.setTextContent(String.valueOf(power));
+    // meterElementB.appendChild(powerElementB);
+    //
+    //
+    // // Third meter tag for Grid.
+    // Element meterElementC = doc.createElement(meterTag);
+    // meterElementC.setAttribute(typeAttr, "total");
+    // meterElementC.setAttribute("title", "Total Usage");
+    // rootElement.appendChild(meterElementC);
+    // // Create energy tag.
+    // Element energyElementC = doc.createElement(energyTag);
+    // energyElementC.setTextContent(String.valueOf(energy));
+    // meterElementC.appendChild(energyElementC);
+    // // Create energyWs tag.
+    // Element energyWsElementC = doc.createElement(energyWsTag);
+    // long conversionRatioC = (long) 2.777777;
+    // energyWsElementC.setTextContent(String.valueOf(energy / conversionRatioC));
+    // meterElementC.appendChild(energyWsElementC);
+    // // Create power tag.
+    // Element powerElementC = doc.createElement(powerTag);
+    // powerElementC.setTextContent(String.valueOf(power));
+    // meterElementC.appendChild(powerElementC);
+    //
+    //
+    // // Fourth meter tag for Solar.
+    // Element meterElementD = doc.createElement(meterTag);
+    // meterElementD.setAttribute(typeAttr, "total");
+    // meterElementD.setAttribute("title", "Total Generation");
+    // rootElement.appendChild(meterElementD);
+    // // Create energy tag.
+    // Element energyElementD = doc.createElement(energyTag);
+    // energyElementD.setTextContent(String.valueOf(energy));
+    // meterElementD.appendChild(energyElementD);
+    // // Create energyWs tag.
+    // Element energyWsElementD = doc.createElement(energyWsTag);
+    // long conversionRatioD = (long) 2.777777;
+    // energyWsElementD.setTextContent(String.valueOf(energy / conversionRatioD));
+    // meterElementD.appendChild(energyWsElementD);
+    // // Create power tag.
+    // Element powerElementD = doc.createElement(powerTag);
+    // powerElementD.setTextContent(String.valueOf(power));
+    // meterElementD.appendChild(powerElementD);
+    //
+    //
+    // // Frequency tag.
+    // Element frequencyElement = doc.createElement("frequency");
+    // frequencyElement.setTextContent("value here");
+    // rootElement.appendChild(frequencyElement);
+    // // First voltage tag.
+    // Element voltageElementA = doc.createElement(voltageTag);
+    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
+    // rootElement.appendChild(voltageElementA);
+    // // Second voltage tag.
+    // Element voltageElementB = doc.createElement(voltageTag);
+    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
+    // rootElement.appendChild(voltageElementB);
+    // // First current tag.
+    // Element currentElementA = doc.createElement(currentTag);
+    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
+    // rootElement.appendChild(currentElementA);
+    // // Second current tag.
+    // Element currentElementB = doc.createElement(currentTag);
+    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
+    // rootElement.appendChild(currentElementB);
+    // // Third current tag.
+    // Element currentElementC = doc.createElement(currentTag);
+    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
+    // rootElement.appendChild(currentElementC);
+
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
     result.setDocument(doc);
 
     // Return the XML in DomRepresentation form.
-      return result;
+    return result;
 
   }
 
+  /**
+   * Returns the average energy consumption in watts per hour. Used primarily for testing.
+   * 
+   * @param hour The hour to get the hourly consumption for.
+   * @return The average for selected hour.
+   */
+  public static long getHourlyAverage(int hour) {
+    return hourlyAverage[hour];
+  }
 }

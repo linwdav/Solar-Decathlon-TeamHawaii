@@ -73,23 +73,31 @@ public class TestElectrical {
     
     
     // Grabs tags from XML.
+//    NodeList timestamp = domDoc.getElementsByTagName("timestamp");
     NodeList meterList = domDoc.getElementsByTagName("meter");
     NodeList energyList = domDoc.getElementsByTagName("energy");
     NodeList powerList = domDoc.getElementsByTagName("power");
-
     // Grabs attributes from tags.
     String title = ((Element) meterList.item(0)).getAttribute("title");
 
     // Grabs value from tags.
     String energy = ((Element) energyList.item(0)).getTextContent();
     String power = ((Element) powerList.item(0)).getTextContent();
-
+//    long time = 0;
+//    try {
+//      time = Long.parseLong(((Element) timestamp.item(0)).getTextContent());
+//    } catch (NumberFormatException nfe) {
+//      time = 0;
+//    }
+    
     // Check that we are returning the correct title.
     assertEquals("Checking that title is \"Grid\"", title, "Grid");
 
     // Check that the returned value is within a delta of our value.
-    assertEquals(1500.0, Double.parseDouble(energy), 1000);
-    assertEquals(1500.0, Double.parseDouble(power), 1000);
+//    int hour = Calendar.HOUR;
+//    long average = ElectricalData.getHourlyAverage(hour);
+    assertEquals(1900.0, Double.parseDouble(energy), 450);
+    assertEquals(0, Double.parseDouble(power), 25);
 
   }
 }
