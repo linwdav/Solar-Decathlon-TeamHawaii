@@ -25,6 +25,7 @@ import org.w3c.dom.Element;
 import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsSystem;
 import edu.hawaii.ihale.housesimulator.electrical.ElectricalData;
 import edu.hawaii.ihale.housesimulator.electrical.ElectricalSystem;
+import edu.hawaii.ihale.housesimulator.hvac.HVACData;
 import edu.hawaii.ihale.housesimulator.hvac.HVACSystem;
 import edu.hawaii.ihale.housesimulator.lighting.bathroom.LightingBathroomSystem;
 import edu.hawaii.ihale.housesimulator.lighting.dining.LightingDiningSystem;
@@ -248,11 +249,10 @@ public class SimulatorServer extends Application {
    * transforming the Document object.
    */
   private static void createInitialDataXml(String dir, String filename) throws Exception {
-    // long timestamp = new Date().getTime();
+     long timestamp = new Date().getTime();
     // Get the users home directory and "dir" sub-directory
     File theDir = new File(System.getProperty("user.home"), dir);
     File xmlFile = new File(theDir, filename);
-//    FileOutputStream fis;
 
     // The XML file exists.
     if (xmlFile.exists()) {
@@ -289,18 +289,62 @@ public class SimulatorServer extends Application {
            * This block could probably be partitioned to its own method.
            */
 
-          // try {
+          try {
 
           DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
           DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
           Document doc = docBuilder.newDocument();
 
-          /**
-           * Process of appending the initial system device state information occurs here.
-           */
+          /** Process of appending the initial system device state information occurs here. */
 
           Element rootElement = doc.createElement("state-history");
           doc.appendChild(rootElement);
+          
+       // Decrement a timestamp by 5 minutes.
+          long timestampDecrement = 1000 * 60 * 5;
+          // timestampPast is a timestamp value that gets decremented on to reflect
+          // past timestamp values.
+          long timestampPast = timestamp;
+          
+          // Append 12 state points of 5 minute intervals to represent 1 hour of past state data 
+          // for all house system but Lighting.
+          for (int i = 0; i < 12; i++) {
+            // doc = ...Aquaponics System...
+            doc = HVACData.toXmlByTimestamp(doc, timestampPast);
+            // doc = ...Electric System...
+            // doc = ...PV System...              
+            timestampPast -= timestampDecrement;
+          }
+          
+          // Decrement a timestamp by 60 minutes or 1 hour.
+          timestampDecrement = 1000 * 60 * 60;
+          timestampPast = timestamp;
+          
+          // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
+          // all house system but Lighting.
+          for (int i = 0; i < 24; i++) {
+            // doc = ...Aquaponics System...
+            doc = HVACData.toXmlByTimestamp(doc, timestampPast);
+            // doc = ...Electric System...
+            // doc = ...PV System...              
+            timestampPast -= timestampDecrement;
+          }
+          
+          // Decrement a timestamp by 1 day.
+          timestampDecrement = 1000 * 60 * 60 * 24;
+          timestampPast = timestamp;
+          
+          // Append 31 state points of 1 day intervals to represent both at least 1 week of past 
+          // state data and for a total of 1 month of state data for all house systems but 
+          // Lighting.
+          for (int i = 0; i < 31; i++) {
+            // doc = ...Aquaponics System...
+            doc = HVACData.toXmlByTimestamp(doc, timestampPast);
+            // doc = ...Electric System...
+            // doc = ...PV System...              
+            timestampPast -= timestampDecrement;
+          }
+                    
           Map<String, Integer> baseTime = new HashMap<String, Integer>();
           baseTime.put("year", Calendar.YEAR);
           baseTime.put("month", Calendar.MONTH);
@@ -308,14 +352,13 @@ public class SimulatorServer extends Application {
           baseTime.put("hour", Calendar.HOUR_OF_DAY);
           baseTime.put("minute", Calendar.MINUTE);
           baseTime.put("second", Calendar.SECOND);
-          baseTime.put("timestamp", (int) (new Date()).getTime() / 1000);
-          // Calendar cal = Calendar.getInstance();
-          // // cal.get
-          // long d = (new Date()).getTime();
-          // Date d2 = new Date(d);
-          // cal.getTime(d2);
+          baseTime.put("timestamp", (int) timestamp / 1000);
+
           // historic points are appended while passed to electric data generation
           doc = ElectricalData.generateHistoricData(baseTime, doc);
+          
+          /** End of appending the initial system device state information. **/
+          
           // Transform the document object to a XML file stored within the user-defined directory.
           TransformerFactory transformerFactory = TransformerFactory.newInstance();
           javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
@@ -323,13 +366,13 @@ public class SimulatorServer extends Application {
           StreamResult result = new StreamResult(xmlFile);
           transformer.transform(source, result);
 
-          // }
-          // catch (ParserConfigurationException pce) {
-          // pce.printStackTrace();
-          // }
-          // catch (TransformerException tfe) {
-          // tfe.printStackTrace();
-          // }
+           }
+           catch (ParserConfigurationException pce) {
+           pce.printStackTrace();
+           }
+           catch (TransformerException tfe) {
+           tfe.printStackTrace();
+           }
         }
         // Leave existing file alone.
         else if ("n".equalsIgnoreCase(input)) {
@@ -368,9 +411,69 @@ public class SimulatorServer extends Application {
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
         Document doc = docBuilder.newDocument();
 
-        /**
-         * Process of appending the initial system device state information occurs here.
-         */
+        /** Process of appending the initial system device state information occurs here. */
+
+        Element rootElement = doc.createElement("state-history");
+        doc.appendChild(rootElement);
+        
+     // Decrement a timestamp by 5 minutes.
+        long timestampDecrement = 1000 * 60 * 5;
+        // timestampPast is a timestamp value that gets decremented on to reflect
+        // past timestamp values.
+        long timestampPast = timestamp;
+        
+        // Append 12 state points of 5 minute intervals to represent 1 hour of past state data 
+        // for all house system but Lighting.
+        for (int i = 0; i < 12; i++) {
+          // doc = ...Aquaponics System...
+          doc = HVACData.toXmlByTimestamp(doc, timestampPast);
+          // doc = ...Electric System...
+          // doc = ...PV System...              
+          timestampPast -= timestampDecrement;
+        }
+        
+        // Decrement a timestamp by 60 minutes or 1 hour.
+        timestampDecrement = 1000 * 60 * 60;
+        timestampPast = timestamp;
+        
+        // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
+        // all house system but Lighting.
+        for (int i = 0; i < 24; i++) {
+          // doc = ...Aquaponics System...
+          doc = HVACData.toXmlByTimestamp(doc, timestampPast);
+          // doc = ...Electric System...
+          // doc = ...PV System...              
+          timestampPast -= timestampDecrement;
+        }
+        
+        // Decrement a timestamp by 1 day.
+        timestampDecrement = 1000 * 60 * 60 * 24;
+        timestampPast = timestamp;
+        
+        // Append 31 state points of 1 day intervals to represent both at least 1 week of past 
+        // state data and for a total of 1 month of state data for all house systems but 
+        // Lighting.
+        for (int i = 0; i < 31; i++) {
+          // doc = ...Aquaponics System...
+          doc = HVACData.toXmlByTimestamp(doc, timestampPast);
+          // doc = ...Electric System...
+          // doc = ...PV System...              
+          timestampPast -= timestampDecrement;
+        }
+                  
+        Map<String, Integer> baseTime = new HashMap<String, Integer>();
+        baseTime.put("year", Calendar.YEAR);
+        baseTime.put("month", Calendar.MONTH);
+        baseTime.put("date", Calendar.DATE);
+        baseTime.put("hour", Calendar.HOUR_OF_DAY);
+        baseTime.put("minute", Calendar.MINUTE);
+        baseTime.put("second", Calendar.SECOND);
+        baseTime.put("timestamp", (int) timestamp / 1000);
+
+        // historic points are appended while passed to electric data generation
+        doc = ElectricalData.generateHistoricData(baseTime, doc);
+        
+        /** End of appending the initial system device state information. **/
 
         // Transform the document object to a XML file stored within the user-defined directory.
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
