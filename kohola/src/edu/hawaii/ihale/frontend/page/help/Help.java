@@ -393,29 +393,8 @@ public class Help extends Header {
               + P_OPEN_TAG
               + "This section provides ways to interact with the aquaponics system. The users "
               + "can set the desired values for different parameters. There is also an option to"
-              + "set a fish-feeding schedule so the users will never have to worry about forgeting"
-              + " to feed the fish again!"
-              + P_CLOSE_TAG
-              + LINEBREAK
-              + P_OPEN_TAG2
-              // the graphs
-              + "Water Quality Graphs"
-              + P_CLOSE_TAG
-              + P_OPEN_TAG
-              + "This section shows the current overall status of the aquaponics system as well as"
-              + " the historical data over a period of time (Week, Month, or Year)."
-              + P_CLOSE_TAG
-              + P_OPEN_TAG
-              + "<strong>Week</strong> - This graph shows the overall status of the aquaponics"
-              + " system over the last 7 days."
-              + P_CLOSE_TAG
-              + P_OPEN_TAG
-              + "<strong>Month</strong> - This graph shows the overall status of the aquaponics"
-              + " system over the last 30 days."
-              + P_CLOSE_TAG
-              + P_OPEN_TAG
-              + "<strong>Year</strong> - This graph shows the overall status of the aquaponics"
-              + " system over the last 12 months."
+              + "set a fish-feeding schedule so the users will never have to worry about"
+              + " forgetting to feed the fish again!"
               + P_CLOSE_TAG
               + LINEBREAK
               // aquaponics status messages
@@ -447,7 +426,7 @@ public class Help extends Header {
               + " pH greater than 7 are said to be basic or alkaline."
               + P_CLOSE_TAG
               + P_OPEN_TAG
-              + "<strong>Optimal pH range</strong>: 6.5 to 7.5"
+              + "<strong>Optimal pH range</strong>: 6.8 to 8.0"
               + P_CLOSE_TAG
               + LINEBREAK
               // temperature
@@ -462,7 +441,7 @@ public class Help extends Header {
               + "Unit used: Fahrenheit (F&deg;)"
               + P_CLOSE_TAG
               + P_OPEN_TAG
-              + "<strong>Optimal temperature range</strong>: 70F&deg; to 85F&deg;"
+              + "<strong>Optimal temperature range</strong>: 82F&deg; to 86F&deg;"
               + P_CLOSE_TAG
               + LINEBREAK
               // oxygen
@@ -530,7 +509,7 @@ public class Help extends Header {
               + LINEBREAK
               // nutrient
               + P_OPEN_TAG2 + "<u>Nutrient</u>" + P_CLOSE_TAG + P_OPEN_TAG
-              + "The measurement of nutrients indicated the amount of nutirents in" + " the water."
+              + "The measurement of nutrients indicated the amount of nutrients in" + " the water."
               + P_CLOSE_TAG + P_OPEN_TAG + "<strong>Optimal nutrient range</strong>: TBA by David"
               + P_CLOSE_TAG;
 
@@ -541,13 +520,13 @@ public class Help extends Header {
       info =
           P_OPEN_TAG2 + "General Settings" + P_CLOSE_TAG + P_OPEN_TAG
               + "This section allows the user to control the lighting (e.g. light switch"
-              + ", light brightness, light color) in each room." + P_CLOSE_TAG;      
+              + ", light brightness, light color) in each room." + P_CLOSE_TAG;
       break;
 
     case 5:
       info =
           P_OPEN_TAG2 + "Temperature Settings" + P_CLOSE_TAG + P_OPEN_TAG
-              + "This section allows the user to set the desired temperature for the house."
+              + "This section allows the user to control the air conditioning system."
               + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2 + "Inside vs Outside Temperature"
               + P_CLOSE_TAG + P_OPEN_TAG + "The graphs show the comparison of the inside "
               + "and the outside temperatures over a period of time"
@@ -557,7 +536,7 @@ public class Help extends Header {
               + "<strong>Week</strong> - This graph contains the entries of inside and"
               + " outside temperatures over the last 7 days." + P_CLOSE_TAG + P_OPEN_TAG
               + "<strong>Month</strong> - This graph contains the entries of inside and"
-              + " outside temperatures over the last 30 days." + P_CLOSE_TAG;      
+              + " outside temperatures over the last 30 days." + P_CLOSE_TAG;
       break;
 
     default:
