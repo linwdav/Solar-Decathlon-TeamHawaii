@@ -1,28 +1,64 @@
 package edu.hawaii.ihale.backend.xml;
- 
-import static org.junit.Assert.assertEquals;  
-import org.junit.Test;
-import org.restlet.ext.xml.DomRepresentation; 
-import org.w3c.dom.Node;
+
+import static org.junit.Assert.assertEquals;
 import java.io.IOException;
-import javax.xml.parsers.ParserConfigurationException; 
-import edu.hawaii.ihale.api.ApiDictionary;
+import javax.xml.parsers.ParserConfigurationException;
+import org.junit.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 
 /**
- * Tests the PutCommand class to ensure that.
+ * Tests the PutCommand class to ensure that
  * 
- * @author Backend Team
+ * @author Bret K. Ikehara
  */
 public class TestPutCommand {
 
+  /**
+   * Test the constructor with a null parameter.
+   * 
+   * @throws ParserConfigurationException Thrown when command XML initiation fails.
+   */
+  @Test(expected = NullPointerException.class)
+  public void testConstructor() throws ParserConfigurationException {
+    new PutCommand(null);
+  }
+
+  /**
+   * Tests whether element was attached to the document through the DomRepresentation.
+   * 
+   * @throws ParserConfigurationException Thrown when command XML initiation fails.
+   * @throws IOException Thrown when the command XML DomRepresentation fails to be initiated.
+   */
   @Test
-  public void test() throws ParserConfigurationException, ValidTypeException, IOException {
-    PutCommand put = new PutCommand(ApiDictionary.IHaleCommandType.FEED_FISH);
-    put.addArgument("arg", 100);
-    DomRepresentation rep = put.getRepresentation();
-    Node element = rep.getDocument().getChildNodes().item(0).getChildNodes().item(0);
-    Node item = element.getAttributes().item(0);  
-    assertEquals(item.getNodeValue(), "100");
-    
+  public void testAddElement() throws ParserConfigurationException, IOException {
+
+    Element root = null;
+    Node arg = null;
+    NamedNodeMap attributes = null;
+    Double obj = new Double(1);
+
+    PutCommand cmd = new PutCommand(IHaleCommandType.SET_TEMPERATURE);
+    cmd.addElement("arg", obj);
+
+    Document doc = cmd.getDomRepresentation().getDocument();
+
+    // Check the root element
+    root = doc.getDocumentElement();
+    assertEquals("Check command root node", "command", root.getTagName());
+    assertEquals("Check command root node's name attribute",
+        IHaleCommandType.SET_TEMPERATURE.toString(), root.getAttribute("name"));
+
+    //Check the argument tag.
+    arg = root.getFirstChild();
+    assertEquals("Check argument tag", "arg", arg.getNodeName());
+
+    // check the argument value.
+    attributes = arg.getAttributes();
+    assertEquals("Check argument value", obj.toString(), attributes.getNamedItem("value")
+        .getNodeValue());
   }
 }
