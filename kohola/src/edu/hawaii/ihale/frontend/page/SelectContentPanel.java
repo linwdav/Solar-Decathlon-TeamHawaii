@@ -6,6 +6,7 @@ import org.apache.wicket.ajax.markup.html.AjaxLink;
 //import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.panel.Panel;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaPonics;
+import edu.hawaii.ihale.frontend.page.hvac.Hvac;
 //import edu.hawaii.ihale.frontend.page.energy.Energy;
 
 /**
@@ -41,6 +42,9 @@ public abstract class SelectContentPanel extends Panel {
                 //new String("Selected something using the link."));
               if (systemChecker.aquaponicsError) {  
                   setResponsePage(AquaPonics.class);
+              }
+              else if (systemChecker.hvacError) {
+                  setResponsePage(Hvac.class);
               }
             }
         });

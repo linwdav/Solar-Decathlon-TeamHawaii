@@ -3,6 +3,7 @@ package edu.hawaii.ihale.frontend.page;
 import java.io.Serializable;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.page.aquaponics.AquaponicsListener;
+import edu.hawaii.ihale.frontend.page.hvac.HvacListener;
 //import edu.hawaii.ihale.frontend.page.energy.ElectricalListener;
 //import edu.hawaii.ihale.frontend.page.hvac.HvacListener;
 //import edu.hawaii.ihale.frontend.page.lighting.LightsListener;
@@ -17,6 +18,8 @@ public class SystemChecker implements Serializable {
   private static final long serialVersionUID = 1L;
   /** boolean to describe if aquaponics is malfunctioning. */
   public boolean aquaponicsError = false;
+  /** boolean to describe if hvac is malfunctioning. */
+  public boolean hvacError = false;
   
   /**
    * Method to check to see if indeed an error was found.
@@ -24,7 +27,14 @@ public class SystemChecker implements Serializable {
    */
   public boolean foundError () {
     // alludes to how we will implement the other error catching
-    return aquaponicsError();
+    if (aquaponicsError()) {
+      return aquaponicsError;
+    }
+    else if (hvacError()) {
+      return hvacError;
+    }
+    
+    return false;
   }
   
   /**
@@ -35,6 +45,9 @@ public class SystemChecker implements Serializable {
   public String getErroneousSystem() {
     if (aquaponicsError) {
       return "Aquaponics";
+    }
+    else if (hvacError) {
+      return "Hvac";
     }
     
     return null;
@@ -82,14 +95,28 @@ public class SystemChecker implements Serializable {
   //private synchronized static boolean checkAquaponics() {
     //return aquaponicsError;
   //}
-  /*
-  private boolean hvacError() {
+
+  /**
+   * Method to check whether the hvac system is malfunctioning.
+   * @return boolean describing whether there is an error associated
+   * with the hvac system.
+   */
+  private synchronized boolean hvacError() {
     HvacListener hvacListener =
       SolarDecathlonApplication.getHvac();
     int temp = hvacListener.getTemp();
-    return false;
+    
+    if (temp > 80 || temp < 60) {
+      hvacError = true;
+    }
+    else {
+      hvacError = false;
+    }
+    
+    return hvacError;
   }
   
+  /*
   private boolean energyError() {
     ElectricalListener electricalListener =
       SolarDecathlonApplication.getElectrical();
