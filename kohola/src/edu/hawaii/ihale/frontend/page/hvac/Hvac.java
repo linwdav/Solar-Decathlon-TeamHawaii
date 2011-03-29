@@ -180,6 +180,7 @@ public class Hvac extends Header {
     // Add the control for the air temp slider
     airTemp =
         new TextField<String>("airTemperature", new Model<String>(setTemp + "&deg;F"));
+    airTemp.setEscapeModelStrings(false);
 
     // Added for jquery control.
     airTemp.setMarkupId(airTemp.getId());
