@@ -1,8 +1,10 @@
 package edu.hawaii.ihale.housesimulator.hvac;
 
 import static org.junit.Assert.assertEquals;
+import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -23,6 +25,8 @@ import edu.hawaii.ihale.housesimulator.SimulatorServer;
  */
 public class TestHVAC {
 
+  private static final String valueAttributeString = "value";
+  
   /**
    * Start up a test server before testing any of the operations on this resource.
    * 
@@ -34,41 +38,121 @@ public class TestHVAC {
   }
 
   /**
-   * Tests that are our GET and PUT operations are compliant with milestone 2's HTTP API 2.0.
+   * Tests that the GET and PUT operations are compliant with milestone 2's HTTP API 2.0.
    * 
-   * @throws Exception If GET or PUT fails
+   * @throws Exception If GET or PUT request fails.
    */
   @Test
   public void testGetAndPut() throws Exception {
     
-    String putUrl = "http://localhost:7102/hvac/temperature";
-    ClientResource putClient = new ClientResource(putUrl);
-
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = null;
-    docBuilder = factory.newDocumentBuilder();
-    Document doc = docBuilder.newDocument();
-
-    String command = IHaleCommandType.SET_TEMPERATURE.toString();
+    String putTemp = "25";
+    int hvacDevicePort = 7102;
     
-    // Create root tag
-    Element rootElement = doc.createElement("command");
-    rootElement.setAttribute("name", command);
-    doc.appendChild(rootElement);
+    // Issue a PUT request to the HVAC system to set the home temperature to 25 C.
+    putValue(hvacDevicePort, putTemp);
+    getValue(hvacDevicePort);
+  }
+  
+  /**
+   * Tests if the mean temperature is calculated correctly when a TemperatureRecord
+   * is instantiated with a given average high and average low temperature.
+   */
+  @Test
+  public void testTemperatureRecord() {
+    TemperatureRecord record = new TemperatureRecord(50, 30);
+    int meanTemperature = record.getMeanTemp();
+    assertEquals("Asserting the mean temperature", (50 + 30) / 2, meanTemperature);
+  }
+  
+  /**
+   * Tests for a variety of situations that are simulated by the HVAC system and determine
+   * the resulting temperatures and boolean flags (occupants are home, desired temperature 
+   * has been set, etc.) are set appropriately.
+   * 
+   * @throws Exception When errors occur.
+   */
+  @Test
+  public void testHVACModifyState() throws Exception {
+        
+    HVACData.resetHVACSystem();
+    
+    /** Case 1: 
+     *  We want to heat up the room, we'll assert that since it takes approximately 3
+     *  minutes to change the room temperature by 1C, if we check the state of the home, it
+     *  should be 1C hotter than it was 3 minutes ago. */
+    
+    int currentHomeTemp = getValue(7102);
+    // Arbitrarily decide to heat the home by 2C.
+    int desiredTemp = currentHomeTemp + 2;
+    
+    putValue(7102, Integer.toString(desiredTemp));
+    
+    // When the PUT request to change the home temperature was issued.
+    long timestampWhenPutIssued = HVACData.getWhenDesiredTempCommandIssued();
+    // The current temperature should change 1 degree C after approximately 3 minutes has 
+    // elapsed since the PUT request has been successfully sent.
+    long timestampTempChangeOccur = timestampWhenPutIssued + (1000 * 60 * 3) + 30000;
+    
+    // Set the HVAC system to simulate home temperatures 3.5 minutes into the future.
+    HVACData.setCurrentTime(timestampTempChangeOccur);
 
-    // Create state tag.
-    Element temperatureElement = doc.createElement("arg");
-    temperatureElement.setAttribute("value", "24");
-    rootElement.appendChild(temperatureElement);
+    // Retrieve the home temperature of the future state.
+    DomRepresentation representation = HVACData.toXml();
+    Document doc = representation.getDocument();
+       
+    // Retrieve a child node from the Document object. Represents state data.
+    NodeList stateNodes = doc.getElementsByTagName("state");
+    // HVAC XML only has one <state> node so we know the first one is the one we want.
+    int newCurrentHomeTemp = Integer.parseInt(
+        ((Element) stateNodes.item(0)).getAttribute(valueAttributeString));
+    
+    assertEquals("The home temperature should increase by 1C after 3.5 minutes elapsed", 
+        currentHomeTemp + 1, newCurrentHomeTemp);
+    
+    /** Case 2: 
+     *  Similar to Case 1 but we'll cool down the room and we'll test for 2C change. */
+    
+    HVACData.resetHVACSystem();
+    
+    currentHomeTemp = getValue(7102);
+    // Arbitrarily decide to cool the home by 4C.
+    desiredTemp = currentHomeTemp - 4;
+    
+    putValue(7102, Integer.toString(desiredTemp));
+    
+    // When the PUT request to change the home temperature was issued.
+    timestampWhenPutIssued = HVACData.getWhenDesiredTempCommandIssued();
+    // The current temperature should change 2 degree C after approximately 6 minutes has 
+    // elapsed since the PUT request has been successfully sent.
+    timestampTempChangeOccur = timestampWhenPutIssued + (1000 * 60 * 6) + 30000;
+    
+    // Set the HVAC system to simulate home temperatures 6.5 minutes into the future.
+    HVACData.setCurrentTime(timestampTempChangeOccur);
 
-    // Convert Document to DomRepresentation.
-    DomRepresentation result = new DomRepresentation();
-    result.setDocument(doc);
-
-    putClient.put(result);
+    representation = HVACData.toXml();
+    doc = representation.getDocument();
+    stateNodes = doc.getElementsByTagName("state");
+    newCurrentHomeTemp = Integer.parseInt(
+        ((Element) stateNodes.item(0)).getAttribute(valueAttributeString));
+    
+    assertEquals("The home temperature should decrease by 2C after 6.5 minutes elapsed", 
+        currentHomeTemp - 2, newCurrentHomeTemp);
+  }
+  
+  /**
+   * Helper function that queries the HVAC system with a GET request to retrieve the current
+   * home temperature. Also asserts that the returned XML DomRepresentation from the GET request 
+   * complies with the REST/HTTP 2.0 API such as system name, device name, and key name.
+   * 
+   * @param port The port of the HVAC control device that handles GET request for current state
+   *             information.
+   * @throws IOException If there is a problem getting the document
+   * @return The current home temperature.
+   */
+  public static int getValue(int port) throws IOException {
     
     // Set up the GET client
-    String getUrl = "http://localhost:7102/hvac/state";
+    String getUrl = "http://localhost:" + port + "/hvac/state";
     ClientResource getClient = new ClientResource(getUrl);
 
     // Get the XML representation.
@@ -92,8 +176,48 @@ public class TestHVAC {
 
     // Retrieve an attributes key.
     String key = ((Element) xmlList.item(0)).getAttribute("key");
+    String value = ((Element) xmlList.item(0)).getAttribute(valueAttributeString);
+
     String temperatureString = IHaleState.TEMPERATURE.toString();
     
-    assertEquals("Checking that key is temp", key, temperatureString);
+    assertEquals("Checking that key is TEMPERATURE", key, temperatureString);
+    
+    return Integer.parseInt(value);
+  }
+  
+  /**
+   * Helper function that PUTs a value to the HVAC system.
+   * 
+   * @param port The port of the HVAC control device that we are issuing a PUT request to.
+   * @param value The desired temperature we want the HVAC system to maintain the home at.
+   * @throws ParserConfigurationException If there is a problem with the parser.
+   * @throws IOException If there is a problem building the document.
+   */
+  public static void putValue(int port, String value) throws ParserConfigurationException,
+      IOException {
+    
+    String putUrl = "http://localhost:" + port + "/hvac/temperature";
+    ClientResource putClient = new ClientResource(putUrl);
+
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder docBuilder = null;
+    docBuilder = factory.newDocumentBuilder();
+    Document doc = docBuilder.newDocument();
+
+    // Create root tag
+    Element rootElement = doc.createElement("command");
+    rootElement.setAttribute("name", IHaleCommandType.SET_TEMPERATURE.toString());
+    doc.appendChild(rootElement);
+
+    // Create state tag.
+    Element temperatureElement = doc.createElement("arg");
+    temperatureElement.setAttribute(valueAttributeString, value);
+    rootElement.appendChild(temperatureElement);
+
+    // Convert Document to DomRepresentation.
+    DomRepresentation result = new DomRepresentation();
+    result.setDocument(doc);
+
+    putClient.put(result);
   }
 }

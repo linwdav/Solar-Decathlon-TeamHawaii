@@ -160,14 +160,14 @@ public class HVACData {
     int hottestHourInDay = 15;
     
     // The rate the outside temperature increases from sunrise (coldest part of the day) to the
-    // hottest point in the day (3:00 PM or 1500 hour). Degree unit is in Farenheit.
+    // hottest point in the day (3:00 PM or 1500 hour).
     double degreeChangeFromSunriseToHighTempPt = 
       (avgHighTemp - avgLowTemp) / (double) (hottestHourInDay - sunriseHour);    
     
     // The rate the outside temperature decreases from the hottest point in the day to the next
     // day before the new sunrise.
     double degreeChangeFromHighTempPtToSunrise = 
-      (avgHighTemp - avgLowTemp) / (double) (24 - hottestHourInDay - sunriseHour);
+      (avgHighTemp - avgLowTemp) / (double) (24 - hottestHourInDay + sunriseHour);
     
     int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
     int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
@@ -201,7 +201,7 @@ public class HVACData {
     // Situation 1:
     // If the HVAC system has had a desired temperature to maintain the home at.
     if (desiredTempHasBeenSet) {
-     
+
       // Arbitrarily determined the difference in temperature between the outside temperature
       // and the temperature within the home. We don't know the insulation value of the home,
       // its ability to retain heat gain/loss influenced by the temperature outside.
@@ -211,12 +211,14 @@ public class HVACData {
       // This process should occur only once per PUT command issued to change the temperature.
       if (currentOutsideTemp >= 50 && !initialRoomTemperatureSet && currentHomeTemp == -1000) {
         baseHomeTemp = currentOutsideTemp - insulationValue;
+        currentHomeTemp = baseHomeTemp;
         initialRoomTemperatureSet = true;
       }
       // The home maintains a warmer temperature than the outside temperature when its cold.
       // This process should occur only once per PUT command issued to change the temperature.
       else if (currentOutsideTemp < 50 && !initialRoomTemperatureSet && currentHomeTemp == -1000) {
         baseHomeTemp = currentOutsideTemp + insulationValue;
+        currentHomeTemp = baseHomeTemp;
         initialRoomTemperatureSet = true;
       }
       // This process should occur only once per PUT command issued to change the temperature.
@@ -242,13 +244,15 @@ public class HVACData {
           // divided by numMinOneDegreeCelChange converted to millisecond units from 1000 * 60 to
           // obtain how much the temperature has changed in the home.
           currentHomeTemp = baseHomeTemp + (int) (
-              ((new Date().getTime()) - whenDesiredTempCommandIssued) 
+              //((new Date().getTime()) - whenDesiredTempCommandIssued) 
+              (currentTime.getTime() - whenDesiredTempCommandIssued) 
                     / (1000 * 60 * numMinOneDegreeCelChange));
         }
         // otherwise the trend is to cool down the room.
         else if (desiredTemp < currentHomeTemp) {
           currentHomeTemp = baseHomeTemp - (int) (
-              ((new Date().getTime()) - whenDesiredTempCommandIssued) 
+              //((new Date().getTime()) - whenDesiredTempCommandIssued) 
+              (currentTime.getTime() - whenDesiredTempCommandIssued) 
               / (1000 * 60 * numMinOneDegreeCelChange));       
         }
       }
@@ -322,10 +326,9 @@ public class HVACData {
       }
     }
 
-    
     System.out.println("----------------------");
     System.out.println("System: HVAC");
-    System.out.println("Current time is: " + (new Date().getTime()));
+    System.out.println("Current time is: " + new Date());
     System.out.println("Temperature: " + currentHomeTemp + "C " + "(Desired: " + desiredTemp + ")");
     if (occupantsHome) {
       System.out.println("The occupants are home.");
@@ -349,7 +352,7 @@ public class HVACData {
    * records.
    *
    * @param time The new date in milliseconds that have passed since 
-   *             January 1, 1970 00:00:00.000 GMT. 
+   *             January 1, 1970 00:00:00 GMT. 
    */
   public static void setCurrentTime(long time) {
     currentTime = new Date(time);
@@ -367,13 +370,25 @@ public class HVACData {
   }
 
   /**
+   * Returns the milliseconds since elapsed past January 1, 1970 00:00:00 GMT that a PUT
+   * request has been sent to the HVAC system to maintain the home temperature at.
+   *
+   * @return The timestamp of when the HVAC PUT request was successfully accepted.
+   */
+  public static long getWhenDesiredTempCommandIssued() {
+    return whenDesiredTempCommandIssued;
+  }
+  
+  /**
    * Sets static fields that assist to simulate HVAC temperature control within the home by setting
    * them to false to emulate a HVAC turn off/reset. Useful for debugging purposes such as JUnit
    * testing.
    */
   public static void resetHVACSystem() {
     desiredTempHasBeenSet = false;
+    desiredTemp = 0;
     initialRoomTemperatureSet = false;
+    currentHomeTemp = -1000;
   }
   
   /**
@@ -389,15 +404,19 @@ public class HVACData {
   /**
    * Returns the data as an XML Document instance.
    * 
-   * @param timestamp The timestamp of when the state values were generated.
    * @return HVAC state data in XML representation.
    * @throws Exception If problems occur creating the XML.
    */
-  public static DomRepresentation toXml(Long timestamp) throws Exception {
+  //public static DomRepresentation toXml(Long timestamp) throws Exception {
+  public static DomRepresentation toXml() throws Exception {  
+    
+    // Re-initialize temperature values.
+    modifySystemState();
     
     String system = IHaleSystem.HVAC.toString();
     String device = "arduino-3";
-    String timestampString = timestamp.toString();
+    //String timestampString = timestamp.toString();
+    String timestampString = String.valueOf(currentTime.getTime());
     String temperatureString = IHaleState.TEMPERATURE.toString();
     int celsiusTemp = currentHomeTemp;
 
@@ -441,6 +460,8 @@ public class HVACData {
     setCurrentTime(timestamp);
     // Re-initialize temperature values.
     modifySystemState();
+    
+    System.out.println("Inside toXML: " + new Date(timestamp));
     
     String system = IHaleSystem.HVAC.toString();
     String device = "arduino-3";

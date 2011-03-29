@@ -22,8 +22,8 @@ public class HVACGetResource extends ServerResource {
    */
   @Get
   public Representation getState() throws Exception {
-    HVACData.modifySystemState();
     // Return the representation.
-    return HVACData.toXml(new Date().getTime());
+    HVACData.setCurrentTime(new Date().getTime());
+    return HVACData.toXml();//(new Date().getTime());
   }
 }

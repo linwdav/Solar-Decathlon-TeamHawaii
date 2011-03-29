@@ -9,6 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 
 /**
  * Provides data on the ElectricalData system, as well as an XML representation.
@@ -249,11 +251,11 @@ public class ElectricalData {
     String system = "system";
     String tStamp = "timestamp";
     String stateKey = "state-key";
-    String electricString = "electric";
+    String electricString = IHaleSystem.ELECTRIC.toString();
     String keyString = "key";
     String valueString = "value";
-    String energyString = "energy";
-    String powerString = "power";
+    String energyString = IHaleState.ENERGY.toString();
+    String powerString = IHaleState.POWER.toString();
 
     changePoints(hour);
     Element parent = doc.getDocumentElement();
