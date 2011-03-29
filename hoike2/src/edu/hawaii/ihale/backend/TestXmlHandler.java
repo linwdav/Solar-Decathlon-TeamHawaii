@@ -8,6 +8,11 @@ import org.junit.Test;
 import org.restlet.data.MediaType;
 import org.restlet.representation.FileRepresentation;
 
+/**
+ * JUnit tests for XmlHandler.
+ * 
+ * @author Michael Cera
+ */
 public class TestXmlHandler {
 
   private static String xmlDirectory = System.getProperty("user.dir")
@@ -19,13 +24,18 @@ public class TestXmlHandler {
   private static FileRepresentation eGaugeRepresentation;
   private static XmlHandler handle = new XmlHandler();
 
+  /**
+   * Reads in XML test files.
+   */
   @BeforeClass
   public static void xmltoRepresentation() {
-
     historyRepresentation = new FileRepresentation(historyXml, MediaType.TEXT_XML);
     eGaugeRepresentation = new FileRepresentation(eGaugeXml, MediaType.TEXT_XML);
   }
 
+  /**
+   * Reads in XML representation of test-history.xml.
+   */
   @Test
   public void testXml2StateEntry() {
     boolean testPass = false;
@@ -43,6 +53,9 @@ public class TestXmlHandler {
     assertTrue(testPass);
   }
 
+  /**
+   * Reads in XML representation of test-egauge.xml.
+   */
   @Test
   public void testEgauge2StateEntry() {
     boolean testPass = false;
