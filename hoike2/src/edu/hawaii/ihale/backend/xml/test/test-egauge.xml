@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<measurements>
+  <timestamp>1284607004</timestamp>
+  <cpower src="Grg&amp;Bth (PHEV)" i="11" u="1">-988.9</cpower>
+  <cpower src="Solar" i="5" u="8">-1.9</cpower>
+  <cpower src="Grid" i="3" u="1">1621.5</cpower>
+  <meter title="Grid">
+    <energy>1111</energy>
+    <energyWs>5196771697</energyWs>
+    <power>1598</power>
+  </meter>
+  <meter title="Solar">
+    <energy>3333</energy>
+    <energyWs>21308130148</energyWs>
+    <power>2222</power>
+  </meter>
+  <meter title="Grg&amp;Bth (PHEV)">
+    <energy>4889.2</energy>
+    <energyWs>17601054087</energyWs>
+    <power>-988.9</power>
+  </meter>
+  <frequency>59.98</frequency>
+  <voltage>119.0</voltage>
+  <voltage>118.3</voltage>
+  <current>5.495</current>
+  <current>14.152</current>
+  <current>0.223</current>
+  <current>0.136</current>
+</measurements>

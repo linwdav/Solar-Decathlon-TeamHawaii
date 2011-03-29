@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<state-history>
+  <state-data system="LIGHTING" device="arduino-5" timestamp="1297446335">
+    <state key="LIGHTING_LEVEL" value="20"/>
+    <state key="LIGHTING_ENABLED" value="true"/>
+    <state key="LIGHTING_COLOR" value="#FF0000"/>
+  </state-data>
+  <state-data system="HVAC" device="arduino-3" timestamp="1297446335">
+    <state key="TEMPERATURE" value="25"/>
+  </state-data>
+</state-history>
