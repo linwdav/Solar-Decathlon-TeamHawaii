@@ -179,7 +179,7 @@ public class Hvac extends Header {
 
     // Add the control for the air temp slider
     airTemp =
-        new TextField<String>("airTemperature", new Model<String>(setTemp + "°F"));
+        new TextField<String>("airTemperature", new Model<String>(setTemp + "&deg;F"));
 
     // Added for jquery control.
     airTemp.setMarkupId(airTemp.getId());
@@ -212,7 +212,7 @@ public class Hvac extends Header {
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         if (setTemp == desiredTemp) {
           feedback.setDefaultModelObject("<font color=\"#FF9900\">Unnecessary Change:<br />"
-              + "Same as the original desired temperature (" + desiredTemp + "°F)</font>");
+              + "Same as the original desired temperature (" + desiredTemp + "&deg;F)</font>");
           // target.addComponent(textField);
           target.addComponent(feedback);
           return;
@@ -226,7 +226,7 @@ public class Hvac extends Header {
           SolarDecathlonApplication.getBackend().doCommand(system, null, command, newTemperature);
 
           feedback.setDefaultModelObject("<font color=\"green\">"
-              + "Success:<br />Desired room temperature is now " + desiredTemp + "°F</font>");
+              + "Success:<br />Desired room temperature is now " + desiredTemp + "&deg;F</font>");
         }
         // target.addComponent(textField);
         target.addComponent(feedback);
