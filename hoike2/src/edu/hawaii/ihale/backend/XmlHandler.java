@@ -264,7 +264,7 @@ public class XmlHandler {
    * @throws XPathExpressionException in the event of failed compilation.
    * @author Gregory Burgess, Tony Gaskell
    */
-  public Boolean eGuage2StateEntry(Representation rep)
+  public Boolean eGauge2StateEntry(Representation rep)
   throws IOException, XPathExpressionException {
 
 //  This should handle all poll() requests
