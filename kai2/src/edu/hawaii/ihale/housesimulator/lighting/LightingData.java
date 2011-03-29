@@ -24,10 +24,10 @@ public class LightingData {
   private static long kitchenLevel = 0;
   /** The bathroom lighting level. */
   private static long bathroomLevel = 0;
-  
   /** The bathroom lighting color. */
   private static String bathroomColor = "#FF00FF";
-  
+  /** The bathroom lighting color. */
+  private static boolean bathroomEnable = false;
   /** Flag for if the occupants are home or away. **/
   private static boolean occupantsHome  = false;
 
@@ -139,6 +139,16 @@ public class LightingData {
   public static void setBathroomColor(String newBathroomColor) {
     bathroomColor = newBathroomColor;
   }
+  
+  /**
+   * Sets the bathroom lighting to on or off.
+   * 
+   * @param newBathroomColors the colors
+   */
+  public static void setBathroomEnable(Boolean newBathroomEnable) {
+    bathroomEnable = newBathroomEnable;
+  }
+
 
 
   /**

@@ -43,7 +43,7 @@ public class LightingBathroomPutResource extends ServerResource {
     String setLevel = "setLevel";
     
     //allows user to turn (enable) lights on/off
-    String enableLight = "enableLight";
+    String setEnable = "setEnable";
     
     //allows user to set the colors
     String setColor = "setColor";
@@ -53,10 +53,16 @@ public class LightingBathroomPutResource extends ServerResource {
       LightingData.setBathroomLevel(Long.parseLong(arg));
     }
     
-    // Call mutator corresponding to room.
+    // Call lighting mutator corresponding to room.
     if (setColor.equalsIgnoreCase(command)) {
       LightingData.setBathroomColor(setColor);
     }
+    
+    // Call enable mutator corresponding to room.
+    if (setEnable.equalsIgnoreCase(command)) {
+      LightingData.setBathroomEnable(true);
+    }
+
 
     return null;
   }
