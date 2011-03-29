@@ -361,6 +361,10 @@ public class AquaponicsData {
     final String key = "key"; // PMD pickiness
     final String value = "value"; // PMD pickiness
 
+    // Change the values.
+    modifyDesiredState();
+    modifySystemState();
+    
     // Get the root element, in this case would be <state-history> element.
     Element rootElement = doc.getDocumentElement();
     
