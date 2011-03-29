@@ -104,7 +104,7 @@ public class SolarDecathlonApplication extends WebApplication {
      * Choose 1, 2, or 3 below to test with different systems.
      ***************************************************************/
     RepositoryRefresher refresh = new RepositoryRefresher(backend, repository);
-    refresh.start(15000);
+    refresh.start(10000);
     /*
      * Object x = new Integer(2); if (x instanceof Integer) {
      * 

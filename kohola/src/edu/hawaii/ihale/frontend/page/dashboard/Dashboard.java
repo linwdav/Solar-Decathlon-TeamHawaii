@@ -12,6 +12,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
@@ -20,7 +21,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.list.ListItem;
-import org.apache.wicket.markup.html.list.ListView;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
@@ -104,12 +105,16 @@ public class Dashboard extends Header {
     // Add messages as a list view to each page
 
     // Get all messages applicable to this page
-
     List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages().getAllMessages();
-
+    
+    // Create wrapper container for pageable list view
+    WebMarkupContainer systemLog = new WebMarkupContainer("SystemLogContainer");
+    systemLog.setOutputMarkupId(true);
+    add(systemLog);
+    
     // Create Listview
-    ListView<SystemStatusMessage> listView =
-        new ListView<SystemStatusMessage>("StatusMessages", msgs) {
+    PageableListView<SystemStatusMessage> listView =
+        new PageableListView<SystemStatusMessage>("StatusMessages", msgs, 10) {
 
           private static final long serialVersionUID = 1L;
 
@@ -135,9 +140,10 @@ public class Dashboard extends Header {
             }
           }
         };
-    // Limit list of things to
-    listView.setViewSize(30);
-    add(listView);
+    
+    systemLog.add(listView);
+    systemLog.add(new AjaxPagingNavigator("paginator", listView));
+    systemLog.setVersioned(false);
 
     // End messages section
 
