@@ -3,6 +3,7 @@ package edu.hawaii.ihale.frontend.page.messages;
 import java.util.LinkedList;
 import java.util.List;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 
 /**
  * Implements a message class to handle all system log functions.
@@ -13,26 +14,26 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 public class Messages {
 
   // Different set of lists to store messages for each page/system
-  List<SerializableMessage> allMessages;
-  List<SerializableMessage> aquaponicsMessages;
-  List<SerializableMessage> hvacMessages;
-  List<SerializableMessage> electricMessages;
-  List<SerializableMessage> photovoltaicMessages;
-  List<SerializableMessage> lightingMessages;
+  List<SystemStatusMessage> allMessages;
+  List<SystemStatusMessage> aquaponicsMessages;
+  List<SystemStatusMessage> hvacMessages;
+  List<SystemStatusMessage> electricMessages;
+  List<SystemStatusMessage> photovoltaicMessages;
+  List<SystemStatusMessage> lightingMessages;
 
   /**
    * Creates linked lists that hold messages for each system.
    */
   public Messages() {
     // Empty Message to allow default message to appear
-    SerializableMessage empty = new SerializableMessage(0, null, null, null);
+    SystemStatusMessage empty = new SystemStatusMessage((long) 0, null, null, null);
 
-    allMessages = new LinkedList<SerializableMessage>();
-    aquaponicsMessages = new LinkedList<SerializableMessage>();
-    hvacMessages = new LinkedList<SerializableMessage>();
-    electricMessages = new LinkedList<SerializableMessage>();
-    photovoltaicMessages = new LinkedList<SerializableMessage>();
-    lightingMessages = new LinkedList<SerializableMessage>();
+    allMessages = new LinkedList<SystemStatusMessage>();
+    aquaponicsMessages = new LinkedList<SystemStatusMessage>();
+    hvacMessages = new LinkedList<SystemStatusMessage>();
+    electricMessages = new LinkedList<SystemStatusMessage>();
+    photovoltaicMessages = new LinkedList<SystemStatusMessage>();
+    lightingMessages = new LinkedList<SystemStatusMessage>();
 
     // Add initial empty message. Allows for displaying of default text
     allMessages.add(empty);
@@ -50,7 +51,7 @@ public class Messages {
    * @param system The system requested.
    * @return List of all messages for the system requested.
    */
-  public List<SerializableMessage> getMessages(IHaleSystem system) {
+  public List<SystemStatusMessage> getMessages(IHaleSystem system) {
     switch (system) {
     case AQUAPONICS:
       return aquaponicsMessages;
@@ -72,7 +73,7 @@ public class Messages {
    * 
    * @return List of all messages.
    */
-  public List<SerializableMessage> getAllMessages() {
+  public List<SystemStatusMessage> getAllMessages() {
     return allMessages;
   }
 } // End Messages Class

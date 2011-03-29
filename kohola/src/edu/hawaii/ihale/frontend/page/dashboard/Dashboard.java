@@ -26,12 +26,12 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.frontend.page.Header;
-import edu.hawaii.ihale.frontend.page.messages.SerializableMessage;
 import edu.hawaii.ihale.frontend.weatherparser.WeatherForecast;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 //import edu.hawaii.ihale.api.SystemStateEntry;
 //import edu.hawaii.ihale.api.SystemStateEntryDBException;
+import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 
 /**
@@ -105,18 +105,18 @@ public class Dashboard extends Header {
 
     // Get all messages applicable to this page
 
-    List<SerializableMessage> msgs = SolarDecathlonApplication.getMessages().getAllMessages();
+    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages().getAllMessages();
 
     // Create Listview
-    ListView<SerializableMessage> listView =
-        new ListView<SerializableMessage>("StatusMessages", msgs) {
+    ListView<SystemStatusMessage> listView =
+        new ListView<SystemStatusMessage>("StatusMessages", msgs) {
 
           private static final long serialVersionUID = 1L;
 
           @Override
-          protected void populateItem(ListItem<SerializableMessage> item) {
+          protected void populateItem(ListItem<SystemStatusMessage> item) {
 
-            SerializableMessage msg = item.getModelObject();
+            SystemStatusMessage msg = item.getModelObject();
 
             // Populate data
             try {

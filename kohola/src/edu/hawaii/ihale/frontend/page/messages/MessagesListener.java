@@ -3,6 +3,7 @@ package edu.hawaii.ihale.frontend.page.messages;
 import java.util.List;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
+import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.SystemStatusMessageListener;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 
@@ -19,14 +20,14 @@ public class MessagesListener extends SystemStatusMessageListener {
       String msg) {
 
     // Convert into a status message object
-    SerializableMessage statusMessage =
-        new SerializableMessage(timestamp, system, messageType, msg);
+    SystemStatusMessage statusMessage =
+        new SystemStatusMessage(timestamp, system, messageType, msg);
 
     // All messages
-    List<SerializableMessage> allMsgs = SolarDecathlonApplication.getMessages().getAllMessages();
+    List<SystemStatusMessage> allMsgs = SolarDecathlonApplication.getMessages().getAllMessages();
 
     // Messages only pertaining to this system
-    List<SerializableMessage> thisSystemMsgs =
+    List<SystemStatusMessage> thisSystemMsgs =
         SolarDecathlonApplication.getMessages().getAllMessages();
 
     // If this is the first message, then remove the "No Messages" default message
