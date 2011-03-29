@@ -38,25 +38,24 @@ import edu.hawaii.ihale.frontend.page.messages.MessagesListener;
  * @author Chuan Lun Hung
  */
 public class SolarDecathlonApplication extends WebApplication {
-    
+
   private static AquaponicsListener aquaponicsListener;
   private static HvacListener hvacListener;
   private static LightsListener lightsListener;
   private static PhotovoltaicListener photovoltaicListener;
   private static ElectricalListener electricalListener;
-  
+
   // Supports status messages and updates to messages
   private static MessagesListener messagesListener;
   private static Messages messages;
-  
-  //private static SystemStateEntryDB db;
- // private static IHaleRepository repository;
+
+  // private static SystemStateEntryDB db;
+  // private static IHaleRepository repository;
   private static Repository repository;
   private static IHaleBackend backend;
- 
-  
+
   static {
-    
+
     backend = new IHaleBackend();
 
     aquaponicsListener = new AquaponicsListener();
@@ -64,36 +63,36 @@ public class SolarDecathlonApplication extends WebApplication {
     lightsListener = new LightsListener();
     photovoltaicListener = new PhotovoltaicListener();
     electricalListener = new ElectricalListener();
-    
+
     // For message log
     messagesListener = new MessagesListener();
     messages = new Messages();
-    
+
     /**
      * Choose 1, 2, or 3 below to test with different systems.
      */
     // 1. for integration with Naia backend
-    //String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
+    // String dbClassName = "edu.hawaii.ihale.backend.SystemStateEntryDAO";
 
     // 2. for integration with Hoike backend
-    //String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
+    // String dbClassName = "edu.hawaii.ihale.backend.rest.IHaleDAO";
 
     // 3. for testing our frontend solely
-    //String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
-    
-//    try {
-//      db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
-//    }
-//    catch (InstantiationException e) {
-//      e.printStackTrace();
-//    }
-//    catch (IllegalAccessException e) {
-//      e.printStackTrace();
-//    }
-//    catch (ClassNotFoundException e) {
-//      e.printStackTrace();
-//    }
-    repository = new Repository();    
+    // String dbClassName = "edu.hawaii.ihale.db.IHaleDB";
+
+    // try {
+    // db = (SystemStateEntryDB) Class.forName(dbClassName).newInstance();
+    // }
+    // catch (InstantiationException e) {
+    // e.printStackTrace();
+    // }
+    // catch (IllegalAccessException e) {
+    // e.printStackTrace();
+    // }
+    // catch (ClassNotFoundException e) {
+    // e.printStackTrace();
+    // }
+    repository = new Repository();
     repository.addSystemStateListener(aquaponicsListener);
     repository.addSystemStateListener(hvacListener);
     repository.addSystemStateListener(lightsListener);
@@ -104,14 +103,13 @@ public class SolarDecathlonApplication extends WebApplication {
     /***************************************************************
      * Choose 1, 2, or 3 below to test with different systems.
      ***************************************************************/
-    RepositoryRefresher refresh = new RepositoryRefresher(backend,repository);
-    refresh.start(5000);
+    RepositoryRefresher refresh = new RepositoryRefresher(backend, repository);
+    refresh.start(15000);
     /*
-    Object x = new Integer(2);
-    if (x instanceof Integer) {
-      
-    }
-    */
+     * Object x = new Integer(2); if (x instanceof Integer) {
+     * 
+     * }
+     */
     // 1. calling the backend naia thread to get readings from sensors
     // DataGatheringThread dataGathering = new DataGatheringThread(10000);
     // // // Create Thread
@@ -119,12 +117,12 @@ public class SolarDecathlonApplication extends WebApplication {
     // // // Start Thread
     // dataGatheringThread.start();
 
-//     //2. calling the backend Hoike thread to get readings from sensors
-//     IHaleServer iHaleServer = new IHaleServer(10000);
-//     // Create Thread
-//     Thread iHaleServerThread = new Thread(iHaleServer);
-//     // Start Thread
-//     iHaleServerThread.start();
+    // //2. calling the backend Hoike thread to get readings from sensors
+    // IHaleServer iHaleServer = new IHaleServer(10000);
+    // // Create Thread
+    // Thread iHaleServerThread = new Thread(iHaleServer);
+    // // Start Thread
+    // iHaleServerThread.start();
 
     // 3. call BlackMagic
     // Please modify the code in Header.java
@@ -167,9 +165,9 @@ public class SolarDecathlonApplication extends WebApplication {
   public Session newSession(Request request, Response response) {
     return new SolarDecathlonSession(this, request);
   }
-  
+
   /**
-   * Do default setup and initialization when this web application is started up. 
+   * Do default setup and initialization when this web application is started up.
    */
   @Override
   public void init() {
@@ -226,33 +224,37 @@ public class SolarDecathlonApplication extends WebApplication {
   public static ElectricalListener getElectrical() {
     return electricalListener;
   }
-  
+
   /**
    * Returns the repository.
+   * 
    * @return The repository.
    */
   public static IHaleRepository getRepository() {
     return repository;
   }
-  
+
   /**
    * Returns the backend.
+   * 
    * @return The backend.
    */
   public static IHaleBackend getBackend() {
     return backend;
   }
-  
+
   /**
    * Returns the Messages Listener.
+   * 
    * @return The messages listener.
    */
   public static MessagesListener getMessagesListener() {
     return messagesListener;
   }
-  
+
   /**
    * Returns the Messages object that stores all system status messages.
+   * 
    * @return The messages object.
    */
   public static Messages getMessages() {

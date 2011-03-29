@@ -1,10 +1,8 @@
 package edu.hawaii.ihale.frontend.page.messages;
 
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 
 /**
  * Implements a message class to handle all system log functions.
@@ -13,24 +11,37 @@ import edu.hawaii.ihale.api.repository.SystemStatusMessage;
  * 
  */
 public class Messages {
+
   // Different set of lists to store messages for each page/system
-  static List<SystemStatusMessage> allMessages = new LinkedList<SystemStatusMessage>();
-  static List<SystemStatusMessage> aquaponicsMessages = new LinkedList<SystemStatusMessage>();;
-  static List<SystemStatusMessage> hvacMessages = new LinkedList<SystemStatusMessage>();;
-  static List<SystemStatusMessage> electricMessages = new LinkedList<SystemStatusMessage>();;
-  static List<SystemStatusMessage> photovoltaicMessages = new LinkedList<SystemStatusMessage>();;
-  static List<SystemStatusMessage> lightingMessages = new LinkedList<SystemStatusMessage>();;
+  List<SerializableMessage> allMessages;
+  List<SerializableMessage> aquaponicsMessages;
+  List<SerializableMessage> hvacMessages;
+  List<SerializableMessage> electricMessages;
+  List<SerializableMessage> photovoltaicMessages;
+  List<SerializableMessage> lightingMessages;
 
   /**
    * Creates linked lists that hold messages for each system.
    */
   public Messages() {
-//    allMessages = new LinkedList<SystemStatusMessage>();
-//    aquaponicsMessages = new LinkedList<SystemStatusMessage>();
-//    hvacMessages = new LinkedList<SystemStatusMessage>();
-//    electricMessages = new LinkedList<SystemStatusMessage>();
-//    photovoltaicMessages = new LinkedList<SystemStatusMessage>();
-//    lightingMessages = new LinkedList<SystemStatusMessage>();
+    // Empty Message to allow default message to appear
+    SerializableMessage empty = new SerializableMessage(0, null, null, null);
+
+    allMessages = new LinkedList<SerializableMessage>();
+    aquaponicsMessages = new LinkedList<SerializableMessage>();
+    hvacMessages = new LinkedList<SerializableMessage>();
+    electricMessages = new LinkedList<SerializableMessage>();
+    photovoltaicMessages = new LinkedList<SerializableMessage>();
+    lightingMessages = new LinkedList<SerializableMessage>();
+
+    // Add initial empty message. Allows for displaying of default text
+    allMessages.add(empty);
+    aquaponicsMessages.add(empty);
+    hvacMessages.add(empty);
+    electricMessages.add(empty);
+    photovoltaicMessages.add(empty);
+    lightingMessages.add(empty);
+
   } // End Constructor
 
   /**
@@ -39,7 +50,7 @@ public class Messages {
    * @param system The system requested.
    * @return List of all messages for the system requested.
    */
-  public List<SystemStatusMessage> getMessages(IHaleSystem system) {
+  public List<SerializableMessage> getMessages(IHaleSystem system) {
     switch (system) {
     case AQUAPONICS:
       return aquaponicsMessages;
@@ -61,68 +72,7 @@ public class Messages {
    * 
    * @return List of all messages.
    */
-  public List<SystemStatusMessage> getAllMessages() {
+  public List<SerializableMessage> getAllMessages() {
     return allMessages;
   }
-
-  /**
-   * Returns the list as a String.
-   * 
-   * @param list The list of messages.
-   * @return The messages.
-   */
-  public static String messagesToString(List<SystemStatusMessage> list) {
-    
-    String system = "System: ";
-    String time = " Time: ";
-    String message = " Message: ";
-    String newLine = "\n";
-    StringBuffer buf = new StringBuffer();
-    
-    for (SystemStatusMessage msg : list) {
-      buf.append(system);
-      buf.append(msg.getSystem());
-      buf.append(time);
-      buf.append(new Date(msg.getTimestamp()));
-      buf.append(message);
-      buf.append(msg.getMessage());
-      buf.append(newLine);
-    }
-    buf.append(newLine);
-
-    for (SystemStatusMessage msg : aquaponicsMessages) {
-      buf.append(system);
-      buf.append(msg.getSystem());
-      buf.append(time);
-      buf.append(new Date(msg.getTimestamp()));
-      buf.append(message);
-      buf.append(msg.getMessage());
-      buf.append(newLine);
-    }
-    buf.append(newLine);
-
-    for (SystemStatusMessage msg : hvacMessages) {
-      buf.append(system);
-      buf.append(msg.getSystem());
-      buf.append(time);
-      buf.append(new Date(msg.getTimestamp()));
-      buf.append(message);
-      buf.append(msg.getMessage());
-      buf.append(newLine);
-    }    
-    buf.append(newLine);
-
-    for (SystemStatusMessage msg : lightingMessages) {
-      buf.append(system);
-      buf.append(msg.getSystem());
-      buf.append(time);
-      buf.append(new Date(msg.getTimestamp()));
-      buf.append(message);
-      buf.append(msg.getMessage());
-      buf.append(newLine);
-    }    
-    buf.append(newLine);
-    return buf.toString();
-  }
-
 } // End Messages Class

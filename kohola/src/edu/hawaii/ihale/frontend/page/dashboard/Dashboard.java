@@ -17,15 +17,16 @@ import org.apache.wicket.markup.ComponentTag;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainerWithAssociatedMarkup;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.frontend.page.Header;
-import edu.hawaii.ihale.frontend.page.messages.Messages;
+import edu.hawaii.ihale.frontend.page.messages.SerializableMessage;
 import edu.hawaii.ihale.frontend.weatherparser.WeatherForecast;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
@@ -46,8 +47,6 @@ public class Dashboard extends Header {
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
-  
-  
 
   /**
    * MarkupContainer for all graphs.
@@ -61,14 +60,14 @@ public class Dashboard extends Header {
   private static final double conversion = .2413;
 
   private static final String DATE_FORMAT = "hh:mm:ss a";
-    
+
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
-//  private static final String ELECTRICAL_CONSUMPTION = "electrical";
-//  private static final String EGAUGE_1 = "egauge-1";
-//  private static final String EGAUGE_2 = "egauge-2";
-//  private static final String PHOTOVOLTAICS = "photovoltaics";
-//  private static final String ENERGY = "energy";
+  // private static final String ELECTRICAL_CONSUMPTION = "electrical";
+  // private static final String EGAUGE_1 = "egauge-1";
+  // private static final String EGAUGE_2 = "egauge-2";
+  // private static final String PHOTOVOLTAICS = "photovoltaics";
+  // private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
   private static final String Y_AXIS = "8000.0";
@@ -87,182 +86,220 @@ public class Dashboard extends Header {
   static Label monthPriceConverter = new Label("MonthPriceConverter", "");
 
   private List<WeatherForecast> weathers;
-  
-  private static final List<String> cities = Arrays.asList(new String[] {"Honolulu", "Washington"});
+
+  private static final List<String> cities = Arrays
+      .asList(new String[] { "Honolulu", "Washington" });
   private String selectedCity;
- 
+
   /**
    * The page layout.
    */
   public Dashboard() {
-    
-    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(0);
-    
+
+    ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(0);
+
     selectedCity = this.getCityName();
-    
-    // support city selection for weather parsing
-    DropDownChoice<String> cityChoice = new DropDownChoice<String>("Cities", 
-        new PropertyModel<String>(this, "selectedCity"), cities) {
+
+    // Messages
+    // Add messages as a list view to each page
+
+    // Get all messages applicable to this page
+
+    List<SerializableMessage> msgs = SolarDecathlonApplication.getMessages().getAllMessages();
+
+    // Create Listview
+    ListView<SerializableMessage> listView =
+        new ListView<SerializableMessage>("StatusMessages", msgs) {
 
           private static final long serialVersionUID = 1L;
-          
+
+          @Override
+          protected void populateItem(ListItem<SerializableMessage> item) {
+
+            SerializableMessage msg = item.getModelObject();
+
+            // Populate data
+            try {
+              item.add(new Label("SystemName", msg.getSystem().toString()));
+              item.add(new Label("Timestamp", new Date(msg.getTimestamp()).toString()));
+              item.add(new Label("MessageType", msg.getType().toString()));
+              item.add(new Label("MessageContent", msg.getMessage()));
+            }
+            // If only the empty message is in the list, then
+            // display "No Messages"
+            catch (NullPointerException e) {
+              item.add(new Label("SystemName", "-"));
+              item.add(new Label("MessageType", "-"));
+              item.add(new Label("Timestamp", "-"));
+              item.add(new Label("MessageContent", "No Messages"));
+            }
+          }
+        };
+    // Limit list of things to
+    listView.setViewSize(30);
+    add(listView);
+
+    // End messages section
+
+    // support city selection for weather parsing
+    DropDownChoice<String> cityChoice =
+        new DropDownChoice<String>("Cities", new PropertyModel<String>(this, "selectedCity"),
+            cities) {
+
+          private static final long serialVersionUID = 1L;
+
           @Override
           protected boolean wantOnSelectionChangedNotifications() {
             return true;
           }
-          
+
           @Override
           protected void onSelectionChanged(String newSelection) {
-            
+
             setCityName(newSelection);
             if ("Honolulu".equals(newSelection)) {
               setTimeZone("US/Hawaii");
             }
             else if ("Washington".equals(newSelection)) {
               setTimeZone("US/Washington");
-            }            
+            }
             selectedCity = getCityName();
-            setResponsePage(Dashboard.class);            
+            setResponsePage(Dashboard.class);
           }
-      
-    };
+
+        };
     add(cityChoice);
 
     // create label and model for the current weather condition.
     Model<String> currentWeatherConditionModel = new Model<String>() {
-      
+
       private static final long serialVersionUID = 1L;
-      
+
       /**
-       * Override the getObject for dynamic programming and retrieve the
-       * current weather condition.
+       * Override the getObject for dynamic programming and retrieve the current weather condition.
        */
       @Override
-      public String getObject() {      
-        return currentWeather.getCondition() + "<br />" +  
-          currentWeather.getWindCondition() + "<br />" + 
-          currentWeather.getHumidity();
+      public String getObject() {
+        return currentWeather.getCondition() + "<br />" + currentWeather.getWindCondition()
+            + "<br />" + currentWeather.getHumidity();
       }
-    };    
-    Label currentWeatherConditionLabel = 
-      new Label("CurrentWeatherCondition", currentWeatherConditionModel);
+    };
+    Label currentWeatherConditionLabel =
+        new Label("CurrentWeatherCondition", currentWeatherConditionModel);
     currentWeatherConditionLabel.setEscapeModelStrings(false);
     add(currentWeatherConditionLabel);
 
     // below are weather forecast images in localization div.
     // weather at this moment, the largest image.
     Image currentWeatherImage = new Image("CurrentWeatherImage");
-    currentWeatherImage.add(new AttributeModifier(SRC, true, new Model<String>
-    (currentWeather.getImageURL())));
+    currentWeatherImage.add(new AttributeModifier(SRC, true, new Model<String>(currentWeather
+        .getImageURL())));
     currentWeatherImage.setOutputMarkupId(true);
     add(currentWeatherImage);
-    
+
     // list of weather conditions for today and the next three days
     weathers = weatherParser.getWeatherForecast();
-    
+
     // today's weather, which is 1st image below the current weather image
     Image weatherForecastImage1 = new Image("WeatherForecastImage1");
-    weatherForecastImage1.add(new AttributeModifier(SRC, true, new Model<String>
-    (weathers.get(0).getImageURL())));
+    weatherForecastImage1.add(new AttributeModifier(SRC, true, new Model<String>(weathers.get(0)
+        .getImageURL())));
     weatherForecastImage1.setOutputMarkupId(true);
     add(weatherForecastImage1);
-    
+
     // tomorrow's weather, which is to the left of today's weather image
     Image weatherForecastImage2 = new Image("WeatherForecastImage2");
-    weatherForecastImage2.add(new AttributeModifier(SRC, true, new Model<String>
-    (weathers.get(1).getImageURL())));
+    weatherForecastImage2.add(new AttributeModifier(SRC, true, new Model<String>(weathers.get(1)
+        .getImageURL())));
     weatherForecastImage2.setOutputMarkupId(true);
     add(weatherForecastImage2);
-    
+
     // The day after tomorrow's weather image
     Image weatherForecastImage3 = new Image("WeatherForecastImage3");
-    weatherForecastImage3.add(new AttributeModifier(SRC, true, new Model<String>
-    (weathers.get(2).getImageURL())));
+    weatherForecastImage3.add(new AttributeModifier(SRC, true, new Model<String>(weathers.get(2)
+        .getImageURL())));
     weatherForecastImage3.setOutputMarkupId(true);
     add(weatherForecastImage3);
-    
+
     // The last weather image
     Image weatherForecastImage4 = new Image("WeatherForecastImage4");
-    weatherForecastImage4.add(new AttributeModifier(SRC, true, new Model<String>
-    (weathers.get(3).getImageURL())));
+    weatherForecastImage4.add(new AttributeModifier(SRC, true, new Model<String>(weathers.get(3)
+        .getImageURL())));
     weatherForecastImage4.setOutputMarkupId(true);
     add(weatherForecastImage4);
-    
+
     // create label and model for today's weather image.
     Model<String> weatherForecastDayModel1 = new Model<String>() {
-      
+
       private static final long serialVersionUID = 1L;
-      
+
       /**
        * Override the getObject for dynamic programming and retrieve today's weather.
        */
       @Override
-      public String getObject() {      
+      public String getObject() {
         return weathers.get(0).getDayOfWeek();
       }
-    };    
-    Label weatherForecastDayLabel1 = 
-      new Label("weatherForecastDayLabel1", weatherForecastDayModel1);
-    
+    };
+    Label weatherForecastDayLabel1 =
+        new Label("weatherForecastDayLabel1", weatherForecastDayModel1);
+
     add(weatherForecastDayLabel1);
-    
-    //  create label and model for tomorrow's weather image.
+
+    // create label and model for tomorrow's weather image.
     Model<String> weatherForecastDayModel2 = new Model<String>() {
-      
+
       private static final long serialVersionUID = 1L;
-      
+
       /**
-       * Override the getObject for dynamic programming and retrieve tomorrow's  
-       * weather.
+       * Override the getObject for dynamic programming and retrieve tomorrow's weather.
        */
       @Override
-      public String getObject() {      
+      public String getObject() {
         return weathers.get(1).getDayOfWeek();
       }
-    };    
-    Label weatherForecastDayLabel2 = 
-      new Label("weatherForecastDayLabel2", weatherForecastDayModel2);
-    
+    };
+    Label weatherForecastDayLabel2 =
+        new Label("weatherForecastDayLabel2", weatherForecastDayModel2);
+
     add(weatherForecastDayLabel2);
 
     // create label and model for the third weather image.
     Model<String> weatherForecastDayModel3 = new Model<String>() {
-      
+
       private static final long serialVersionUID = 1L;
-      
+
       /**
-       * Override the getObject for dynamic programming and retrieve the 
-       * third weather forecast.
+       * Override the getObject for dynamic programming and retrieve the third weather forecast.
        */
       @Override
-      public String getObject() {      
+      public String getObject() {
         return weathers.get(2).getDayOfWeek();
       }
-    };    
-    Label weatherForecastDayLabel3 = 
-      new Label("weatherForecastDayLabel3", weatherForecastDayModel3);
-    
+    };
+    Label weatherForecastDayLabel3 =
+        new Label("weatherForecastDayLabel3", weatherForecastDayModel3);
+
     add(weatherForecastDayLabel3);
-    
+
     // create label and model for today's weather image.
     Model<String> weatherForecastDayModel4 = new Model<String>() {
-      
+
       private static final long serialVersionUID = 1L;
-      
+
       /**
-       * Override the getObject for dynamic programming and retrieve the
-       * fourth weather forecast.
+       * Override the getObject for dynamic programming and retrieve the fourth weather forecast.
        */
       @Override
-      public String getObject() {      
+      public String getObject() {
         return weathers.get(3).getDayOfWeek();
       }
-    };    
-    Label weatherForecastDayLabel4 = 
-      new Label("weatherForecastDayLabel4", weatherForecastDayModel4);
-    
+    };
+    Label weatherForecastDayLabel4 =
+        new Label("weatherForecastDayLabel4", weatherForecastDayModel4);
+
     add(weatherForecastDayLabel4);
-        
+
     // Divs for graphs
     WebMarkupContainerWithAssociatedMarkup dayDiv =
         new WebMarkupContainerWithAssociatedMarkup("DayDiv");
@@ -391,7 +428,7 @@ public class Dashboard extends Header {
       }
     };
     Label outsideTemperature = new Label("OutsideTemperature", outsideModel);
-    
+
     insideTemperature.setEscapeModelStrings(false);
     outsideTemperature.setEscapeModelStrings(false);
 
@@ -418,23 +455,6 @@ public class Dashboard extends Header {
       }
     });
     add(time);
-    
-
-    // Messages
-    // Allows page to update messages on refresh
-    Model<String> messages = new Model<String>() {
-        private static final long serialVersionUID = 1L;
-
-        @Override
-        public String getObject() {
-          return Messages.messagesToString(SolarDecathlonApplication.getMessages()
-              .getAllMessages());
-        }
-      };
-      
-    // Add a label
-    MultiLineLabel statusMessages = new MultiLineLabel("StatusMessages", messages);
-    add(statusMessages);
 
   } // End Dashboard constructor
 
@@ -475,16 +495,16 @@ public class Dashboard extends Header {
     List<TimestampIntegerPair> consumptionList = null;
     List<TimestampIntegerPair> generationList = null;
     // Gets all entries for photovoltaics and consumption in the last 24 hours.
-    
+
     consumptionList =
         SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
-          
-        //getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - lastTwentyFour), time);
+
+    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - lastTwentyFour), time);
     generationList =
-       SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
-          
-        //getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - lastTwentyFour), time);
-    
+        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
+
+    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - lastTwentyFour), time);
+
     // milliseconds since beginning of hour
     long mHourBegin =
         current.get(Calendar.MINUTE) * 60000 + current.get(Calendar.SECOND) * 1000
@@ -601,16 +621,15 @@ public class Dashboard extends Header {
     long time = (new Date()).getTime();
     List<TimestampIntegerPair> consumptionList = null;
     List<TimestampIntegerPair> generationList = null;
-    
+
     consumptionList =
         SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mWeek);
-          
-        //getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek), time);
+
+    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek), time);
     generationList =
-       SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mWeek);
-          
-        //getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
-   
+        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mWeek);
+
+    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
 
     long cValue = 0, gValue = 0;
     String cValues = "", gValues = "", printC = "", printG = "";
@@ -690,9 +709,9 @@ public class Dashboard extends Header {
   }
 
   /**
-   * Sets the monthly graph for production vs consumption. The points on the graph are averages 
-   * from 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 
-   * days ago is another period, etc, with the current day being its own period.
+   * Sets the monthly graph for production vs consumption. The points on the graph are averages from
+   * 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 days ago is
+   * another period, etc, with the current day being its own period.
    * 
    * @return The url for the month graph
    */
@@ -726,17 +745,16 @@ public class Dashboard extends Header {
         ((current.get(Calendar.DAY_OF_MONTH) - 1) * mInADay) + current.get(Calendar.HOUR_OF_DAY)
             * 3600000L + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND)
             * 1000L + current.get(Calendar.MILLISECOND);
-    
+
     consumptionList =
-      SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mSinceBeginning);
-          
-        //getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mSinceBeginning);
+
+    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
-        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time
-            - mSinceBeginning);
-          
-        //getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mSinceBeginning), time);
-   
+        SolarDecathlonApplication.getRepository()
+            .getPhotovoltaicEnergySince(time - mSinceBeginning);
+
+    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mSinceBeginning), time);
 
     long cValue = 0, gValue = 0;
     String cValues = "", gValues = "", printC = "", printG = "";
@@ -816,13 +834,14 @@ public class Dashboard extends Header {
             + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
     return url;
   }
-    
+
   /**
    * Returns the selected city for the drop down choice.
+   * 
    * @return THe selected city.
    */
   public String getSelectedCity() {
     return selectedCity;
   }
-  
+
 } // End Dashboard Class

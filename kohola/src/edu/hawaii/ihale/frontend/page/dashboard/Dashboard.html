@@ -1,5 +1,12 @@
 <html>
 <wicket:extend>
+
+<script type="text/javascript">
+$(document).ready(function(){
+   $("#logTable").tablesorter();
+ });
+</script>
+
 <div class="top-links">
 	<a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
   <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
@@ -111,7 +118,39 @@
 <div class="inner">
 	<div class="box">
     <h2>System Log</h2>
-    <span wicket:id="StatusMessages">Messages go here</span>
+    <form action="#" class="table-wrapper" method="get" name="tableform">	
+    <!--p class="show-count">		
+	        Show&nbsp;		
+	        <select>		
+	          <option>10</option>		
+	          <option>20</option>		
+	          <option>30</option>		
+	          <option>40</option>		
+	        </select>		
+	        &nbsp;Entries		
+     </p-->		
+	      <table cellpadding="0" cellspacing="0" id="logTable" class="tablesorter" width="100%">		
+	        <thead>		
+	          <tr>		
+	            <th>System</th>	
+	            <th>Type</th>	
+	            <th>Time</th>
+	            <th>Message</th>		
+	          </tr>		
+	        </thead>		
+		
+	        <tbody>		
+	          <tr wicket:id="StatusMessages">
+	    		<td wicket:id="SystemName">System Name Goes Here</td>
+	    		<td wicket:id="MessageType">Message Type Goes Here</td>
+	    		<td wicket:id="Timestamp">Time Goes Here</td>
+	    		<td wicket:id="MessageContent">Message Content Goes Here</td>
+	    	</tr>	
+	        </tbody>		
+	      </table>		
+      	
+	      <div class="clear"></div>		
+	    </form>
   </div>
 </div>    
       

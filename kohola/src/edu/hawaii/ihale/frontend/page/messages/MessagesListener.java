@@ -1,34 +1,48 @@
 package edu.hawaii.ihale.frontend.page.messages;
 
+import java.util.List;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
-import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.SystemStatusMessageListener;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 
 /**
- * A listener for messages that the UI uses to learn when the database has changed state.
+ * Listens for message events.
  * 
- * @author Kevin Leong
+ * @author FrontEnd
  * 
  */
 public class MessagesListener extends SystemStatusMessageListener {
+
   @Override
   public void messageAdded(Long timestamp, IHaleSystem system, SystemStatusMessageType messageType,
       String msg) {
 
     // Convert into a status message object
-    SystemStatusMessage statusMessage =
-        new SystemStatusMessage(timestamp, system, messageType, msg);
+    SerializableMessage statusMessage =
+        new SerializableMessage(timestamp, system, messageType, msg);
 
-    // Append it to the list that holds all messages (for the dashboard)
-    SolarDecathlonApplication.getMessages().getAllMessages().add(statusMessage);
+    // All messages
+    List<SerializableMessage> allMsgs = SolarDecathlonApplication.getMessages().getAllMessages();
 
-    // Adds the message to the correct system page
-    SolarDecathlonApplication.getMessages().getMessages(system).add(statusMessage);
+    // Messages only pertaining to this system
+    List<SerializableMessage> thisSystemMsgs =
+        SolarDecathlonApplication.getMessages().getAllMessages();
 
-    String message = String.format("Received this %s message: %s", system, msg);
-    System.out.println(message);
-  }
+    // If this is the first message, then remove the "No Messages" default message
+    if (allMsgs.size() == 1) {
+      allMsgs.remove(0);
+    }
+    if (thisSystemMsgs.size() == 1) {
+      thisSystemMsgs.remove(0);
+    }
+
+    // Append it to the front of the list that holds all messages (for the dashboard)
+    allMsgs.add(0, statusMessage);
+
+    // Adds the message to the correct system page (latest goes to the front of list)
+    thisSystemMsgs.add(0, statusMessage);
+
+  } // End message added method
 
 } // End Messages Listener Class
