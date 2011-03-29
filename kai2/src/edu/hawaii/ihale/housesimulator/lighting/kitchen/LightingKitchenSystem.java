@@ -24,8 +24,6 @@ public class LightingKitchenSystem extends Application {
     router.attach("/state", LightingKitchenGetResource.class);
     router.attach("/{putcommand}", LightingKitchenPutResource.class);
     router.attach("/level/{putcommand}", LightingKitchenPutResource.class);
-    router.attach("/enabled/{putcommand}", LightingKitchenPutResource.class);
-    router.attach("/color/{putcommand}", LightingKitchenPutResource.class);
     // Return the root router
     return router;
   }

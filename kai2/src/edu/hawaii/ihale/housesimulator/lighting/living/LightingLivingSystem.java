@@ -24,8 +24,6 @@ public class LightingLivingSystem extends Application {
     router.attach("/state", LightingLivingGetResource.class);
     router.attach("/{putcommand}", LightingLivingPutResource.class);
     router.attach("/level/{putcommand}", LightingLivingPutResource.class);
-    router.attach("/enabled/{putcommand}", LightingLivingPutResource.class);
-    router.attach("/color/{putcommand}", LightingLivingPutResource.class);
     // Return the root router
     return router;
   }

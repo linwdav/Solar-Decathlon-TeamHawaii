@@ -24,8 +24,6 @@ public class LightingDiningSystem extends Application {
     router.attach("/state", LightingDiningGetResource.class);
     router.attach("/{putcommand}", LightingDiningPutResource.class);
     router.attach("/level/{putcommand}", LightingDiningPutResource.class);
-    router.attach("/enabled/{putcommand}", LightingDiningPutResource.class);
-    router.attach("/color/{putcommand}", LightingDiningPutResource.class);
     // Return the root router
     return router;
   }

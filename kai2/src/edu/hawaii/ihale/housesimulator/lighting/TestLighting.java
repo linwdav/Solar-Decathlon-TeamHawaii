@@ -38,6 +38,7 @@ public class TestLighting {
    * 
    * @throws Exception If there is a problem with PUT or GET
    */
+  
   @Test
   public void testGetAndPut() throws Exception {
     // Put the values to our system.
@@ -103,7 +104,7 @@ public class TestLighting {
 
     // Create root tag
     Element rootElement = doc.createElement("command");
-    rootElement.setAttribute("name", "setLevel");
+    rootElement.setAttribute("name", "SET_LIGHTING_LEVEL");
     doc.appendChild(rootElement);
 
     // Create state tag.

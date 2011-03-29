@@ -43,13 +43,13 @@ public class LightingDiningPutResource extends ServerResource {
     String putCommand = (String) this.getRequestAttributes().get("putcommand");
 
     //allows user to set the level
-    String setLevel = "setLevel";
+    String setLevel = "level";
     
     //allows user to turn (enable) lights on/off
-    String setEnable = "setEnable";
+    String setEnable = "enabled";
     
     //allows user to set the colors
-    String setColor = "setColor";
+    String setColor = "color";
     
     // Call mutator corresponding to room.
     if (setLevel.equalsIgnoreCase(putCommand) && "SET_LIGHTING_LEVEL".equalsIgnoreCase(command)) {
