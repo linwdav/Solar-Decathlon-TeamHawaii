@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.housesimulator.lighting.bathroom;
 
+import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Put;
@@ -38,6 +39,8 @@ public class LightingBathroomPutResource extends ServerResource {
     // Grabs attributes from tags.
     String command = ((Element) commandList.item(0)).getAttribute("name");
     String arg = ((Element) argList.item(0)).getAttribute("value");
+    
+    String putCommand = (String) this.getRequestAttributes().get("putcommand");
 
     //allows user to set the level
     String setLevel = "setLevel";
@@ -49,21 +52,21 @@ public class LightingBathroomPutResource extends ServerResource {
     String setColor = "setColor";
     
     // Call mutator corresponding to room.
-    if (setLevel.equalsIgnoreCase(command)) {
+    if (setLevel.equalsIgnoreCase(putCommand) && "SET_LEVEL".equalsIgnoreCase(command)) {
       LightingData.setBathroomLevel(Long.parseLong(arg));
     }
-    
     // Call lighting mutator corresponding to room.
-    if (setColor.equalsIgnoreCase(command)) {
+    else if (setColor.equalsIgnoreCase(command) && "SET_COLOR".equalsIgnoreCase(command)) {
       LightingData.setBathroomColor(setColor);
-    }
-    
+    }    
     // Call enable mutator corresponding to room.
-    if (setEnable.equalsIgnoreCase(command)) {
+    else if (setEnable.equalsIgnoreCase(command) && "SET_ENABLE".equalsIgnoreCase(command) ) {
       LightingData.setBathroomEnable(true);
     }
-
-
+    else { 
+      getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
+    }
+    
     return null;
   }
 

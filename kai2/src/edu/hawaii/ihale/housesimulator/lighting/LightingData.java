@@ -17,19 +17,35 @@ import org.w3c.dom.Element;
 public class LightingData {
 
   /** The living room lighting level. */
-  private static long livingLevel = 100;
+  private static long livingLevel = 70;
   /** The dining room lighting level. */
   private static long diningLevel = 80;
   /** The kitchen lighting level. */
-  private static long kitchenLevel = 0;
+  private static long kitchenLevel = 90;
   /** The bathroom lighting level. */
-  private static long bathroomLevel = 0;
+  private static long bathroomLevel = 100;
+  
+  /** The dining room lighting color. */
+  private static String diningColor = "#FF01FF";
   /** The bathroom lighting color. */
-  private static String bathroomColor = "#FF00FF";
-  /** The bathroom lighting color. */
+  private static String bathroomColor = "#FF02FF";
+  /** The living room lighting color. */
+  private static String livingColor = "#FF03FF";
+  /** The kitchen lighting color. */
+  private static String kitchenColor = "#FF04FF";
+  
+  /** The living light switch. */
+  private static boolean livingEnable = false;  
+  /** The kitchen light switch. */
+  private static boolean kitchenEnable = false;
+  /** The bathroom lighting switch. */
   private static boolean bathroomEnable = false;
+  /** The dining light switch. */
+  private static boolean diningEnable = false;
+
+  
   /** Flag for if the occupants are home or away. **/
-  private static boolean occupantsHome  = false;
+  //private static boolean occupantsHome  = false;
 
   /**
    * Modifies the state of the system.
@@ -143,12 +159,66 @@ public class LightingData {
   /**
    * Sets the bathroom lighting to on or off.
    * 
-   * @param newBathroomColors the colors
+   * @param newBathroomEnable the colors
    */
   public static void setBathroomEnable(Boolean newBathroomEnable) {
     bathroomEnable = newBathroomEnable;
   }
+  
 
+  /**
+   * Sets the living lighting colors.
+   * 
+   * @param newLivingColor the colors
+   */
+  public static void setLivingColor(String newLivingColor) {
+    livingColor = newLivingColor;
+  }
+  
+  /**
+   * Sets the living room lighting to on or off.
+   * 
+   * @param newLivingEnable the colors
+   */
+  public static void setLivingEnable(Boolean newLivingEnable) {
+    livingEnable = newLivingEnable;
+  }
+  
+  /**
+   * Sets the living lighting colors.
+   * 
+   * @param newKitchenColor the colors
+   */
+  public static void setKitchenColor(String newKitchenColor) {
+   kitchenColor = newKitchenColor;
+  }
+  
+  /**
+   * Sets the living room lighting to on or off.
+   * 
+   * @param newKitchenEnable the colors
+   */
+  public static void setKitchenEnable(Boolean newKitchenEnable) {
+    kitchenEnable = newKitchenEnable;
+  }
+
+  /**
+   * Sets the living lighting colors.
+   * 
+   * @param newDiningColor the colors
+   */
+  public static void setDiningColor(String newDiningColor) {
+   diningColor = newDiningColor;
+  }
+  
+  /**
+   * Sets the living room lighting to on or off.
+   * 
+   * @param newDiningEnable the colors
+   */
+  public static void setDiningEnable(Boolean newDiningEnable) {
+    diningEnable = newDiningEnable;
+  }
 
 
   /**

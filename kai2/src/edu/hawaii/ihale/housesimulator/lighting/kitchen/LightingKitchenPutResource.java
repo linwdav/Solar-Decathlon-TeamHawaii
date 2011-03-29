@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.housesimulator.lighting.kitchen;
 
+import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Put;
@@ -39,10 +40,31 @@ public class LightingKitchenPutResource extends ServerResource {
     String command = ((Element) commandList.item(0)).getAttribute("name");
     String arg = ((Element) argList.item(0)).getAttribute("value");
 
+    String putCommand = (String) this.getRequestAttributes().get("putcommand");
+
+    //allows user to set the level
     String setLevel = "setLevel";
+    
+    //allows user to turn (enable) lights on/off
+    String setEnable = "setEnable";
+    
+    //allows user to set the colors
+    String setColor = "setColor";
+    
     // Call mutator corresponding to room.
-    if (setLevel.equalsIgnoreCase(command)) {
+    if (setLevel.equalsIgnoreCase(putCommand) && "SET_LEVEL".equalsIgnoreCase(command)) {
       LightingData.setKitchenLevel(Long.parseLong(arg));
+    }
+    // Call lighting mutator corresponding to room.
+    else if (setColor.equalsIgnoreCase(command) && "SET_COLOR".equalsIgnoreCase(command)) {
+      LightingData.setKitchenColor(setColor);
+    }    
+    // Call enable mutator corresponding to room.
+    else if (setEnable.equalsIgnoreCase(command) && "SET_ENABLE".equalsIgnoreCase(command) ) {
+      LightingData.setKitchenEnable(true);
+    }
+    else { 
+      getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
 
     return null;
