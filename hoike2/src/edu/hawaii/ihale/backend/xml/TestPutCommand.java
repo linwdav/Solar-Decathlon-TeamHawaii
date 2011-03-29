@@ -11,7 +11,7 @@ import org.w3c.dom.Node;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 
 /**
- * Tests the PutCommand class to ensure that
+ * Tests the PutCommand class to ensure that the it correctly creates the command XML.
  * 
  * @author Bret K. Ikehara
  */
@@ -52,7 +52,7 @@ public class TestPutCommand {
     assertEquals("Check command root node's name attribute",
         IHaleCommandType.SET_TEMPERATURE.toString(), root.getAttribute("name"));
 
-    //Check the argument tag.
+    // Check the argument tag.
     arg = root.getFirstChild();
     assertEquals("Check argument tag", "arg", arg.getNodeName());
 

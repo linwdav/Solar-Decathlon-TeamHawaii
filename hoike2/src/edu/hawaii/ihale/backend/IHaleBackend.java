@@ -40,79 +40,125 @@ import edu.hawaii.ihale.backend.xml.ValidTypeException;
  * @author Backend Team
  */
 public class IHaleBackend implements IHaleCommand {
+
+  /**
+   * Object that polls data from HSIM.
+   */
+  public Dispatcher dispatch;
+
+  /**
+   * Defines all the URIs read by the URL property file.
+   */
+  public Map<String, String> uris;
+
+  /**
+   * Defines all the command map objects.
+   */
+  public Map<String, String> commandMap;
+
+  /**
+   * Defines all the URIs for the aquaponics system for sending commands to the system's Arduino
+   * device.
+   */
+  public Map<String, String> aquaMap;
+
+  /**
+   * Defines all the URIs for the lighting system for sending commands to the system's Arduino
+   * device.
+   */
+  public Map<String, String> lightMap;
+
+  /**
+   * Full path to the system device properties file.
+   */
+  private static String configFilePath;
+
+  /**
+   * Defines all the static variables.
+   */
+  static {
+    String folder = ".ihale";
+    String configurationFile = "device-urls.properties";
+    configFilePath = System.getProperty("user.home") + "/" + folder + "/" + configurationFile;
+  }
+
   // A logger.
   private Logger log;
+
   // The repository that can store all the data for the iHale system.
-  Repository repository = new Repository();
-  // Object that polls data from HSIM
-  public static Dispatcher dispatch;
-  // to hold the URI data.
-  public static Map<String, String> uris;
-  public static Map<String, String> commandMap;
-  public static Map<String, String> aquaMap;
-  public static Map<String, String> lightMap;
-  // delay between polling hsim
-  public long interval = 5000;
-  // ==========================================================
-  // ============.properties file location=====================
-  // ==========================================================
-  private static String currentDirectory = System.getProperty("user.home");
-  // Sub-directory containing system device properties file.
-  private static String folder = ".ihale";
-  // System device properties file name.
-  private static String configurationFile = "device-urls.properties";
-  // Full path to the system device properties file.
-  private static String configFilePath = currentDirectory + "/" + folder + "/" + configurationFile;
+  private Repository repository;
 
-  // ============================================================
-  // ============================================================
-
-  /** Constructor. Initializes history and reads .properties file. **/
+  /**
+   * Default Constructor which initiates all the backend resources.
+   */
   public IHaleBackend() {
 
+    // Interval in milliseconds between polling the system devices.
+    long interval = 5000;
+
     this.log = Logger.getLogger(this.getClass().toString());
+
+    this.log.info("Initiating repository.");
+    this.repository = new Repository();
+
     // instantiate the uris map.
     uris = new HashMap<String, String>();
-    // puts URI data into "uris"
-    makeURIMap();
+    try {
+      parseURIPropertyFile();
+    }
+    catch (IOException e) {
+      this.log.warning("URI configuration FileInputStream failed to properly close.");
+    }
+
     // TODO parse historical xml file
     // TODO store historical xml data.
 
+    this.log.info("Initiate Dispatcher.");
+
     // make a dispatcher
     dispatch = new Dispatcher(uris, interval);
+
     // grab all data before it starts
     commandMap = dispatch.getCommandMap();
     lightMap = dispatch.getLightMap();
     aquaMap = dispatch.getAquaMap();
+
+    this.log.info("Running dispatcher at an interval of " + interval + " milliseconds.");
+
     // pop a new thread to run forever
     Thread poll = new Thread(dispatch);
     poll.start();
   }
 
   /**
-   * Parses URI properties file. Taken from team Hoike's backend files.
+   * Parses URI properties file. Taken from team Hoike's backend files. Adapted from original Team
+   * Hoike code.
    * 
-   * @author Team Hoike
+   * @throws IOException Thrown when unable to close the FileInputStream.
    */
-  public static void makeURIMap() {
+  private void parseURIPropertyFile() throws IOException {
+
+    FileInputStream is = null;
+    Properties prop = new Properties();
+
+    this.log.info("Reading file at: " + configFilePath);
 
     try {
-      FileInputStream is = new FileInputStream(configFilePath);
-      Properties prop = new Properties();
+      is = new FileInputStream(configFilePath);
+
       prop.load(is);
-      String key = "";
-      String value = "";
-      for (Map.Entry<Object, Object> propItem : prop.entrySet()) {
-        key = (String) propItem.getKey();
-        value = (String) propItem.getValue();
-        uris.put(key, value);
+
+      for (Object key : prop.keySet()) {
+        uris.put(key.toString(), prop.getProperty((String) key));
       }
-      System.out.println(configurationFile);
-      is.close();
     }
     catch (IOException e) {
-      System.out.println("Failed to read properties file.");
-      System.out.println(configFilePath);
+      this.log.warning("Failed to read properties file.");
+    }
+    finally {
+      if (is != null) {
+        is.close();
+      }
     }
   }
 
@@ -155,19 +201,21 @@ public class IHaleBackend implements IHaleCommand {
       switch (system) {
       case AQUAPONICS:
         cmd = handleAquaponicsCommand(command, arg);
-        url = commandMap.get("aquaponics") + aquaMap.get(command.toString());
+        url = uris.get(system) + aquaMap.get(command.toString());
         break;
       case HVAC:
         cmd = handleHvacCommand(command, arg);
-        url = commandMap.get("hvac") + "hvac/temp";
+        url = uris.get(system) + "hvac/temp";
         break;
       case LIGHTING:
-        handleLightingCommand(room, command, arg);
-        url = commandMap.get(room.toString()) + lightMap.get(command.toString());
+        cmd = handleLightingCommand(room, command, arg);
+        url = uris.get(system) + lightMap.get(command.toString());
         break;
       default:
         throw new RuntimeException("Unsupported IHale System Type encountered: " + system);
       }
+
+      this.log.info("Sending " + system.toString() + " command: " + cmd + " to " + url);
 
       // Send the xml representation to the device.
       client = new ClientResource(url);
@@ -331,8 +379,6 @@ public class IHaleBackend implements IHaleCommand {
    */
   public static void main(String[] args) {
     IHaleBackend backend = new IHaleBackend();
-    // backend.exampleStateFromHouseSystems();
-    System.out.println(commandMap);
     backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7);
   }
 }

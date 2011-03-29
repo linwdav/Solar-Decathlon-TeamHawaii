@@ -17,6 +17,7 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
  */
 public class PutCommand {
 
+  private IHaleCommandType command;
   private Document document;
   private Element rootElement;
 
@@ -31,6 +32,8 @@ public class PutCommand {
     if (command == null) {
       throw new NullPointerException("IHaleCommandType was null.");
     }
+    
+    this.command = command;
 
     // Create the new document.
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -39,7 +42,7 @@ public class PutCommand {
 
     // Creates the root tag
     rootElement = document.createElement("command");
-    rootElement.setAttribute("name", command.toString());
+    rootElement.setAttribute("name", this.command.toString());
     document.appendChild(rootElement);
   }
 
@@ -48,7 +51,6 @@ public class PutCommand {
    * 
    * @param tagName String
    * @param value String
-   * @return boolean
    */
   public void addElement(String tagName, Object value) {
     Element temperatureElement = document.createElement(tagName);
@@ -68,5 +70,15 @@ public class PutCommand {
     DomRepresentation representation = new DomRepresentation();
     representation.setDocument(document);
     return representation;
+  }
+  
+  /**
+   * Represents the command as a String.
+   * 
+   * @return String
+   */
+  @Override
+  public String toString() {
+    return this.command.toString();
   }
 }
