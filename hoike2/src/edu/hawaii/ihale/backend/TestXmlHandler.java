@@ -1,7 +1,6 @@
 package edu.hawaii.ihale.backend;
 
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 import java.io.IOException;
 import javax.xml.xpath.XPathExpressionException;
 import org.junit.BeforeClass;
@@ -29,7 +28,7 @@ public class TestXmlHandler {
     String xmlDirectory =
         System.getProperty("user.dir") + "/src/edu/hawaii/ihale/backend/xml/test/";
     String eGaugeXml = xmlDirectory + "test-egauge.xml";
-    String historyXml = xmlDirectory + "history.xml";
+    String historyXml = xmlDirectory + "test-history.xml";
 
     historyRepresentation = new FileRepresentation(historyXml, MediaType.TEXT_XML);
     eGaugeRepresentation = new FileRepresentation(eGaugeXml, MediaType.TEXT_XML);
@@ -37,41 +36,27 @@ public class TestXmlHandler {
 
   /**
    * Reads in XML representation of test-history.xml.
+   * 
+   * @throws IOException IOException
+   * @throws XPathExpressionException XPathExpressionException
    */
   @Test
-  public void testXml2StateEntry() {
+  public void testXml2StateEntry() throws XPathExpressionException, IOException {
     boolean testPass = false;
-    try {
-      testPass = handle.xml2StateEntry(historyRepresentation);
-    }
-    catch (XPathExpressionException e) {
-      fail("XPathExpressionException");
-      e.printStackTrace();
-    }
-    catch (IOException e) {
-      fail("IOException");
-      e.printStackTrace();
-    }
+    testPass = handle.xml2StateEntry(historyRepresentation);
     assertTrue(testPass);
   }
 
   /**
    * Reads in XML representation of test-egauge.xml.
+   * 
+   * @throws IOException IOException
+   * @throws XPathExpressionException XPathExpressionException
    */
   @Test
-  public void testEgauge2StateEntry() {
+  public void testEgauge2StateEntry() throws XPathExpressionException, IOException {
     boolean testPass = false;
-    try {
-      testPass = handle.eGuage2StateEntry(eGaugeRepresentation);
-    }
-    catch (XPathExpressionException e) {
-      fail("XPathExpressionException");
-      e.printStackTrace();
-    }
-    catch (IOException e) {
-      fail("IOException");
-      e.printStackTrace();
-    }
+    testPass = handle.eGuage2StateEntry(eGaugeRepresentation);
     assertTrue(testPass);
   }
 
