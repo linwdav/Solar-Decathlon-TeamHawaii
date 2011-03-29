@@ -22,6 +22,7 @@ import org.restlet.data.Protocol;
 import org.restlet.routing.VirtualHost;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsData;
 import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsSystem;
 import edu.hawaii.ihale.housesimulator.electrical.ElectricalData;
 import edu.hawaii.ihale.housesimulator.electrical.ElectricalSystem;
@@ -364,7 +365,7 @@ public class SimulatorServer extends Application {
     // Append 12 state points of 5 minute intervals to represent 1 hour of past state data 
     // for all house system but Lighting.
     for (int i = 0; i < 12; i++) {
-      // returnDoc = ...Aquaponics System...
+      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
       // returnDoc = ...Electric System...
       // returnDoc = ...PV System...              
@@ -378,7 +379,7 @@ public class SimulatorServer extends Application {
     // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
     // all house system but Lighting.
     for (int i = 0; i < 24; i++) {
-      // returnDoc = ...Aquaponics System...
+      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
       // returnDoc = ...Electric System...
       // returnDoc = ...PV System...              
@@ -393,7 +394,7 @@ public class SimulatorServer extends Application {
     // state data and for a total of 1 month of state data for all house systems but 
     // Lighting.
     for (int i = 0; i < 31; i++) {
-      // returnDoc = ...Aquaponics System...
+      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
       // returnDoc = ...Electric System...
       // returnDoc = ...PV System...              

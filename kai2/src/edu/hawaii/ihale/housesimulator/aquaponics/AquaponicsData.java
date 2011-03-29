@@ -191,6 +191,16 @@ public class AquaponicsData {
         + ")" + required + minPH + "-" + maxPH + ")");
     System.out.println("Oxygen level: " + roundSingleDecimal(oxygen) + required + minOxygen + ")");
   }
+  
+  /**
+   * Modifies the desired system state values to within acceptable range.
+   */
+  public static void modifyDesiredState() {
+    desiredEC = (randomGen.nextDouble()) + 1;
+    desiredTemperature = randomGen.nextInt(3) + 28;
+    desiredWaterLevel = (randomGen.nextInt(51)) + 200;
+    desiredPh = (randomGen.nextDouble() * 1.2) + 6.8;
+  }
 
   /**
    * Sets the desired temperature.
@@ -336,6 +346,81 @@ public class AquaponicsData {
 
     // Return the XML in DomRepresentation form.
     return result;
+  }
+  
+  /**
+   * Appends Aquaponics state data at a specific timestamp snap-shot to the Document object
+   * passed to this method.
+   *
+   * @param doc Document object to append Aquaponics state data as child nodes.
+   * @param timestamp The specific time snap-shot the state data interested to be appended.
+   * @return Document object with appended Aquaponics state data.
+   */
+  public static Document toXmlByTimestamp(Document doc, Long timestamp) {
+    final String state = "state"; // PMD pickiness
+    final String key = "key"; // PMD pickiness
+    final String value = "value"; // PMD pickiness
+
+    // Get the root element, in this case would be <state-history> element.
+    Element rootElement = doc.getDocumentElement();
+    
+    // Create state-data tag
+    Element stateElement = doc.createElement("state-data");
+    stateElement.setAttribute("system", "AQUAPONICS");
+    stateElement.setAttribute("device", "arduino-1");
+    stateElement.setAttribute("timestamp", timestamp.toString());
+    rootElement.appendChild(stateElement);
+
+    // Create circulation state tag.
+    Element circulationElement = doc.createElement(state);
+    circulationElement.setAttribute(key, "CIRCULATION");
+    circulationElement.setAttribute(value, String.valueOf(circulation));
+    stateElement.appendChild(circulationElement);
+
+    // Create dead fish state tag.
+    Element deadFishElement = doc.createElement(state);
+    deadFishElement.setAttribute(key, "DEAD_FISH");
+    deadFishElement.setAttribute(value, String.valueOf(dead_fish));
+    stateElement.appendChild(deadFishElement);
+
+    // Create electrical conductivity state tag.
+    Element electricalConductivityElement = doc.createElement(state);
+    electricalConductivityElement.setAttribute(key, "ELECTRICAL_CONDUCTIVITY");
+    electricalConductivityElement.setAttribute(value, String.valueOf(ec));
+    stateElement.appendChild(electricalConductivityElement);
+
+    // Create temperature state tag.
+    Element temperatureElement = doc.createElement(state);
+    temperatureElement.setAttribute(key, "TEMPERATURE");
+    temperatureElement.setAttribute(value, String.valueOf(temperature));
+    stateElement.appendChild(temperatureElement);
+
+    // Create turbidity state tag.
+    Element turbidityElement = doc.createElement(state);
+    turbidityElement.setAttribute(key, "TURBIDITY");
+    turbidityElement.setAttribute(value, String.valueOf(turbidity));
+    stateElement.appendChild(turbidityElement);
+
+    // Create water state tag.
+    Element waterLevelElement = doc.createElement(state);
+    waterLevelElement.setAttribute(key, "WATER_LEVEL");
+    waterLevelElement.setAttribute(value, String.valueOf(water_level));
+    stateElement.appendChild(waterLevelElement);
+
+    // Create PH state tag.
+    Element phElement = doc.createElement(state);
+    phElement.setAttribute(key, "PH");
+    phElement.setAttribute(value, String.valueOf(roundSingleDecimal(ph)));
+    stateElement.appendChild(phElement);
+
+    // Create oxygen state tag.
+    Element oxygenElement = doc.createElement(state);
+    oxygenElement.setAttribute(key, "OXYGEN");
+    oxygenElement.setAttribute(value, String.valueOf(oxygen));
+    stateElement.appendChild(oxygenElement);
+
+    // Return the XML in DomRepresentation form.
+    return doc;
   }
 
 }

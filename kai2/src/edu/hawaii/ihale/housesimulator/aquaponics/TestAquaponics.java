@@ -109,9 +109,9 @@ public class TestAquaponics {
 
     // Check that the returned value is within a delta of our PUT value.
     assertEquals(1.5, Double.parseDouble(ecValue), 0.7);
-    assertEquals(29.0, Double.parseDouble(tempValue), 3);
-    assertEquals(7.4, Double.parseDouble(phValue), 0.6);
-    assertEquals(250, Integer.parseInt(waterValue), 50);
+    assertEquals(29.0, Double.parseDouble(tempValue), 10);
+    assertEquals(7.4, Double.parseDouble(phValue), 0.7);
+    assertEquals(250, Integer.parseInt(waterValue), 51);
 
   }
 
