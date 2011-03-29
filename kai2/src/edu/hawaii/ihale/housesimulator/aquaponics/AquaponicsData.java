@@ -83,6 +83,27 @@ public class AquaponicsData {
    */
   public static void modifySystemState() {
 
+    // Print system state values.
+    final String desired = " (Desired: "; // PMD pickiness
+    final String required = " (Required: "; // PMD pickiness
+    System.out.println("----------------------");
+    System.out.println("System: Aquaponics");
+    System.out.println("Alive fish: " + alive_fish);
+    System.out.println("Dead fish: " + dead_fish);
+    System.out.println("Circulation: " + roundSingleDecimal(circulation) + required + minCirc
+        + ")");
+    System.out.println("Electrical conductivity: " + roundSingleDecimal(ec)
+        + desired + roundSingleDecimal(desiredEC) + ")" + required + minEC + "-"
+        + maxEC + ")");
+    System.out.println("Temperature: " + temperature + desired + desiredTemperature + ")"
+        + required + minTemp + "-" + maxTemp + ")");
+    System.out.println("Turbidity: " + roundSingleDecimal(turbidity));
+    System.out.println("Water level: " + water_level + desired + desiredWaterLevel + ")" + required
+        + minWaterLevel + ")");
+    System.out.println("pH: " + roundSingleDecimal(ph) + desired + roundSingleDecimal(desiredPh)
+        + ")" + required + minPH + "-" + maxPH + ")");
+    System.out.println("Oxygen level: " + roundSingleDecimal(oxygen) + required + minOxygen + ")");
+    
     // Changes water circulation by a random amount.
     if (circulation < (alive_fish * 0.8)) {
       // Fish need more circulation and oxygen!!!  Increment circulation by 0.0 to 1.0 units.
@@ -136,9 +157,6 @@ public class AquaponicsData {
         - (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2));
     }
     
-    // Updates turbidity.  More dead fish = more turbidity.  More circulation = less turbidity.
-    turbidity = (alive_fish / 2) + ec + (dead_fish * 2) - (circulation - minCirc);
-    
     // Changes water level by a random amount.
     if (water_level < (minWaterLevel)) {
       // Fish need more water!!!  50% chance to increment water_level by 1 unit.
@@ -168,28 +186,12 @@ public class AquaponicsData {
     
     // Update oxygen.
     oxygen = circulation;
+    // Update required circulation in case fish have died.
+    minCirc = alive_fish;
     // Update required oxygen in case fish have died.
     minOxygen = alive_fish;
-    
-    final String desired = " (Desired: "; // PMD pickiness
-    final String required = " (Required: "; // PMD pickiness
-    System.out.println("----------------------");
-    System.out.println("System: Aquaponics");
-    System.out.println("Alive fish: " + alive_fish);
-    System.out.println("Dead fish: " + dead_fish);
-    System.out.println("Circulation: " + roundSingleDecimal(circulation) + required + minCirc
-        + ")");
-    System.out.println("Electrical conductivity: " + roundSingleDecimal(ec)
-        + desired + roundSingleDecimal(desiredEC) + ")" + required + minEC + "-"
-        + maxEC + ")");
-    System.out.println("Temperature: " + temperature + desired + desiredTemperature + ")"
-        + required + minTemp + "-" + maxTemp + ")");
-    System.out.println("Turbidity: " + roundSingleDecimal(turbidity));
-    System.out.println("Water level: " + water_level + desired + desiredWaterLevel + ")" + required
-        + minWaterLevel + ")");
-    System.out.println("pH: " + roundSingleDecimal(ph) + desired + roundSingleDecimal(desiredPh)
-        + ")" + required + minPH + "-" + maxPH + ")");
-    System.out.println("Oxygen level: " + roundSingleDecimal(oxygen) + required + minOxygen + ")");
+    // Updates turbidity.  More dead fish = more turbidity.  More circulation = less turbidity.
+    turbidity = (alive_fish / 2) + ec + (dead_fish * 2) - (circulation - minCirc);
   }
   
   /**

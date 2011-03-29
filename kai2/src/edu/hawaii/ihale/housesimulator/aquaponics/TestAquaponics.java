@@ -111,7 +111,7 @@ public class TestAquaponics {
     assertEquals(1.5, Double.parseDouble(ecValue), 0.7);
     assertEquals(29.0, Double.parseDouble(tempValue), 10);
     assertEquals(7.4, Double.parseDouble(phValue), 0.7);
-    assertEquals(250, Integer.parseInt(waterValue), 51);
+    assertEquals(250, Integer.parseInt(waterValue), 200);
 
   }
 
