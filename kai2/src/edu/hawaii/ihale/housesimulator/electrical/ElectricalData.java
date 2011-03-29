@@ -26,10 +26,11 @@ public class ElectricalData {
    * Each index represents an estimated hourly average of electricity consumption. Values based
    * around those found in the following link and adjusted from MW to W-
    * http://www.ferc.gov/market-oversight/mkt-electric/california/CAISO-rto-dly-rpt.pdf.
+   * The 25th data point represents the average consumption for the entire day.
    */
   private static long[] hourlyAverage = { // in watts per hour
       1640, 1620, 1550, 1500, 1580, 1640, 1890, 2120, 1990, 1910, 1970, 1980, 1910, 1900, 1890,
-          1880, 1850, 1860, 1910, 2230, 2080, 2070, 1980, 1880 };
+          1880, 1850, 1860, 1910, 2230, 2080, 2070, 1980, 1880, 40880 / 24 };
 
   /** The current energy. */
   private static long energy = hourlyAverage[0];// randomGenerator.nextInt(1001) + 1000;
@@ -273,7 +274,7 @@ public class ElectricalData {
       }
       // adjust in case day must change
       if (hour < 0) {
-        hour = 23 + hour;
+        hour = 24 + hour;
         date = date - 1;
       }
       changePoints(hour);

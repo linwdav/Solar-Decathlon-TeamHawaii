@@ -25,12 +25,11 @@ public class PhotovoltaicsData {
    * 
    * We will assume that we have 3 panels 1 meter wide and 2 meters long for 6 kWh to spread out
    * over a single day. We will also assume that 0 energy is generated between the hours of 6pm and
-   * 6am.
+   * 6am. The 25th point represends the daily average.
    */
   private static long[] hourlyAverage = { 0, 0, 0, 0, 0, 0, 3000 / 64, 3000 / 32, 3000 / 16,
       3000 / 8, 3000 / 4, 3000 / 2, 3000 / 2, 3000 / 4, 3000 / 8, 3000 / 16, 3000 / 32, 3000 / 64,
-      0, 0, 0, 0, 0, 0 };
-
+      0, 0, 0, 0, 0, 0, 6000 / 24 };
   /** The current energy. */
   private static long energy = hourlyAverage[0];
   /** The current power. */
@@ -236,29 +235,37 @@ public class PhotovoltaicsData {
    * @return doc The updated document..
    */
   public static Document generateHistoricData(Map<String, Integer> baseTime, Document doc) {
-    int date = baseTime.get("date");
     int hour = baseTime.get("hour");
     int minute = baseTime.get("minute");
     int timestamp = baseTime.get("timestamp");
-
+    String stateData = "state-data";
+    String system = "system";
+    String tStamp = "timestamp";
+    String stateKey = "state-key";
+    String pvString = "photovoltaic";
+    String keyString = "key";
+    String valueString = "value";
+    String energyString = "energy";
+    String powerString = "power";
+    
     changePoints(hour);
     Element parent = doc.getDocumentElement();
     long tempTime = timestamp;
     // 12 state data points at 5 min intervals (to compose 1 hour report)
     for (int i = 0; i < 12; i++) {
-      Element temp = doc.createElement("state-data");
-      temp.setAttribute("system", "photovoltaic");
-      temp.setAttribute("timestamp", "" + tempTime);
-      Element tempElectric = doc.createElement("state-key");
-      tempElectric.setAttribute("key", "photovoltaic");
-      tempElectric.setAttribute("value", "" + energy);
+      Element temp = doc.createElement(stateData);
+      temp.setAttribute(system, pvString);
+      temp.setAttribute(tStamp, "" + tempTime);
+      Element tempElectric = doc.createElement(stateKey);
+      tempElectric.setAttribute(keyString, energyString);
+      tempElectric.setAttribute(valueString, "" + energy);
       temp.appendChild(tempElectric);
-      Element tempPower = doc.createElement("state-key");
-      tempPower.setAttribute("key", "power");
-      tempPower.setAttribute("value", "" + power);
+      Element tempPower = doc.createElement(stateKey);
+      tempPower.setAttribute(keyString, powerString);
+      tempPower.setAttribute(valueString, "" + power);
       temp.appendChild(tempPower);
       parent.appendChild(temp);
-      // subtract 5 minutes in unix time
+      // subtract 5 minutes in e-gauge time
       tempTime = tempTime - 300;
       minute = minute - 5;
       // adjust in case hour must change
@@ -268,15 +275,57 @@ public class PhotovoltaicsData {
       }
       // adjust in case day must change
       if (hour < 0) {
-        hour = 23 + hour;
-        date = date - 1;
+        hour = 23;
       }
       changePoints(hour);
-
     }
+    hour = baseTime.get("hour");
+    tempTime = timestamp;
+    changePoints(hour);
     // 24 state data points at 1 hour intervals (to compose 1 day report)
+//    for (int i = 0; i < 24; i++) {
+//      Element temp = doc.createElement(stateData);
+//      temp.setAttribute(system, pvString);
+//      temp.setAttribute(tStamp, "" + tempTime);
+//      Element tempElectric = doc.createElement(stateKey);
+//      tempElectric.setAttribute(keyString, energyString);
+//      tempElectric.setAttribute(valueString, "" + energy);
+//      temp.appendChild(tempElectric);
+//      Element tempPower = doc.createElement(stateKey);
+//      tempPower.setAttribute(keyString, powerString);
+//      tempPower.setAttribute(valueString, "" + power);
+//      temp.appendChild(tempPower);
+//      parent.appendChild(temp);
+//      tempTime = tempTime - 3600;
+//      hour = hour - 1;
+//      if (hour < 0) {
+//        hour = 23;
+//      }
+//      changePoints(hour);
+//    }
     // 7 state data points at 1 day intervals (to compose 1 week report)
     // 21-24 additional state data points at 1 day intervals (to compose 1 month report)
+    // We know that the total is 6000 Wh a day, 6000/24 is the daily average.
+    // We will fluctuate around the average.
+    tempTime = timestamp;
+    changePoints(24);
+    for (int i = 0; i < 31; i++) {
+      Element temp = doc.createElement(stateData);
+      temp.setAttribute(system, pvString);
+      temp.setAttribute(tStamp, "" + tempTime);
+      Element tempElectric = doc.createElement(stateKey);
+      tempElectric.setAttribute(keyString, pvString);
+      tempElectric.setAttribute(valueString, "" + energy);
+      temp.appendChild(tempElectric);
+      Element tempPower = doc.createElement(stateKey);
+      tempPower.setAttribute(keyString, powerString);
+      tempPower.setAttribute(valueString, "" + power);
+      temp.appendChild(tempPower);
+      parent.appendChild(temp);
+
+      tempTime = tempTime - 86400;
+      changePoints(24);
+    }
 
     return doc;
   }
@@ -290,7 +339,7 @@ public class PhotovoltaicsData {
     Random random = new Random();
     int randP = random.nextInt(10);
     int randE = random.nextInt(10);
-
+    System.out.println(hour);
     long changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
     if (hourlyAverage[hour] == 0) {
       energy = 0;
@@ -315,6 +364,26 @@ public class PhotovoltaicsData {
     }
     else {
       power = changeValue / 4;
+    }
+    // Repetition of the previous code with variation for the daily average.
+    if (hour == 24) {
+      changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
+      if (randP < 5) {
+        energy = hourlyAverage[hour] - changeValue;
+      }
+      else {
+        energy = hourlyAverage[hour] + changeValue;
+      }
+      changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
+      if (randE < 3) {
+        power = changeValue * 3 / 4;
+      }
+      else if (randE < 6) {
+        power = changeValue * 3 / 4;
+      }
+      else {
+        power = changeValue / 4;
+      }
     }
   }
 
