@@ -27,9 +27,9 @@ public class PhotovoltaicsData {
    * over a single day. We will also assume that 0 energy is generated between the hours of 6pm and
    * 6am. The 25th point represends the daily average.
    */
-  private static long[] hourlyAverage = { 0, 0, 0, 0, 0, 0, 3000 / 64, 3000 / 32, 3000 / 16,
+  private static long[] hourlyAverage = { 1, 1, 1, 1, 1, 1, 3000 / 64, 3000 / 32, 3000 / 16,
       3000 / 8, 3000 / 4, 3000 / 2, 3000 / 2, 3000 / 4, 3000 / 8, 3000 / 16, 3000 / 32, 3000 / 64,
-      0, 0, 0, 0, 0, 0, 6000 / 24 };
+      1, 1, 1, 1, 1, 1, 6000 / 24 };
   /** The current energy. */
   private static long energy = hourlyAverage[0];
   /** The current power. */
@@ -283,26 +283,26 @@ public class PhotovoltaicsData {
     tempTime = timestamp;
     changePoints(hour);
     // 24 state data points at 1 hour intervals (to compose 1 day report)
-//    for (int i = 0; i < 24; i++) {
-//      Element temp = doc.createElement(stateData);
-//      temp.setAttribute(system, pvString);
-//      temp.setAttribute(tStamp, "" + tempTime);
-//      Element tempElectric = doc.createElement(stateKey);
-//      tempElectric.setAttribute(keyString, energyString);
-//      tempElectric.setAttribute(valueString, "" + energy);
-//      temp.appendChild(tempElectric);
-//      Element tempPower = doc.createElement(stateKey);
-//      tempPower.setAttribute(keyString, powerString);
-//      tempPower.setAttribute(valueString, "" + power);
-//      temp.appendChild(tempPower);
-//      parent.appendChild(temp);
-//      tempTime = tempTime - 3600;
-//      hour = hour - 1;
-//      if (hour < 0) {
-//        hour = 23;
-//      }
-//      changePoints(hour);
-//    }
+    for (int i = 0; i < 24; i++) {
+      Element temp = doc.createElement(stateData);
+      temp.setAttribute(system, pvString);
+      temp.setAttribute(tStamp, "" + tempTime);
+      Element tempElectric = doc.createElement(stateKey);
+      tempElectric.setAttribute(keyString, energyString);
+      tempElectric.setAttribute(valueString, "" + energy);
+      temp.appendChild(tempElectric);
+      Element tempPower = doc.createElement(stateKey);
+      tempPower.setAttribute(keyString, powerString);
+      tempPower.setAttribute(valueString, "" + power);
+      temp.appendChild(tempPower);
+      parent.appendChild(temp);
+      tempTime = tempTime - 3600;
+      hour = hour - 1;
+      if (hour < 0) {
+        hour = 23;
+      }
+      changePoints(hour);
+    }
     // 7 state data points at 1 day intervals (to compose 1 week report)
     // 21-24 additional state data points at 1 day intervals (to compose 1 month report)
     // We know that the total is 6000 Wh a day, 6000/24 is the daily average.
@@ -341,8 +341,8 @@ public class PhotovoltaicsData {
     int randE = random.nextInt(10);
     System.out.println(hour);
     long changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
-    if (hourlyAverage[hour] == 0) {
-      energy = 0;
+    if (hourlyAverage[hour] == 1) {
+      energy = 1;
     }
     if (randP < 5) {
       energy = hourlyAverage[hour] - changeValue;
@@ -367,14 +367,14 @@ public class PhotovoltaicsData {
     }
     // Repetition of the previous code with variation for the daily average.
     if (hour == 24) {
-      changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
+      changeValue = (long) (random.nextInt((int) (hourlyAverage[hour] / 10)));
       if (randP < 5) {
         energy = hourlyAverage[hour] - changeValue;
       }
       else {
         energy = hourlyAverage[hour] + changeValue;
       }
-      changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
+      changeValue = (long) (random.nextInt((int) (hourlyAverage[hour] / 10)));
       if (randE < 3) {
         power = changeValue * 3 / 4;
       }

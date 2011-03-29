@@ -25,8 +25,8 @@ public class ElectricalData {
   /**
    * Each index represents an estimated hourly average of electricity consumption. Values based
    * around those found in the following link and adjusted from MW to W-
-   * http://www.ferc.gov/market-oversight/mkt-electric/california/CAISO-rto-dly-rpt.pdf.
-   * The 25th data point represents the average consumption for the entire day.
+   * http://www.ferc.gov/market-oversight/mkt-electric/california/CAISO-rto-dly-rpt.pdf. The 25th
+   * data point represents the average consumption for the entire day.
    */
   private static long[] hourlyAverage = { // in watts per hour
       1640, 1620, 1550, 1500, 1580, 1640, 1890, 2120, 1990, 1910, 1970, 1980, 1910, 1900, 1890,
@@ -242,26 +242,34 @@ public class ElectricalData {
    * @return doc The updated document..
    */
   public static Document generateHistoricData(Map<String, Integer> baseTime, Document doc) {
-    int date = baseTime.get("date");
     int hour = baseTime.get("hour");
     int minute = baseTime.get("minute");
     int timestamp = baseTime.get("timestamp");
+    String stateData = "state-data";
+    String system = "system";
+    String tStamp = "timestamp";
+    String stateKey = "state-key";
+    String electricString = "electric";
+    String keyString = "key";
+    String valueString = "value";
+    String energyString = "energy";
+    String powerString = "power";
 
     changePoints(hour);
     Element parent = doc.getDocumentElement();
     long tempTime = timestamp;
     // 12 state data points at 5 min intervals (to compose 1 hour report)
     for (int i = 0; i < 12; i++) {
-      Element temp = doc.createElement("state-data");
-      temp.setAttribute("system", "electrical");
-      temp.setAttribute("timestamp", "" + tempTime);
-      Element tempElectric = doc.createElement("state-key");
-      tempElectric.setAttribute("key", "electrical");
-      tempElectric.setAttribute("value", "" + energy);
+      Element temp = doc.createElement(stateData);
+      temp.setAttribute(system, electricString);
+      temp.setAttribute(tStamp, "" + tempTime);
+      Element tempElectric = doc.createElement(stateKey);
+      tempElectric.setAttribute(keyString, electricString);
+      tempElectric.setAttribute(valueString, "" + energy);
       temp.appendChild(tempElectric);
-      Element tempPower = doc.createElement("state-key");
-      tempPower.setAttribute("key", "power");
-      tempPower.setAttribute("value", "" + power);
+      Element tempPower = doc.createElement(stateKey);
+      tempPower.setAttribute(keyString, powerString);
+      tempPower.setAttribute(valueString, "" + power);
       temp.appendChild(tempPower);
       parent.appendChild(temp);
       // subtract 5 minutes in unix time
@@ -272,19 +280,56 @@ public class ElectricalData {
         minute = 60 + minute;
         hour = hour - 1;
       }
-      // adjust in case day must change
       if (hour < 0) {
-        hour = 24 + hour;
-        date = date - 1;
+        hour = 23;
       }
       changePoints(hour);
-      
 
     }
     // 24 state data points at 1 hour intervals (to compose 1 day report)
+    for (int i = 0; i < 24; i++) {
+      Element temp = doc.createElement(stateData);
+      temp.setAttribute(system, electricString);
+      temp.setAttribute(tStamp, "" + tempTime);
+      Element tempElectric = doc.createElement(stateKey);
+      tempElectric.setAttribute(keyString, energyString);
+      tempElectric.setAttribute(valueString, "" + energy);
+      temp.appendChild(tempElectric);
+      Element tempPower = doc.createElement(stateKey);
+      tempPower.setAttribute(keyString, powerString);
+      tempPower.setAttribute(valueString, "" + power);
+      temp.appendChild(tempPower);
+      parent.appendChild(temp);
+      tempTime = tempTime - 3600;
+      hour = hour - 1;
+      if (hour < 0) {
+        hour = 23;
+      }
+      changePoints(hour);
+    }
     // 7 state data points at 1 day intervals (to compose 1 week report)
     // 21-24 additional state data points at 1 day intervals (to compose 1 month report)
+    // We know that the total is 6000 Wh a day, 6000/24 is the daily average.
+    // We will fluctuate around the average.
+    tempTime = timestamp;
+    changePoints(24);
+    for (int i = 0; i < 31; i++) {
+      Element temp = doc.createElement(stateData);
+      temp.setAttribute(system, electricString);
+      temp.setAttribute(tStamp, "" + tempTime);
+      Element tempElectric = doc.createElement(stateKey);
+      tempElectric.setAttribute(keyString, electricString);
+      tempElectric.setAttribute(valueString, "" + energy);
+      temp.appendChild(tempElectric);
+      Element tempPower = doc.createElement(stateKey);
+      tempPower.setAttribute(keyString, powerString);
+      tempPower.setAttribute(valueString, "" + power);
+      temp.appendChild(tempPower);
+      parent.appendChild(temp);
 
+      tempTime = tempTime - 86400;
+      changePoints(24);
+    }
     return doc;
   }
 
@@ -337,6 +382,25 @@ public class ElectricalData {
     }
     else {
       power = -1 * changeValue;
+    }
+    if (hour == 24) {
+      changeValue = (long) (random.nextInt((int) (hourlyAverage[hour] / 10)));
+      if (randP < 5) {
+        energy = hourlyAverage[hour] - changeValue;
+      }
+      else {
+        energy = hourlyAverage[hour] + changeValue;
+      }
+      changeValue = (long) (random.nextInt((int) (hourlyAverage[hour] / 10)));
+      if (randE < 3) {
+        power = changeValue * 3 / 4;
+      }
+      else if (randE < 6) {
+        power = changeValue * 3 / 4;
+      }
+      else {
+        power = changeValue / 4;
+      }
     }
   }
 }
