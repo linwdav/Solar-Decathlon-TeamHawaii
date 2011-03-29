@@ -43,11 +43,12 @@
         <path refid="compile.classpath" />
       </auxClasspath>
       <sourcePath>
-        <fileset dir="${basedir}">
-          <include name="${src.dir}/**/*.java" />
+        <fileset dir="${src.dir}">
+          <include name="**/*.java" />
+          <exclude name="**/*MT**/*"/>
         </fileset>
       </sourcePath>
-      <class location="${build.dir}/classes" />
+      <class location="${build.dir}/classes"/>
     </findbugs>
   </target>
 

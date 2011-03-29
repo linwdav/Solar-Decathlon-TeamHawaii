@@ -14,7 +14,7 @@ public class TestIHaleBackend {
    * Tests the hvac command handling.
    */
   @Test
-  public void handleHvacCommand() {
-    handleHvacCommand();
+  public void handleHvacCommand() { 
+    //TODO
   }
 }

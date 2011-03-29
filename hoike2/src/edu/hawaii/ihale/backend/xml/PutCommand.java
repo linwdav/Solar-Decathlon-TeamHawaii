@@ -47,10 +47,9 @@ public class PutCommand {
   /**
    * Adds the only valid argument to the XML command document.
    * 
-   * @param tagName String
-   * @param value String
-   * @return boolean
-   * @throws Exception Thrown when argument value is invalid.
+   * @param tagName the name of the tag to add.
+   * @param value the value of the tag to add. 
+   * @throws ValidTypeException Thrown when argument value is invalid.
    */
   public void addArgument(String tagName, Object value) throws ValidTypeException  {
     
@@ -60,13 +59,14 @@ public class PutCommand {
       throw new ValidTypeException();
     }
   
-    Element temperatureElement = doc.createElement(tagName);
-    temperatureElement.setAttribute("value", value.toString());
-    rootElement.appendChild(temperatureElement);
+    Element element = doc.createElement(tagName);
+    element.setAttribute("value", value.toString());
+    rootElement.appendChild(element);
   }
 
   /**
-   * Creates the DomRepresentation of Document. This is sent to the various Arduino devices to be parsed
+   * Creates the DomRepresentation of Document. This is sent to the 
+   * various Arduino devices to be parsed
    * using Restlet's org.restlet.resource.ClientResource class.
    * 
    * @return DomRepresentation

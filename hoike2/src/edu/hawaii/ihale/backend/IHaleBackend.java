@@ -38,28 +38,32 @@ import edu.hawaii.ihale.backend.xml.PutCommand;
  * @author Backend Team
  */
 public class IHaleBackend implements IHaleCommand {
-  // A logger.
+  /**A logger used by the class.*/
   private Logger log;
-  // The repository that can store all the data for the iHale system.
+  /**The repository that can store all the data for the iHale system.*/
   Repository repository = new Repository();
-  // Object that polls data from HSIM
-  public static Dispatcher dispatch;
-  // to hold the URI data.
-  public static Map<String, String> uris;
-  public static Map<String, String> commandMap;
-  public static Map<String, String> aquaMap;
-  public static Map<String, String> lightMap;
-  // delay between polling hsim
-  public long interval = 5000;
+  /** Object that polls data from HSIM.*/
+  private static  Dispatcher dispatch = null;
+  /**Holds the URI data.*/
+  private static  Map<String, String> uris = null;
+  /**Mapping for enums to command urls.*/
+  private static  Map<String, String> commandMap = null;
+  /**Holds url endings for aquaponics enum Strings.*/
+  private static Map<String, String> aquaMap = null;
+  /**Holds url endings for lighting enum strings.*/
+  private static Map<String, String> lightMap = null;
+  /**Delay in ms between polling hsim.*/
+  private static long interval = 5000;
   // ==========================================================
   // ============.properties file location=====================
   // ==========================================================
+  /**Starting directory.*/
   private static String currentDirectory = System.getProperty("user.home");
-  // Sub-directory containing system device properties file.
+  /**Sub-directory containing system device properties file.*/
   private static String folder = ".ihale";
-  // System device properties file name.
+  /**System device properties file name.*/
   private static String configurationFile = "device-urls.properties";
-  // Full path to the system device properties file.
+  /**Full path to the system device properties file.*/
   private static String configFilePath = currentDirectory + "/" + folder + "/" + configurationFile;
 
   // ============================================================
@@ -69,24 +73,25 @@ public class IHaleBackend implements IHaleCommand {
   public IHaleBackend() {
 
     this.log = Logger.getLogger(this.getClass().toString());
-    // instantiate the uris map.
+    init();
+  }
+
+  /** Initiates the class.*/
+  public static final void init() {
+ // instantiate the uris map.
     uris = new HashMap<String, String>();
     // puts URI data into "uris"
-    makeURIMap();
-    // TODO parse historical xml file
-    // TODO store historical xml data.
-
+    makeURIMap();  
     // make a dispatcher
     dispatch = new Dispatcher(uris, interval);
     // grab all data before it starts
     commandMap = dispatch.getCommandMap();
     lightMap = dispatch.getLightMap();
     aquaMap = dispatch.getAquaMap();
-    // pop a new thread to run forever
+    //create a new thread to run the poll loop forever
     Thread poll = new Thread(dispatch);
     poll.start();
   }
-
   /**
    * Parses URI properties file. Taken from team Hoike's backend files.
    * 
@@ -149,13 +154,8 @@ public class IHaleBackend implements IHaleCommand {
     case AQUAPONICS:
       handleAquaponicsCommand(command, arg);
       break;
-    case HVAC:
-      try {
-        handleHvacCommand(command, arg);
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-      }
+    case HVAC: 
+      handleHvacCommand(command, arg); 
       break;
     case LIGHTING:
       handleLightingCommand(room, command, arg);
@@ -215,18 +215,15 @@ public class IHaleBackend implements IHaleCommand {
    * Creates the HTTP command for the HVAC system.
    * 
    * @param command Currently the only supported command is SET_TEMPERATURE.
-   * @param arg An integer representing the new number.
-   * @return String
+   * @param arg An integer representing the new number. 
    * @throws RuntimeException Thrown creation of XML document fails.
    */
-  private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException {
-
+  private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException { 
     PutCommand doc = null;
     String url = null;
-    ClientResource client = null;
-
-    if (command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)) {
-
+    ClientResource client = null; 
+    
+    if (command.equals(ApiDictionary.IHaleCommandType.SET_TEMPERATURE)) { 
       // Create client resource
       url = commandMap.get("hvac") + "hvac/temp";
       client = new ClientResource(url);
@@ -238,12 +235,9 @@ public class IHaleBackend implements IHaleCommand {
 
         // Send the xml representation to the device.
         client.put(doc.getRepresentation());
-      }
-      catch (IOException e) {
-        throw new RuntimeException("Failed to create Dom Representation.", e);
-      }
+      } 
       catch (Exception e) {
-        throw new RuntimeException("Failed to create command XML.", e);
+        throw new RuntimeException("Failed to execute command.", e);
       }
       finally {
         client.release();

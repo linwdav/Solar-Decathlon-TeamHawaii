@@ -14,7 +14,7 @@ import edu.hawaii.ihale.api.ApiDictionary;
  * @author Backend Team
  *
  */
-public class Dispatcher implements Runnable{
+public class Dispatcher implements Runnable {
   /** The interval to wait between polling.**/
   private long interval;
   /** The map containing all URI values for each system. **/
@@ -29,7 +29,12 @@ public class Dispatcher implements Runnable{
   private List<ClientResource> pollList; 
   /**Holds the history client.*/
   private List<ClientResource> histList;
-  /** Initializes the dispatcher and starts it.**/
+  
+  
+  /** Initializes the dispatcher and starts it.
+   * @param map the parsed properties file
+   * @param interval the time in ms to wait between pollings.
+   */
   public Dispatcher(Map<String,String> map, long interval) {
     this.interval = interval;
     this.map = map;
@@ -46,12 +51,12 @@ public class Dispatcher implements Runnable{
   /**
    * Creates resource classes and sets up the commandMap and pollList.
    */
-  public void init() { 
+  public final void init() { 
     String lightState = "lighting/state";
     String since = "?since=0";
     pollList = new ArrayList<ClientResource>();
     commandMap = new HashMap<String,String>();
-    
+    histList = new ArrayList<ClientResource>();
       String aquaState = map.get("aquaponics-state") + "aquaponics/state"; 
       ClientResource aquaponics = new ClientResource(aquaState); 
       pollList.add(aquaponics);
@@ -97,10 +102,10 @@ public class Dispatcher implements Runnable{
       pollList.add(new ClientResource(livingState));
   }
   
-  /** Polls data continuously from Hsim */
+  /** Polls data continuously from Hsim. */
   @Override
   public void run() { 
-    while(true) {
+    while (true) {
       parse(pollList, "Client Data");
       try {
         Thread.sleep(interval);
@@ -114,7 +119,7 @@ public class Dispatcher implements Runnable{
   
   
   /** Gets,Parses, and Stores the history for each system.*/
-  public void getHist() {
+  public final void getHist() {
     parse(histList, "Historical Data");
   }
   
@@ -127,15 +132,22 @@ public class Dispatcher implements Runnable{
     return commandMap;
   }
   
-  /** Maps the URL endings for Aquaponics putCommand URLs to an Enum String.*/
+  /** Maps the URL endings for Aquaponics putCommand URLs to an 
+   *  Enum String.*/
   public static void makeAquaMap() {
     aquaMap = new HashMap<String,String> ();
-    aquaMap.put(ApiDictionary.IHaleCommandType.FEED_FISH.toString(),"aquaponics/fish/feed");
-    aquaMap.put(ApiDictionary.IHaleCommandType.HARVEST_FISH.toString(),"aquaponics/fish/harvest");
-    aquaMap.put(ApiDictionary.IHaleCommandType.SET_NUTRIENTS.toString(),"aquaponics/fish/nutrients");
-    aquaMap.put(ApiDictionary.IHaleCommandType.SET_PH.toString(),"aquaponics/ph");
-    aquaMap.put(ApiDictionary.IHaleCommandType.SET_TEMPERATURE.toString(),"aquaponics/temperature");
-    aquaMap.put(ApiDictionary.IHaleCommandType.SET_WATER_LEVEL.toString(),"aquaponics/water/level"); 
+    aquaMap.put(ApiDictionary.IHaleCommandType.FEED_FISH.toString(),
+        "aquaponics/fish/feed");
+    aquaMap.put(ApiDictionary.IHaleCommandType.HARVEST_FISH.toString(),
+        "aquaponics/fish/harvest");
+    aquaMap.put(ApiDictionary.IHaleCommandType.SET_NUTRIENTS.toString(),
+        "aquaponics/fish/nutrients");
+    aquaMap.put(ApiDictionary.IHaleCommandType.SET_PH.toString(),
+        "aquaponics/ph");
+    aquaMap.put(ApiDictionary.IHaleCommandType.SET_TEMPERATURE.toString(),
+        "aquaponics/temperature");
+    aquaMap.put(ApiDictionary.IHaleCommandType.SET_WATER_LEVEL.toString(),
+        "aquaponics/water/level"); 
   }
   /** Returns the Enum to URL ending map.
    * @return Map containing Enum strings and uri endings.
@@ -161,11 +173,13 @@ public class Dispatcher implements Runnable{
   
   /** Provides a for each loop that polls the provided list of ClientResources. 
    * @param list the list of CLientResources to poll from.
+   * @param listName String containing the name of the list, used
+   *        in error printing.
    */
-  public void parse(List<ClientResource> list, String listName) {
+  public final void parse(List<ClientResource> list, String listName) {
     XmlHandler handler = new XmlHandler();
-    while(true) {
-      for(ClientResource client : list) {
+    while (true) {
+      for (ClientResource client : list) {
         DomRepresentation rep = (DomRepresentation) client.get();
         client.release();
         try {

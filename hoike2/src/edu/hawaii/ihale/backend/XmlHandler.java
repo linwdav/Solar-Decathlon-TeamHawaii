@@ -28,7 +28,10 @@ public class XmlHandler {
    * Takes in an XML document formatted according to the System-H REST API specified here:
    * <url>http://code.google.com/p/solar-decathlon-teamhawaii/wiki/HouseSystemRestAPI</url>
    * as of March 15, 2011, and stores it to the IHaleRepository.
-   * 
+   * @param doc the Document to be parsed.
+   * @throws IOException in case of parsing error.
+   * @throws XPathExpressionException in the event of failed compilation.
+   * @return true if successful, false otherwise.
    * @author Gregory Burgess, Tony Gaskell
    */
   public Boolean xml2StateEntry(Document doc)
@@ -49,35 +52,35 @@ public class XmlHandler {
     IHaleRoom roomEnum = null;
     String tempVal = null;
     Object finalVal = null;
-    
+    String stateData = "//state-data[";
     // Determine the number of system entries
     Double systems = (Double) xpath.evaluate("count(//state-data)",
         doc, XPathConstants.NUMBER);
 //    System.out.println(systems.intValue());
     
     // Pull the state-data attributes: system, device, timestamp
-    for (int i = 1; i <= systems.intValue(); i++) {
-      systemEnum = IHaleSystem.valueOf((String) xpath.evaluate("//state-data["+ i + "]/@system",
+    for (int i = 1; i <= systems.intValue(); i ++) {
+      systemEnum = IHaleSystem.valueOf((String) xpath.evaluate(stateData + i + "]/@system",
           doc, XPathConstants.STRING));
-      device = (String) xpath.evaluate("//state-data["+ i + "]/@device",
+      device = (String) xpath.evaluate(stateData + i + "]/@device",
           doc, XPathConstants.STRING);
-      timestamp = Long.parseLong((String) xpath.evaluate("//state-data["+ i + "]/@timestamp",
+      timestamp = Long.parseLong((String) xpath.evaluate(stateData + i + "]/@timestamp",
           doc, XPathConstants.STRING));
 //      System.out.println("********************");
 //      System.out.println(systemEnum.toString() + " " + device + " " + timestamp);
       Double states = (Double) xpath.evaluate("count(//state-data[" + i + "]/state)",
           doc, XPathConstants.NUMBER);
       // Mapping LIGHTING arduino devices to IHaleRooms.
-      if (device.equals("arduino-5")) {
+      if ("arduino-5".equals(device)) {
         roomEnum = IHaleRoom.LIVING;
       }
-      else if (device.equals("arduino-6")) {
+      else if ("arduino-6".equals(device)) {
         roomEnum = IHaleRoom.DINING;
       }
-      else if (device.equals("arduino-7")) {
+      else if ("arduino-7".equals(device)) {
         roomEnum = IHaleRoom.KITCHEN;
       }
-      else if (device.equals("arduino-8")) {
+      else if ("arduino-8".equals(device)) {
         roomEnum = IHaleRoom.BATHROOM;
       }
       else {
@@ -88,10 +91,10 @@ public class XmlHandler {
 //      System.out.println(states.intValue());
       // Pull state attributes: key, value
       for (int j = 1; j <= states.intValue(); j++) {
-        stateEnum = IHaleState.valueOf((String) xpath.evaluate("//state-data["+ i + "]" +
-            "/state["+ j + "]/@key", doc, XPathConstants.STRING));
-        tempVal = (String) xpath.evaluate("//state-data["+ i + "]" +
-            "/state["+ j + "]/@value", doc, XPathConstants.STRING);
+        stateEnum = IHaleState.valueOf((String) xpath.evaluate(stateData + i + "]" +
+            "/state[" + j + "]/@key", doc, XPathConstants.STRING));
+        tempVal = (String) xpath.evaluate(stateData + i + "]" +
+            "/state[" + j + "]/@value", doc, XPathConstants.STRING);
         if (stateEnum.getType().equals(Double.class)) {
           finalVal = Double.parseDouble(tempVal);
         }
@@ -129,7 +132,10 @@ public class XmlHandler {
    * Takes in an XML representation formatted according to the System-H REST API specified here:
    * <url>http://code.google.com/p/solar-decathlon-teamhawaii/wiki/HouseSystemRestAPI</url>
    * as of March 15, 2011, and stores it to the IHaleRepository.
-   * 
+   * @param rep the representation to be parsed.
+   * @return boolean true if successful, false otherwise. 
+   * @throws IOException in case of parsing error.
+   * @throws XPathExpressionException in the event of failed compilation.
    * @author Gregory Burgess, Tony Gaskell
    */
   public Boolean xml2StateEntry(Representation rep)
@@ -149,8 +155,11 @@ public class XmlHandler {
   /**
    * Takes in an XML document formatted according to the eGauge API specified here:
    * <url>http://www.egauge.net/docs/egauge-xml-api.pdf</url>
-   * as of March 15, 2011, and stores it to the IHaleRepository.
-   * 
+   * as of March 15, 2011, and stores it to the IHaleRepository. 
+   * @param doc the Document to be parsed.
+   * @return boolean true if successful, false otherwise. 
+   * @throws IOException in case of parsing error.
+   * @throws XPathExpressionException in the event of failed compilation.
    * @author Gregory Burgess, Tony Gaskell
    */
   public Boolean eGauge2StateEntry(Document doc)
@@ -171,7 +180,7 @@ public class XmlHandler {
     IHaleRoom roomEnum = null;
     String tempVal = null;
     Object finalVal = null;
-    
+    String meter = "//meter[";
     // Determine the number of system entries
     Double meters = (Double) xpath.evaluate("count(//meter)",
         doc, XPathConstants.NUMBER);
@@ -185,20 +194,20 @@ public class XmlHandler {
     for (int i = 1; i < meters.intValue(); i++) {
 //      System.out.println("********************");
 //      System.out.println("Iteration: " + i);
-      title = (String) xpath.evaluate("//meter["+ i + "]/@title",
+      title = (String) xpath.evaluate(meter + i + "]/@title",
           doc, XPathConstants.STRING);
-      if (title.equals("Grid")) {
+      if ("Grid".equals(title)) {
         systemEnum = IHaleSystem.ELECTRIC;
         stateEnum = IHaleState.POWER;
         // Grab data from the power (usage)
-        tempVal = (String) xpath.evaluate("//meter["+ i + "]" +
+        tempVal = (String) xpath.evaluate(meter + i + "]" +
             "/power/text()", doc, XPathConstants.STRING);
       }
-      else if (title.equals("Solar")) {
+      else if ("Solar".equals(title)) {
         systemEnum = IHaleSystem.PHOTOVOLTAIC;
         stateEnum = IHaleState.ENERGY;
         // Grab data from energy (generation)
-        tempVal = (String) xpath.evaluate("//meter["+ i + "]" +
+        tempVal = (String) xpath.evaluate(meter + i + "]" +
             "/energy/text()", doc, XPathConstants.STRING);
       }
       else {
@@ -248,8 +257,11 @@ public class XmlHandler {
   /**
    * Takes in an XML representation formatted according to the System-H REST API specified here:
    * <url>http://code.google.com/p/solar-decathlon-teamhawaii/wiki/HouseSystemRestAPI</url>
-   * as of March 15, 2011, and stores it to the IHaleRepository.
-   * 
+   * as of March 15, 2011, and stores it to the IHaleRepository. 
+   * @param rep the representation to be parsed.
+   * @return boolean true if successful, false otherwise. 
+   * @throws IOException in case of parsing error.
+   * @throws XPathExpressionException in the event of failed compilation.
    * @author Gregory Burgess, Tony Gaskell
    */
   public Boolean eGuage2StateEntry(Representation rep)
