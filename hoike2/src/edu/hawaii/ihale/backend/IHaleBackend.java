@@ -54,6 +54,8 @@ public class IHaleBackend implements IHaleCommand {
   private static Map<String, String> lightMap = null;
   /**Delay in ms between polling hsim.*/
   private static long interval = 5000;
+  /**For testing & verification purposes.*/
+  public PutCommand doc;
   // ==========================================================
   // ============.properties file location=====================
   // ==========================================================
@@ -132,7 +134,7 @@ public class IHaleBackend implements IHaleCommand {
    */
   @Override
   public void doCommand(IHaleSystem system, IHaleRoom room, IHaleCommandType command, Object arg) {
-
+    doc = null;
     // All command invocations should be saved in the repository. Here's how you do it.
     Long timestamp = (new Date()).getTime();
     IHaleState state = ApiDictionary.iHaleCommandType2State(command);
@@ -175,7 +177,7 @@ public class IHaleBackend implements IHaleCommand {
    */
   private void handleLightingCommand(IHaleRoom room, IHaleCommandType command, Object arg) {
 
-    PutCommand doc = null;
+    
     String url = null;
     ClientResource client = null;
 
@@ -218,8 +220,7 @@ public class IHaleBackend implements IHaleCommand {
    * @param arg An integer representing the new number. 
    * @throws RuntimeException Thrown creation of XML document fails.
    */
-  private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException { 
-    PutCommand doc = null;
+  private void handleHvacCommand(IHaleCommandType command, Object arg) throws RuntimeException {  
     String url = null;
     ClientResource client = null; 
     
@@ -256,9 +257,7 @@ public class IHaleBackend implements IHaleCommand {
    * @param arg An integer for feed fish, harvest fish, water level, and temperature, a double
    * otherwise.
    */
-  private void handleAquaponicsCommand(IHaleCommandType command, Object arg) {
-
-    PutCommand doc = null;
+  private void handleAquaponicsCommand(IHaleCommandType command, Object arg) { 
     String url = null;
     ClientResource client = null;
 
@@ -294,38 +293,7 @@ public class IHaleBackend implements IHaleCommand {
       throw new RuntimeException("IHaleCommandType is invalid.");
     }
   }
-
-  /**
-   * This method illustrates a couple examples of what you might do after you got some state
-   * information from the house.
-   */
-  public void exampleStateFromHouseSystems() {
-    // Let's say I found out somehow that the Temperature of the house was 22.
-    // First I have to represent this information appropriately.
-    IHaleSystem system = IHaleSystem.HVAC;
-    IHaleState state = IHaleState.TEMPERATURE;
-    Integer temperature = 22;
-    Long timestamp = (new Date()).getTime();
-
-    // Now I can create a repository instance and store my state info.
-    Repository repository = new Repository();
-    repository.store(system, state, timestamp, temperature);
-
-    // A little while later, I find out that there are some dead fish in the tank.
-    // So let's add that info to the repository.
-    system = IHaleSystem.AQUAPONICS;
-    state = IHaleState.DEAD_FISH;
-    Integer numDeadFish = 2; // R.I.P.
-    timestamp = (new Date()).getTime();
-    repository.store(system, state, timestamp, numDeadFish);
-
-    // It's bad when fish die, so let's send a high priority status message.
-    SystemStatusMessage message =
-        new SystemStatusMessage(timestamp, system, SystemStatusMessageType.ALERT,
-            "Fish are dying!!! Do something!");
-    repository.store(message);
-  }
-
+ 
   /**
    * A sample main program.
    * 
