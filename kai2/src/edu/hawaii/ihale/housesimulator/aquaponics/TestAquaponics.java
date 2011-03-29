@@ -48,7 +48,7 @@ public class TestAquaponics {
     putValue("temperature", "SET_TEMPERATURE", "30");
     putValue("feed", "FEED_FISH", "10.0");
     putValue("harvest", "HARVEST_FISH", "0");
-    putValue("nutrients", "SET_NUTRIENTS", "20.0");
+    putValue("nutrients", "SET_NUTRIENTS", "1.5");
     putValue("ph", "SET_PH", "7.4");
     putValue("water/level", "SET_WATER_LEVEL", "250");
 
@@ -85,13 +85,13 @@ public class TestAquaponics {
     String deadFishKey = ((Element) xmlList.item(1)).getAttribute(keyStr);
     //String deadFishValue = ((Element) xmlList.item(1)).getAttribute(valStr);
     String ecKey = ((Element) xmlList.item(2)).getAttribute(keyStr);
-    //String ecValue = ((Element) xmlList.item(2)).getAttribute(valStr);
+    String ecValue = ((Element) xmlList.item(2)).getAttribute(valStr);
     String tempKey = ((Element) xmlList.item(3)).getAttribute(keyStr);
     String tempValue = ((Element) xmlList.item(3)).getAttribute(valStr);
     String turbKey = ((Element) xmlList.item(4)).getAttribute(keyStr);
     //String turbValue = ((Element) xmlList.item(4)).getAttribute(valStr);
     String waterKey = ((Element) xmlList.item(5)).getAttribute(keyStr);
-    //String waterValue = ((Element) xmlList.item(5)).getAttribute(valStr);
+    String waterValue = ((Element) xmlList.item(5)).getAttribute(valStr);
     String phKey = ((Element) xmlList.item(6)).getAttribute(keyStr);
     String phValue = ((Element) xmlList.item(6)).getAttribute(valStr);
     String oxygenKey = ((Element) xmlList.item(7)).getAttribute(keyStr);
@@ -108,8 +108,10 @@ public class TestAquaponics {
     assertEquals("Checking that key is OXYGEN", oxygenKey, "OXYGEN");
 
     // Check that the returned value is within a delta of our PUT value.
+    assertEquals(1.5, Double.parseDouble(ecValue), 0.7);
     assertEquals(29.0, Double.parseDouble(tempValue), 3);
     assertEquals(7.4, Double.parseDouble(phValue), 0.6);
+    assertEquals(250, Integer.parseInt(waterValue), 50);
 
   }
 
