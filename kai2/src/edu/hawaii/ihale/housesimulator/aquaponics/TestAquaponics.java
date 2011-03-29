@@ -45,9 +45,9 @@ public class TestAquaponics {
   @Test
   public void testGetAndPut() throws Exception {
     // Put the values to our system.
-    putValue("temperature", "SET_TEMPERATURE", "70");
+    putValue("temperature", "SET_TEMPERATURE", "30");
     putValue("feed", "FEED_FISH", "10.0");
-    putValue("harvest", "HARVEST_FISH", "1");
+    putValue("harvest", "HARVEST_FISH", "0");
     putValue("nutrients", "SET_NUTRIENTS", "20.0");
     putValue("ph", "SET_PH", "7.4");
     putValue("water/level", "SET_WATER_LEVEL", "250");
@@ -108,8 +108,8 @@ public class TestAquaponics {
     assertEquals("Checking that key is OXYGEN", oxygenKey, "OXYGEN");
 
     // Check that the returned value is within a delta of our PUT value.
-    assertEquals(70.0, Double.parseDouble(tempValue), 3);
-    assertEquals(7.4, Double.parseDouble(phValue), 0.7);
+    assertEquals(29.0, Double.parseDouble(tempValue), 3);
+    assertEquals(7.4, Double.parseDouble(phValue), 0.6);
 
   }
 

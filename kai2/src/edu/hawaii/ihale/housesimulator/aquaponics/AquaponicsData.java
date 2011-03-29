@@ -17,107 +17,179 @@ import org.w3c.dom.Element;
  */
 public class AquaponicsData {
 
+//  /** Test number generation here. */
+//  public static void main(String[] args) {
+//    for (int i = 0; i < 10; i++) {
+//      System.out.println((randomGen.nextInt(2) * randomGen.nextInt(2)
+//          * randomGen.nextInt(2))
+//          - (randomGen.nextInt(2) * randomGen.nextInt(2) *
+//              randomGen.nextInt(2)));
+//    }
+//  }
+  
   /** Random generator. */
-  private static final Random randomGenerator = new Random();
+  private static final Random randomGen = new Random();
 
-  // API items that are required.
+  // Necessary conditions for fish to live.
+  /** Number of fish alive in tank. */
+  private static int alive_fish = 100;
+  /** Minimum electrical conductivity for fish. */
+  private static double minEC = 1.0;
+  /** Maximum electrical conductivity for fish. */
+  private static double maxEC = 2.0;
+  /** Minimum temperature for fish. */
+  private static int minTemp = 20;
+  /** Maximum temperature for fish. */
+  private static int maxTemp = 45;
+  /** Minimum water level for fish. */
+  private static int minWaterLevel = alive_fish;
+  /** Minimum water PH for fish. */
+  private static double minPH = 6.8;
+  /** Maximum water PH for fish. */
+  private static double maxPH = 8.0;
+  /** Minimum oxygen level for fish. */
+  private static double minOxygen = alive_fish;
+  /** Minimum tank water circulation for fish. */
+  private static double minCirc = minOxygen;
+  
   /** The current water circulation. */
-  private static double circulation = (randomGenerator.nextDouble() * 10) + 20;
+  private static double circulation = (randomGen.nextDouble() * 10) + alive_fish;
   /** The current number of dead fish. */
-  private static int dead_fish = (randomGenerator.nextInt(5));
+  private static int dead_fish = 0;
   /** The current electrical conductivity. */
-  private static double electrical_conductivity = (randomGenerator.nextDouble()) + 1;
+  private static double ec = (randomGen.nextDouble()) + 1;
   /** The current temperature. */
-  private static int temperature = randomGenerator.nextInt(11) + 60;
+  private static int temperature = randomGen.nextInt(3) + 28;
   /** The current turbidity. */
-  private static double turbidity = (randomGenerator.nextDouble() * 15) + 15;
+  private static double turbidity = ec + dead_fish + circulation;
   /** The current water level. */
-  private static int water_level = (randomGenerator.nextInt(10)) + 200;
+  private static int water_level = (randomGen.nextInt(51)) + 200;
   /** The current pH. */
-  private static double ph = (randomGenerator.nextDouble() * 3) + 6.5;
+  private static double ph = (randomGen.nextDouble() * 1.2) + 6.8;
   /** The current dissolved oxygen. */
-  private static double oxygen = (randomGenerator.nextDouble() * 9) + 1;
+  private static double oxygen = circulation;
 
-  // Desired values for required API items.
-  /** The desired water circulation. */
-  private static double desiredCirculation = (randomGenerator.nextDouble() * 10) + 20;
   /** The desired electrical conductivity. */
-  private static double desiredConductivity = (randomGenerator.nextDouble()) + 1;
+  private static double desiredEC = (randomGen.nextDouble()) + 1;
   /** The desired temperature. */
-  private static int desiredTemperature = randomGenerator.nextInt(11) + 60;
-  /** The desired turbidity. */
-  private static double desiredTurbidity = (randomGenerator.nextDouble() * 15) + 15;
+  private static int desiredTemperature = randomGen.nextInt(3) + 28;
   /** The desired water level. */
-  private static int desiredWaterLevel = ((randomGenerator.nextInt(10)) + 200);
+  private static int desiredWaterLevel = (randomGen.nextInt(51)) + 200;
   /** The desired pH. */
-  private static double desiredPh = (randomGenerator.nextDouble() * 3) + 6.5;
-
-  /** The max value temperature will increment by. */
-  private static final long temperatureIncrement = 1;
-  /** The max value pH will increment by. */
-  private static double phIncrement = 0.2;
-
-  // Items not in API. These values are useful for modeling the system.
-  /** The number of fish in the tank. */
-  private static int num_fish = 10;
-  /** The amount of fish feed in the tank. */
-  private static double fish_feed = randomGenerator.nextDouble() + (0.9 * num_fish);
-  /** The amount of nutrients in the tank. Related to turbidity. */
-  private static double nutrients = (randomGenerator.nextDouble() * 15) + 15;
-
-  // Desired value for items not in API.
-  private static double desiredNutrients = (randomGenerator.nextDouble() * 15) + 15;
-
-  // /** The desired oxygen level. Dependent on the number of fish. */
-  // private static double desiredOxygen = num_fish;
-
+  private static double desiredPh = (randomGen.nextDouble() * 1.2) + 6.8;
+  
   /**
    * Modifies the state of the system.
    */
   public static void modifySystemState() {
 
+    // Changes water circulation by a random amount.
+    if (circulation < (alive_fish * 0.8)) {
+      // Fish need more circulation and oxygen!!!  Increment circulation by 0.0 to 1.0 units.
+      circulation += randomGen.nextDouble();
+    }
+    else {
+      // Increment or decrement circulation by 0.0 to 1.0 units.
+      circulation += randomGen.nextDouble() - randomGen.nextDouble();
+    }
+    
+    // Checks if fish are going to die or not.
+    if ((ec < minEC) || (ec > maxEC) || (temperature < minTemp) || (temperature > maxTemp)
+        || (water_level < minWaterLevel) || (ph < minPH) || (ph > maxPH) || (oxygen < minOxygen)) {
+      // 50% chance of 1 fish dying.
+      int fishDeath = randomGen.nextInt(2);
+      dead_fish += fishDeath;
+      alive_fish -= fishDeath;
+      if (fishDeath == 1) {
+        // 1 dead fish increases EC by 0.05
+        ec += 0.05;
+      }
+    }
+    
+    // Increments electrical conductivity within range of desired value.
+    if (ec < desiredEC) {
+      // 25% chance of incrementing by 0.05
+      ec += (randomGen.nextInt(2) * randomGen.nextInt(2)) * 0.05;
+    }
+    else if (ec > desiredEC) {
+      // 50% chance of decrementing by 0.05.  EC declines as nutrients and food gets used up.
+      ec -= (randomGen.nextInt(2)) * 0.05;
+    }
+    else if (ec == desiredEC) {
+      // 12.5% chance of incrementing or decrementing 0.05 from desired ec.
+      ec += ((randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))
+        - (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))) * 0.05;
+    }
+    
     // Increments temperature within range of the desired temperature.
-    if (temperature > (desiredTemperature - temperatureIncrement)
-        && temperature < (desiredTemperature + temperatureIncrement)) {
-      temperature +=
-          randomGenerator.nextInt(((int) temperatureIncrement * 2) + 1) - temperatureIncrement;
+    if (temperature < desiredTemperature) {
+      // 25% chance of incrementing by 1 degree.
+      temperature += randomGen.nextInt(2) * randomGen.nextInt(2);
     }
-    else if (temperature < desiredTemperature) {
-      temperature += randomGenerator.nextInt((int) temperatureIncrement + 1);
+    else if (temperature > desiredTemperature) {
+      // 25% chance of decrementing by 1 degree.
+      temperature -= randomGen.nextInt(2) * randomGen.nextInt(2);
+    }
+    else if (temperature == desiredTemperature) {
+      // 12.5% chance of incrementing or decrementing 1 degree from desired temperature.
+      temperature += (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))
+        - (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2));
+    }
+    
+    // Updates turbidity.  More dead fish = more turbidity.  More circulation = less turbidity.
+    turbidity = (alive_fish / 2) + ec + (dead_fish * 2) - (circulation - minCirc);
+    
+    // Changes water level by a random amount.
+    if (water_level < (minWaterLevel)) {
+      // Fish need more water!!!  50% chance to increment water_level by 1 unit.
+      water_level += randomGen.nextInt(2);
     }
     else {
-      temperature -= (randomGenerator.nextInt((int) temperatureIncrement + 1));
+      // Increment or decrement water_level by 1 unit.
+      water_level += randomGen.nextInt(2) - randomGen.nextInt(2);
     }
-
-    // Increments pH within range of the desired pH.
-    if (ph > (desiredPh - phIncrement) && ph < (desiredPh + phIncrement)) {
-      ph += (randomGenerator.nextDouble() * (phIncrement * 2)) - phIncrement;
+    // Update required water level in case fish have died.
+    minWaterLevel = alive_fish;
+    
+    // Increments PH within range of the desired PH.
+    if (ph < desiredPh) {
+      // 25% chance of incrementing by 0.1
+      ph += (randomGen.nextInt(2) * randomGen.nextInt(2)) * 0.1;
     }
-    else if (ph < desiredPh) {
-      ph += (randomGenerator.nextDouble() * phIncrement);
+    else if (ph > desiredPh) {
+      // 25% chance of decrementing by 0.1
+      ph -= (randomGen.nextInt(2) * randomGen.nextInt(2)) * 0.1;
     }
-    else {
-      ph -= (randomGenerator.nextDouble() * phIncrement);
+    else if (ph == desiredPh) {
+      // 12.5% chance of incrementing or decrementing 0.1 from desired PH.
+      ph += ((randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))
+        - (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))) * 0.1;
     }
-
+    
+    // Update oxygen.
+    oxygen = circulation;
+    // Update required oxygen in case fish have died.
+    minOxygen = alive_fish;
+    
     final String desired = " (Desired: "; // PMD pickiness
+    final String required = " (Required: "; // PMD pickiness
     System.out.println("----------------------");
     System.out.println("System: Aquaponics");
-    System.out.println("Circulation: " + roundSingleDecimal(circulation) + desired
-        + roundSingleDecimal(desiredCirculation) + ")");
-    System.out.println("Electrical conductivity: " + roundSingleDecimal(electrical_conductivity)
-        + desired + roundSingleDecimal(desiredConductivity) + ")");
-    System.out.println("Temperature: " + temperature + desired + desiredTemperature + ")");
-    System.out.println("Turbidity: " + roundSingleDecimal(turbidity) + desired
-        + roundSingleDecimal(desiredTurbidity) + ")");
-    System.out.println("Water level: " + water_level + desired + desiredWaterLevel + ")");
-    System.out.println("pH: " + roundSingleDecimal(ph) + desired + roundSingleDecimal(desiredPh)
-        + ")");
+    System.out.println("Alive fish: " + alive_fish);
     System.out.println("Dead fish: " + dead_fish);
-    System.out.println("Oxygen level: " + roundSingleDecimal(oxygen));
-    System.out.println("Fish feed: " + roundSingleDecimal(fish_feed));
-    System.out.println("Nutrients: " + roundSingleDecimal(nutrients) + desired
-        + roundSingleDecimal(desiredNutrients) + ")");
+    System.out.println("Circulation: " + roundSingleDecimal(circulation) + required + minCirc
+        + ")");
+    System.out.println("Electrical conductivity: " + roundSingleDecimal(ec)
+        + desired + roundSingleDecimal(desiredEC) + ")" + required + minEC + "-"
+        + maxEC + ")");
+    System.out.println("Temperature: " + temperature + desired + desiredTemperature + ")"
+        + required + minTemp + "-" + maxTemp + ")");
+    System.out.println("Turbidity: " + roundSingleDecimal(turbidity));
+    System.out.println("Water level: " + water_level + desired + desiredWaterLevel + ")" + required
+        + minWaterLevel + ")");
+    System.out.println("pH: " + roundSingleDecimal(ph) + desired + roundSingleDecimal(desiredPh)
+        + ")" + required + minPH + "-" + maxPH + ")");
+    System.out.println("Oxygen level: " + roundSingleDecimal(oxygen) + required + minOxygen + ")");
   }
 
   /**
@@ -135,7 +207,7 @@ public class AquaponicsData {
    * @param feedAmount the amount of fish feed to add.
    */
   public static void addFishFeed(double feedAmount) {
-    fish_feed += feedAmount;
+    ec += feedAmount * 0.01;
   }
 
   /**
@@ -144,16 +216,16 @@ public class AquaponicsData {
    * @param numFish the amount of fish to harvest.
    */
   public static void harvestFish(int numFish) {
-    num_fish -= numFish;
+    alive_fish -= numFish;
   }
 
   /**
-   * Sets the desired nutrient amount.
+   * Sets the desired nutrient amount which corresponds to EC.
    * 
    * @param newDesiredNutrients the nutrient level.
    */
   public static void setNutrients(double newDesiredNutrients) {
-    desiredNutrients = newDesiredNutrients;
+    desiredEC = newDesiredNutrients;
   }
 
   /**
@@ -184,6 +256,8 @@ public class AquaponicsData {
     DecimalFormat singleDecimal = new DecimalFormat("#.#");
     return Double.valueOf(singleDecimal.format(doubleValue));
   }
+  
+  
 
   /**
    * Returns the data as an XML Document instance.
@@ -223,7 +297,7 @@ public class AquaponicsData {
     // Create electrical conductivity state tag.
     Element electricalConductivityElement = doc.createElement(state);
     electricalConductivityElement.setAttribute(key, "ELECTRICAL_CONDUCTIVITY");
-    electricalConductivityElement.setAttribute(value, String.valueOf(electrical_conductivity));
+    electricalConductivityElement.setAttribute(value, String.valueOf(ec));
     rootElement.appendChild(electricalConductivityElement);
 
     // Create temperature state tag.
