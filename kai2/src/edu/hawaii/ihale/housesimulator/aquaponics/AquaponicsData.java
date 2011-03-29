@@ -136,7 +136,7 @@ public class AquaponicsData {
       // 50% chance of decrementing by 0.05.  EC declines as nutrients and food gets used up.
       ec -= (randomGen.nextInt(2)) * 0.05;
     }
-    else if (ec == desiredEC) {
+    else {
       // 12.5% chance of incrementing or decrementing 0.05 from desired ec.
       ec += ((randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))
         - (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))) * 0.05;
@@ -178,7 +178,7 @@ public class AquaponicsData {
       // 25% chance of decrementing by 0.1
       ph -= (randomGen.nextInt(2) * randomGen.nextInt(2)) * 0.1;
     }
-    else if (ph == desiredPh) {
+    else {
       // 12.5% chance of incrementing or decrementing 0.1 from desired PH.
       ph += ((randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))
         - (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2))) * 0.1;
@@ -191,7 +191,7 @@ public class AquaponicsData {
     // Update required oxygen in case fish have died.
     minOxygen = alive_fish;
     // Updates turbidity.  More dead fish = more turbidity.  More circulation = less turbidity.
-    turbidity = (alive_fish / 2) + ec + (dead_fish * 2) - (circulation - minCirc);
+    turbidity = ((alive_fish * 1.0) / 2) + ec + (dead_fish * 2) - (circulation - minCirc);
   }
   
   /**
