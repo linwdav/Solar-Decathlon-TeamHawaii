@@ -428,7 +428,7 @@ public class Dashboard extends Header {
         @Override
         public String getObject() {
           return Messages.messagesToString(SolarDecathlonApplication.getMessages()
-        		  .getAllMessages());
+              .getAllMessages());
         }
       };
       

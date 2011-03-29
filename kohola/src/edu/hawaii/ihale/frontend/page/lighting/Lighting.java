@@ -43,7 +43,7 @@ public class Lighting extends Header {
 
   private boolean DEBUG = true;
 
-  //String literals for pmd
+  // String literals for pmd
   private static final String brightID = "amountBright";
   private static final String white = "#FFFFFF";
   private static final String greenTag = "<font color=\"green\">";
@@ -84,7 +84,7 @@ public class Lighting extends Header {
 
   private Label colorFeedback;
   private Label intensityFeedback;
-  
+
   private String setColor = white;
   private String desiredLivingColor = white;
   private String desiredDiningColor = white;
@@ -119,22 +119,28 @@ public class Lighting extends Header {
     setKitchenIntensity = repository.getLightingLevel(IHaleRoom.KITCHEN).getValue();
     setBathroomIntensity = repository.getLightingLevel(IHaleRoom.BATHROOM).getValue();
 
+    desiredLivingColor = repository.getLightingColor(IHaleRoom.LIVING).getValue();
+    desiredDiningColor = repository.getLightingColor(IHaleRoom.DINING).getValue();
+    desiredKitchenColor = repository.getLightingColor(IHaleRoom.KITCHEN).getValue();
+    desiredBathroomColor = repository.getLightingColor(IHaleRoom.BATHROOM).getValue();
+
     if (LIVING_ROOM.equals(currentRoom)) {
-      intensity =
-          new TextField<String>(brightID, new Model<String>(setLivingIntensity + "%"));
+      setColor = desiredLivingColor;
+      intensity = new TextField<String>(brightID, new Model<String>(setLivingIntensity + "%"));
     }
     else if (DINING_ROOM.equals(currentRoom)) {
-      intensity =
-          new TextField<String>(brightID, new Model<String>(setDiningIntensity + "%"));
+      setColor = desiredDiningColor;
+      intensity = new TextField<String>(brightID, new Model<String>(setDiningIntensity + "%"));
     }
     else if (KITCHEN.equals(currentRoom)) {
-      intensity =
-          new TextField<String>(brightID, new Model<String>(setKitchenIntensity + "%"));
+      setColor = desiredKitchenColor;
+      intensity = new TextField<String>(brightID, new Model<String>(setKitchenIntensity + "%"));
     }
     else {
-      intensity =
-          new TextField<String>(brightID, new Model<String>(setBathroomIntensity + "%"));
+      setColor = desiredBathroomColor;
+      intensity = new TextField<String>(brightID, new Model<String>(setBathroomIntensity + "%"));
     }
+    
     // Added for jquery control.
     intensity.setMarkupId(intensity.getId());
     intensity.add(new AjaxFormComponentUpdatingBehavior("onchange") {
@@ -197,10 +203,8 @@ public class Lighting extends Header {
 
         if (LIVING_ROOM.equals(currentRoom)) {
           if (setLivingIntensity == desiredLivingIntensity) {
-            intensityFeedback
-                .setDefaultModelObject(yellowTag
-                    + yellowUneccessary + desiredLivingIntensity
-                    + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
+                + desiredLivingIntensity + yellowIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -213,19 +217,16 @@ public class Lighting extends Header {
               System.out.println("do command sent for living room lights intensity with level: "
                   + desiredLivingIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag
-                + intensityTag + desiredLivingIntensity
-                + greenIntensityPercent);
+            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
+                + desiredLivingIntensity + greenIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
         }
         else if (DINING_ROOM.equals(currentRoom)) {
           if (setDiningIntensity == desiredDiningIntensity) {
-            intensityFeedback
-                .setDefaultModelObject(yellowTag
-                    + yellowUneccessary + desiredDiningIntensity
-                    + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
+                + desiredDiningIntensity + yellowIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -238,19 +239,16 @@ public class Lighting extends Header {
               System.out.println("do command sent for dining room lights intensity with level: "
                   + desiredDiningIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag
-                + intensityTag + desiredDiningIntensity
-                + greenIntensityPercent);
+            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
+                + desiredDiningIntensity + greenIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
         }
         else if (KITCHEN.equals(currentRoom)) {
           if (setKitchenIntensity == desiredKitchenIntensity) {
-            intensityFeedback
-                .setDefaultModelObject(yellowTag
-                    + yellowUneccessary + desiredKitchenIntensity
-                    + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
+                + desiredKitchenIntensity + yellowIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -263,19 +261,16 @@ public class Lighting extends Header {
               System.out.println("do command sent for kitchen room lights intensity with level: "
                   + desiredKitchenIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag
-                + intensityTag + desiredKitchenIntensity
-                + greenIntensityPercent);
+            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
+                + desiredKitchenIntensity + greenIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
         }
         else if (BATHROOM.equals(currentRoom)) {
           if (setBathroomIntensity == desiredBathroomIntensity) {
-            intensityFeedback
-                .setDefaultModelObject(yellowTag
-                    + yellowUneccessary + desiredBathroomIntensity
-                    + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
+                + desiredBathroomIntensity + yellowIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -288,9 +283,8 @@ public class Lighting extends Header {
               System.out.println("do command sent for bathroom room lights intensity with level: "
                   + desiredBathroomIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag
-                + intensityTag + desiredBathroomIntensity
-                + greenIntensityPercent);
+            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
+                + desiredBathroomIntensity + greenIntensityPercent);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -375,8 +369,8 @@ public class Lighting extends Header {
 
         if (LIVING_ROOM.equals(currentRoom)) {
           if (desiredLivingColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag
-                + sameColorTag + desiredLivingColor + fontColorTag);
+            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredLivingColor
+                + fontColorTag);
             target.addComponent(colorFeedback);
             return;
           }
@@ -397,8 +391,8 @@ public class Lighting extends Header {
         }
         else if (DINING_ROOM.equals(currentRoom)) {
           if (desiredDiningColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag
-                + sameColorTag + desiredDiningColor + fontColorTag);
+            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredDiningColor
+                + fontColorTag);
             target.addComponent(colorFeedback);
             return;
           }
@@ -419,8 +413,8 @@ public class Lighting extends Header {
         }
         else if (KITCHEN.equals(currentRoom)) {
           if (desiredKitchenColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag
-                + sameColorTag + desiredKitchenColor + fontColorTag);
+            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredKitchenColor
+                + fontColorTag);
             target.addComponent(colorFeedback);
             return;
           }
@@ -441,8 +435,8 @@ public class Lighting extends Header {
         }
         else if (BATHROOM.equals(currentRoom)) {
           if (desiredBathroomColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag
-                + sameColorTag + desiredBathroomColor + fontColorTag);
+            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredBathroomColor
+                + fontColorTag);
             target.addComponent(colorFeedback);
             return;
           }
@@ -468,7 +462,7 @@ public class Lighting extends Header {
     add(colorFeedback);
     form.add(intensityFeedback);
     add(form);
-    
+
     roomChoices =
         new DropDownChoice<String>("room", new PropertyModel<String>(this, "currentRoom"), rooms);
 
@@ -490,36 +484,28 @@ public class Lighting extends Header {
           // set button to living state
           livingState = repository.getLightingEnabled(IHaleRoom.LIVING).getValue();
           setButtons(livingState);
-          setResponsePage(Lighting.class);
           // set intensity to living state
-          // set color to living state
         }
         else if (DINING_ROOM.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(DINING_ROOM);
           // set button to dining state
           diningState = repository.getLightingEnabled(IHaleRoom.DINING).getValue();
           setButtons(diningState);
-          setResponsePage(Lighting.class);
           // set intensity to dining state
-          // set color to dining state
         }
         else if (KITCHEN.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(KITCHEN);
           // set button to kitchen state
           kitchenState = repository.getLightingEnabled(IHaleRoom.KITCHEN).getValue();
           setButtons(kitchenState);
-          setResponsePage(Lighting.class);
           // set intensity to kitchen state
-          // set color to kitchen state
         }
         else if (BATHROOM.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(BATHROOM);
           // set button to bathroom state
           bathroomState = repository.getLightingEnabled(IHaleRoom.BATHROOM).getValue();
           setButtons(bathroomState);
-          setResponsePage(Lighting.class);
           // set intensity to bathroom state
-          // set color to bathroom state
         }
 
         // reset feedback
@@ -530,6 +516,7 @@ public class Lighting extends Header {
         target.addComponent(intensityFeedback);
         target.addComponent(onButton);
         target.addComponent(offButton);
+        setResponsePage(Lighting.class);
       }
     });
     add(roomChoices.setRequired(true));

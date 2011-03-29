@@ -45,9 +45,8 @@ public class Hvac extends Header {
 
   // for validating user's input for setTemp
   // don't want them perform duplicate doCommand with the same temperature.
-  private int desiredTemp = 0;
-
-  private int setTemp = 45;
+  private int desiredTemp = SolarDecathlonApplication.getHvac().getTemp();
+  private int setTemp = SolarDecathlonApplication.getHvac().getTemp();
 
   // feedback to user after they setTemp, failed or successful
   private Label feedback;
@@ -211,22 +210,6 @@ public class Hvac extends Header {
       /** Provide user feeback after they set a new desired temperature */
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-        // do a put command
-        // List<String> list = new ArrayList<String>();
-        // String temp = String.valueOf(desiredTemp);
-        // long tempLong = 0L;
-        // // ensure textfield contatins all digits
-        // try {
-        // tempLong = Long.parseLong(temp);
-        // }
-        // catch (NumberFormatException e) {
-        // feedback.setDefaultModelObject("<font color=\"red\">"
-        // + "Failure:<br />Textfield must contain all digits</font>");
-        // target.addComponent(feedback);
-        // target.addComponent(textField);
-        // return;
-        // }
-        // avoid user to do multiple doCommand with the same temperature.
         if (setTemp == desiredTemp) {
           feedback.setDefaultModelObject("<font color=\"#FF9900\">Unnecessary Change:<br />"
               + "Same as the original desired temperature (" + desiredTemp + "°F)</font>");
@@ -234,19 +217,8 @@ public class Hvac extends Header {
           target.addComponent(feedback);
           return;
         }
-        // avoid user set too low or too high temperature
-        // Should not be able to set too low or too high with slider.
-        // if (setTemp < TEMPERATURE_RANGE_START || setTemp > TEMPERATURE_RANGE_END) {
-        // feedback
-        // .setDefaultModelObject("<font color=\"red\">Failure:<br />Recommanded temperature: "
-        // + TEMPERATURE_RANGE_START + "-" + TEMPERATURE_RANGE_END + "F&deg</font>");
-        // }
-        // else do doCommand
         else {
           desiredTemp = setTemp;
-          // list.add(temp);
-          // SolarDecathlonApplication.getDB().doCommand("hvac", "arduino-4", "SetTemp", list);
-          // maybe should just create the backend instance in application.java
 
           IHaleSystem system = IHaleSystem.HVAC;
           IHaleCommandType command = IHaleCommandType.SET_TEMPERATURE;
