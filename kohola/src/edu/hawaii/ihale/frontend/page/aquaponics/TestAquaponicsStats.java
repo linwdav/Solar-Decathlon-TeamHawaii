@@ -20,7 +20,7 @@ public class TestAquaponicsStats {
    * Performs JUnit tests on the AquaponicsStats page.
    */
   @Test
-  public void testFormPage() {
+  public void testPage() {
     // Start up the WicketTester and check that the page renders.
     WicketTester tester = new WicketTester(new SolarDecathlonApplication());
     tester.startPage(AquaponicsStats.class);
