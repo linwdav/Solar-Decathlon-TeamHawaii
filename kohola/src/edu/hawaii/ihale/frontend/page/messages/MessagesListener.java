@@ -38,7 +38,7 @@ public class MessagesListener extends SystemStatusMessageListener {
    
     
     // Keep other lists bounded by 50
-    if (allMsgs.size() > 50) {
+    if (thisSystemMsgs.size() > 50) {
       allMsgs.remove(50);
     }
 
