@@ -14,7 +14,7 @@ import edu.hawaii.ihale.backend.IHaleBackend;
 /**
  * An external timer class that updates all resources periodically.
  * 
- * @author Team Maka
+ * @author kurtteichman
  */
 public class RepositoryRefresher {
   static Timer time = new Timer();

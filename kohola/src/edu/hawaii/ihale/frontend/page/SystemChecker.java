@@ -58,10 +58,10 @@ public class SystemChecker implements Serializable {
     double oxygen = aquaponicsListener.getOxygen();
     //int waterLevel = aquaponicsListener.getWaterLevel();
     
-    if (temp < 55 || temp > 65) {
+    if (temp < 82 || temp > 86) {
       aquaponicsError = true;
     }
-    else if (pH < 6.5 || pH > 7.5) {
+    else if (pH < 6.8 || pH > 8.0) {
       aquaponicsError = true;
     }
     else if (oxygen < 4.5 || oxygen > 5.5) {
