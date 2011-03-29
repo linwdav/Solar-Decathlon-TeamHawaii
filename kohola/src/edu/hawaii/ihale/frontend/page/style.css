@@ -92,10 +92,11 @@ div.clear { height: 0px !important; line-height: 0px !important; }
 .content-wrapper { background-color: #fbfbfb; }
 .left-column { float: left; left: -230px; padding: 10px 0 10px 20px; position: relative; width: 210px; }
 .right-column { float: left; margin-left: -230px; width: 100%; }
+.column-four { display: inline; float: left; margin: 0 !important; width: 25%; }
 .column-three { display: inline; float: left; margin: 0 !important; width: 33.3%; }
 .column-three-two { display: inline; float: left; margin: 0 !important; width: 66.6%; }
 .column-two { display: inline; float: left; margin: 0 !important; width: 50%; }
-.column-three .inner, .column-three-two .inner, .column-two .inner { margin: 0 10px; }
+.column-four .inner, .column-three .inner, .column-three-two .inner, .column-two .inner { margin: 0 10px; }
 .footer { background: #efefef; border-top: 1px solid #aaa; clear: both; padding: 10px 20px; }
 .header { background: url(images/header-bg.jpg) left center repeat-x; height: 120px; padding: 0 20px 5px; text-align: left; }
 .header-right { display: inline; float: right; margin-top: 10px; text-align: right; }
