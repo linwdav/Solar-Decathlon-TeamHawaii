@@ -52,16 +52,17 @@ public class LightingLivingPutResource extends ServerResource {
     String setColor = "setColor";
     
     // Call mutator corresponding to room.
-    if (setLevel.equalsIgnoreCase(putCommand) && "SET_LEVEL".equalsIgnoreCase(command)) {
+    if (setLevel.equalsIgnoreCase(putCommand) && "SET_LIGHTING_LEVEL".equalsIgnoreCase(command)) {
       LightingData.setLivingLevel(Long.parseLong(arg));
     }
     // Call lighting mutator corresponding to room.
-    else if (setColor.equalsIgnoreCase(command) && "SET_COLOR".equalsIgnoreCase(command)) {
+    else if (setColor.equalsIgnoreCase(command) && "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
       LightingData.setLivingColor(setColor);
     }    
     // Call enable mutator corresponding to room.
-    else if (setEnable.equalsIgnoreCase(command) && "SET_ENABLE".equalsIgnoreCase(command) ) {
-      LightingData.setLivingEnable(true);
+    else if (setEnable.equalsIgnoreCase(command) &&
+        "SET_LIGHTING_ENABLED".equalsIgnoreCase(command) ) {
+      LightingData.setLivingEnabled(true);
     }
     else { 
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);

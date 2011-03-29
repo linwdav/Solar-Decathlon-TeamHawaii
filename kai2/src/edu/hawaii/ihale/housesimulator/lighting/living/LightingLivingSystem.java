@@ -3,7 +3,6 @@ package edu.hawaii.ihale.housesimulator.lighting.living;
 import org.restlet.Application;
 import org.restlet.Restlet;
 import org.restlet.routing.Router;
-import edu.hawaii.ihale.housesimulator.lighting.bathroom.LightingBathroomPutResource;
 
 /**
  * Provides access to the Lighting system.
@@ -23,9 +22,10 @@ public class LightingLivingSystem extends Application {
     Router router = new Router(getContext());
     // Attach the resources to the router.
     router.attach("/state", LightingLivingGetResource.class);
-    router.attach("/level", LightingLivingPutResource.class);
-    router.attach("/color", LightingBathroomPutResource.class);
-    router.attach("/enable", LightingBathroomPutResource.class);
+    router.attach("/{putcommand}", LightingLivingPutResource.class);
+    router.attach("/level/{putcommand}", LightingLivingPutResource.class);
+    router.attach("/enabled/{putcommand}", LightingLivingPutResource.class);
+    router.attach("/color/{putcommand}", LightingLivingPutResource.class);
     // Return the root router
     return router;
   }

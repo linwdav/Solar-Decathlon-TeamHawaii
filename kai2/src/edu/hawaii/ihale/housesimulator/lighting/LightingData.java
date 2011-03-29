@@ -35,13 +35,13 @@ public class LightingData {
   private static String kitchenColor = "#FF04FF";
   
   /** The living light switch. */
-  private static boolean livingEnable = false;  
+  private static boolean livingEnabled = false;  
   /** The kitchen light switch. */
-  private static boolean kitchenEnable = false;
+  private static boolean kitchenEnabled = false;
   /** The bathroom lighting switch. */
-  private static boolean bathroomEnable = false;
+  private static boolean bathroomEnabled = false;
   /** The dining light switch. */
-  private static boolean diningEnable = false;
+  private static boolean diningEnabled = false;
 
   
   /** Flag for if the occupants are home or away. **/
@@ -159,10 +159,10 @@ public class LightingData {
   /**
    * Sets the bathroom lighting to on or off.
    * 
-   * @param newBathroomEnable the colors
+   * @param newBathroomEnabled the colors
    */
-  public static void setBathroomEnable(Boolean newBathroomEnable) {
-    bathroomEnable = newBathroomEnable;
+  public static void setBathroomEnabled(Boolean newBathroomEnabled) {
+    bathroomEnabled = newBathroomEnabled;
   }
   
 
@@ -178,10 +178,10 @@ public class LightingData {
   /**
    * Sets the living room lighting to on or off.
    * 
-   * @param newLivingEnable the colors
+   * @param newLivingEnabled the colors
    */
-  public static void setLivingEnable(Boolean newLivingEnable) {
-    livingEnable = newLivingEnable;
+  public static void setLivingEnabled(Boolean newLivingEnabled) {
+    livingEnabled = newLivingEnabled;
   }
   
   /**
@@ -196,10 +196,10 @@ public class LightingData {
   /**
    * Sets the living room lighting to on or off.
    * 
-   * @param newKitchenEnable the colors
+   * @param newKitchenEnabled the colors
    */
-  public static void setKitchenEnable(Boolean newKitchenEnable) {
-    kitchenEnable = newKitchenEnable;
+  public static void setKitchenEnabled(Boolean newKitchenEnabled) {
+    kitchenEnabled = newKitchenEnabled;
   }
 
   /**
@@ -214,10 +214,10 @@ public class LightingData {
   /**
    * Sets the living room lighting to on or off.
    * 
-   * @param newDiningEnable the colors
+   * @param newDiningEnabled the colors
    */
-  public static void setDiningEnable(Boolean newDiningEnable) {
-    diningEnable = newDiningEnable;
+  public static void setDiningEnabled(Boolean newDiningEnabled) {
+    diningEnabled = newDiningEnabled;
   }
 
 
@@ -233,7 +233,7 @@ public class LightingData {
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
     Document doc = docBuilder.newDocument();
-    modifySystemState();
+    //modifySystemState();
 
     // Create root tag
     Element rootElement = doc.createElement("state-data");
