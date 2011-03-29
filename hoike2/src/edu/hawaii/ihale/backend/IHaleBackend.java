@@ -189,7 +189,7 @@ public class IHaleBackend implements IHaleCommand {
    * @throws IOException Thrown when unable to close the FileInputStream.
    * @throws XPathExpressionException Thrown if error exists in XPath expression.
    */
-  public void getHistory() throws ParserConfigurationException, SAXException, IOException,
+  private void getHistory() throws ParserConfigurationException, SAXException, IOException,
       XPathExpressionException {
 
     XmlHandler parser = new XmlHandler();
