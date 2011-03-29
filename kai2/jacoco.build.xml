@@ -6,7 +6,7 @@
 
   <import file="build.xml" />
   <import file="junit.build.xml" />
-  <property name="jacoco.version" value="0.4.0.20100926135113"/>
+  <property name="jacoco.version" value="0.5.1.20110321224001"/>
   <property name="jacoco.install.dir" location="${lib.dir}/jacoco"/>
   
   <property name="jacoco.dir" location="${build.dir}/jacoco" />

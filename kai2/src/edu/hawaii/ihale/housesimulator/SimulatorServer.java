@@ -171,6 +171,7 @@ public class SimulatorServer extends Application {
     prop.setProperty("lighting-kitchen-control", lightingKitchen);
     prop.setProperty("lighting-bathroom-state", lightingBathroom);
     prop.setProperty("lighting-bathroom-control", lightingBathroom);
+    prop.setProperty("lighting-bathroom-color", lightingBathroom);
     prop.setProperty("pv-state", pv);
     prop.setProperty("electrical-state", electrical);
 
