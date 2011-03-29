@@ -31,6 +31,7 @@ import edu.hawaii.ihale.housesimulator.lighting.bathroom.LightingBathroomSystem;
 import edu.hawaii.ihale.housesimulator.lighting.dining.LightingDiningSystem;
 import edu.hawaii.ihale.housesimulator.lighting.kitchen.LightingKitchenSystem;
 import edu.hawaii.ihale.housesimulator.lighting.living.LightingLivingSystem;
+import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsData;
 import edu.hawaii.ihale.housesimulator.photovoltaics.PhotovoltaicsSystem;
 import edu.hawaii.ihale.housesimulator.simulationtimer.SimulationTimer;
 
@@ -407,11 +408,11 @@ public class SimulatorServer extends Application {
     baseTime.put("minute", Calendar.MINUTE);
     baseTime.put("second", Calendar.SECOND);
     //baseTime.put("timestamp", (int) (new Date()).getTime() / 1000);
-    baseTime.put("timestamp", (int) timestamp / 1000);
+    baseTime.put("timestamp", (int) (timestamp / 1000));
 
     // Historic points are appended while passed to electric data generation.
     returnDoc = ElectricalData.generateHistoricData(baseTime, returnDoc);
-    
+    returnDoc = PhotovoltaicsData.generateHistoricData(baseTime, returnDoc);
     return returnDoc;
   }
 }
