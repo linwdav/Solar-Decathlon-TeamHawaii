@@ -71,7 +71,7 @@ public class Dashboard extends Header {
   // private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
-  private static final String Y_AXIS = "8000.0";
+  private static final String Y_AXIS = "100.0";
   // private static final String negativeYAxis = "-500";
 
   private static final String classTagName = "class";
@@ -504,11 +504,12 @@ public class Dashboard extends Header {
 
     consumptionList =
         SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
+    
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - lastTwentyFour), time);
     generationList =
         SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
-
+    
     // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - lastTwentyFour), time);
 
     // milliseconds since beginning of hour

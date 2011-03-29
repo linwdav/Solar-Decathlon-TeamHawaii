@@ -43,7 +43,7 @@ public class Energy extends Header {
   //private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
-  private static final String Y_AXIS = "8000.0";
+  private static final String Y_AXIS = "100.0";
 
   /**
    * MarkupContainer for all graphs.
