@@ -122,9 +122,13 @@ table.no-hover tbody tr:hover td { background: inherit !important; }
 .sort-asc { background: url(images/sort-asc.png) center no-repeat; }
 .sort-desc { background: url(images/sort-desc.png) center no-repeat; }
 .no-sort { background: url(images/no-sort.png) center no-repeat; }
-table.bare { background: none !important; padding: 0 !important; margin: 0 !important; border: none !important; }
-table.bare th { background: #4c4c4c; color: #fff; vertical-align: middle;  font-size: 11pt; padding: 10px; height: 20px; }
-table.bare tr:hover td { background: #d4ffd4; }
+table.bare td, table.bare th { padding: 0 !important; background: none !important; border: none !important; }
+table.bare tr:hover td { background: none !important; }
+table.log { background: none !important; padding: 0 !important; margin: 0 !important;}
+table.log th { background: #4c4c4c; color: #fff; vertical-align: middle;  font-size: 11pt; padding: 10px; height: 20px; }
+table.log tr:hover td { background: #d4ffd4; }
+
+
 
 /* Table Sorting & Pagination Styles */
 .show-count { display: inline; float: left; line-height: 20px; margin-bottom: 5px; }

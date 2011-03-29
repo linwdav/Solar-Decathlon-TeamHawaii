@@ -382,76 +382,55 @@ $(function(){
 	   
     </div>
 
-
-	<!-- System Log -->	
-  <div class="inner">		
-    <div class="box">
-      <h3>Aquaponics Status Messages</h3>
-      <form action="#" class="table-wrapper" method="get" name="tableform">
-        <p class="show-count">
-          Show&nbsp;
-          <select>
-            <option>10</option>
-            <option>20</option>
-            <option>30</option>
-            <option>40</option>
-          </select>
-          &nbsp;Entries
-        </p>
-        <p class="showing">Showing 1 - 3 of 567 entries</p>
-        <table cellpadding="0" cellspacing="0" class="sortable" width="100%">
-          <thead>
-            <tr>
-              <th>When?<a class="sort-desc" href="#">&nbsp;</a></th>
-              <th>What?<a class="sort-desc" href="#">&nbsp;</a></th>
-              <th>Actions<a class="sort-desc" href="#">&nbsp;</a></th>
-            </tr>
-          </thead>
-          <tfoot>
-            <tr>
-              <th>When?</th>
-              <th>What?</th>
-              <th>Actions</th>
-            </tr>
-          </tfoot>
-          <tbody>
-            <tr>
-              <td>Today @ 3:33pm</td>
-              <td>Floating Fish Detected</td>
-              <td>
-                Remove carcasses
-              </td>
-            </tr>
-            <tr>
-              <td>Today @ 1:00pm</td>
-              <td>Nitrate Levels <span style="color:red; font-weight: bold;">HIGH</span></td>
-              <td>
-                add 20gal fresh water
-              </td>
-            </tr>
-            <tr>
-              <td>Today @ 9:00am</td>
-              <td>pH <span style="color:red; font-weight: bold;">LOW</span></td>
-              <td>
-                Add 10mL pH+
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <p class="pagination">
-          <a class="previous" href="#">&nbsp;</a>
-          <span class="current">1</span>
-          <a href="#">2</a>
-          <a href="#">3</a>
-          <a href="#">4</a>
-          <a href="#">5</a>
-          <a class="next" href="#">&nbsp;</a>
-        </p>
-        <p class="showing">Showing 1 - 3 of 567 entries</p>
-        <div class="clear"></div>
-      </form>
-    </div>
+<div class="inner">
+	<div class="box">
+    <h2>Aquaponics Log</h2>
+    <form action="#" class="table-wrapper" method="get" name="tableform">	
+    <!--p class="show-count">		
+	        Show&nbsp;		
+	        <select>		
+	          <option>10</option>		
+	          <option>20</option>		
+	          <option>30</option>		
+	          <option>40</option>		
+	        </select>		
+	        &nbsp;Entries		
+     </p-->		
+          <div wicket:id="AquaponicsLogContainer">
+          
+			<script type="text/javascript">
+			$(document).ready(function(){
+			   $("#SystemLogTable").tablesorter();
+			 });
+			</script>
+			
+	      <table id="SystemLogTable" cellpadding="0" cellspacing="0" class="tablesorter log" width="100%">		
+	        <thead>		
+	          <tr>		
+	            <th>Type</th>	
+	            <th>Time</th>
+	            <th>Message</th>		
+	          </tr>		
+	        </thead>		
+		
+	        <tbody>		
+	          <tr wicket:id="AquaponicsStatusMessages">
+	    		<td wicket:id="AquaponicsMessageType">Message Type Goes Here</td>
+	    		<td wicket:id="AquaponicsTimestamp">Time Goes Here</td>
+	    		<td wicket:id="AquaponicsMessageContent">Message Content Goes Here</td>
+	    	</tr>	
+	        </tbody>	
+	        <tfoot>
+	          <tr>
+	            <td wicket:id="paginatorAquaponics"></td>
+	          </tr>
+	        </tfoot>	
+	      </table>		
+      	  </div>
+	      <div class="clear"></div>		
+	    </form>
   </div>
+</div>    
   <div class="clear"></div>
 
 <!-- END SECOND COLUMN -->

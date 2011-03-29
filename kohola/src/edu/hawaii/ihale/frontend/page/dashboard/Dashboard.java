@@ -122,21 +122,21 @@ public class Dashboard extends Header {
           protected void populateItem(ListItem<SystemStatusMessage> item) {
 
             SystemStatusMessage msg = item.getModelObject();
-
-            // Populate data
-            try {
-              item.add(new Label("SystemName", msg.getSystem().toString()));
-              item.add(new Label("Timestamp", new Date(msg.getTimestamp()).toString()));
-              item.add(new Label("MessageType", msg.getType().toString()));
-              item.add(new Label("MessageContent", msg.getMessage()));
-            }
+            
             // If only the empty message is in the list, then
             // display "No Messages"
-            catch (NullPointerException e) {
+            if (msg.getType() == null) {
               item.add(new Label("SystemName", "-"));
               item.add(new Label("MessageType", "-"));
               item.add(new Label("Timestamp", "-"));
               item.add(new Label("MessageContent", "No Messages"));
+            }
+            // Populate data
+            else {
+              item.add(new Label("SystemName", msg.getSystem().toString()));
+              item.add(new Label("Timestamp", new Date(msg.getTimestamp()).toString()));
+              item.add(new Label("MessageType", msg.getType().toString()));
+              item.add(new Label("MessageContent", msg.getMessage()));
             }
           }
         };
