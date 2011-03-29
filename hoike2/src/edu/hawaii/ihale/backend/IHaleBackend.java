@@ -8,16 +8,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-
 import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
@@ -86,7 +83,7 @@ public class IHaleBackend implements IHaleCommand {
    * Full path to the initial data file.
    */
   private static String initialDataPath;
-  
+
   /**
    * Defines all the static variables.
    */
@@ -106,12 +103,14 @@ public class IHaleBackend implements IHaleCommand {
 
   /**
    * Default Constructor which initiates all the backend resources.
-   * @throws IOException 
-   * @throws SAXException 
-   * @throws ParserConfigurationException 
-   * @throws XPathExpressionException 
+   * 
+   * @throws IOException Thrown when URI configuration FileInputStream fails.
+   * @throws SAXException Thrown when XML parsing fails.
+   * @throws ParserConfigurationException Configuration error.
+   * @throws XPathExpressionException Error in XPath expression.
    */
-  public IHaleBackend() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
+  public IHaleBackend() throws XPathExpressionException, ParserConfigurationException,
+      SAXException, IOException {
 
     // Interval in milliseconds between polling the system devices.
     long interval = 5000;
@@ -129,7 +128,7 @@ public class IHaleBackend implements IHaleCommand {
     catch (IOException e) {
       this.log.warning("URI configuration FileInputStream failed to properly close.");
     }
-    
+
     // read in history
     getHistory();
 
@@ -184,12 +183,17 @@ public class IHaleBackend implements IHaleCommand {
 
   /**
    * Reads in initial-data.xml, and stores entries into the repository.
+   * 
+   * @throws ParserConfigurationException Thrown if error exists in parser configuration.
+   * @throws SAXException Thrown when XML parsing fails.
+   * @throws IOException Thrown when unable to close the FileInputStream.
+   * @throws XPathExpressionException Thrown if error exists in XPath expression.
    */
-  public void getHistory()
-  throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+  public void getHistory() throws ParserConfigurationException, SAXException, IOException,
+      XPathExpressionException {
 
     XmlHandler parser = new XmlHandler();
-    File file = null; 
+    File file = null;
     Document doc = null;
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
@@ -201,8 +205,8 @@ public class IHaleBackend implements IHaleCommand {
     catch (Exception e) {
       System.err.println("Failed to convert to doc.");
     }
- 
-    parser.xml2StateEntry(doc);    
+
+    parser.xml2StateEntry(doc);
   }
 
   /**
@@ -419,13 +423,13 @@ public class IHaleBackend implements IHaleCommand {
    * A sample main program.
    * 
    * @param args Ignored.
-   * @throws IOException 
-   * @throws SAXException 
-   * @throws ParserConfigurationException 
-   * @throws XPathExpressionException 
+   * @throws IOException Thrown when unable to close the FileInputStream.
+   * @throws SAXException Thrown when XML parsing fails.
+   * @throws ParserConfigurationException Thrown if error exists in parser configuration.
+   * @throws XPathExpressionException Thrown if error exists in XPath expression.
    */
-  public static void main(String[] args)
-  throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
+  public static void main(String[] args) throws XPathExpressionException,
+      ParserConfigurationException, SAXException, IOException {
     IHaleBackend backend = new IHaleBackend();
     backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7);
   }

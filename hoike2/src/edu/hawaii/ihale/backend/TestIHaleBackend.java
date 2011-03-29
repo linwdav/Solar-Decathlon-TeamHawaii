@@ -6,6 +6,7 @@ import java.net.URLConnection;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.w3c.dom.Document;
@@ -24,9 +25,15 @@ public class TestIHaleBackend {
 
   /**
    * Cleans up the backend.
+   * 
+   * @throws IOException Thrown when unable to close the FileInputStream.
+   * @throws SAXException Thrown when XML parsing fails.
+   * @throws ParserConfigurationException Thrown if error exists in parser configuration.
+   * @throws XPathExpressionException Thrown if error exists in XPath expression.
    */
   @BeforeClass
-  public static void beforeClass() {
+  public static void beforeClass() throws XPathExpressionException, ParserConfigurationException,
+      SAXException, IOException {
     backend = new IHaleBackend();
   }
 
@@ -69,7 +76,7 @@ public class TestIHaleBackend {
     URLConnection conn = null;
     DocumentBuilderFactory factory = null;
     DocumentBuilder docBuilder = null;
-    
+
     @SuppressWarnings("unused")
     Document doc = null;
 
@@ -82,7 +89,7 @@ public class TestIHaleBackend {
     factory = DocumentBuilderFactory.newInstance();
     docBuilder = factory.newDocumentBuilder();
     doc = docBuilder.parse(conn.getInputStream());
-    
-    //TODO finish parsing simulator state.
+
+    // TODO finish parsing simulator state.
   }
 }
