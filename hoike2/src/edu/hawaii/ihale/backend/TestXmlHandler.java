@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend;
 
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import java.io.IOException;
 import javax.xml.xpath.XPathExpressionException;
 import org.junit.BeforeClass;
@@ -15,11 +16,6 @@ import org.restlet.representation.FileRepresentation;
  */
 public class TestXmlHandler {
 
-  private static String xmlDirectory = System.getProperty("user.dir")
-      + "/src/edu/hawaii/ihale/backend/xml/test/";
-  private static String eGaugeXml = xmlDirectory + "test-egauge.xml";
-  private static String historyXml = xmlDirectory + "history.xml";
-
   private static FileRepresentation historyRepresentation;
   private static FileRepresentation eGaugeRepresentation;
   private static XmlHandler handle = new XmlHandler();
@@ -29,6 +25,12 @@ public class TestXmlHandler {
    */
   @BeforeClass
   public static void xmltoRepresentation() {
+
+    String xmlDirectory =
+        System.getProperty("user.dir") + "/src/edu/hawaii/ihale/backend/xml/test/";
+    String eGaugeXml = xmlDirectory + "test-egauge.xml";
+    String historyXml = xmlDirectory + "history.xml";
+
     historyRepresentation = new FileRepresentation(historyXml, MediaType.TEXT_XML);
     eGaugeRepresentation = new FileRepresentation(eGaugeXml, MediaType.TEXT_XML);
   }
@@ -43,11 +45,11 @@ public class TestXmlHandler {
       testPass = handle.xml2StateEntry(historyRepresentation);
     }
     catch (XPathExpressionException e) {
-      // TODO Auto-generated catch block
+      fail("XPathExpressionException");
       e.printStackTrace();
     }
     catch (IOException e) {
-      // TODO Auto-generated catch block
+      fail("IOException");
       e.printStackTrace();
     }
     assertTrue(testPass);
@@ -63,11 +65,11 @@ public class TestXmlHandler {
       testPass = handle.eGuage2StateEntry(eGaugeRepresentation);
     }
     catch (XPathExpressionException e) {
-      // TODO Auto-generated catch block
+      fail("XPathExpressionException");
       e.printStackTrace();
     }
     catch (IOException e) {
-      // TODO Auto-generated catch block
+      fail("IOException");
       e.printStackTrace();
     }
     assertTrue(testPass);
