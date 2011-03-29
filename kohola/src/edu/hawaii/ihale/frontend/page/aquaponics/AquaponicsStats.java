@@ -1,11 +1,17 @@
 package edu.hawaii.ihale.frontend.page.aquaponics;
 
 //import java.util.Map;
+import java.awt.Dimension;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
+import com.codecommit.wicket.AbstractChartData;
+import com.codecommit.wicket.Chart;
+import com.codecommit.wicket.ChartProvider;
+import com.codecommit.wicket.ChartType;
+import com.codecommit.wicket.IChartData;
 import edu.hawaii.ihale.frontend.page.Header;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 
@@ -55,6 +61,7 @@ public class AquaponicsStats extends Header {
   public AquaponicsStats() throws Exception {
     
     ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(2);
+       
 
     // properties = ((SolarDecathlonSession) getSession()).getProperties();
     // int currentGraphDisplay = properties.get(GRAPH_NAME);
@@ -187,7 +194,9 @@ public class AquaponicsStats extends Header {
     // Add items
 
     add(dayReservesGraph);
-    add(dayPhGraph);
+    
+    
+    add(dayPhGraph);    
     add(dayTemperatureGraph);
     add(dayConductivityGraph);
     add(dayPowerGraph);
@@ -196,7 +205,22 @@ public class AquaponicsStats extends Header {
 
     makeButtonActive(currentGraphDisplay);
     displayDayGraph(currentGraphDisplay, dayGraph);
-    add(dayGraph);
+    //add(dayGraph);
+    
+    /**************testing google chart API********************/
+    IChartData data = new AbstractChartData() {
+      private static final long serialVersionUID = 1L;
+      public double[][] getData() {
+        return new double[][] {{34, 22}};          
+      }
+    };
+    
+    ChartProvider provider = new ChartProvider(new Dimension(250, 100), ChartType.PIE_3D, data);
+    provider.setPieLabels(new String[] {"Hello", "World"});
+    
+    add(new Chart("dayGraphImage", provider));      
+    
+   /*********************************/
   }
 
   /**
