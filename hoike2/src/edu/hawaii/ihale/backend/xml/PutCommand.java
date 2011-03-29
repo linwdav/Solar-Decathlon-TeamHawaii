@@ -55,7 +55,7 @@ public class PutCommand {
     
     boolean valid = this.state.isType(value.toString());
     
-    if (valid) {
+    if (!valid) {
       throw new ValidTypeException();
     }
   
