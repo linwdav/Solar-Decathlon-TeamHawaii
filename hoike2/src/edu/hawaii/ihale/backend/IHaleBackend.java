@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.backend;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -7,8 +8,16 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPathExpressionException;
+
 import org.restlet.resource.ClientResource;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
@@ -74,12 +83,19 @@ public class IHaleBackend implements IHaleCommand {
   private static String configFilePath;
 
   /**
+   * Full path to the initial data file.
+   */
+  private static String initialDataPath;
+  
+  /**
    * Defines all the static variables.
    */
   static {
     String folder = ".ihale";
     String configurationFile = "device-urls.properties";
     configFilePath = System.getProperty("user.home") + "/" + folder + "/" + configurationFile;
+    String initialDataFile = "initial-data.xml";
+    initialDataPath = System.getProperty("user.home") + "/" + folder + "/" + initialDataFile;
   }
 
   // A logger.
@@ -90,8 +106,12 @@ public class IHaleBackend implements IHaleCommand {
 
   /**
    * Default Constructor which initiates all the backend resources.
+   * @throws IOException 
+   * @throws SAXException 
+   * @throws ParserConfigurationException 
+   * @throws XPathExpressionException 
    */
-  public IHaleBackend() {
+  public IHaleBackend() throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
 
     // Interval in milliseconds between polling the system devices.
     long interval = 5000;
@@ -109,9 +129,9 @@ public class IHaleBackend implements IHaleCommand {
     catch (IOException e) {
       this.log.warning("URI configuration FileInputStream failed to properly close.");
     }
-
-    // TODO parse historical xml file
-    // TODO store historical xml data.
+    
+    // read in history
+    getHistory();
 
     this.log.info("Initiate Dispatcher.");
 
@@ -160,6 +180,29 @@ public class IHaleBackend implements IHaleCommand {
         is.close();
       }
     }
+  }
+
+  /**
+   * Reads in initial-data.xml, and stores entries into the repository.
+   */
+  public void getHistory()
+  throws ParserConfigurationException, SAXException, IOException, XPathExpressionException {
+
+    XmlHandler parser = new XmlHandler();
+    File file = null; 
+    Document doc = null;
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();
+
+    try {
+      file = new File(initialDataPath);
+      doc = db.parse(file);
+    }
+    catch (Exception e) {
+      System.err.println("Failed to convert to doc.");
+    }
+ 
+    parser.xml2StateEntry(doc);    
   }
 
   /**
@@ -376,8 +419,13 @@ public class IHaleBackend implements IHaleCommand {
    * A sample main program.
    * 
    * @param args Ignored.
+   * @throws IOException 
+   * @throws SAXException 
+   * @throws ParserConfigurationException 
+   * @throws XPathExpressionException 
    */
-  public static void main(String[] args) {
+  public static void main(String[] args)
+  throws XPathExpressionException, ParserConfigurationException, SAXException, IOException {
     IHaleBackend backend = new IHaleBackend();
     backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7);
   }
