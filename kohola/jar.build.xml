@@ -42,7 +42,7 @@
 			</fileset>
 		</unjar>
 
-		<jar destfile="${basedir}/${system.name}-hoike.jar" basedir="${tmp.dir}">
+		<jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">
 			<manifest>
 				<attribute name="Main-Class" value="${system.main.class}" />
 			</manifest>

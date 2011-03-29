@@ -11,7 +11,7 @@ $(function(){
     		$("#colorchange").val(c);
     		$("#colorchange").change();
     	},
-    	showInput:false,
+    	showInput:true,
     	title:false
     });
   
@@ -130,7 +130,6 @@ function toggleOnOff(x) {
       </div>
       <div class="clear"></div>
       <h5 class="dark-purple" style="margin-top:20px;">Color</h5>
-      <span wicket:id="colorfeedback" />
       <div id="icolor" class="icolorC">
       	<input wicket:id="colorchange" type="hidden"/>    
       </div>

@@ -82,7 +82,7 @@ public class Lighting extends Header {
   private int desiredKitchenIntensity = 0;
   private int desiredBathroomIntensity = 0;
 
-  private Label colorFeedback;
+  //private Label colorFeedback;
   private Label intensityFeedback;
 
   private String setColor = white;
@@ -338,12 +338,9 @@ public class Lighting extends Header {
       setButtons(bathroomState);
     }
 
-    // create feedback for color and intensity
-    colorFeedback = new Label("colorfeedback", "");
+    // create feedback for intensity
     intensityFeedback = new Label("intensityfeedback", "");
-    colorFeedback.setEscapeModelStrings(false);
     intensityFeedback.setEscapeModelStrings(false);
-    colorFeedback.setOutputMarkupId(true);
     intensityFeedback.setOutputMarkupId(true);
 
     colorChange = new HiddenField<String>("colorchange", new Model<String>(setColor));
@@ -369,9 +366,6 @@ public class Lighting extends Header {
 
         if (LIVING_ROOM.equals(currentRoom)) {
           if (desiredLivingColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredLivingColor
-                + fontColorTag);
-            target.addComponent(colorFeedback);
             return;
           }
           else {
@@ -383,17 +377,11 @@ public class Lighting extends Header {
               System.out.println("do command sent for living room lights color with color: "
                   + desiredLivingColor);
             }
-            colorFeedback.setDefaultModelObject(greenTag + successTag + desiredLivingColor
-                + fontTag);
-            target.addComponent(colorFeedback);
             return;
           }
         }
         else if (DINING_ROOM.equals(currentRoom)) {
           if (desiredDiningColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredDiningColor
-                + fontColorTag);
-            target.addComponent(colorFeedback);
             return;
           }
           else {
@@ -405,17 +393,11 @@ public class Lighting extends Header {
               System.out.println("do command sent for dining room lights color with color: "
                   + desiredDiningColor);
             }
-            colorFeedback.setDefaultModelObject(greenTag + successTag + desiredDiningColor
-                + fontTag);
-            target.addComponent(colorFeedback);
             return;
           }
         }
         else if (KITCHEN.equals(currentRoom)) {
           if (desiredKitchenColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredKitchenColor
-                + fontColorTag);
-            target.addComponent(colorFeedback);
             return;
           }
           else {
@@ -427,17 +409,11 @@ public class Lighting extends Header {
               System.out.println("do command sent for kitchen room lights color with color: "
                   + desiredKitchenColor);
             }
-            colorFeedback.setDefaultModelObject(greenTag + successTag + desiredKitchenColor
-                + fontTag);
-            target.addComponent(colorFeedback);
             return;
           }
         }
         else if (BATHROOM.equals(currentRoom)) {
           if (desiredBathroomColor.equals(setColor)) {
-            colorFeedback.setDefaultModelObject(yellowTag + sameColorTag + desiredBathroomColor
-                + fontColorTag);
-            target.addComponent(colorFeedback);
             return;
           }
           else {
@@ -449,9 +425,6 @@ public class Lighting extends Header {
               System.out.println("do command sent for bathroom room lights color with color: "
                   + desiredBathroomColor);
             }
-            colorFeedback.setDefaultModelObject(greenTag + successTag + desiredBathroomColor
-                + fontTag);
-            target.addComponent(colorFeedback);
             return;
           }
         }
@@ -459,7 +432,6 @@ public class Lighting extends Header {
     });
 
     add(colorChange);
-    add(colorFeedback);
     form.add(intensityFeedback);
     add(form);
 
@@ -509,10 +481,8 @@ public class Lighting extends Header {
         }
 
         // reset feedback
-        colorFeedback.setDefaultModelObject("");
         intensityFeedback.setDefaultModelObject("");
         // add components in the page we want to update to the target.
-        target.addComponent(colorFeedback);
         target.addComponent(intensityFeedback);
         target.addComponent(onButton);
         target.addComponent(offButton);
@@ -600,7 +570,6 @@ public class Lighting extends Header {
     else {
       System.out.println("Command {OFF} sent to " + roomName);
     }
-    colorFeedback.setDefaultModelObject("");
     intensityFeedback.setDefaultModelObject("");
     setButtons(enabled);
   }
