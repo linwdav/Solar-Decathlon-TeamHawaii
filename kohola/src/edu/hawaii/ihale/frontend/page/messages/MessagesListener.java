@@ -28,24 +28,17 @@ public class MessagesListener extends SystemStatusMessageListener {
 
     // Messages only pertaining to this system
     List<SystemStatusMessage> thisSystemMsgs =
-        SolarDecathlonApplication.getMessages().getAllMessages();
+        SolarDecathlonApplication.getMessages().getMessages(system);
 
-    // If this is the first message, then remove the "No Messages" default message
-    if (allMsgs.size() == 1) {
-      allMsgs.remove(0);
-    }
     
     // Keep master list bounded by 100
-    else if (allMsgs.size() > 100) {
+    if (allMsgs.size() > 100) {
       allMsgs.remove(100);
     }
-    
-    if (thisSystemMsgs.size() == 1) {
-      thisSystemMsgs.remove(0);
-    }
+   
     
     // Keep other lists bounded by 50
-    else if (allMsgs.size() > 50) {
+    if (allMsgs.size() > 50) {
       allMsgs.remove(50);
     }
 
