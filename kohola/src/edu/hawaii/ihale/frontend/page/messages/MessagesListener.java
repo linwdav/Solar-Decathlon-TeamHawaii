@@ -32,14 +32,14 @@ public class MessagesListener extends SystemStatusMessageListener {
 
     
     // Keep master list bounded by 100
-    if (allMsgs.size() > 100) {
-      allMsgs.remove(100);
+    if (allMsgs.size() > 99) {
+      allMsgs.remove(99);
     }
    
     
     // Keep other lists bounded by 50
-    if (thisSystemMsgs.size() > 50) {
-      thisSystemMsgs.remove(50);
+    if (thisSystemMsgs.size() > 49) {
+      thisSystemMsgs.remove(49);
     }
 
     // Append it to the front of the list that holds all messages (for the dashboard)
