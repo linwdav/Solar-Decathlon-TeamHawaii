@@ -23,8 +23,7 @@
 			<fileset dir="${basedir}/ihale-api">
 				<include name="ihale-api.jar" />
 				<include name="ihale-api-backend-example.jar" />
-				<include name="ihale-backend-naia.jar" />
-				<include name="ihale-backend-hoike.jar" />
+				<include name="wicket-googlecharts-api.jar" />
 			</fileset>
 			<fileset dir="${lib.dir}/wicket">
 				<include name="wicket.jar" />
