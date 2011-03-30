@@ -66,14 +66,14 @@ public class PhotovoltaicsData {
     String powerTag = "power";
     String solarTag = "Solar";
     String titleAttr = "title";
-    // long calcCpower;
-    // String cpower = "cpower";
-    // String srcTag = "src";
-    // String energyWsTag = "energyWs";
-    // String gridTag = "Grid";
-    // String typeAttr = "type";
-    // String voltageTag = "voltage";
-    // String currentTag = "current";
+    String cpower = "cpower";
+    String srcTag = "src";
+    String energyWsTag = "energyWs";
+    String gridTag = "Grid";
+    String typeAttr = "type";
+    String voltageTag = "voltage";
+    String currentTag = "current";
+    String blank = "blank";
 
     doc.setXmlVersion("1.0");
 
@@ -86,59 +86,54 @@ public class PhotovoltaicsData {
     timestampElement.setTextContent(String.valueOf(new Date().getTime()));
     rootElement.appendChild(timestampElement);
 
-    // // Create first cpower tag.
-    // Element cpowerElementA = doc.createElement(cpower);
-    // cpowerElementA.setAttribute(srcTag, gridTag);
-    // cpowerElementA.setAttribute("i", "2");
-    // cpowerElementA.setAttribute("u", "8");
-    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    // cpowerElementA.setTextContent(String.valueOf(calcCpower));
-    // rootElement.appendChild(cpowerElementA);
-    //
-    // // Second cpower tag.
-    // Element cpowerElementB = doc.createElement(cpower);
-    // cpowerElementB.setAttribute(srcTag, solarTag);
-    // cpowerElementB.setAttribute("i", "4");
-    // cpowerElementB.setAttribute("u", "8");
-    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    // cpowerElementB.setTextContent(String.valueOf(calcCpower));
-    // rootElement.appendChild(cpowerElementB);
-    //
-    // // Third cpower tag.
-    // Element cpowerElementC = doc.createElement(cpower);
-    // cpowerElementC.setAttribute(srcTag, gridTag);
-    // cpowerElementC.setAttribute("i", "3");
-    // cpowerElementC.setAttribute("u", "8");
-    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    // cpowerElementC.setTextContent(String.valueOf(calcCpower));
-    // rootElement.appendChild(cpowerElementC);
-    //
-    // // Fourth cpower tag.
-    // Element cpowerElementD = doc.createElement(cpower);
-    // cpowerElementD.setAttribute(srcTag, solarTag);
-    // cpowerElementD.setAttribute("i", "4");
-    // cpowerElementD.setAttribute("u", "8");
-    // calcCpower = (long) (1000 + (Math.random() * ((2000 - 1000) + 1)));
-    // cpowerElementD.setTextContent(String.valueOf(calcCpower));
-    // rootElement.appendChild(cpowerElementD);
+     // Create first cpower tag.
+     Element cpowerElementA = doc.createElement(cpower);
+     cpowerElementA.setAttribute(srcTag, gridTag);
+     cpowerElementA.setAttribute("i", "2");
+     cpowerElementA.setAttribute("u", "8");
+     cpowerElementA.setTextContent(blank);
+     rootElement.appendChild(cpowerElementA);
+    
+     // Second cpower tag.
+     Element cpowerElementB = doc.createElement(cpower);
+     cpowerElementB.setAttribute(srcTag, solarTag);
+     cpowerElementB.setAttribute("i", "4");
+     cpowerElementB.setAttribute("u", "8");
+     cpowerElementB.setTextContent(blank);
+     rootElement.appendChild(cpowerElementB);
+    
+     // Third cpower tag.
+     Element cpowerElementC = doc.createElement(cpower);
+     cpowerElementC.setAttribute(srcTag, gridTag);
+     cpowerElementC.setAttribute("i", "3");
+     cpowerElementC.setAttribute("u", "8");
+     cpowerElementC.setTextContent(blank);
+     rootElement.appendChild(cpowerElementC);
+    
+     // Fourth cpower tag.
+     Element cpowerElementD = doc.createElement(cpower);
+     cpowerElementD.setAttribute(srcTag, solarTag);
+     cpowerElementD.setAttribute("i", "4");
+     cpowerElementD.setAttribute("u", "8");
+     cpowerElementD.setTextContent(blank);
+     rootElement.appendChild(cpowerElementD);
 
-    // // First meter tag for Grid.
-    // Element meterElementA = doc.createElement(meterTag);
-    // meterElementA.setAttribute(titleAttr, gridTag);
-    // rootElement.appendChild(meterElementA);
-    // // Create energy tag.
-    // Element energyElementA = doc.createElement(energyTag);
-    // energyElementA.setTextContent(String.valueOf(energy));
-    // meterElementA.appendChild(energyElementA);
-    // // Create energyWs tag.
-    // Element energyWsElementA = doc.createElement(energyWsTag);
-    // long conversionRatioA = (long) 2.777777;
-    // energyWsElementA.setTextContent(String.valueOf(energy / conversionRatioA));
-    // meterElementA.appendChild(energyWsElementA);
-    // // Create power tag.
-    // Element powerElementA = doc.createElement(powerTag);
-    // powerElementA.setTextContent(String.valueOf(power));
-    // meterElementA.appendChild(powerElementA);
+     // First meter tag for Grid.
+     Element meterElementA = doc.createElement(meterTag);
+     meterElementA.setAttribute(titleAttr, gridTag);
+     rootElement.appendChild(meterElementA);
+     // Create energy tag.
+     Element energyElementA = doc.createElement(energyTag);
+     energyElementA.setTextContent(blank);
+     meterElementA.appendChild(energyElementA);
+     // Create energyWs tag.
+     Element energyWsElementA = doc.createElement(energyWsTag);
+     energyWsElementA.setTextContent(blank);
+     meterElementA.appendChild(energyWsElementA);
+     // Create power tag.
+     Element powerElementA = doc.createElement(powerTag);
+     powerElementA.setTextContent(blank);
+     meterElementA.appendChild(powerElementA);
 
     // Second meter tag for Solar.
     Element meterElementB = doc.createElement(meterTag);
@@ -148,78 +143,75 @@ public class PhotovoltaicsData {
     Element energyElementB = doc.createElement(energyTag);
     energyElementB.setTextContent(String.valueOf(energy));
     meterElementB.appendChild(energyElementB);
-    // // Create energyWs tag.
-    // Element energyWsElement = doc.createElement(energyWsTag);
-    // long conversionRatioB = (long) 2.777777;
-    // energyWsElement.setTextContent(String.valueOf(energy / conversionRatioB));
-    // meterElementB.appendChild(energyWsElement);
+     // Create energyWs tag.
+     Element energyWsElement = doc.createElement(energyWsTag);
+     energyWsElement.setTextContent(blank);
+     meterElementB.appendChild(energyWsElement);
     // Create power tag.
     Element powerElementB = doc.createElement(powerTag);
     powerElementB.setTextContent(String.valueOf(power));
     meterElementB.appendChild(powerElementB);
 
-    // // Third meter tag for Grid.
-    // Element meterElementC = doc.createElement(meterTag);
-    // meterElementC.setAttribute(typeAttr, "total");
-    // meterElementC.setAttribute("title", "Total Usage");
-    // rootElement.appendChild(meterElementC);
-    // // Create energy tag.
-    // Element energyElementC = doc.createElement(energyTag);
-    // energyElementC.setTextContent(String.valueOf(energy));
-    // meterElementC.appendChild(energyElementC);
-    // // Create energyWs tag.
-    // Element energyWsElementC = doc.createElement(energyWsTag);
-    // long conversionRatioC = (long) 2.777777;
-    // energyWsElementC.setTextContent(String.valueOf(energy / conversionRatioC));
-    // meterElementC.appendChild(energyWsElementC);
-    // // Create power tag.
-    // Element powerElementC = doc.createElement(powerTag);
-    // powerElementC.setTextContent(String.valueOf(power));
-    // meterElementC.appendChild(powerElementC);
-    //
-    // // Fourth meter tag for Solar.
-    // Element meterElementD = doc.createElement(meterTag);
-    // meterElementD.setAttribute(typeAttr, "total");
-    // meterElementD.setAttribute("title", "Total Generation");
-    // rootElement.appendChild(meterElementD);
-    // // Create energy tag.
-    // Element energyElementD = doc.createElement(energyTag);
-    // energyElementD.setTextContent(String.valueOf(energy));
-    // meterElementD.appendChild(energyElementD);
-    // // Create energyWs tag.
-    // Element energyWsElementD = doc.createElement(energyWsTag);
-    // long conversionRatioD = (long) 2.777777;
-    // energyWsElementD.setTextContent(String.valueOf(energy / conversionRatioD));
-    // meterElementD.appendChild(energyWsElementD);
-    // // Create power tag.
-    // Element powerElementD = doc.createElement(powerTag);
-    // powerElementD.setTextContent(String.valueOf(power));
-    // meterElementD.appendChild(powerElementD);
-    //
-    // // Frequency tag.
-    // Element frequencyElement = doc.createElement("frequency");
-    // frequencyElement.setTextContent("value here");
-    // rootElement.appendChild(frequencyElement);
-    // // First voltage tag.
-    // Element voltageElementA = doc.createElement(voltageTag);
-    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    // rootElement.appendChild(voltageElementA);
-    // // Second voltage tag.
-    // Element voltageElementB = doc.createElement(voltageTag);
-    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    // rootElement.appendChild(voltageElementB);
-    // // First current tag.
-    // Element currentElementA = doc.createElement(currentTag);
-    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    // rootElement.appendChild(currentElementA);
-    // // Second current tag.
-    // Element currentElementB = doc.createElement(currentTag);
-    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    // rootElement.appendChild(currentElementB);
-    // // Third current tag.
-    // Element currentElementC = doc.createElement(currentTag);
-    // timestampElement.setTextContent(String.valueOf(new Date().getTime()));
-    // rootElement.appendChild(currentElementC);
+     // Third meter tag for Grid.
+     Element meterElementC = doc.createElement(meterTag);
+     meterElementC.setAttribute(typeAttr, "total");
+     meterElementC.setAttribute("title", "Total Usage");
+     rootElement.appendChild(meterElementC);
+     // Create energy tag.
+     Element energyElementC = doc.createElement(energyTag);
+     energyElementC.setTextContent(blank);
+     meterElementC.appendChild(energyElementC);
+     // Create energyWs tag.
+     Element energyWsElementC = doc.createElement(energyWsTag);
+     energyWsElementC.setTextContent(blank);
+     meterElementC.appendChild(energyWsElementC);
+     // Create power tag.
+     Element powerElementC = doc.createElement(powerTag);
+     powerElementC.setTextContent(blank);
+     meterElementC.appendChild(powerElementC);
+    
+     // Fourth meter tag for Solar.
+     Element meterElementD = doc.createElement(meterTag);
+     meterElementD.setAttribute(typeAttr, "total");
+     meterElementD.setAttribute("title", "Total Generation");
+     rootElement.appendChild(meterElementD);
+     // Create energy tag.
+     Element energyElementD = doc.createElement(energyTag);
+     energyElementD.setTextContent(blank);
+     meterElementD.appendChild(energyElementD);
+     // Create energyWs tag.
+     Element energyWsElementD = doc.createElement(energyWsTag);
+     energyWsElementD.setTextContent(blank);
+     meterElementD.appendChild(energyWsElementD);
+     // Create power tag.
+     Element powerElementD = doc.createElement(powerTag);
+     powerElementD.setTextContent(blank);
+     meterElementD.appendChild(powerElementD);
+    
+     // Frequency tag.
+     Element frequencyElement = doc.createElement("frequency");
+     frequencyElement.setTextContent("value here");
+     rootElement.appendChild(frequencyElement);
+     // First voltage tag.
+     Element voltageElementA = doc.createElement(voltageTag);
+     voltageElementA.setTextContent(blank);
+     rootElement.appendChild(voltageElementA);
+     // Second voltage tag.
+     Element voltageElementB = doc.createElement(voltageTag);
+     voltageElementB.setTextContent(blank);
+     rootElement.appendChild(voltageElementB);
+     // First current tag.
+     Element currentElementA = doc.createElement(currentTag);
+     currentElementA.setTextContent(blank);
+     rootElement.appendChild(currentElementA);
+     // Second current tag.
+     Element currentElementB = doc.createElement(currentTag);
+     currentElementB.setTextContent(blank);
+     rootElement.appendChild(currentElementB);
+     // Third current tag.
+     Element currentElementC = doc.createElement(currentTag);
+     currentElementC.setTextContent(blank);
+     rootElement.appendChild(currentElementC);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();

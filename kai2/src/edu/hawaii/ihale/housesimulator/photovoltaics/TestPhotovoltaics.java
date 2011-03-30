@@ -69,16 +69,14 @@ public class TestPhotovoltaics {
     NodeList powerList = domDoc.getElementsByTagName("power");
 
     // Grabs attributes from tags.
-    String title = ((Element) meterList.item(0)).getAttribute("title");
+    String title = ((Element) meterList.item(1)).getAttribute("title");
 
     // Grabs value from tags.
-    String energy = ((Element) energyList.item(0)).getTextContent();
-    String power = ((Element) powerList.item(0)).getTextContent();
+    String energy = ((Element) energyList.item(1)).getTextContent();
+    String power = ((Element) powerList.item(1)).getTextContent();
 
     // Check that we are returning the correct title.
     assertEquals("Checking that title is \"Solar\"", title, "Solar");
-//    // originally 
-//    assertEquals("Checking that title is \"Grid\"", title, "Solar");
     
     // Check that the returned value is within a delta of our value.
     assertEquals(1500, Double.parseDouble(energy), 1750); 
