@@ -46,16 +46,10 @@ public class Lighting extends Header {
   // String literals for pmd
   private static final String brightID = "amountBright";
   private static final String white = "#FFFFFF";
-  private static final String greenTag = "<font color=\"green\">";
-  private static final String yellowTag = "<font color=\"#FF9900\">Unnecessary Change:<br />";
-  private static final String yellowUneccessary = "Same as the original desired intensity (";
-  private static final String yellowIntensityPercent = "%)</font>";
-  private static final String greenIntensityPercent = "%</font>";
-  private static final String fontColorTag = ")</font>";
-  private static final String sameColorTag = "Same as the original desired color (";
-  private static final String intensityTag = "Success:<br />Desired room intensity is now ";
-  private static final String fontTag = "</font>";
-  private static final String successTag = "Success:<br />Desired room color is now ";
+  private static final String yellowTag = "<font color=\"#FF9900\">Same: (";
+  private static final String yellowTagEnd = "%)</font>";
+  private static final String greenTagEnd = "%)</font>";
+  private static final String greenTag = "<font color=\"green\">Success: (";
   private static final String CLASS = "class";
   private static final String LIVING_ROOM = "Living Room";
   private static final String DINING_ROOM = "Dining Room";
@@ -82,7 +76,7 @@ public class Lighting extends Header {
   private int desiredKitchenIntensity = 0;
   private int desiredBathroomIntensity = 0;
 
-  //private Label colorFeedback;
+  // private Label colorFeedback;
   private Label intensityFeedback;
 
   private String setColor = white;
@@ -140,7 +134,7 @@ public class Lighting extends Header {
       setColor = desiredBathroomColor;
       intensity = new TextField<String>(brightID, new Model<String>(setBathroomIntensity + "%"));
     }
-    
+
     // Added for jquery control.
     intensity.setMarkupId(intensity.getId());
     intensity.add(new AjaxFormComponentUpdatingBehavior("onchange") {
@@ -203,8 +197,7 @@ public class Lighting extends Header {
 
         if (LIVING_ROOM.equals(currentRoom)) {
           if (setLivingIntensity == desiredLivingIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
-                + desiredLivingIntensity + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredLivingIntensity + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -217,16 +210,15 @@ public class Lighting extends Header {
               System.out.println("do command sent for living room lights intensity with level: "
                   + desiredLivingIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
-                + desiredLivingIntensity + greenIntensityPercent);
+            intensityFeedback
+                .setDefaultModelObject(greenTag + desiredLivingIntensity + greenTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
         }
         else if (DINING_ROOM.equals(currentRoom)) {
           if (setDiningIntensity == desiredDiningIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
-                + desiredDiningIntensity + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredDiningIntensity + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -239,16 +231,15 @@ public class Lighting extends Header {
               System.out.println("do command sent for dining room lights intensity with level: "
                   + desiredDiningIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
-                + desiredDiningIntensity + greenIntensityPercent);
+            intensityFeedback
+                .setDefaultModelObject(greenTag + desiredDiningIntensity + greenTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
         }
         else if (KITCHEN.equals(currentRoom)) {
           if (setKitchenIntensity == desiredKitchenIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
-                + desiredKitchenIntensity + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredKitchenIntensity + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -261,16 +252,15 @@ public class Lighting extends Header {
               System.out.println("do command sent for kitchen room lights intensity with level: "
                   + desiredKitchenIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
-                + desiredKitchenIntensity + greenIntensityPercent);
+            intensityFeedback
+                .setDefaultModelObject(greenTag + desiredKitchenIntensity + greenTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
         }
         else if (BATHROOM.equals(currentRoom)) {
           if (setBathroomIntensity == desiredBathroomIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + yellowUneccessary
-                + desiredBathroomIntensity + yellowIntensityPercent);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredBathroomIntensity + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -283,8 +273,8 @@ public class Lighting extends Header {
               System.out.println("do command sent for bathroom room lights intensity with level: "
                   + desiredBathroomIntensity + "%");
             }
-            intensityFeedback.setDefaultModelObject(greenTag + intensityTag
-                + desiredBathroomIntensity + greenIntensityPercent);
+            intensityFeedback
+                .setDefaultModelObject(greenTag + desiredBathroomIntensity + greenTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }

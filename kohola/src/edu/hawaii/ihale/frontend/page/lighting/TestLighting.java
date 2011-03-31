@@ -86,8 +86,7 @@ public class TestLighting {
     
     // Check that the color is not null
     // Can't test for initial value since it's random
-    assertNotNull("Check that the initial color isn't null", "colorchange");
-    
+ 
     // The following line is useful for seeing what's on the page.
     tester.debugComponentTrees();
 
