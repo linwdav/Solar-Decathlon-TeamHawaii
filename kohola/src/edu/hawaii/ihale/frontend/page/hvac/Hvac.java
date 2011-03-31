@@ -80,18 +80,18 @@ public class Hvac extends Header {
   public Hvac() throws Exception {
 
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(4);
-    
+
     // Messages
     // Add messages as a list view to each page
 
     // Get all messages applicable to this page
-    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages()
-    .getMessages(IHaleSystem.HVAC); 
-    
+    List<SystemStatusMessage> msgs =
+        SolarDecathlonApplication.getMessages().getMessages(IHaleSystem.HVAC);
+
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("HVACSystemLogContainer");
     systemLog.setOutputMarkupId(true);
-    
+
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("HVACStatusMessages", msgs, 10) {
@@ -102,7 +102,7 @@ public class Hvac extends Header {
           protected void populateItem(ListItem<SystemStatusMessage> item) {
 
             SystemStatusMessage msg = item.getModelObject();
-            
+
             // If only the empty message is in the list, then
             // display "No Messages"
             if (msg.getType() == null) {
@@ -118,7 +118,7 @@ public class Hvac extends Header {
             }
           }
         };
-    
+
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginatorHVAC", listView));
     // Update log every 5 seconds.
@@ -129,7 +129,7 @@ public class Hvac extends Header {
     add(systemLog);
 
     // End messages section
-    
+
     // model for inside temperature label
     Model<String> insideTempModel = new Model<String>() {
 
@@ -236,8 +236,7 @@ public class Hvac extends Header {
     Form<String> form = new Form<String>("form");
 
     // Add the control for the air temp slider
-    airTemp =
-        new TextField<String>("airTemperature", new Model<String>(String.valueOf(setTemp)));
+    airTemp = new TextField<String>("airTemperature", new Model<String>(String.valueOf(setTemp)));
     airTemp.setEscapeModelStrings(false);
 
     // Added for jquery control.
@@ -270,8 +269,8 @@ public class Hvac extends Header {
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         if (setTemp == desiredTemp) {
-          feedback.setDefaultModelObject("<font color=\"#FF9900\">Same: " +
-          		"(" + desiredTemp + "&deg;F)</font>");
+          feedback.setDefaultModelObject("<font color=\"#FF9900\">Same: " + "(" + desiredTemp
+              + "&deg;F)</font>");
           // target.addComponent(textField);
           target.addComponent(feedback);
           return;
@@ -284,8 +283,8 @@ public class Hvac extends Header {
           Integer newTemperature = setTemp;
           SolarDecathlonApplication.getBackend().doCommand(system, null, command, newTemperature);
 
-          feedback.setDefaultModelObject("<font color=\"green\">"
-              + "Success: (" + desiredTemp + "&deg;F)</font>");
+          feedback.setDefaultModelObject("<font color=\"green\">" + "Success: (" + desiredTemp
+              + "&deg;F)</font>");
         }
         // target.addComponent(textField);
         target.addComponent(feedback);

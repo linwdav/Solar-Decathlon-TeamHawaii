@@ -125,18 +125,18 @@ public class Lighting extends Header {
     desiredDiningColor = repository.getLightingColor(IHaleRoom.DINING).getValue();
     desiredKitchenColor = repository.getLightingColor(IHaleRoom.KITCHEN).getValue();
     desiredBathroomColor = repository.getLightingColor(IHaleRoom.BATHROOM).getValue();
-    
+
     // Messages
     // Add messages as a list view to each page
 
     // Get all messages applicable to this page
-    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages()
-    .getMessages(IHaleSystem.LIGHTING); 
-    
+    List<SystemStatusMessage> msgs =
+        SolarDecathlonApplication.getMessages().getMessages(IHaleSystem.LIGHTING);
+
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("LightingSystemLogContainer");
     systemLog.setOutputMarkupId(true);
-    
+
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("LightingStatusMessages", msgs, 10) {
@@ -147,7 +147,7 @@ public class Lighting extends Header {
           protected void populateItem(ListItem<SystemStatusMessage> item) {
 
             SystemStatusMessage msg = item.getModelObject();
-            
+
             // If only the empty message is in the list, then
             // display "No Messages"
             if (msg.getType() == null) {
@@ -163,7 +163,7 @@ public class Lighting extends Header {
             }
           }
         };
-    
+
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginatorLighting", listView));
     // Update log every 5 seconds.
@@ -254,7 +254,8 @@ public class Lighting extends Header {
 
         if (LIVING_ROOM.equals(currentRoom)) {
           if (setLivingIntensity == desiredLivingIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + desiredLivingIntensity + yellowTagEnd);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredLivingIntensity
+                + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -264,8 +265,8 @@ public class Lighting extends Header {
             SolarDecathlonApplication.getBackend().doCommand(system, room, command,
                 desiredLivingIntensity);
             if (DEBUG) {
-              System.out.println("do command sent for living room lights intensity with level: "
-                  + desiredLivingIntensity + "%");
+              System.out.println("do command sent for living "
+                  + "room lights intensity with level: " + desiredLivingIntensity + "%");
             }
             intensityFeedback
                 .setDefaultModelObject(greenTag + desiredLivingIntensity + greenTagEnd);
@@ -275,7 +276,8 @@ public class Lighting extends Header {
         }
         else if (DINING_ROOM.equals(currentRoom)) {
           if (setDiningIntensity == desiredDiningIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + desiredDiningIntensity + yellowTagEnd);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredDiningIntensity
+                + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -285,8 +287,8 @@ public class Lighting extends Header {
             SolarDecathlonApplication.getBackend().doCommand(system, room, command,
                 desiredDiningIntensity);
             if (DEBUG) {
-              System.out.println("do command sent for dining room lights intensity with level: "
-                  + desiredDiningIntensity + "%");
+              System.out.println("do command sent for dining "
+                  + "room lights intensity with level: " + desiredDiningIntensity + "%");
             }
             intensityFeedback
                 .setDefaultModelObject(greenTag + desiredDiningIntensity + greenTagEnd);
@@ -296,7 +298,8 @@ public class Lighting extends Header {
         }
         else if (KITCHEN.equals(currentRoom)) {
           if (setKitchenIntensity == desiredKitchenIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + desiredKitchenIntensity + yellowTagEnd);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredKitchenIntensity
+                + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -309,15 +312,16 @@ public class Lighting extends Header {
               System.out.println("do command sent for kitchen room lights intensity with level: "
                   + desiredKitchenIntensity + "%");
             }
-            intensityFeedback
-                .setDefaultModelObject(greenTag + desiredKitchenIntensity + greenTagEnd);
+            intensityFeedback.setDefaultModelObject(greenTag + desiredKitchenIntensity
+                + greenTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
         }
         else if (BATHROOM.equals(currentRoom)) {
           if (setBathroomIntensity == desiredBathroomIntensity) {
-            intensityFeedback.setDefaultModelObject(yellowTag + desiredBathroomIntensity + yellowTagEnd);
+            intensityFeedback.setDefaultModelObject(yellowTag + desiredBathroomIntensity
+                + yellowTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
@@ -327,11 +331,11 @@ public class Lighting extends Header {
             SolarDecathlonApplication.getBackend().doCommand(system, room, command,
                 desiredBathroomIntensity);
             if (DEBUG) {
-              System.out.println("do command sent for bathroom room lights intensity with level: "
-                  + desiredBathroomIntensity + "%");
+              System.out.println("do command sent for bathroom "
+                  + "room lights intensity with level: " + desiredBathroomIntensity + "%");
             }
-            intensityFeedback
-                .setDefaultModelObject(greenTag + desiredBathroomIntensity + greenTagEnd);
+            intensityFeedback.setDefaultModelObject(greenTag + desiredBathroomIntensity
+                + greenTagEnd);
             target.addComponent(intensityFeedback);
             return;
           }
