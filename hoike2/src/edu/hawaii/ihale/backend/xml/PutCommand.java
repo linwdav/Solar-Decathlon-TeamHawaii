@@ -75,6 +75,8 @@ public class PutCommand {
   
   /**
    * Sets this URI.
+   * 
+   * @param uri The URI.
    */
   public void setURI(String uri) {
     this.uri = uri;

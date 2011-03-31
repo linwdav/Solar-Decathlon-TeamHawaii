@@ -98,7 +98,7 @@ public class TestIHaleBackend {
     Document doc = null;
     Element root = null;
     NamedNodeMap attributes = null;
-    
+
     backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, value);
 
     url = new URL(IHaleBackend.getURImap().get("hvac-control") + "hvac/state");
@@ -115,15 +115,15 @@ public class TestIHaleBackend {
     assertEquals("Check command root node's name attribute", IHaleSystem.HVAC.toString(),
         root.getAttribute("system"));
 
-    
-    //Expected to fail until Simulator sets the value correctly.    
+    // Expected to fail until Simulator sets the value correctly.
     // Check the argument tag.
     NodeList nl = root.getChildNodes();
     for (int i = 0; i < nl.getLength(); i++) {
       if (nl.item(i).getNodeName().equals("state")) {
         attributes = nl.item(i).getAttributes();
-        if (attributes.getNamedItem("key").getNodeValue().equals("TEMPERATURE") ){
-          assertEquals("HVAC temperature changed", value.toString(), attributes.getNamedItem("value").getNodeValue());
+        if (attributes.getNamedItem("key").getNodeValue().equals("TEMPERATURE")) {
+          assertEquals("HVAC temperature changed", value.toString(),
+              attributes.getNamedItem("value").getNodeValue());
           break;
         }
       }
