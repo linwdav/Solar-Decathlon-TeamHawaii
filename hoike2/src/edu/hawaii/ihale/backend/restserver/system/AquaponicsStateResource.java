@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.backend.restserver.system;
 
+import java.util.Map;
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
@@ -20,8 +21,16 @@ public class AquaponicsStateResource extends ServerResource {
    */
   @Get
   public Representation getState() throws Exception {
-    // Return the representation.
-    System.out.println(getQuery().getValuesMap());
-    return new EmptyRepresentation();
+
+    Map<String, String> queryMap = getQuery().getValuesMap();
+
+    if (queryMap.containsKey("since")) {
+      // TODO Return state history using value assocaited with "since".
+      return new EmptyRepresentation();
+    }
+    else {
+      // TODO Return current state
+      return new EmptyRepresentation();
+    }
   }
 }
