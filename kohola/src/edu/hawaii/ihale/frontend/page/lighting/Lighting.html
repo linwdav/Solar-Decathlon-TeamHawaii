@@ -140,7 +140,56 @@ function toggleOnOff(x) {
   </div>
 </div>
 
-      
+<div class="inner">
+	<div class="box">
+    <h2>Lighting Log</h2>
+    <form action="#" class="table-wrapper" method="get" name="tableform">	
+    <!--p class="show-count">		
+	        Show&nbsp;		
+	        <select>		
+	          <option>10</option>		
+	          <option>20</option>		
+	          <option>30</option>		
+	          <option>40</option>		
+	        </select>		
+	        &nbsp;Entries		
+     </p-->		
+          <div wicket:id="LightingSystemLogContainer">
+          
+			<script type="text/javascript">
+			$(document).ready(function(){
+			   $("#LightingSystemLogTable").tablesorter();
+			 });
+			</script>
+			
+	      <table id="LightingSystemLogTable" cellpadding="0" cellspacing="0" class="tablesorter log" width="100%">		
+	        <thead>		
+	          <tr>		
+	            <th>Type</th>	
+	            <th>Time</th>
+	            <th>Message</th>		
+	          </tr>		
+	        </thead>		
+		
+	        <tbody>		
+	          <tr wicket:id="LightingStatusMessages">
+	    		<td wicket:id="LightingMessageType">Message Type Goes Here</td>
+	    		<td wicket:id="LightingTimestamp">Time Goes Here</td>
+	    		<td wicket:id="LightingMessageContent">Message Content Goes Here</td>
+	    	</tr>	
+	        </tbody>	
+	        <tfoot>
+	          <tr>
+	            <td wicket:id="paginatorLighting"></td>
+	          </tr>
+	        </tfoot>	
+	      </table>		
+      	  </div>
+	      <div class="clear"></div>		
+	    </form>
+  </div>
+</div>
+<!-- End Status Messages -->        
 
 
 

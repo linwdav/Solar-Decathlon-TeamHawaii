@@ -1,14 +1,18 @@
 package edu.hawaii.ihale.frontend.page.lighting;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
 //import org.apache.wicket.markup.html.WebMarkupContainer;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
@@ -16,11 +20,15 @@ import org.apache.wicket.markup.html.form.TextField;
 //import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.HiddenField;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.time.Duration;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
@@ -117,6 +125,54 @@ public class Lighting extends Header {
     desiredDiningColor = repository.getLightingColor(IHaleRoom.DINING).getValue();
     desiredKitchenColor = repository.getLightingColor(IHaleRoom.KITCHEN).getValue();
     desiredBathroomColor = repository.getLightingColor(IHaleRoom.BATHROOM).getValue();
+    
+    // Messages
+    // Add messages as a list view to each page
+
+    // Get all messages applicable to this page
+    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages().getAllMessages();
+    
+    // Create wrapper container for pageable list view
+    WebMarkupContainer systemLog = new WebMarkupContainer("LightingSystemLogContainer");
+    systemLog.setOutputMarkupId(true);
+    
+    // Create Listview
+    PageableListView<SystemStatusMessage> listView =
+        new PageableListView<SystemStatusMessage>("LightingStatusMessages", msgs, 10) {
+
+          private static final long serialVersionUID = 1L;
+
+          @Override
+          protected void populateItem(ListItem<SystemStatusMessage> item) {
+
+            SystemStatusMessage msg = item.getModelObject();
+            
+            // If only the empty message is in the list, then
+            // display "No Messages"
+            if (msg.getType() == null) {
+              item.add(new Label("LightingMessageType", "-"));
+              item.add(new Label("LightingTimestamp", "-"));
+              item.add(new Label("LightingMessageContent", "No Messages"));
+            }
+            // Populate data
+            else {
+              item.add(new Label("LightingTimestamp", new Date(msg.getTimestamp()).toString()));
+              item.add(new Label("LightingMessageType", msg.getType().toString()));
+              item.add(new Label("LightingMessageContent", msg.getMessage()));
+            }
+          }
+        };
+    
+    systemLog.add(listView);
+    systemLog.add(new AjaxPagingNavigator("paginatorLighting", listView));
+    // Update log every 5 seconds.
+    systemLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
+      private static final long serialVersionUID = 1L;
+    });
+    systemLog.setVersioned(false);
+    add(systemLog);
+
+    // End messages section
 
     if (LIVING_ROOM.equals(currentRoom)) {
       setColor = desiredLivingColor;
