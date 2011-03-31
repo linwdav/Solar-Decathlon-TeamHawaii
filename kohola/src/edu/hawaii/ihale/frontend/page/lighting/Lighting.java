@@ -130,7 +130,8 @@ public class Lighting extends Header {
     // Add messages as a list view to each page
 
     // Get all messages applicable to this page
-    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages().getAllMessages();
+    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages()
+    .getMessages(IHaleSystem.LIGHTING); 
     
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("LightingSystemLogContainer");
