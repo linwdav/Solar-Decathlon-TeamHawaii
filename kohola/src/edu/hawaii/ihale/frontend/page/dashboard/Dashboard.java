@@ -110,7 +110,6 @@ public class Dashboard extends Header {
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("SystemLogContainer");
     systemLog.setOutputMarkupId(true);
-    add(systemLog);
     
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
@@ -143,7 +142,12 @@ public class Dashboard extends Header {
     
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginator", listView));
+    // Update log every 5 seconds.
+    systemLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
+      private static final long serialVersionUID = 1L;
+    });
     systemLog.setVersioned(false);
+    add(systemLog);
 
     // End messages section
 

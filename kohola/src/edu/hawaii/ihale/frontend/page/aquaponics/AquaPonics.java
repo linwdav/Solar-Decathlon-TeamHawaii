@@ -146,7 +146,6 @@ public class AquaPonics extends Header {
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("AquaponicsLogContainer");
     systemLog.setOutputMarkupId(true);
-    add(systemLog);
 
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
@@ -178,6 +177,11 @@ public class AquaPonics extends Header {
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginatorAquaponics", listView));
     systemLog.setVersioned(false);
+    // Update log every 5 seconds.
+    systemLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
+      private static final long serialVersionUID = 1L;
+    });
+    add(systemLog);
 
     // End messages section
 
