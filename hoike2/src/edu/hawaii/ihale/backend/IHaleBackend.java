@@ -91,7 +91,7 @@ public class IHaleBackend implements IHaleCommand {
     String folder = ".ihale";
     String configurationFile = "device-urls.properties";
     configFilePath = System.getProperty("user.home") + "/" + folder + "/" + configurationFile;
-    
+
     String initialDataFile = "initial-data.xml";
     initialDataPath = System.getProperty("user.home") + "/" + folder + "/" + initialDataFile;
   }
@@ -249,15 +249,15 @@ public class IHaleBackend implements IHaleCommand {
       switch (system) {
       case AQUAPONICS:
         cmd = handleAquaponicsCommand(command, arg);
-        url = uris.get(system) + aquaMap.get(command.toString());
+        url = uris.get(system.toString()) + aquaMap.get(command.toString());
         break;
       case HVAC:
         cmd = handleHvacCommand(command, arg);
-        url = uris.get(system) + "hvac/temp";
+        url = uris.get(system.toString()) + "hvac/temp";
         break;
       case LIGHTING:
         cmd = handleLightingCommand(room, command, arg);
-        url = uris.get(system) + lightMap.get(command.toString());
+        url = uris.get(system.toString()) + lightMap.get(command.toString());
         break;
       default:
         throw new RuntimeException("Unsupported IHale System Type encountered: " + system);
