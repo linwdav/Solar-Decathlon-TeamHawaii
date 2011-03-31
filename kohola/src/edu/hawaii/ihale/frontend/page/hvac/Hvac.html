@@ -27,13 +27,13 @@
 
 		// Slider for Air
 		$('#sliderAir').slider({
-			orientation : "vertical",
+			orientation : "horizontal",
 			range : "min",
 			min : 45,
 			max : 95,
 			value: parseInt($( "#airTemperature").val(), 10),
 			change: function( event, ui ) {
-				$( "#airTemperature" ).val( ui.value + "&#176;F" );
+				$( "#airTemperature" ).val( ui.value );
 				$( "#airTemperature" ).change();
 			}
 		});
@@ -87,13 +87,13 @@
 	Conditions</h4>
 	<div class="clear"></div>
 	<div class="box">
-	<div class="column-two" style="line-height: 20px;">Inside:<br />
+	<div class="column-two" style="line-height: 30px;font-size: 15px;">Inside:<br />
 	<br />
 	Outside:<br />
 	<br />
 	
 	</div>
-	<div class="column-two" style="line-height: 20px; font-size: 20px;">
+	<div class="column-two" style="line-height: 30px; font-size: 20px;">
 	<span wicket:id="InsideTemperature"></span><br />
 	<br />
 	<span wicket:id="OutsideTemperature"></span><br />
@@ -112,32 +112,42 @@
 	Control</h4>
 	<div class="clear"></div>
 	<!-- Air TEMP -->
-	<div style="background: #fff; border: 1px solid #ccc; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; clear: both; margin-bottom: -60px; padding: 40px;">
+	<div style="background: #fff; border: 1px solid #ccc; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; clear: both; margin-bottom: -60px; padding: 40px; padding-bottom: 16px;">
 
 	<center>
 	<form wicket:id="form">
 	<p style="margin-top: -20px;"><font size="3">Set House Temperature: </font></p>
 	<div style="margin:auto; margin-top: -10px;" id="sliderAir"></div>
 	<div class="clear"></div>
-	<div class="dark-purple" style="margin-top:10px;font-weight:bold;">
-	  <p style="margin-left: 120px;"><input wicket:id="airTemperature" type="text" /></p>
-	</div>
-	<p style="margin-right: 100px;"><input wicket:id="SubmitTemp" class="gray-button right" type="submit" value="Change" style="color: #333333;"/></p>
+
+	<table class="bare" border="0" style="margin-top:10px;" width="100%">
+	<tr>
+	<td align="right" width="50%">
+	<input wicket:id="airTemperature" size="2" style="direction:rtl;" type="text" />
+	</td>
+	<td align="left" width="50%">&deg;F
+	</td>
+	</tr>
+	<tr><td><p></p></td></tr>
+	<tr>
+	<td align="center">
+	<input wicket:id="SubmitTemp" class="gray-button" type="submit" value="Change" style="color: #333333;"/>
+	</td>
+	<td align="center">
+	<div style="margin-top:3px;border: 3px #DDD solid;"><span wicket:id="Feedback"></span></div>
+	</td>	
+	</tr>
+	</table>
+
 	</form>
-	<div class="clear"></div>
 	</center>
-	<span wicket:id="Feedback" />
 
 	</div>
-
-
-	<div class="clear"></div>
-
 
 	</div>
 	<div class="clear"></div>
 	</div>
-	</div>
+	</div>	
 	</div>
 
 	<div class="column-two">

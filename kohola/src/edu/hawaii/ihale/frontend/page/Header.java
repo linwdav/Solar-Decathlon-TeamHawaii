@@ -619,7 +619,7 @@ public class Header extends WebPage {
        */
     };
 
-    selectModalWindow.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(10)) {
+    selectModalWindow.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(99999)) {
       /** */
       private static final long serialVersionUID = 1L;
 

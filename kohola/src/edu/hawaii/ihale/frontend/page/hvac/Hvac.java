@@ -113,7 +113,7 @@ public class Hvac extends Header {
     Label outsideTemperature = new Label("OutsideTemperature", outsideModel);
 
     // clear feedback each time the page is refreshed.
-    feedback = new Label("Feedback", "");
+    feedback = new Label("Feedback", "&nbsp;");
 
     // the on off button for hvac
     Link<String> onOffButton = new Link<String>("button") {
@@ -179,7 +179,7 @@ public class Hvac extends Header {
 
     // Add the control for the air temp slider
     airTemp =
-        new TextField<String>("airTemperature", new Model<String>(setTemp + "&deg;F"));
+        new TextField<String>("airTemperature", new Model<String>(String.valueOf(setTemp)));
     airTemp.setEscapeModelStrings(false);
 
     // Added for jquery control.
@@ -196,7 +196,7 @@ public class Hvac extends Header {
        */
       @Override
       protected void onUpdate(AjaxRequestTarget target) {
-        setTemp = Integer.valueOf(airTemp.getValue().substring(0, airTemp.getValue().length() - 2));
+        setTemp = Integer.valueOf(airTemp.getValue());
         System.out.println("onUpdate setTemp: " + setTemp);
       }
     });
@@ -212,8 +212,8 @@ public class Hvac extends Header {
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         if (setTemp == desiredTemp) {
-          feedback.setDefaultModelObject("<font color=\"#FF9900\">Unnecessary Change:<br />"
-              + "Same as the original desired temperature (" + desiredTemp + "&deg;F)</font>");
+          feedback.setDefaultModelObject("<font color=\"#FF9900\">Same: " +
+          		"(" + desiredTemp + "&deg;F)</font>");
           // target.addComponent(textField);
           target.addComponent(feedback);
           return;
@@ -227,19 +227,18 @@ public class Hvac extends Header {
           SolarDecathlonApplication.getBackend().doCommand(system, null, command, newTemperature);
 
           feedback.setDefaultModelObject("<font color=\"green\">"
-              + "Success:<br />Desired room temperature is now " + desiredTemp + "&deg;F</font>");
+              + "Success: (" + desiredTemp + "&deg;F)</font>");
         }
         // target.addComponent(textField);
         target.addComponent(feedback);
       }
     });
 
-    add(form);
     form.setOutputMarkupId(true);
-
     feedback.setEscapeModelStrings(false);
     feedback.setOutputMarkupId(true);
-    add(feedback);
+    form.add(feedback);
+    add(form);
 
     // temporary images yet to be replaced.
     add(new Image("tempY", new ResourceReference(Header.class, "images/tempY.png")));
