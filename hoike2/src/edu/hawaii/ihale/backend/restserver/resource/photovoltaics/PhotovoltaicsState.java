@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.system;
+package edu.hawaii.ihale.backend.restserver.resource.photovoltaics;
 
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
@@ -11,7 +11,7 @@ import org.restlet.resource.ServerResource;
  * 
  * @author Michael Cera
  */
-public class PhotovoltaicsStateResource extends ServerResource {
+public class PhotovoltaicsState extends ServerResource {
   /**
    * Returns the data requested through the URI.
    * 

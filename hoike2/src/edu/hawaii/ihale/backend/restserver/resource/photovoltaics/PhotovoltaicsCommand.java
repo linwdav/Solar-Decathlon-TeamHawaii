@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.system;
+package edu.hawaii.ihale.backend.restserver.resource.photovoltaics;
 
 import org.restlet.resource.ServerResource;
 
@@ -8,6 +8,6 @@ import org.restlet.resource.ServerResource;
  * 
  * @author Michael Cera
  */
-public class PhotovoltaicsCommandResource extends ServerResource {
+public class PhotovoltaicsCommand extends ServerResource {
 
 }

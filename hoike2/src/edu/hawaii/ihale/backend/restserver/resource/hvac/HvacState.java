@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.system;
+package edu.hawaii.ihale.backend.restserver.resource.hvac;
 
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
@@ -6,12 +6,12 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
 /**
- * A server resource that will handle requests regarding the Lighting system. Supported operations:
- * GET. Supported representations: XML.
+ * A server resource that will handle requests regarding the HVAC system. Supported operations: GET.
+ * Supported representations: XML.
  * 
  * @author Michael Cera
  */
-public class LightingStateResource extends ServerResource {
+public class HvacState extends ServerResource {
   /**
    * Returns the data requested through the URI.
    * 

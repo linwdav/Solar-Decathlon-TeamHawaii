@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.system;
+package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 import java.util.Map;
 import org.restlet.representation.EmptyRepresentation;
@@ -12,7 +12,7 @@ import org.restlet.resource.ServerResource;
  * 
  * @author Michael Cera
  */
-public class AquaponicsStateResource extends ServerResource {
+public class AquaponicsState extends ServerResource {
   /**
    * Returns the data requested through the URI.
    * 

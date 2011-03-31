@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.system;
+package edu.hawaii.ihale.backend.restserver.resource.lighting;
 
 import org.restlet.resource.ServerResource;
 
@@ -8,6 +8,6 @@ import org.restlet.resource.ServerResource;
  * 
  * @author Michael Cera
  */
-public class LightingCommandResource extends ServerResource {
+public class LightingCommand extends ServerResource {
 
 }

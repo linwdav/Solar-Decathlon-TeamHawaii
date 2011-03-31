@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.system;
+package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 //import java.util.Map;
 import org.restlet.resource.Put;
@@ -10,7 +10,7 @@ import org.restlet.resource.ServerResource;
  * 
  * @author Michael Cera
  */
-public class AquaponicsCommandResource extends ServerResource {
+public class AquaponicsCommand extends ServerResource {
   /**
    * Sends command to system.
    */

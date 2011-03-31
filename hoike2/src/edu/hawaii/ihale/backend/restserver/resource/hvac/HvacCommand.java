@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.system;
+package edu.hawaii.ihale.backend.restserver.resource.hvac;
 
 import org.restlet.resource.ServerResource;
 
@@ -8,6 +8,6 @@ import org.restlet.resource.ServerResource;
  * 
  * @author Michael Cera
  */
-public class HVACCommandResource extends ServerResource {
+public class HvacCommand extends ServerResource {
 
 }

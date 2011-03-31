@@ -5,16 +5,16 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import edu.hawaii.ihale.backend.restserver.system.AquaponicsCommandResource;
-import edu.hawaii.ihale.backend.restserver.system.AquaponicsStateResource;
-import edu.hawaii.ihale.backend.restserver.system.ElectricityCommandResource;
-import edu.hawaii.ihale.backend.restserver.system.ElectricityStateResource;
-import edu.hawaii.ihale.backend.restserver.system.HVACCommandResource;
-import edu.hawaii.ihale.backend.restserver.system.HVACStateResource;
-import edu.hawaii.ihale.backend.restserver.system.LightingCommandResource;
-import edu.hawaii.ihale.backend.restserver.system.LightingStateResource;
-import edu.hawaii.ihale.backend.restserver.system.PhotovoltaicsCommandResource;
-import edu.hawaii.ihale.backend.restserver.system.PhotovoltaicsStateResource;
+import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsCommand;
+import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsState;
+import edu.hawaii.ihale.backend.restserver.resource.electrical.ElectricalCommand;
+import edu.hawaii.ihale.backend.restserver.resource.electrical.ElectricalState;
+import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacCommand;
+import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacState;
+import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingCommand;
+import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingState;
+import edu.hawaii.ihale.backend.restserver.resource.photovoltaics.PhotovoltaicsCommand;
+import edu.hawaii.ihale.backend.restserver.resource.photovoltaics.PhotovoltaicsState;
 
 /**
  * A simple HTTP server that provides external devices with access to the iHale system.
@@ -62,16 +62,16 @@ public class RestServer extends Application {
     Router router = new Router(getContext());
     
     // Attach resources to router.
-    router.attach("/AQUAPONICS/state", AquaponicsStateResource.class);
-    router.attach("/AQUAPONICS/command/{command}", AquaponicsCommandResource.class);
-    router.attach("/HVAC/state", HVACStateResource.class);
-    router.attach("/HVAC/command/{command}", HVACCommandResource.class);
-    router.attach("/ELECTRICITY/state", ElectricityStateResource.class);
-    router.attach("/ELECTRICITY/command{command}", ElectricityCommandResource.class);
-    router.attach("/PHOTOVOLTAICS/state", PhotovoltaicsStateResource.class);
-    router.attach("/PHOTOVOLTAICS/command{command}", PhotovoltaicsCommandResource.class);
-    router.attach("/LIGHTING/state", LightingStateResource.class);
-    router.attach("/LIGHTING/command{command}", LightingCommandResource.class);
+    router.attach("/AQUAPONICS/state", AquaponicsState.class);
+    router.attach("/AQUAPONICS/command/{command}", AquaponicsCommand.class);
+    router.attach("/HVAC/state", HvacState.class);
+    router.attach("/HVAC/command/{command}", HvacCommand.class);
+    router.attach("/ELECTRICITY/state", ElectricalState.class);
+    router.attach("/ELECTRICITY/command/{command}", ElectricalCommand.class);
+    router.attach("/PHOTOVOLTAICS/state", PhotovoltaicsState.class);
+    router.attach("/PHOTOVOLTAICS/command/{command}", PhotovoltaicsCommand.class);
+    router.attach("/LIGHTING/state", LightingState.class);
+    router.attach("/LIGHTING/command/{command}", LightingCommand.class);
     // Return the root router
     return router;
   }
