@@ -6,12 +6,12 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
 /**
- * A server resource that will handle requests regarding the Electricity system. Supported
- * operations: GET, PUT. Supported representations: XML.
+ * A server resource that will handle requests regarding the HVAC system. Supported operations: GET.
+ * Supported representations: XML.
  * 
  * @author Michael Cera
  */
-public class ElectricityResource extends ServerResource {
+public class HVACStateResource extends ServerResource {
   /**
    * Returns the data requested through the URI.
    * 

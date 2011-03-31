@@ -7,11 +7,11 @@ import org.restlet.resource.ServerResource;
 
 /**
  * A server resource that will handle requests regarding the Aquaponics system. Supported
- * operations: GET, PUT. Supported representations: XML.
+ * operations: GET. Supported representations: XML.
  * 
  * @author Michael Cera
  */
-public class AquaponicsResource extends ServerResource {
+public class AquaponicsStateResource extends ServerResource {
   /**
    * Returns the data requested through the URI.
    * 
@@ -21,6 +21,7 @@ public class AquaponicsResource extends ServerResource {
   @Get
   public Representation getState() throws Exception {
     // Return the representation.
+    System.out.println(getQuery().getValuesMap());
     return new EmptyRepresentation();
   }
 }

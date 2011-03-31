@@ -5,11 +5,16 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import edu.hawaii.ihale.backend.restserver.system.AquaponicsResource;
-import edu.hawaii.ihale.backend.restserver.system.ElectricityResource;
-import edu.hawaii.ihale.backend.restserver.system.HVACResource;
-import edu.hawaii.ihale.backend.restserver.system.LightingResource;
-import edu.hawaii.ihale.backend.restserver.system.PhotovoltaicsResource;
+import edu.hawaii.ihale.backend.restserver.system.AquaponicsCommandResource;
+import edu.hawaii.ihale.backend.restserver.system.AquaponicsStateResource;
+import edu.hawaii.ihale.backend.restserver.system.ElectricityCommandResource;
+import edu.hawaii.ihale.backend.restserver.system.ElectricityStateResource;
+import edu.hawaii.ihale.backend.restserver.system.HVACCommandResource;
+import edu.hawaii.ihale.backend.restserver.system.HVACStateResource;
+import edu.hawaii.ihale.backend.restserver.system.LightingCommandResource;
+import edu.hawaii.ihale.backend.restserver.system.LightingStateResource;
+import edu.hawaii.ihale.backend.restserver.system.PhotovoltaicsCommandResource;
+import edu.hawaii.ihale.backend.restserver.system.PhotovoltaicsStateResource;
 
 /**
  * A simple HTTP server that provides external devices with access to the iHale system.
@@ -55,12 +60,18 @@ public class RestServer extends Application {
   public Restlet createInboundRoot() {
     // Create a router restlet.
     Router router = new Router(getContext());
-    // Attach the resources to the router.
-    router.attach("/AQUAPONICS", AquaponicsResource.class);
-    router.attach("/HVAC", HVACResource.class);
-    router.attach("/ELECTRICITY", ElectricityResource.class);
-    router.attach("/PHOTOVOLTAICS", PhotovoltaicsResource.class);
-    router.attach("/LIGHTING", LightingResource.class);
+    
+    // Attach resources to router.
+    router.attach("/AQUAPONICS/state", AquaponicsStateResource.class);
+    router.attach("/AQUAPONICS/command/{command}", AquaponicsCommandResource.class);
+    router.attach("/HVAC/state", HVACStateResource.class);
+    router.attach("/HVAC/command/{command}", HVACCommandResource.class);
+    router.attach("/ELECTRICITY/state", ElectricityStateResource.class);
+    router.attach("/ELECTRICITY/command{command}", ElectricityCommandResource.class);
+    router.attach("/PHOTOVOLTAICS/state", PhotovoltaicsStateResource.class);
+    router.attach("/PHOTOVOLTAICS/command{command}", PhotovoltaicsCommandResource.class);
+    router.attach("/LIGHTING/state", LightingStateResource.class);
+    router.attach("/LIGHTING/command{command}", LightingCommandResource.class);
     // Return the root router
     return router;
   }

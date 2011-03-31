@@ -6,12 +6,12 @@ import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
 /**
- * A server resource that will handle requests regarding the Photovoltaics system. Supported
- * operations: GET, PUT. Supported representations: XML.
+ * A server resource that will handle requests regarding the Lighting system. Supported operations:
+ * GET. Supported representations: XML.
  * 
  * @author Michael Cera
  */
-public class PhotovoltaicsResource extends ServerResource {
+public class LightingStateResource extends ServerResource {
   /**
    * Returns the data requested through the URI.
    * 
