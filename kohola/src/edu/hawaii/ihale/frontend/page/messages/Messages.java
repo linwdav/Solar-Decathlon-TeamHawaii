@@ -17,8 +17,9 @@ public class Messages {
   List<SystemStatusMessage> allMessages;
   List<SystemStatusMessage> aquaponicsMessages;
   List<SystemStatusMessage> hvacMessages;
-  List<SystemStatusMessage> electricMessages;
-  List<SystemStatusMessage> photovoltaicMessages;
+  
+  // Electrical messags combines photovoltaic and electrical systems
+  List<SystemStatusMessage> electricalMessages;
   List<SystemStatusMessage> lightingMessages;
 
   /**
@@ -31,16 +32,14 @@ public class Messages {
     allMessages = new LinkedList<SystemStatusMessage>();
     aquaponicsMessages = new LinkedList<SystemStatusMessage>();
     hvacMessages = new LinkedList<SystemStatusMessage>();
-    electricMessages = new LinkedList<SystemStatusMessage>();
-    photovoltaicMessages = new LinkedList<SystemStatusMessage>();
+    electricalMessages = new LinkedList<SystemStatusMessage>();
     lightingMessages = new LinkedList<SystemStatusMessage>();
 
     // Add initial empty message. Allows for displaying of default text
     allMessages.add(empty);
     aquaponicsMessages.add(empty);
     hvacMessages.add(empty);
-    electricMessages.add(empty);
-    photovoltaicMessages.add(empty);
+    electricalMessages.add(empty);
     lightingMessages.add(empty);
 
   } // End Constructor
@@ -57,10 +56,6 @@ public class Messages {
       return aquaponicsMessages;
     case HVAC:
       return hvacMessages;
-    case PHOTOVOLTAIC:
-      return photovoltaicMessages;
-    case ELECTRIC:
-      return electricMessages;
     case LIGHTING:
       return lightingMessages;
     default:
@@ -75,5 +70,16 @@ public class Messages {
    */
   public List<SystemStatusMessage> getAllMessages() {
     return allMessages;
+  }
+  
+  /**
+   * Accessor method for the electrical messages.  This is necessary
+   * due to photovoltaic and electrical systems being on the same 
+   * page.
+   * 
+   * @return The messages for both photovoltaic and electrical systems.
+   */
+  public List<SystemStatusMessage> getElectricalMessages() {
+    return electricalMessages;
   }
 } // End Messages Class

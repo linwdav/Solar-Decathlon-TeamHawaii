@@ -4,22 +4,31 @@ package edu.hawaii.ihale.frontend.page.hvac;
 //import java.util.List;
 //import java.util.ArrayList;
 //import java.util.List;
+import java.util.Date;
+import java.util.List;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
+import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.behavior.AbstractBehavior;
 import org.apache.wicket.markup.ComponentTag;
+import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.ListItem;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
+import org.apache.wicket.util.time.Duration;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 //import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
@@ -71,7 +80,56 @@ public class Hvac extends Header {
   public Hvac() throws Exception {
 
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(4);
+    
+    // Messages
+    // Add messages as a list view to each page
 
+    // Get all messages applicable to this page
+    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages()
+    .getMessages(IHaleSystem.HVAC); 
+    
+    // Create wrapper container for pageable list view
+    WebMarkupContainer systemLog = new WebMarkupContainer("HVACSystemLogContainer");
+    systemLog.setOutputMarkupId(true);
+    
+    // Create Listview
+    PageableListView<SystemStatusMessage> listView =
+        new PageableListView<SystemStatusMessage>("HVACStatusMessages", msgs, 10) {
+
+          private static final long serialVersionUID = 1L;
+
+          @Override
+          protected void populateItem(ListItem<SystemStatusMessage> item) {
+
+            SystemStatusMessage msg = item.getModelObject();
+            
+            // If only the empty message is in the list, then
+            // display "No Messages"
+            if (msg.getType() == null) {
+              item.add(new Label("HVACMessageType", "-"));
+              item.add(new Label("HVACTimestamp", "-"));
+              item.add(new Label("HVACMessageContent", "No Messages"));
+            }
+            // Populate data
+            else {
+              item.add(new Label("HVACTimestamp", new Date(msg.getTimestamp()).toString()));
+              item.add(new Label("HVACMessageType", msg.getType().toString()));
+              item.add(new Label("HVACMessageContent", msg.getMessage()));
+            }
+          }
+        };
+    
+    systemLog.add(listView);
+    systemLog.add(new AjaxPagingNavigator("paginatorHVAC", listView));
+    // Update log every 5 seconds.
+    systemLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
+      private static final long serialVersionUID = 1L;
+    });
+    systemLog.setVersioned(false);
+    add(systemLog);
+
+    // End messages section
+    
     // model for inside temperature label
     Model<String> insideTempModel = new Model<String>() {
 

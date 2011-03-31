@@ -27,8 +27,15 @@ public class MessagesListener extends SystemStatusMessageListener {
     List<SystemStatusMessage> allMsgs = SolarDecathlonApplication.getMessages().getAllMessages();
 
     // Messages only pertaining to this system
-    List<SystemStatusMessage> thisSystemMsgs =
-        SolarDecathlonApplication.getMessages().getMessages(system);
+    List<SystemStatusMessage> thisSystemMsgs;
+    
+    // Need to combine photovoltaic and electrical messages
+    if (system == IHaleSystem.PHOTOVOLTAIC || system == IHaleSystem.ELECTRIC) {
+      thisSystemMsgs = SolarDecathlonApplication.getMessages().getElectricalMessages();
+    }
+    else {
+      thisSystemMsgs = SolarDecathlonApplication.getMessages().getMessages(system);
+    }
 
     
     // Keep master list bounded by 100
