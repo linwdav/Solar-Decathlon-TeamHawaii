@@ -27,8 +27,8 @@ public class AquaponicsCommand extends ServerResource {
     Map<String, String> queryMap = getQuery().getValuesMap();
     String command = (String) this.getRequestAttributes().get("command");
     IHaleSystem system = IHaleSystem.AQUAPONICS;
-    IHaleCommandType commandType = null;
-    Object commandArg = null;
+    IHaleCommandType commandType;
+    Object commandArg;
 
     if (queryMap.containsKey("arg")) {
 
@@ -37,32 +37,40 @@ public class AquaponicsCommand extends ServerResource {
           (IHaleState.SET_TEMPERATURE_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.SET_TEMPERATURE;
         commandArg = Integer.parseInt(arg);
+        backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.FEED_FISH.toString()) &&
           (IHaleState.FEED_FISH_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.FEED_FISH;
         commandArg = Double.parseDouble(arg);
+        backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.HARVEST_FISH.toString()) &&
           (IHaleState.HARVEST_FISH_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.HARVEST_FISH;
+        commandArg = Integer.parseInt(arg);
+        backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.SET_NUTRIENTS.toString()) &&
           (IHaleState.SET_NUTRIENTS_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.SET_NUTRIENTS;
+        commandArg = Double.parseDouble(arg);
+        backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.SET_PH.toString()) &&
           (IHaleState.SET_PH_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.HARVEST_FISH;
+        commandArg = Double.parseDouble(arg);
+        backend.doCommand(system, null, commandType, commandArg);
       }
       else {
         // TODO Error, invalid command.
+        System.out.println("Error message blah blah");
       }
-      backend.doCommand(system, null, commandType, commandArg);
-      System.out.println(system.toString() + commandType.toString() + commandArg.toString());
     }
     else {
       // TODO Error, missing parameters.
+      System.out.println("Error message blah blah");
     }
   }
 }
