@@ -39,6 +39,9 @@
 				<include name="slf4j-api.jar" />
 				<include name="slf4j-simple.jar" />
 			</fileset>
+			<fileset dir="${lib.dir}/restlet">
+				<include name="*.jar" />
+			</fileset>
 		</unjar>
 
 		<jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">
