@@ -4,6 +4,9 @@ package edu.hawaii.ihale.frontend.page.hvac;
 //import java.util.List;
 //import java.util.ArrayList;
 //import java.util.List;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.apache.wicket.Component;
@@ -26,10 +29,21 @@ import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
+import com.codecommit.wicket.AbstractChartData;
+import com.codecommit.wicket.Chart;
+import com.codecommit.wicket.ChartAxis;
+import com.codecommit.wicket.ChartAxisType;
+import com.codecommit.wicket.ChartDataEncoding;
+import com.codecommit.wicket.ChartProvider;
+import com.codecommit.wicket.ChartType;
+import com.codecommit.wicket.IChartData;
+import com.codecommit.wicket.LineStyle;
+import com.codecommit.wicket.MarkerType;
+import com.codecommit.wicket.ShapeMarker;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
-//import edu.hawaii.ihale.backend.IHaleBackend;
+import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.Header;
@@ -158,6 +172,9 @@ public class Hvac extends Header {
       }
     };
     Label insideTemperature = new Label("InsideTemperature", insideTempModel);
+    insideTemperature.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
+      private static final long serialVersionUID = 1L;
+    });
 
     // model for outside temperature label
     Model<String> outsideModel = new Model<String>() {
@@ -301,8 +318,125 @@ public class Hvac extends Header {
     add(new Image("tempY", new ResourceReference(Header.class, "images/tempY.png")));
     add(new Image("tempM", new ResourceReference(Header.class, "images/tempM.png")));
     add(new Image("tempW", new ResourceReference(Header.class, "images/tempW.png")));
-    add(new Image("tempD", new ResourceReference(Header.class, "images/tempD.png")));
+    // add(new Image("tempD", new ResourceReference(Header.class, "images/tempD.png")));
+    addDayGraph();
 
+  }
+
+  /**
+   * Add day graph to the page.
+   */
+  private void addDayGraph() {
+    IChartData data = new AbstractChartData(ChartDataEncoding.TEXT, 100) {
+
+      private static final long serialVersionUID = 1L;
+
+      public double[][] getData() {
+
+        Calendar current = Calendar.getInstance();
+        long lastTwentyFour = 24 * 60 * 60 * 1000L;
+        long time = (new Date()).getTime();
+        long mHourBegin =
+            current.get(Calendar.MINUTE) * 60000 + current.get(Calendar.SECOND) * 1000
+                + current.get(Calendar.MILLISECOND);
+        long twoHours = 2 * 60 * 60 * 1000L;
+        List<TimestampIntegerPair> temperatureList =
+            SolarDecathlonApplication.getRepository()
+                .getHvacTemperatureSince(time - lastTwentyFour);
+
+        double[] data = new double[13];
+        int pointsFound = 0;
+        long value = 0;        
+        long totalValue = 0;
+
+        for (int i = 12; i >= 0; i--) {
+          for (int j = temperatureList.size() - 1; j >= 0; j--) {
+
+            if ((temperatureList.get(j).getTimestamp() < 
+                ((time - mHourBegin) - (twoHours * (i - 1))))
+                && (temperatureList.get(j).getTimestamp() > 
+                ((time - mHourBegin) - (twoHours * i)))) {
+              // data[j]= temperatureList.get(j).getValue();
+              value = temperatureList.get(j).getValue();
+              totalValue += value;
+              pointsFound++;
+            }
+          }
+          if (pointsFound > 0) {
+            data[12 - i] = totalValue / pointsFound;
+          }
+          else {
+            data[12 - i] = 0;
+          }
+        }
+
+        //
+        // double[] test = new double[300];
+        // int rand = 0;
+        // for(int i = 0; i < test.length; i++) {
+        // rand = (int) (Math.random() * 100);
+        // test[i] = rand;
+        // }
+        //
+        // return test;
+        return new double[][] { {}, data };
+      }
+    };
+
+    ChartProvider provider = new ChartProvider(new Dimension(650, 275), ChartType.LINE_XY, data);
+    provider.setColors(new Color[] { Color.BLUE });
+    provider.setTitle("Inside Temperature (°F / Hour)");
+    ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
+    axisX.setLabels(generateXAxis(0));
+    
+    provider.addAxis(axisX);
+    ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
+    axisY.setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90",
+            "95" });
+    provider.addAxis(axisY);
+
+    provider.setLineStyles(new LineStyle[] { new LineStyle(2, 4, 1) });
+
+    provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
+    
+
+    add(new Chart("tempD", provider));
+  }
+
+  /**
+   * Generate and return the X axis.
+   * 
+   * @param type 0: day graph 1: week graph 2: month graph
+   * @return A string array.
+   */
+  private String[] generateXAxis(int type) {
+    String[] axisLabels = new String[13];
+    Calendar calendar = Calendar.getInstance();
+
+    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+    if (type == 0) {
+      for (int i = 0; i <= 11; i++) {
+        if (((currentHour + i) * 2) % 12 == 0) {
+          axisLabels[i] = "12";
+        }
+        else {
+          axisLabels[i] = String.valueOf((currentHour + i * 2) % 12);
+        }
+      }
+      if (currentHour == 12) {
+        axisLabels[12] = "12";
+      }
+      else {
+        axisLabels[12] = String.valueOf(currentHour % 12);
+      }
+    }
+//    if (type == 1) {
+//
+//    }
+//    else {
+//
+//    }
+    return axisLabels;
   }
 
   /**

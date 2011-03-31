@@ -373,7 +373,6 @@ public class Energy extends Header {
     long usage = 0;
     Calendar current = Calendar.getInstance();
     int currentHour = current.get(Calendar.HOUR_OF_DAY);
-
     // Sets x-axis
     String xAxis = "";
     StringBuffer xBuf = new StringBuffer();
@@ -385,7 +384,12 @@ public class Energy extends Header {
         xBuf.append(((currentHour + i * 2) % 12) + "|");
       }
     }
-    xBuf.append((currentHour % 12));
+    if (currentHour == 12) {
+      xBuf.append("12");
+    }
+    else {
+      xBuf.append((currentHour % 12));
+    }
     xAxis = xBuf.toString();
     long lastTwentyFour = 24 * 60 * 60 * 1000L;
     long time = (new Date()).getTime();

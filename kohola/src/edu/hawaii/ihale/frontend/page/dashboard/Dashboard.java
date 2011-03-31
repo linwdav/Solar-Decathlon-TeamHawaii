@@ -498,7 +498,12 @@ public class Dashboard extends Header {
         xBuf.append(((currentHour + i * 2) % 12) + "|");
       }
     }
-    xBuf.append((currentHour % 12));
+    if (currentHour == 12) {
+      xBuf.append("12");
+    }
+    else {
+      xBuf.append((currentHour % 12));
+    }
     xAxis = xBuf.toString();
     long lastTwentyFour = 24 * 60 * 60 * 1000L;
     long time = (new Date()).getTime();

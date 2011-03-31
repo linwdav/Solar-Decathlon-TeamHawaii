@@ -85,6 +85,9 @@ public class RepositoryRefresher {
 
         backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE,
             getRandomInteger(85, 55));
+        
+        repository.store(IHaleSystem.HVAC, IHaleState.TEMPERATURE, timestamp, 
+            getRandomInteger(95, 45));
 
         repository.store(IHaleRoom.LIVING, IHaleState.LIGHTING_LEVEL, timestamp,
             getRandomInteger(100, 1));

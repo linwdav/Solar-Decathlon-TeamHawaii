@@ -92,12 +92,9 @@ public class Header extends WebPage {
     // WebMarkupContainer reportsItem;
     // WebMarkupContainer administratorItem;
     WebMarkupContainer helpItem;
-
-    // find out the info about the current weather. (right now only supports honolulu)
-    // later may have to make DropDownBox for region selection.
+    
     weatherParser = new WeatherParser(cityName);
-    currentWeather = weatherParser.getCurrentWeather();
-    // outsideTemperatureHeader.setDefaultModelObject(String.valueOf(currentWeather.getTempF()));
+    currentWeather = weatherParser.getCurrentWeather();    
 
     // model for current weather label
     Model<String> currentWeatherModel = new Model<String>() {
@@ -147,18 +144,6 @@ public class Header extends WebPage {
     };
 
     Label outsideTemperatureHeader = new Label("OutsideTemperatureHeader", outsideTempModel);
-
-    /*******************************************************************************************
-     * for testing purpose, may remove after the integration with backend system. or just simply
-     * uncomment this section to test with BlackMagic Note: after uncommenting, you have to comment
-     * out the thread in the Application class and use the matching dbClassName for BlackMagic
-     *******************************************************************************************/
-    // try {
-    // new BlackMagic(SolarDecathlonApplication.db);
-    // }
-    // catch (Exception e1) {
-    // e1.printStackTrace();
-    // }
 
     insideTemperatureHeader.setDefaultModelObject(String.valueOf(SolarDecathlonApplication
         .getHvac().getTemp()));
