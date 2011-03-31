@@ -20,6 +20,7 @@ public class PutCommand {
   private IHaleCommandType command;
   private Document document;
   private Element rootElement;
+  private String uri;
 
   /**
    * Default Constructor.
@@ -70,6 +71,22 @@ public class PutCommand {
     DomRepresentation representation = new DomRepresentation();
     representation.setDocument(document);
     return representation;
+  }
+  
+  /**
+   * Sets this URI.
+   */
+  public void setURI(String uri) {
+    this.uri = uri;
+  }
+  
+  /**
+   * Gets this URI.
+   * 
+   * @return String
+   */
+  public String getURI() {
+    return uri;
   }
   
   /**
