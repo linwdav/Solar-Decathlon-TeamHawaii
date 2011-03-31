@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
@@ -51,6 +52,41 @@ public class TestHVAC {
     // Issue a PUT request to the HVAC system to set the home temperature to 25 C.
     putValue(hvacDevicePort, putTemp);
     getValue(hvacDevicePort);
+    
+    /** Case 2: 
+     *  Provide wrong URI to the device system, should return a Not Acceptable 
+     *  reply from the server. **/
+    
+    String wrongCommand = "wrongcommand";
+    String putUrl = "http://localhost:" + hvacDevicePort + "/hvac/" + wrongCommand;
+    ClientResource putClient = new ClientResource(putUrl);
+    
+    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder docBuilder = null;
+    docBuilder = factory.newDocumentBuilder();
+    Document doc = docBuilder.newDocument();
+
+    // Create root tag
+    Element rootElement = doc.createElement("command");
+    rootElement.setAttribute("name", IHaleCommandType.SET_TEMPERATURE.toString());
+    doc.appendChild(rootElement);
+
+    // Create state tag.
+    Element temperatureElement = doc.createElement("arg");
+    temperatureElement.setAttribute(valueAttributeString, putTemp);
+    rootElement.appendChild(temperatureElement);
+
+    // Convert Document to DomRepresentation.
+    DomRepresentation result = new DomRepresentation();
+    result.setDocument(doc);
+
+    try {
+      putClient.put(result);
+    }
+    catch (Exception e) {
+      String errorName = Status.CLIENT_ERROR_NOT_ACCEPTABLE.getName();
+      assertEquals("Not Acceptable should be server response.", errorName, e.getMessage());
+    }
   }
   
   /**
@@ -137,6 +173,9 @@ public class TestHVAC {
     
     assertEquals("The home temperature should decrease by 2C after 6.5 minutes elapsed", 
         currentHomeTemp - 2, newCurrentHomeTemp);
+    
+    /** Case 3:
+     *  **/
   }
   
   /**

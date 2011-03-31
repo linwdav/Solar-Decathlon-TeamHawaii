@@ -12,6 +12,7 @@ import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.housesimulator.SimulatorServer;
 
 /**
@@ -75,10 +76,10 @@ public class TestLighting {
 
     // Grabs attributes from tags.
     String key = ((Element) xmlList.item(0)).getAttribute("key");
-    String value = ((Element) xmlList.item(0)).getAttribute("value");
-
+    String value = ((Element) xmlList.item(0)).getAttribute("value");    
+    
     // Check the key.
-    assertEquals("Checking that key is level", key, "level");
+    assertEquals("Checking that key is level", key, IHaleState.LIGHTING_LEVEL.toString());
 
     // Return the level value for the specified room.
     return value;

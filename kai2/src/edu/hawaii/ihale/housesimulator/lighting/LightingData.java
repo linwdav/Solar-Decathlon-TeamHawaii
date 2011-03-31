@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 
 /**
  * Provides data on the Lighting system, as well as an XML representation.
@@ -229,6 +230,7 @@ public class LightingData {
    * @throws Exception If problems occur creating the XML.
    */
   public static DomRepresentation toXml(String room) throws Exception {
+    
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
@@ -258,26 +260,46 @@ public class LightingData {
     rootElement.setAttribute("timestamp", String.valueOf(new Date().getTime()));
     doc.appendChild(rootElement);
 
+    String levelString = IHaleState.LIGHTING_LEVEL.toString();
+    String enableString = IHaleState.LIGHTING_ENABLED.toString();
+    String colorString = IHaleState.LIGHTING_COLOR.toString();
+    
     // Create state tag.
     Element levelElement = doc.createElement("state");
-    levelElement.setAttribute("key", "level");
+    levelElement.setAttribute("key", levelString);
 
+    Element enableElement = doc.createElement("state");
+    enableElement.setAttribute("key", enableString);
+    
+    Element colorElement = doc.createElement("state");
+    colorElement.setAttribute("key", colorString);
+    
     String value = "value";
     // Retrieve lighting level according to room.
     if ("living".equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(livingLevel));
+      enableElement.setAttribute(value, String.valueOf(livingEnabled));
+      colorElement.setAttribute(value, String.valueOf(livingColor));
     }
     else if ("dining".equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(diningLevel));
+      enableElement.setAttribute(value, String.valueOf(diningEnabled));
+      colorElement.setAttribute(value, String.valueOf(diningEnabled));
     }
     else if ("kitchen".equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(kitchenLevel));
+      enableElement.setAttribute(value, String.valueOf(kitchenEnabled));
+      colorElement.setAttribute(value, String.valueOf(kitchenEnabled));
     }
     else if ("bathroom".equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(bathroomLevel));
+      enableElement.setAttribute(value, String.valueOf(bathroomEnabled));
+      colorElement.setAttribute(value, String.valueOf(bathroomEnabled));
     }
 
     rootElement.appendChild(levelElement);
+    rootElement.appendChild(enableElement);
+    rootElement.appendChild(colorElement);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
