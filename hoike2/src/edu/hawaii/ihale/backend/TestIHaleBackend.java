@@ -10,6 +10,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -55,12 +56,13 @@ public class TestIHaleBackend {
   }
 
   /**
-   * Tests the HVAC doCommand for a successful PUT.
+   * Tests the HVAC doCommand for a successful PUT. Remove @Ignore tag when running with a simulator.
    * 
    * @throws IOException Thrown when URL connection fails.
    * @throws ParserConfigurationException Thrown when building XML document.
    * @throws SAXException Thrown when parsing XML input stream.
    */
+  @Ignore
   @Test
   public void doCommandHvacSystem() throws IOException, ParserConfigurationException, SAXException {
 
