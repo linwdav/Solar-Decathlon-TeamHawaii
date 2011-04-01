@@ -11,8 +11,10 @@ import org.restlet.resource.ServerResource;
  * operations: GET. Supported representations: XML.
  * 
  * @author Michael Cera
+ * @author Bret K. Ikehara
  */
-public class AquaponicsState extends ServerResource {
+public class AquaponicsGet extends ServerResource {
+    
   /**
    * Returns the data requested through the URI.
    * 
@@ -21,7 +23,7 @@ public class AquaponicsState extends ServerResource {
    */
   @Get
   public Representation getState() throws Exception {
-
+    
     Map<String, String> queryMap = getQuery().getValuesMap();
 
     if (queryMap.containsKey("since")) {
@@ -29,8 +31,7 @@ public class AquaponicsState extends ServerResource {
       return new EmptyRepresentation();
     }
     else {
-      // TODO Return current state
-      return new EmptyRepresentation();
+      return AquaponicsData.toXml();
     }
   }
 }

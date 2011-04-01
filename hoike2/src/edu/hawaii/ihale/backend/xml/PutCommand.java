@@ -33,7 +33,7 @@ public class PutCommand {
     if (command == null) {
       throw new NullPointerException("IHaleCommandType was null.");
     }
-    
+
     this.command = command;
 
     // Create the new document.
@@ -72,16 +72,16 @@ public class PutCommand {
     representation.setDocument(document);
     return representation;
   }
-  
+
   /**
    * Sets this URI.
    * 
-   * @param uri The URI.
+   * @param uri String
    */
   public void setURI(String uri) {
     this.uri = uri;
   }
-  
+
   /**
    * Gets this URI.
    * 
@@ -90,7 +90,7 @@ public class PutCommand {
   public String getURI() {
     return uri;
   }
-  
+
   /**
    * Represents the command as a String.
    * 
