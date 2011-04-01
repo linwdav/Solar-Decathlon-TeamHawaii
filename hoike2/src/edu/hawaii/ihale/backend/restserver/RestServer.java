@@ -5,8 +5,8 @@ import org.restlet.Component;
 import org.restlet.Restlet;
 import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
-import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsPut;
-import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsGet;
+import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsCommand;
+import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsState;
 import edu.hawaii.ihale.backend.restserver.resource.electrical.ElectricalCommand;
 import edu.hawaii.ihale.backend.restserver.resource.electrical.ElectricalState;
 import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacCommand;
@@ -19,32 +19,30 @@ import edu.hawaii.ihale.backend.restserver.resource.photovoltaics.PhotovoltaicsS
 /**
  * A simple HTTP server that provides external devices with access to the iHale system.
  * 
+ * @author Philip Johnson
  * @author Michael Cera
  */
 public class RestServer extends Application {
 
   /**
-   * Starts a server running on the specified port. 
+   * Starts a server running on the specified port.
    * 
    * @param port The port on which this server should run.
    * @throws Exception if problems occur starting up this server.
    */
   public static void runServer(int port) throws Exception {
-    // Create a component.
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, port);
-    
-    // Create an application (this class).
+
     Application application = new RestServer();
-    
-    // Attach the application to the component with a defined contextRoot.
+
     String contextRoot = "";
     component.getDefaultHost().attach(contextRoot, application);
     component.start();
   }
 
   /**
-   * This main method starts up a web application that will listen on port 8111.
+   * Start the server on port 8111.
    * 
    * @param args Ignored.
    * @throws Exception If problems occur.
@@ -60,22 +58,21 @@ public class RestServer extends Application {
    */
   @Override
   public Restlet createInboundRoot() {
-    // Create a router restlet.
+
     Router router = new Router(getContext());
-    
+
     // Attach resources to router.
-    router.attach("/AQUAPONICS/state", AquaponicsGet.class);
-    router.attach("/AQUAPONICS/command/{command}", AquaponicsPut.class);
-    
+    router.attach("/AQUAPONICS/state", AquaponicsState.class);
+    router.attach("/AQUAPONICS/command/{command}", AquaponicsCommand.class);
+
     router.attach("/HVAC/state", HvacState.class);
     router.attach("/HVAC/command/{command}", HvacCommand.class);
-    
+
     router.attach("/ELECTRICITY/state", ElectricalState.class);
     router.attach("/ELECTRICITY/command/{command}", ElectricalCommand.class);
-    
+
     router.attach("/PHOTOVOLTAICS/state", PhotovoltaicsState.class);
-    router.attach("/PHOTOVOLTAICS/command/{command}", PhotovoltaicsCommand.class)
-    ;
+    router.attach("/PHOTOVOLTAICS/command/{command}", PhotovoltaicsCommand.class);
     router.attach("/LIGHTING/state", LightingState.class);
     router.attach("/LIGHTING/command/{command}", LightingCommand.class);
     // Return the root router

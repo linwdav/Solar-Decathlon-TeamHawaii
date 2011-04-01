@@ -1,6 +1,8 @@
 package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 import java.util.Map;
+import org.restlet.data.Status;
+import org.restlet.representation.Representation;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
@@ -20,9 +22,11 @@ public class AquaponicsCommand extends ServerResource {
 
   /**
    * Sends command to system.
+   * 
+   * @return Null.
    */
   @Put
-  public void sendCommand() {
+  public Representation sendCommand() {
 
     Map<String, String> queryMap = getQuery().getValuesMap();
     String command = (String) this.getRequestAttributes().get("command");
@@ -64,13 +68,12 @@ public class AquaponicsCommand extends ServerResource {
         backend.doCommand(system, null, commandType, commandArg);
       }
       else {
-        // TODO Error, invalid command.
-        System.out.println("Error message blah blah");
+        getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
       }
     }
     else {
-      // TODO Error, missing parameters.
-      System.out.println("Error message blah blah");
+      getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
+    return null;
   }
 }

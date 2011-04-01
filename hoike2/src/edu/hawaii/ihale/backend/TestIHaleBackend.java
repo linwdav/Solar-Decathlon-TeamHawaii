@@ -55,31 +55,6 @@ public class TestIHaleBackend {
   }
 
   /**
-   * Tests the HVAC doCommand for null input.
-   */
-  @Test(expected = RuntimeException.class)
-  public void doCommandNullIHaleCommandType() {
-    backend.doCommand(IHaleSystem.HVAC, null, null, null);
-  }
-
-  /**
-   * Tests the HVAC doCommand for null input.
-   */
-  @Test(expected = RuntimeException.class)
-  public void doCommandNullValue() {
-    backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, null);
-  }
-
-  /**
-   * Tests the HVAC doCommand for null input.
-   */
-  @Test(expected = RuntimeException.class)
-  public void doCommandNullRoom() {
-    backend.doCommand(IHaleSystem.LIGHTING, null, IHaleCommandType.SET_LIGHTING_LEVEL, new Double(
-        0.0));
-  }
-
-  /**
    * Tests the HVAC doCommand for a successful PUT.
    * 
    * @throws IOException Thrown when URL connection fails.
