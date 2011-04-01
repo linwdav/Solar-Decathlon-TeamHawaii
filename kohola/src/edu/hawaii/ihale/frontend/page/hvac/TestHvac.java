@@ -9,6 +9,7 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Test;
+import com.codecommit.wicket.Chart;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.page.SelectModalWindow;
 
@@ -69,11 +70,11 @@ public class TestHvac {
     tester.assertComponent("form", Form.class);
     tester.assertComponent("form:airTemperature", TextField.class);
     tester.assertComponent("form:SubmitTemp", AjaxButton.class);
-    tester.assertComponent("Feedback", Label.class);
+    tester.assertComponent("form:Feedback", Label.class);
     tester.assertComponent("tempY", Image.class);
     tester.assertComponent("tempM", Image.class);
     tester.assertComponent("tempW", Image.class);
-    tester.assertComponent("tempD", Image.class);
+    tester.assertComponent("tempD", Chart.class);
 
     // The following line is useful for seeing what's on the page.
     tester.debugComponentTrees();

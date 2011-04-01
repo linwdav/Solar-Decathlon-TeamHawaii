@@ -65,8 +65,7 @@ public class TestLighting {
     tester.assertComponent("CurrentWeatherHeader", Label.class);
     tester.assertComponent("OutsideTemperatureHeader", Label.class);
     tester.assertComponent("InsideTemperatureHeader", Label.class);
-    tester.assertComponent("colorchange", HiddenField.class);
-    tester.assertComponent("colorfeedback", Label.class);
+    tester.assertComponent("colorchange", HiddenField.class);    
     tester.assertComponent("form", Form.class);
     tester.assertComponent("form:amountBright", TextField.class);
     tester.assertComponent("form:SubmitIntensity", AjaxButton.class);

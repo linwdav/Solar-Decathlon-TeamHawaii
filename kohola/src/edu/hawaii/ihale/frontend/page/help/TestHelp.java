@@ -26,7 +26,28 @@ public class TestHelp {
     tester.startPage(Help.class);
     tester.assertRenderedPage(Help.class);
 
-    // Check all components on page.
+    // click on all buttons to check all components.
+    tester.clickLink("overviewButton");
+    assertPageComponents(tester);
+    tester.clickLink("dashboardButton");
+    assertPageComponents(tester);
+    tester.clickLink("energyButton");
+    assertPageComponents(tester);
+    tester.clickLink("aquaponicsButton");
+    assertPageComponents(tester);
+    tester.clickLink("lightingButton");
+    assertPageComponents(tester);
+    tester.clickLink("hvacButton");
+
+    // The following line is useful for seeing what's on the page.
+    tester.debugComponentTrees();
+  }
+  
+  /**
+   * Check all components on page.
+   * @param tester WicketTester.
+   */
+  private void assertPageComponents(WicketTester tester) {
     tester.assertComponent("logo", Image.class);
     tester.assertComponent("printer", Image.class);
     tester.assertComponent("help", Image.class);
@@ -66,9 +87,5 @@ public class TestHelp {
     tester.assertComponent("aquaponicsButton", Link.class);
     tester.assertComponent("lightingButton", Link.class);
     tester.assertComponent("hvacButton", Link.class);
-
-    // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
-
   }
 }

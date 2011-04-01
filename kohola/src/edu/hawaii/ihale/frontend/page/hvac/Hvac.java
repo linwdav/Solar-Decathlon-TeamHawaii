@@ -363,7 +363,7 @@ public class Hvac extends Header {
             }
           }
           if (pointsFound > 0) {
-            data[12 - i] = totalValue / pointsFound;
+            data[12 - i] = totalValue / (double)pointsFound;
           }
           else {
             data[12 - i] = 0;

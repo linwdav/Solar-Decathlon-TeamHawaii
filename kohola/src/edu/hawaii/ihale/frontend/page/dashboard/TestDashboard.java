@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainerWithAssociatedMarkup;
 import org.apache.wicket.markup.html.basic.Label;
-import org.apache.wicket.markup.html.basic.MultiLineLabel;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Test;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
@@ -92,7 +92,11 @@ public class TestDashboard {
     tester.assertComponent("InsideTemperature", Label.class);
     tester.assertComponent("OutsideTemperature", Label.class);
     tester.assertComponent("Time", Label.class);
-    tester.assertComponent("StatusMessages", MultiLineLabel.class);
+    tester.assertComponent("SystemLogContainer", WebMarkupContainer.class);
+    tester.assertComponent("SystemLogContainer:StatusMessages", PageableListView.class);
+
+    //WebMarkupContainer systemLog =
+    //    (WebMarkupContainer) tester.getComponentFromLastRenderedPage("SystemLogContainer");
 
     // Check the dropdown box
     DropDownChoice<String> countryDropDownChoice =
