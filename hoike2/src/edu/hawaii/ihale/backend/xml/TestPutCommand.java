@@ -18,16 +18,6 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 public class TestPutCommand {
 
   /**
-   * Test the constructor with a null parameter.
-   * 
-   * @throws ParserConfigurationException Thrown when command XML initiation fails.
-   */
-  @Test(expected = NullPointerException.class)
-  public void testConstructor() throws ParserConfigurationException {
-    new PutCommand(null);
-  }
-
-  /**
    * Tests whether element was attached to the document through the DomRepresentation.
    * 
    * @throws ParserConfigurationException Thrown when command XML initiation fails.

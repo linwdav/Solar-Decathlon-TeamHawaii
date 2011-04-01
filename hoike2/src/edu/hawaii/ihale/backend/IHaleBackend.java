@@ -396,7 +396,7 @@ public class IHaleBackend implements IHaleCommand {
     uri.append("hvac/");
 
     // append command
-    if (command.equals(IHaleCommandType.SET_TEMPERATURE.toString())) {
+    if (command.equals(IHaleCommandType.SET_TEMPERATURE)) {
       uri.append("temperature");
     }
     else {

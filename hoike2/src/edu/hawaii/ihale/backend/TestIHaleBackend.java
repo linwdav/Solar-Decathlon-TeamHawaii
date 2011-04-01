@@ -66,7 +66,7 @@ public class TestIHaleBackend {
 
     URL url = null;
     URLConnection conn = null;
-    Integer value = new Integer(45);
+    Integer value = Integer.valueOf(45);
 
     DocumentBuilderFactory factory = null;
     DocumentBuilder docBuilder = null;
