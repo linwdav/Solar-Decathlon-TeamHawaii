@@ -2,13 +2,17 @@ package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import java.net.URI;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
 /**
@@ -16,7 +20,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * 
  * @author Bret K. Ikehara
  */
-public class TestAquaponicsData {
+public class TestAquaponics {
 
   /**
    * Test toXML method.
@@ -57,5 +61,22 @@ public class TestAquaponicsData {
         throw new Exception("State key is not recognized.");
       }
     }
+  }
+
+  /**
+   * Tests put command with aquaponics. Command: SET_TEMPERATURE; Arg: 25.
+   * Won't work until we test with a simulator.
+   * 
+   * @throws Exception Thrown if server fails to run.
+   */
+  @Ignore
+  @Test
+  public void testPut() throws Exception {
+    RestServer.runServer(8111);
+    URI uri = new URI("http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25");
+    ClientResource client = new ClientResource(uri);
+    client.put(uri);
+
+    // Repository repository = new Repository();
   }
 }
