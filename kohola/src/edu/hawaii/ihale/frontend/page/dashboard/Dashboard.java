@@ -106,11 +106,11 @@ public class Dashboard extends Header {
 
     // Get all messages applicable to this page
     List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages().getAllMessages();
-    
+
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("SystemLogContainer");
     systemLog.setOutputMarkupId(true);
-    
+
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("StatusMessages", msgs, 10) {
@@ -121,7 +121,7 @@ public class Dashboard extends Header {
           protected void populateItem(ListItem<SystemStatusMessage> item) {
 
             SystemStatusMessage msg = item.getModelObject();
-            
+
             // If only the empty message is in the list, then
             // display "No Messages"
             if (msg.getType() == null) {
@@ -139,7 +139,7 @@ public class Dashboard extends Header {
             }
           }
         };
-    
+
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginator", listView));
     // Update log every 5 seconds.
@@ -510,16 +510,11 @@ public class Dashboard extends Header {
     List<TimestampIntegerPair> consumptionList = null;
     List<TimestampIntegerPair> generationList = null;
     // Gets all entries for photovoltaics and consumption in the last 24 hours.
-
     consumptionList =
         SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
-    
 
-    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - lastTwentyFour), time);
     generationList =
         SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
-    
-    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - lastTwentyFour), time);
 
     // milliseconds since beginning of hour
     long mHourBegin =
@@ -622,7 +617,7 @@ public class Dashboard extends Header {
     long mWeek =
         (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE)
             * 60000L + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
-    long mSinceBeginning =
+    long mToday =
         current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
             + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
 
@@ -657,10 +652,8 @@ public class Dashboard extends Header {
     for (int i = 6; i >= 0; i--) {
       for (int j = 0; j < consumptionList.size(); j++) {
 
-        if ((consumptionList.get(j).getTimestamp() < 
-            ((time - mSinceBeginning) - (mInADay * (i - 1))))
-            && (consumptionList.get(j).getTimestamp() > 
-            ((time - mSinceBeginning) - (mInADay * i)))) {
+        if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mInADay * (i - 1))))
+            && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mInADay * i)))) {
           cValue += consumptionList.get(j).getValue();
           cAverage++;
         }
@@ -668,8 +661,8 @@ public class Dashboard extends Header {
       }
       for (int j = 0; j < generationList.size(); j++) {
 
-        if (generationList.get(j).getTimestamp() < (time - mSinceBeginning) - (mInADay * (i - 1))
-            && generationList.get(j).getTimestamp() > (time - mSinceBeginning) - (mInADay * i)) {
+        if (generationList.get(j).getTimestamp() < (time - mToday) - (mInADay * (i - 1))
+            && generationList.get(j).getTimestamp() > (time - mToday) - (mInADay * i)) {
           gValue += generationList.get(j).getValue();
           gAverage++;
         }
@@ -757,18 +750,18 @@ public class Dashboard extends Header {
     long time = (new Date()).getTime();
     List<TimestampIntegerPair> consumptionList = null;
     List<TimestampIntegerPair> generationList = null;
-    long mSinceBeginning =
-        ((current.get(Calendar.DAY_OF_MONTH) - 1) * mInADay) + current.get(Calendar.HOUR_OF_DAY)
-            * 3600000L + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND)
-            * 1000L + current.get(Calendar.MILLISECOND);
+    long mMonth =
+        (30 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L
+            + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND) * 1000L
+            + current.get(Calendar.MILLISECOND);
 
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mSinceBeginning);
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mMonth);
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
         SolarDecathlonApplication.getRepository()
-            .getPhotovoltaicEnergySince(time - mSinceBeginning);
+            .getPhotovoltaicEnergySince(time - mMonth);
 
     // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mSinceBeginning), time);
 
