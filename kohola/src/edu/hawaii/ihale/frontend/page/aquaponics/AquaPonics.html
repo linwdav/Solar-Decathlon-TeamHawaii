@@ -22,12 +22,14 @@ $(function(){
 	$('#sliderPh').slider({
 		orientation: "vertical",
 		range: "min",
-		min: 0,
-		max: 14,
-		value: 0,
-		slide: function( event, ui ) {
-			$( "#waterPh" ).val( ui.value );
-			$( "#waterPh" ).change();
+		min: 0.0,
+		max: 14.0,
+		step: 0.05,
+		//value: parseDouble($("#waterPH").val(), 10),
+		value: 0.0,
+		change: function( event, ui ) {
+			$( "#waterPH" ).val( ui.value );
+			$( "#waterPH" ).change();
 		}
 	});
 	//$( "#amountPh" ).html( $( "#sliderPh" ).slider( "value" )  );
@@ -38,12 +40,14 @@ $(function(){
 		range: "min",
 		min: 0,
 		max: 120,
-		value: 0,
-		slide: function( event, ui ) {
-			$( "#amountLevel" ).html( ui.value + " in" );
+		//value: 0,
+		value: parseInt($( "#waterLEVEL").val(), 10),
+		change: function( event, ui ) {
+			$( "#waterLEVEL" ).val( ui.value );
+			$( "#waterLEVEL" ).change();
 		}
 	});
-	$( "#amountLevel" ).html( $( "#sliderLevel" ).slider( "value" ) + " in"  );
+	//$( "#amountLevel" ).html( $( "#sliderLevel" ).slider( "value" ) + " in"  );
 
 	// Slider for Water Nutrients
 	$('#sliderNutrients').slider({
@@ -51,12 +55,15 @@ $(function(){
 		range: "min",
 		min: 45,
 		max: 85,
-		value: 60,
-		slide: function( event, ui ) {
-			$( "#amountNutrients" ).html( ui.value );
+		step: 0.05,
+		//value: parseInt($( "#waterNUTRIENTS").val(), 10),
+		value: 0.0,
+		change: function( event, ui ) {
+			$( "#waterNUTRIENTS" ).val( ui.value );
+			$( "#waterNUTRIENTS" ).change();
 		}
 	});
-	$( "#amountNutrients" ).html( $( "#sliderNutrients" ).slider( "value" )  );
+	//$( "#amountNutrients" ).html( $( "#sliderNutrients" ).slider( "value" )  );
 	
 });
 </script>
@@ -222,9 +229,7 @@ $(function(){
 </div>
 <!-- END FIRST COLUMN -->
 
-
-<!-- SECOND COLUMN -->
-<!-- Controls-->
+<!-- CONTROLS-->
   
   	  <div class="column-two" style="width:35%;">
   		<div class="inner">
@@ -237,7 +242,7 @@ $(function(){
               <div class="inner">
                 <div class="box" style="text-align:center;padding:10px 0;width:70px">
                 <center>
-                <form wicket:id="form1">
+                <form wicket:id="form">
                   <h6 style="text-align:center">Water Temp</h6>
                   <div style="margin:auto;" id="sliderTemp"></div>
                   <div class="clear"></div>
@@ -256,13 +261,13 @@ $(function(){
               <div class="inner">
                 <div class="box" style="text-align:center;padding:10px 0;width:70px">
                 
-                <form wicket:id="form2">
+                <form wicket:id="form">
                   <h6 style="text-align:center">PH <br>Level</h6>
                   <div style="margin:auto;" id="sliderPh"></div>
                   <div class="clear"></div>
                   
                  <div class="dark-purple" style="margin-top:10px;font-weight:bold;float:none;">
-                   <p style="margin-left: 28px;"><input wicket:id="waterPH" type="text" /></p>
+                   <p style="margin-left: 25px;"><input wicket:id="waterPH" type="text" /></p>
                    </div>
                    </form>
                    
@@ -274,11 +279,16 @@ $(function(){
             <div class="column-four">
               <div class="inner">
                 <div class="box" style="text-align:center;padding:10px 0;width:70px">
+                
+                <form wicket:id="form">
                   <h6 style="text-align:center">Water Level</h6>
                   <div style="margin:auto;" id="sliderLevel"></div>
                   <div class="clear"></div>
                   
-                  <div id="amountLevel" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">96&deg;F</div>
+                  <div class="dark-purple" style="margin-top:10px;font-weight:bold;float:none;">
+                  <p style="margin-left: 28px;"><input wicket:id="waterLEVEL" type="text" /></p>
+                  </div>
+                   </form>
                    
                 </div>
               </div>  			  	
@@ -288,12 +298,17 @@ $(function(){
             <div class="column-four">
               <div class="inner">
                 <div class="box" style="text-align:center;padding:10px 0;width:70px">
+                
+                <form wicket:id="form">
                   <h6 style="text-align:center">Water Nutrients</h6>
                   <div style="margin:auto;" id="sliderNutrients"></div>
                   <div class="clear"></div>
                   
-                  <div id="amountNutrients" class="dark-purple" style="text-align:center;margin-top:10px;font-weight:bold;">69&deg;F</div>
-                  
+                 <div class="dark-purple" style="margin-top:10px;font-weight:bold;float:none;">
+                  <p style="margin-left: 20px;"><input wicket:id="waterNUTRIENTS" type="text" /></p>
+                  </div>
+                   </form>
+                   
                 </div>
               </div>
             </div>

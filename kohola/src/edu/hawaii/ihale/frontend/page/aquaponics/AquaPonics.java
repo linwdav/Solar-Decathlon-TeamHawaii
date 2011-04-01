@@ -57,12 +57,16 @@ public class AquaPonics extends Header {
 
   private TextField<String> waterTemp;
   private TextField<String> waterPh;
+  private TextField<String> waterLevel;
+  private TextField<String> waterNutrients;
 
   private static String dash = "-";
 
   // Initialize variable for doCommands
   private int setTemp = 0;
-  private int setPh = 0;
+  private double setPh = 0;
+  private int setLevel = 0;
+  private double setNutrients = 0;
 
   // the warning and alert messages
   private static final String ALERT_MESSAGE = "<font color=\"red\">(ALERT)</font>";
@@ -1053,11 +1057,11 @@ public class AquaPonics extends Header {
     add(feedForm);
     feedForm.setOutputMarkupId(true);
 
-    /******** Change Temperature ***********/
-
+    // Create a new form for the Controls
+    Form<String> tempform = new Form<String>("form");
+    
+    /** Change Temperature **/
     setTemp = SolarDecathlonApplication.getAquaponics().getTemp();
-
-    Form<String> tempform = new Form<String>("form1");
 
     // Add the control for the water temp slider
     waterTemp = new TextField<String>("waterTemperature", new Model<String>(setTemp + ""));
@@ -1088,23 +1092,17 @@ public class AquaPonics extends Header {
       }
     });
 
-    waterTemp.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
+    waterTemp.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(10)) {
       private static final long serialVersionUID = 1L;
     });
 
     waterTemp.setOutputMarkupId(true);
     waterTemp.setEscapeModelStrings(false);
     tempform.add(waterTemp);
-    add(tempform);
-    tempform.setOutputMarkupId(true);
+    /** END **/
 
-    /*************** END ****************/
-
-    /******** Change PH ***********/
-
-    setPh = SolarDecathlonApplication.getAquaponics().getPH().intValue();
-
-    Form<String> phform = new Form<String>("form2");
+    /** Change Ph **/
+    setPh = SolarDecathlonApplication.getAquaponics().getPH();
 
     // Add the control for the water temp slider
     waterPh = new TextField<String>("waterPH", new Model<String>(setPh + ""));
@@ -1123,14 +1121,13 @@ public class AquaPonics extends Header {
        */
       @Override
       protected void onUpdate(AjaxRequestTarget target) {
-        // setTemp = Integer.valueOf(waterTemp.getValue().substring(0,
-        // waterTemp.getValue().length() - 6));
-        setPh = Integer.valueOf(waterPh.getValue());
+    
+        setPh = Double.parseDouble(waterPh.getValue());
         System.out.println("onUpdate setPh: " + setPh);
 
         IHaleSystem system = IHaleSystem.AQUAPONICS;
         IHaleCommandType command = IHaleCommandType.SET_PH;
-        Double newPh = (double) setPh;
+        double newPh = setPh;
         SolarDecathlonApplication.getBackend().doCommand(system, null, command, newPh);
       }
     });
@@ -1141,11 +1138,95 @@ public class AquaPonics extends Header {
 
     waterPh.setOutputMarkupId(true);
     waterPh.setEscapeModelStrings(false);
-    phform.add(waterPh);
-    add(phform);
-    phform.setOutputMarkupId(true);
+    tempform.add(waterPh);
+    /** END **/
+    
+    /** Change Water Level **/
 
-    /*************** END ****************/
+    setLevel = SolarDecathlonApplication.getAquaponics().getWaterLevel();
+
+    // Add the control for the water temp slider
+    waterLevel = new TextField<String>("waterLEVEL", new Model<String>(setLevel + ""));
+
+    // Added for jquery control.
+    waterLevel.setMarkupId(waterLevel.getId());
+    waterLevel.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 1L;
+
+      /**
+       * Updates the model when the value is changed on screen.
+       */
+      @Override
+      protected void onUpdate(AjaxRequestTarget target) {
+        setLevel = Integer.valueOf(waterLevel.getValue());
+        System.out.println("onUpdate setLevel: " + setLevel);
+
+        IHaleSystem system = IHaleSystem.AQUAPONICS;
+        IHaleCommandType command = IHaleCommandType.SET_WATER_LEVEL;
+        Integer newWaterLevel = setLevel;
+        SolarDecathlonApplication.getBackend().doCommand(system, null, command, newWaterLevel);
+      }
+    });
+
+    waterTemp.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(10)) {
+      private static final long serialVersionUID = 1L;
+    });
+
+    waterLevel.setOutputMarkupId(true);
+    waterLevel.setEscapeModelStrings(false);
+    tempform.add(waterLevel);
+
+    /** END **/
+    
+    /** Change Water Nutrients **/
+    setNutrients = SolarDecathlonApplication.getAquaponics().getNutrients();
+
+    // Add the control for the water temp slider
+    waterNutrients = new TextField<String>("waterNUTRIENTS", new Model<String>(setNutrients + ""));
+
+    // Added for jquery control.
+    waterNutrients.setMarkupId(waterNutrients.getId());
+    waterNutrients.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 1L;
+
+      /**
+       * Updates the model when the value is changed on screen.
+       */
+      @Override
+      protected void onUpdate(AjaxRequestTarget target) {
+    
+        setNutrients = Double.parseDouble(waterNutrients.getValue());
+        System.out.println("onUpdate setNutrients: " + setNutrients);
+
+        IHaleSystem system = IHaleSystem.AQUAPONICS;
+        IHaleCommandType command = IHaleCommandType.SET_NUTRIENTS;
+        double newNutrients = setNutrients;
+        SolarDecathlonApplication.getBackend().doCommand(system, null, command, newNutrients);
+      }
+    });
+
+    waterNutrients.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(10)) {
+      private static final long serialVersionUID = 1L;
+    });
+
+    waterNutrients.setOutputMarkupId(true);
+    waterNutrients.setEscapeModelStrings(false);
+    tempform.add(waterNutrients);
+    /** END **/
+    
+    
+    // Add form into the page
+    add(tempform);
+    tempform.setOutputMarkupId(true);
+    
   }
 
   /**
