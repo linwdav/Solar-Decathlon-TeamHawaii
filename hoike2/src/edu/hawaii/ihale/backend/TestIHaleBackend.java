@@ -56,7 +56,8 @@ public class TestIHaleBackend {
   }
 
   /**
-   * Tests the HVAC doCommand for a successful PUT. Remove @Ignore tag when running with a simulator.
+   * Tests the HVAC doCommand for a successful PUT. Remove @Ignore tag when running with a
+   * simulator.
    * 
    * @throws IOException Thrown when URL connection fails.
    * @throws ParserConfigurationException Thrown when building XML document.
