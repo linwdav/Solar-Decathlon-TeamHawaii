@@ -52,7 +52,6 @@
 </div>
 
 <div class="column-two" style="padding-top:30px;">
-  <div class="column-three-two">
   	<div class="inner">
       <div class="box">
       	<h2>Localization</h2>
@@ -65,14 +64,16 @@
         </div>
         <div class="left" style="width: 60%;">
           <center>
-          <img wicket:id="CurrentWeatherImage" width=120 height=120 />
-          </center>          
-          <table>
+          <img style="border:3px solid #CCCCCC;" wicket:id="CurrentWeatherImage" width=120 height=120 /><br />
+          <font size="4"><b>Current</b></font>
+          </center>       
+          <br />   
+          <table class="bare">
           <tr>
-          <td><center><img wicket:id=WeatherForecastImage1" width=50 height=50 /></center></td>
-          <td><center><img wicket:id=WeatherForecastImage2" width=50 height=50 /></center></td>
-          <td><center><img wicket:id=WeatherForecastImage3" width=50 height=50 /></center></td>
-          <td><center><img wicket:id=WeatherForecastImage4" width=50 height=50 /></center></td>
+          <td><center><img style="border:3px solid #CCCCCC;" wicket:id=WeatherForecastImage1" width=50 height=50 /></center></td>
+          <td><center><img style="border:3px solid #CCCCCC;" wicket:id=WeatherForecastImage2" width=50 height=50 /></center></td>
+          <td><center><img style="border:3px solid #CCCCCC;" wicket:id=WeatherForecastImage3" width=50 height=50 /></center></td>
+          <td><center><img style="border:3px solid #CCCCCC;" wicket:id=WeatherForecastImage4" width=50 height=50 /></center></td>
           </tr>
           <tr>
           
@@ -88,22 +89,6 @@
         <div class="clear"></div>
       </div>
     </div>
-  </div>
-  <div class="column-three">
-  	<div class="inner">
-      <div class="box">
-        <h2>Presets</h2>
-        <div class="move-to-box-header right">[<a href="#">edit</a>]</div>
-        <p class="message">Globally apply presets.</p>
-      	<div style="line-height:20px;">
-          <a href="#">Morning Preset</a><br />
-          <a href="#">Afternoon Preset</a><br />
-          <a href="#">Evening Preset</a><br />
-          <a href="#">Away Preset</a><br />
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <div class="clear"></div>
