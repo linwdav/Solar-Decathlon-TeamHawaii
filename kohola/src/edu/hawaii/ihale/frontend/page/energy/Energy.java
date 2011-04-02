@@ -373,6 +373,7 @@ public class Energy extends Header {
     long usage = 0;
     Calendar current = Calendar.getInstance();
     int currentHour = current.get(Calendar.HOUR_OF_DAY);
+
     // Sets x-axis
     String xAxis = "";
     StringBuffer xBuf = new StringBuffer();
@@ -396,19 +397,12 @@ public class Energy extends Header {
     List<TimestampIntegerPair> consumptionList = null;
     List<TimestampIntegerPair> generationList = null;
     // Gets all entries for photovoltaics and consumption in the last 24 hours.
-   
     consumptionList =
         SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
-          
-        //.getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,
-        //    (time - lastTwentyFour), time);
+
     generationList =
-      SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
-          
-        //.getEntries(PHOTOVOLTAICS, EGAUGE_1,
-        //    (time - lastTwentyFour), time);
-    
-   
+        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
+
     // milliseconds since beginning of hour
     long mHourBegin =
         current.get(Calendar.MINUTE) * 60000 + current.get(Calendar.SECOND) * 1000
@@ -494,7 +488,7 @@ public class Energy extends Header {
    * 1 day periods. So from 7 days ago to 6 days ago is one period, 6 days ago to 5 days ago is
    * another period, etc, with the current day being its own period.
    * 
-   * @return The week graph url.
+   * @return The url for the week graph.
    */
   private String setWeekGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
@@ -507,7 +501,7 @@ public class Energy extends Header {
     long mWeek =
         (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE)
             * 60000L + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
-    long mSinceBeginning =
+    long mToday =
         current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
             + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
 
@@ -522,16 +516,15 @@ public class Energy extends Header {
     long time = (new Date()).getTime();
     List<TimestampIntegerPair> consumptionList = null;
     List<TimestampIntegerPair> generationList = null;
-    
+
     consumptionList =
         SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mWeek);
-      
-    //getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2,        (time - mWeek), time);
+
+    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek), time);
     generationList =
         SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mWeek);
-          
-        //.getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
-   
+
+    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
 
     long cValue = 0, gValue = 0;
     String cValues = "", gValues = "", printC = "", printG = "";
@@ -543,10 +536,8 @@ public class Energy extends Header {
     for (int i = 6; i >= 0; i--) {
       for (int j = 0; j < consumptionList.size(); j++) {
 
-        if ((consumptionList.get(j).getTimestamp() < 
-            ((time - mSinceBeginning) - (mInADay * (i - 1))))
-            && (consumptionList.get(j).getTimestamp() > 
-            ((time - mSinceBeginning) - (mInADay * i)))) {
+        if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mInADay * (i - 1))))
+            && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mInADay * i)))) {
           cValue += consumptionList.get(j).getValue();
           cAverage++;
         }
@@ -554,8 +545,8 @@ public class Energy extends Header {
       }
       for (int j = 0; j < generationList.size(); j++) {
 
-        if (generationList.get(j).getTimestamp() < (time - mSinceBeginning) - (mInADay * (i - 1))
-            && generationList.get(j).getTimestamp() > (time - mSinceBeginning) - (mInADay * i)) {
+        if (generationList.get(j).getTimestamp() < (time - mToday) - (mInADay * (i - 1))
+            && generationList.get(j).getTimestamp() > (time - mToday) - (mInADay * i)) {
           gValue += generationList.get(j).getValue();
           gAverage++;
         }
@@ -612,7 +603,7 @@ public class Energy extends Header {
    * 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 days ago is
    * another period, etc, with the current day being its own period.
    * 
-   * @return The month graph url.
+   * @return The url for the month graph
    */
   private String setMonthGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
@@ -640,21 +631,20 @@ public class Energy extends Header {
     long time = (new Date()).getTime();
     List<TimestampIntegerPair> consumptionList = null;
     List<TimestampIntegerPair> generationList = null;
-    long mSinceBeginning =
-        ((current.get(Calendar.DAY_OF_MONTH) - 1) * mInADay) + current.get(Calendar.HOUR_OF_DAY)
-            * 3600000L + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND)
-            * 1000L + current.get(Calendar.MILLISECOND);
-    
+    long mMonth =
+        (30 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L
+            + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND) * 1000L
+            + current.get(Calendar.MILLISECOND);
+
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mSinceBeginning);
-          
-        //getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mMonth);
+
+    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
-      SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mSinceBeginning);
-          
-        //getEntries(PHOTOVOLTAICS, EGAUGE_1,(time - mSinceBeginning), time);
-    
-    
+        SolarDecathlonApplication.getRepository()
+            .getPhotovoltaicEnergySince(time - mMonth);
+
+    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mSinceBeginning), time);
 
     long cValue = 0, gValue = 0;
     String cValues = "", gValues = "", printC = "", printG = "";
