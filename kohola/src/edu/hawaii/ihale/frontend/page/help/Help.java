@@ -321,8 +321,7 @@ public class Help extends Header {
               + "System Log" + P_CLOSE_TAG + P_OPEN_TAG
               + "The system log provides the historical system status"
               + " messages for each house system (PV, Aquaponics, Lighting, and Hvac). A new"
-              + " entry is added each time a user performs a command to the house or the house"
-              + " itself detects there is some system that needs immediate attention. "
+              + " entry is added each time a user performs a command to the house systems."
               + P_CLOSE_TAG;
       break;
     // energy
@@ -353,17 +352,23 @@ public class Help extends Header {
               + "When the current consumption"
               + " is abnormally high, the users can simply click on any link and direct themselves"
               + " to the pages for other house systems and turn them off to cut back the power"
-              + " usage." + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2 + "Energy Status Messages"
-              + P_CLOSE_TAG + P_OPEN_TAG
+              + " usage." + P_CLOSE_TAG + LINEBREAK + P_OPEN_TAG2 + "Energy Log" + P_CLOSE_TAG
+              + P_OPEN_TAG
               + "The energy status messages section provides the historical system status"
-              + " messages for PV and electrical systems. A new"
-              + " entry is added each time the house detects abnormal power generation or "
-              + "consumption from the sensors." + P_CLOSE_TAG;
+              + " messages for PV and electrical systems." + P_CLOSE_TAG;
       break;
     // aquaponics
     case 3:
       info =
           P_OPEN_TAG2
+              + "Aquaponics Statistics"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "This link takes the user to a page that has the graph representations of" 
+              + " the conditions for the aquaponics system."             
+              + P_CLOSE_TAG
+              + LINEBREAK
+              + P_OPEN_TAG2
               + "Status"
               + P_CLOSE_TAG
               + P_OPEN_TAG
@@ -392,21 +397,32 @@ public class Help extends Header {
               + P_CLOSE_TAG
               + P_OPEN_TAG
               + "This section provides ways to interact with the aquaponics system. The users "
-              + "can set the desired values for different parameters. There is also an option to"
-              + "set a fish-feeding schedule so the users will never have to worry about"
-              + " forgetting to feed the fish again!"
+              + "can set the desired values for different parameters. "
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<b>Water Temp</b> : Allow the user to change the desired water "
+              + "temperature (F&deg;) for the system."
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<b>pH Level</b> : Allow the user to change the pH level for the system"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<b>Water Level</b> : Allow the user to change the water "
+              + "level (inches) for the system"
+              + P_CLOSE_TAG
+              + P_OPEN_TAG
+              + "<b>Water nutrients</b> : Allow the user to change the "
+              + "water nutrients for the system"
               + P_CLOSE_TAG
               + LINEBREAK
               // aquaponics status messages
               + P_OPEN_TAG2
-              + "Aquaponics Status Messages"
+              + "Aquaponics Log"
               + P_CLOSE_TAG
               + P_OPEN_TAG
-              + "The aquaponics status messages section provides the historical system status"
-              + " messages for the aquaponics system. A new entry is added each time a user"
-              + " performs a command to the aquaponics system or the house"
-              + " itself detects some abnormal readings from the aquaponics system sensors that is"
-              + " critical to the health of aquatic plant and animal life."
+              + "The aquaponics log section provides a list of the historical system changes"
+              + " for the aquaponics system. A new entry is added each time a user"
+              + " performs a command to change the water quality in the aquaponics system."
               + P_CLOSE_TAG
               + LINEBREAK
               + LINEBREAK
@@ -426,7 +442,7 @@ public class Help extends Header {
               + " pH greater than 7 are said to be basic or alkaline."
               + P_CLOSE_TAG
               + P_OPEN_TAG
-              + "<strong>Optimal pH range</strong>: 6.8 to 8.0"
+              + "<strong>Optimal pH range</strong>: 6.8 - 8.0"
               + P_CLOSE_TAG
               + LINEBREAK
               // temperature
@@ -441,7 +457,7 @@ public class Help extends Header {
               + "Unit used: Fahrenheit (F&deg;)"
               + P_CLOSE_TAG
               + P_OPEN_TAG
-              + "<strong>Optimal temperature range</strong>: 82F&deg; to 86F&deg;"
+              + "<strong>Optimal temperature range</strong>: 82F&deg; - 86F&deg;"
               + P_CLOSE_TAG
               + LINEBREAK
               // oxygen
@@ -453,9 +469,9 @@ public class Help extends Header {
               + ". It's an indication of how well the water can support aquatic"
               + " plan and animal life. In most cases, higher dissolved oxygen level "
               + "means better water quality. Unit used:"
-              + " Parts Per Million (ppm)"
+              + " mg/l"
               + P_OPEN_TAG
-              + "<strong>Optimal DO range</strong>: 8.0ppm to 12.0ppm"
+              + "<strong>Optimal DO range</strong>: 4.5 - 5.5 mg/l"
               + P_CLOSE_TAG
               + P_CLOSE_TAG
               + LINEBREAK
@@ -470,7 +486,7 @@ public class Help extends Header {
               + " salts or ions in the water. Unit used: uS/cm"
               + P_CLOSE_TAG
               + P_OPEN_TAG
-              + "<strong>Optimal EC range</strong>: TBA by David"
+              + "<strong>Optimal EC range</strong>: 10.0 - 20.0 &micro;s/cm"
               + P_CLOSE_TAG
               + LINEBREAK
               // circulation
@@ -481,8 +497,8 @@ public class Help extends Header {
               + "Circulation indicates the total amount of time the pump has been"
               + "on in one day divided by the total water volume. Unit used: hours/gallons."
               + P_OPEN_TAG
-              + "<strong>Optimal range</strong>:"
-              + " TBA by David"
+              + "<strong>Optimal circulation range</strong>:"
+              + " 60 - 100gpm"
               + P_CLOSE_TAG
               + P_CLOSE_TAG
               + LINEBREAK
@@ -495,7 +511,7 @@ public class Help extends Header {
               + "The measurement of turbidity indicates the water quality. Unit used: Formazin "
               + "Turbidity Unit (FTU)."
               + P_OPEN_TAG
-              + "<strong>Optimal turbidity range</strong>: TBA by David"
+              + "<strong>Optimal turbidity range</strong>: 0 - 100 NTUs"
               + P_CLOSE_TAG
               + P_CLOSE_TAG
               + LINEBREAK
@@ -503,7 +519,7 @@ public class Help extends Header {
               + P_OPEN_TAG2 + "<u>Water Level</u>" + P_CLOSE_TAG + P_OPEN_TAG
               + "The measurement of water level indicates the amount of water in the"
               + " aquaponics system. Unit used: gallons" + P_OPEN_TAG
-              + "<strong>Optimal water level range</strong>: TBA by David"
+              + "<strong>Optimal water level range</strong>: 36 - 48 inches"
               + P_CLOSE_TAG
               + P_CLOSE_TAG
               + LINEBREAK
@@ -520,7 +536,11 @@ public class Help extends Header {
       info =
           P_OPEN_TAG2 + "General Settings" + P_CLOSE_TAG + P_OPEN_TAG
               + "This section allows the user to control the lighting (e.g. light switch"
-              + ", light brightness, light color) in each room." + P_CLOSE_TAG;
+              + ", light brightness, light color) in each room." + P_CLOSE_TAG + P_OPEN_TAG2
+              + "Lighting Log" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The lighting log section provides a list of the historical system changes"
+              + " for the lighting system. A new entry is added each time a user"
+              + " changes the lighting in the house." + P_CLOSE_TAG;
       break;
 
     case 5:
@@ -536,7 +556,11 @@ public class Help extends Header {
               + "<strong>Week</strong> - This graph contains the entries of inside and"
               + " outside temperatures over the last 7 days." + P_CLOSE_TAG + P_OPEN_TAG
               + "<strong>Month</strong> - This graph contains the entries of inside and"
-              + " outside temperatures over the last 30 days." + P_CLOSE_TAG;
+              + " outside temperatures over the last 30 days." + P_CLOSE_TAG + P_OPEN_TAG2
+              + "Hvac Log" + P_CLOSE_TAG + P_OPEN_TAG
+              + "The Hvac log section provides a list of the historical system changes"
+              + " for the Hvac system. A new entry is added each time a user"
+              + " changes the desired temperature for the house." + P_CLOSE_TAG;
       break;
 
     default:
