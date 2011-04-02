@@ -5,8 +5,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.impl.Repository;
-import edu.hawaii.ihale.backend.IHaleBackend;
+import edu.hawaii.ihale.api.repository.impl.Repository; 
 
 /**
  * Creates the abstract object to reference the data in the repository.
@@ -68,7 +67,7 @@ public class SystemData {
     XML_ATTRIBUTE_SYSTEM = "system";
     XML_ATTRIBUTE_TIMESTAMP = "timestamp";
 
-    repository = IHaleBackend.repository;
+    repository = new Repository();
   }
 
   /**

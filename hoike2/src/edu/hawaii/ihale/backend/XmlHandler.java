@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend;
 
 import java.io.IOException;
+import java.util.Locale;
 
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
@@ -60,8 +61,9 @@ public class XmlHandler {
     
     // Pull the state-data attributes: system, device, timestamp
     for (int i = 1; i <= systems.intValue(); i ++) {
-      systemEnum = IHaleSystem.valueOf((String) xpath.evaluate(stateData + i + "]/@system",
-          doc, XPathConstants.STRING));
+      String systemEnumString = (String) xpath.evaluate(stateData + i + "]/@system",
+          doc, XPathConstants.STRING);
+      systemEnum = IHaleSystem.valueOf(systemEnumString.toUpperCase(Locale.ENGLISH));
       device = (String) xpath.evaluate(stateData + i + "]/@device",
           doc, XPathConstants.STRING);
       timestamp = Long.parseLong((String) xpath.evaluate(stateData + i + "]/@timestamp",

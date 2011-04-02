@@ -18,16 +18,15 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem; 
 /**
  * JUnit tests the IHaleBackend.
  * 
- * @author Bret K. Ikehara
+ * @author Bret K. Ikehara, Greg Burgess
  */
 public class TestIHaleBackend {
 
-  private static IHaleBackend backend;
+  static IHaleBackend backend;
 
   /**
    * Cleans up the backend.
@@ -39,8 +38,8 @@ public class TestIHaleBackend {
    */
   @BeforeClass
   public static void beforeClass() throws XPathExpressionException, ParserConfigurationException,
-      SAXException, IOException {
-    backend = new IHaleBackend();
+      SAXException, IOException {  
+    backend = IHaleBackend.getInstance();
   }
 
   /**

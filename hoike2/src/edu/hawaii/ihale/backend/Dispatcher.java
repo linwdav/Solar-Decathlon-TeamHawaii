@@ -15,7 +15,7 @@ public class Dispatcher {
   private long interval;
   /** The map containing all URI values for each system. */
   private Map<String, String> uriMap;
-  /** The threads used for polling */
+  /** The threads used for polling. */
   private Thread[] threads; 
   
   /** Initializes the dispatcher and starts it.
@@ -27,51 +27,46 @@ public class Dispatcher {
     this.interval = interval;
     this.uriMap = map;
     init();
-    main();
+    run();
   }
 
   /**
-   * Initializes polling threads
+   * Initializes polling threads.
    */
   private final void init () {
-    threads = new PollDevice[8];
+    threads = new Thread[8];
     try {
-      threads[0] = new PollDevice(IHaleSystem.AQUAPONICS, null, uriMap.get("aquaponics-state"));
-      threads[1] = new PollDevice(IHaleSystem.HVAC, null, uriMap.get("hvac-state"));
-      threads[2] = new PollDevice(IHaleSystem.LIGHTING, 
-          IHaleRoom.LIVING, uriMap.get("lighting-living-state"));
-      threads[3] = new PollDevice(IHaleSystem.LIGHTING, 
-          IHaleRoom.DINING, uriMap.get("lighting-dining-state"));
-      threads[4] = new PollDevice(IHaleSystem.LIGHTING, 
-          IHaleRoom.KITCHEN, uriMap.get("lighting-kitchen-state"));
-      threads[5] = new PollDevice(IHaleSystem.LIGHTING, 
-          IHaleRoom.BATHROOM,uriMap.get("lighting-bathroom-state"));
-      threads[6] = new PollDevice(IHaleSystem.ELECTRIC, null, uriMap.get("electric-state"));
-      threads[7] = new PollDevice(IHaleSystem.PHOTOVOLTAIC, null, uriMap.get("photovoltaic-state"));
+      threads[0] = new Thread(new PollDevice(IHaleSystem.AQUAPONICS, null, 
+          uriMap.get("aquaponics-state")));
+      threads[1] = new Thread(new PollDevice(IHaleSystem.HVAC, null, 
+          uriMap.get("hvac-state")));
+      threads[2] = new Thread(new PollDevice(IHaleSystem.LIGHTING, 
+          IHaleRoom.LIVING, uriMap.get("lighting-living-state")));
+      threads[3] = new Thread(new PollDevice(IHaleSystem.LIGHTING, 
+          IHaleRoom.DINING, uriMap.get("lighting-dining-state")));
+      threads[4] = new Thread(new PollDevice(IHaleSystem.LIGHTING, 
+          IHaleRoom.KITCHEN, uriMap.get("lighting-kitchen-state")));
+      threads[5] = new Thread(new PollDevice(IHaleSystem.LIGHTING, 
+          IHaleRoom.BATHROOM,uriMap.get("lighting-bathroom-state")));
+      threads[6] = new Thread(new PollDevice(IHaleSystem.ELECTRIC, null, 
+          uriMap.get("electrical-state")));
+      threads[7] = new Thread(new PollDevice(IHaleSystem.PHOTOVOLTAIC, null, 
+          uriMap.get("pv-state")));
     }
     catch (Exception e) {
-      System.err.println("An rror occured initializing polling threads!");
+      System.err.println("An error occured initializing polling threads!");
       e.printStackTrace();
     }
   }
 
   /** Polls data continuously from Hsim in set intervals.
-   * @throws InterruptedException
+   * @throws InterruptedException If thread is interrupted.
    * */
-  public void main() throws InterruptedException {
+  public  final void run() throws InterruptedException {
     while (true) {
-      for (int i = 0; i < threads.length; i++) {
+      for (int i = 0; i < threads.length; i++) { 
         threads[i].start();
-      }
-      for (int j = 0; j < threads.length; j++) {
-        try {
-          threads[j].join();
-        }
-        catch (InterruptedException e) {
-          // TODO Auto-generated catch block
-          e.printStackTrace();
-        }
-      }
+      } 
       Thread.sleep(interval);
     }
   } 

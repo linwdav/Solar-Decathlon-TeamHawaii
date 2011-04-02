@@ -11,7 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.backend.IHaleBackend;
+import edu.hawaii.ihale.api.repository.impl.Repository; 
 import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
@@ -73,13 +73,13 @@ public class TestAquaponics {
   @Ignore
   @Test
   public void testPut() throws Exception {
-
+    Repository repository = new Repository();
     RestServer.runServer(8111);
     String uri = "http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
     client.put(uri);
 
-    assertEquals("Checking sent argument", IHaleBackend.repository
+    assertEquals("Checking sent argument", repository
         .getAquaponicsTemperatureCommand().getValue(), Integer.valueOf(25));
   }
 }

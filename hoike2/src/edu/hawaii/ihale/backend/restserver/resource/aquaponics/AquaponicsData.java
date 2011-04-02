@@ -12,7 +12,7 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.TimestampDoublePair;
 import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
-import edu.hawaii.ihale.backend.IHaleBackend;
+import edu.hawaii.ihale.api.repository.impl.Repository; 
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
 /**
@@ -24,7 +24,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  */
 public class AquaponicsData extends SystemData {
-
+  private static Repository repository = new Repository();
   /**
    * Returns the data as an XML Document instance.
    * 
@@ -34,14 +34,14 @@ public class AquaponicsData extends SystemData {
    */
   public static DomRepresentation toXml() throws ParserConfigurationException, IOException {
 
-    TimestampDoublePair circulation = IHaleBackend.repository.getAquaponicsCirculation();
-    TimestampDoublePair ec = IHaleBackend.repository.getAquaponicsElectricalConductivity();
-    TimestampIntegerPair deadFish = IHaleBackend.repository.getAquaponicsDeadFish();
-    TimestampIntegerPair temp = IHaleBackend.repository.getAquaponicsTemperature();
-    TimestampDoublePair turbidity = IHaleBackend.repository.getAquaponicsTurbidity();
-    TimestampIntegerPair waterLevel = IHaleBackend.repository.getAquaponicsWaterLevel();
-    TimestampDoublePair ph = IHaleBackend.repository.getAquaponicsPh();
-    TimestampDoublePair oxygen = IHaleBackend.repository.getAquaponicsOxygen();
+    TimestampDoublePair circulation = repository.getAquaponicsCirculation();
+    TimestampDoublePair ec = repository.getAquaponicsElectricalConductivity();
+    TimestampIntegerPair deadFish = repository.getAquaponicsDeadFish();
+    TimestampIntegerPair temp = repository.getAquaponicsTemperature();
+    TimestampDoublePair turbidity = repository.getAquaponicsTurbidity();
+    TimestampIntegerPair waterLevel = repository.getAquaponicsWaterLevel();
+    TimestampDoublePair ph = repository.getAquaponicsPh();
+    TimestampDoublePair oxygen = repository.getAquaponicsOxygen();
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = factory.newDocumentBuilder();
@@ -81,19 +81,19 @@ public class AquaponicsData extends SystemData {
       IOException {
 
     List<TimestampDoublePair> circulation =
-        IHaleBackend.repository.getAquaponicsCirculationSince(timestamp);
+        repository.getAquaponicsCirculationSince(timestamp);
     List<TimestampDoublePair> ec =
-        IHaleBackend.repository.getAquaponicsElectricalConductivitySince(timestamp);
+        repository.getAquaponicsElectricalConductivitySince(timestamp);
     List<TimestampIntegerPair> deadFish =
-        IHaleBackend.repository.getAquaponicsDeadFishSince(timestamp);
+        repository.getAquaponicsDeadFishSince(timestamp);
     List<TimestampIntegerPair> temp =
-        IHaleBackend.repository.getAquaponicsTemperatureSince(timestamp);
+        repository.getAquaponicsTemperatureSince(timestamp);
     List<TimestampDoublePair> turbidity =
-        IHaleBackend.repository.getAquaponicsTurbiditySince(timestamp);
+        repository.getAquaponicsTurbiditySince(timestamp);
     List<TimestampIntegerPair> waterLevel =
-        IHaleBackend.repository.getAquaponicsWaterLevelSince(timestamp);
-    List<TimestampDoublePair> ph = IHaleBackend.repository.getAquaponicsPhSince(timestamp);
-    List<TimestampDoublePair> oxygen = IHaleBackend.repository.getAquaponicsOxygenSince(timestamp);
+        repository.getAquaponicsWaterLevelSince(timestamp);
+    List<TimestampDoublePair> ph = repository.getAquaponicsPhSince(timestamp);
+    List<TimestampDoublePair> oxygen = repository.getAquaponicsOxygenSince(timestamp);
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = factory.newDocumentBuilder();

@@ -18,7 +18,7 @@ import edu.hawaii.ihale.backend.IHaleBackend;
  */
 public class AquaponicsCommand extends ServerResource {
 
-  private IHaleBackend backend = new IHaleBackend();
+  private IHaleBackend backend = IHaleBackend.getInstance();
 
   /**
    * Sends command to system.
