@@ -12,6 +12,7 @@ import edu.hawaii.ihale.backend.IHaleBackend;
  * Creates the abstract object to reference the data in the repository.
  * 
  * @author Bret K. Ikehara
+ * @author Michael Cera
  */
 public class SystemData {
 
@@ -108,16 +109,20 @@ public class SystemData {
     return element;
   }
 
+  
   /**
-   * Appends the state-history node to the XML document.
+   * Creates the state-history as the root element.
    * 
    * @param doc Document
-   * @return Node
+   * @param root Node
+   * @return root
    */
-  protected static Node appendStateHistoryNode(Document doc) {
+  protected static Node appendStateHistoryNode(Document doc, Node root) {
     Element element = doc.createElement(XML_TAG_STATE_HISTORY);
-    doc.appendChild(element);
+    root.appendChild(element);
 
     return element;
   }
+  
+  
 }

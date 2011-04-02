@@ -2,7 +2,6 @@ package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.net.URI;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -12,6 +11,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
@@ -19,6 +19,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * Tests the aquaponics data to ensure that the XML representation is correct.
  * 
  * @author Bret K. Ikehara
+ * @author Michael Cera
  */
 public class TestAquaponics {
 
@@ -64,19 +65,21 @@ public class TestAquaponics {
   }
 
   /**
-   * Tests put command with aquaponics. Command: SET_TEMPERATURE; Arg: 25.
-   * Won't work until we test with a simulator.
+   * Tests put command with aquaponics. Command: SET_TEMPERATURE; Arg: 25. Won't work until we test
+   * with a simulator.
    * 
    * @throws Exception Thrown if server fails to run.
    */
   @Ignore
   @Test
   public void testPut() throws Exception {
+
     RestServer.runServer(8111);
-    URI uri = new URI("http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25");
+    String uri = "http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
     client.put(uri);
 
-    // Repository repository = new Repository();
+    assertEquals("Checking sent argument", IHaleBackend.repository
+        .getAquaponicsTemperatureCommand().getValue(), Integer.valueOf(25));
   }
 }
