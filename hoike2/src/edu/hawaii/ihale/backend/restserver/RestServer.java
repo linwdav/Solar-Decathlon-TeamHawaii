@@ -33,6 +33,7 @@ public class RestServer extends Application {
   public static void runServer(int port) throws Exception {
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, port);
+    component.getClients().add(Protocol.HTTP);
 
     Application application = new RestServer();
 
