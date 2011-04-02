@@ -390,7 +390,7 @@ public class Lighting extends Header {
     }
 
     // create feedback for intensity
-    intensityFeedback = new Label("intensityfeedback", "<font color=\"white\">(xxx%)</font>");
+    intensityFeedback = new Label("intensityfeedback", "<font color=\"white\">&nbsp;</font>");
     intensityFeedback.setEscapeModelStrings(false);
     intensityFeedback.setOutputMarkupId(true);
 
