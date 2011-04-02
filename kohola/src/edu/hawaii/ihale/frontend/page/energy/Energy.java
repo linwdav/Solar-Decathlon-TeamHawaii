@@ -22,10 +22,6 @@ import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.frontend.page.Header;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
-import edu.hawaii.ihale.frontend.page.aquaponics.AquaPonics;
-import edu.hawaii.ihale.frontend.page.hvac.Hvac;
-import edu.hawaii.ihale.frontend.page.lighting.Lighting;
-
 /**
  * The energy page.
  * 
@@ -270,54 +266,6 @@ public class Energy extends Header {
     add(currentConsumption);
     add(currentGeneration);
 
-    hvacSetting = new Link<String>("HvacSetting") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        try {
-          ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(4);
-          setResponsePage(Hvac.class);
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-
-    aquaponicsSetting = new Link<String>("AquaponicsSetting") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        try {
-          ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(2);
-          setResponsePage(AquaPonics.class);
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-
-    lightingSetting = new Link<String>("LightingSetting") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        try {
-          ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(3);
-          setResponsePage(Lighting.class);
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-
-    add(hvacSetting);
-    add(aquaponicsSetting);
-    add(lightingSetting);
 
   } // End Constructor
 
