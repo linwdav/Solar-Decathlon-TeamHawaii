@@ -105,7 +105,8 @@ public class IHaleBackend implements IHaleCommand {
     log.info("Initiatiating Dispatcher.");
     try {
       dispatch = new Dispatcher(uriMap, interval);
-    } catch (InterruptedException e) {
+    }
+    catch (InterruptedException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
     }
@@ -289,7 +290,7 @@ public class IHaleBackend implements IHaleCommand {
 
     // Generates the XML for the command.
     PutCommand cmd = new PutCommand(command);
-    StringBuilder uri = new StringBuilder();
+    StringBuilder uri = new StringBuilder(50);
 
     // Check argument type for command.
     if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
@@ -360,7 +361,7 @@ public class IHaleBackend implements IHaleCommand {
       throws RuntimeException, ParserConfigurationException, InvalidTypeException {
 
     PutCommand cmd = new PutCommand(command);
-    StringBuffer uri = new StringBuffer();
+    StringBuffer uri = new StringBuffer(50);
 
     // Check argument type for command.
     if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
@@ -403,7 +404,7 @@ public class IHaleBackend implements IHaleCommand {
       throws ParserConfigurationException, InvalidTypeException {
 
     PutCommand cmd = new PutCommand(command);
-    StringBuilder uri = new StringBuilder();
+    StringBuilder uri = new StringBuilder(50);
 
     // Checks whether value is valid.
     if (ApiDictionary.iHaleCommandType2State(command).isType(arg.toString())) {
@@ -415,6 +416,7 @@ public class IHaleBackend implements IHaleCommand {
     }
 
     uri.append(uriMap.get("aquaponics-control"));
+    uri.append("aquaponics/");
 
     // append command
     switch (command) {
