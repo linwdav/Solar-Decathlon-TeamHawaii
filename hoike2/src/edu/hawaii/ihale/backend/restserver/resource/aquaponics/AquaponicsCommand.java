@@ -33,6 +33,7 @@ public class AquaponicsCommand extends ServerResource {
     String command = (String) this.getRequestAttributes().get("command");
     IHaleSystem system = IHaleSystem.AQUAPONICS;
     IHaleCommandType commandType;
+    Object commandArg;
 
     if (queryMap.containsKey("arg")) {
 
@@ -40,31 +41,31 @@ public class AquaponicsCommand extends ServerResource {
       if ((command.equals(IHaleCommandType.SET_TEMPERATURE.toString()) &&
           (IHaleState.SET_TEMPERATURE_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.SET_TEMPERATURE;
-        int commandArg = Integer.parseInt(arg);
+        commandArg = Integer.parseInt(arg);
         backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.FEED_FISH.toString()) &&
           (IHaleState.FEED_FISH_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.FEED_FISH;
-        double commandArg = Double.parseDouble(arg);
+        commandArg = Double.parseDouble(arg);
         backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.HARVEST_FISH.toString()) &&
           (IHaleState.HARVEST_FISH_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.HARVEST_FISH;
-        int commandArg = Integer.parseInt(arg);
+        commandArg = Integer.parseInt(arg);
         backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.SET_NUTRIENTS.toString()) &&
           (IHaleState.SET_NUTRIENTS_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.SET_NUTRIENTS;
-        double commandArg = Double.parseDouble(arg);
+        commandArg = Double.parseDouble(arg);
         backend.doCommand(system, null, commandType, commandArg);
       }
       else if ((command.equals(IHaleCommandType.SET_PH.toString()) &&
           (IHaleState.SET_PH_COMMAND.isType(arg)))) {
         commandType = IHaleCommandType.HARVEST_FISH;
-        double commandArg = Double.parseDouble(arg);
+        commandArg = Double.parseDouble(arg);
         backend.doCommand(system, null, commandType, commandArg);
       }
       else {
