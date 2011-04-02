@@ -83,7 +83,7 @@ $(function(){
 
 <!-- FIRST COLUMN -->
 
-<div class="column-two" style="width:65%;">
+<div class="column-three-two">
   <div class="inner">
 	<div class="box-inners" style="background-color:#F0F0F0;">  	
   					
@@ -101,7 +101,7 @@ $(function(){
 	  <div class="column-three">
   		<div class="inner">
   			<div wicket:id="TempOuterDiv">
-  			  <h4 style="color:white;text-align:center;">Temperature</h4>
+  			  <h4 style="color:white;text-align:center;"><br />Temperature<br /></h4>
   			  
   			  <div wicket:id="TempInnerDiv" style="text-align:center;">
   			      <font style="font-size:30px"><span wicket:id="Temp"></span>&deg;F</font>
@@ -119,7 +119,7 @@ $(function(){
 	  <div class="column-three">
   		<div class="inner">
   			<div wicket:id="PhOuterDiv">
-  			  <h4 style="color:white;text-align:center;">PH</h4>
+  			  <h4 style="color:white;text-align:center;"><br />PH<br /></h4>
   			  
   			  <div wicket:id="PhInnerDiv" style="text-align:center;">
   			  <font style="font-size:30px"><span wicket:id="PH"></span> </font>
@@ -137,7 +137,7 @@ $(function(){
 	  <div class="column-three">
   		<div class="inner">
   			<div wicket:id="EcOuterDiv" >
-  			  <h4 style="color:white;text-align:center;">Electrical Conductivity</h4>
+  			  <h4 style="color:white;text-align:center;">Electrical<br />Conductivity</h4>
   			  
   			  <div wicket:id="EcInnerDiv" style="text-align:center;">
   			      <font style="font-size:30px"><span wicket:id="EC"></span> <font style="font-size:18px"></font></font>
@@ -154,7 +154,7 @@ $(function(){
 	  <div class="column-four">
   		<div class="inner">
   			<div wicket:id="OxygenOuterDiv">
-  			  <h5 style="color:white;text-align:center;">Dissolved Oxygen</h5>
+  			  <h5 style="color:white;text-align:center;">Dissolved<br />Oxygen</h5>
   			  
   			  <div wicket:id="OxygenInnerDiv" style="text-align:center;">
 	  			  <font style="font-size:20px"><span wicket:id="Oxygen"></span> </font>
@@ -172,7 +172,7 @@ $(function(){
 	  <div class="column-four">
   		<div class="inner">
   			<div wicket:id="LevelOuterDiv">
-  			  <h5 style="color:white;text-align:center;">Water Level</h5>
+  			  <h5 style="color:white;text-align:center;"><br />Water Level<br /></h5>
   			  
   			  <div wicket:id="LevelInnerDiv" style="text-align:center;">
 	  			  <font style="font-size:20px"><span wicket:id="Level"></span> </font>
@@ -190,7 +190,7 @@ $(function(){
 	  <div class="column-four">
   		<div class="inner">
   			<div wicket:id="CirculationOuterDiv">
-  			  <h5 style="color:white;text-align:center;">Water Circulation</h5>
+  			  <h5 style="color:white;text-align:center;">Water<br />Circulation</h5>
   			  
   			  <div wicket:id="CirculationInnerDiv" style="text-align:center;">
 	  			  <font style="font-size:20px"><span wicket:id="Circulation"></span> </font>
@@ -208,7 +208,7 @@ $(function(){
 	  <div class="column-four">
   		<div class="inner">
   			<div wicket:id="TurbidityOuterDiv">
-  			  <h5 style="color:white;text-align:center;">Water Turbidity</h5>
+  			  <h5 style="color:white;text-align:center;"><br />Water Turbidity<br /></h5>
   			  
   			  <div wicket:id="TurbidityInnerDiv" style="text-align:center;">
 	  			  <font style="font-size:20px"><span wicket:id="Turbidity"></span> </font>
@@ -231,7 +231,7 @@ $(function(){
 
 <!-- CONTROLS-->
   
-  	  <div class="column-two" style="width:35%;">
+  	  <div class="column-three">
   		<div class="inner">
           <div class="box-inners">
             
@@ -248,7 +248,7 @@ $(function(){
                   <div class="clear"></div>
                   
                   <div class="dark-purple" style="margin-top:10px;font-weight:bold;float:none;">
-                   <p style="margin-left: 28px;"><input wicket:id="waterTemperature" type="text" /></p>
+                   <p style="align:center;"><input style="text-align: center;" size="1" wicket:id="waterTemperature" type="text" /></p>
                    </div>
                    </form>
                    </center>
@@ -267,7 +267,7 @@ $(function(){
                   <div class="clear"></div>
                   
                  <div class="dark-purple" style="margin-top:10px;font-weight:bold;float:none;">
-                   <p style="margin-left: 25px;"><input wicket:id="waterPH" type="text" /></p>
+                   <p style="align:center;"><input style="text-align: center;" size="1" wicket:id="waterPH" type="text" /></p>
                    </div>
                    </form>
                    
@@ -286,7 +286,7 @@ $(function(){
                   <div class="clear"></div>
                   
                   <div class="dark-purple" style="margin-top:10px;font-weight:bold;float:none;">
-                  <p style="margin-left: 28px;"><input wicket:id="waterLEVEL" type="text" /></p>
+                  <p style="align:center;"><input style="text-align: center;" size="1" wicket:id="waterLEVEL" type="text" /></p>
                   </div>
                    </form>
                    
@@ -305,7 +305,7 @@ $(function(){
                   <div class="clear"></div>
                   
                  <div class="dark-purple" style="margin-top:10px;font-weight:bold;float:none;">
-                  <p style="margin-left: 20px;"><input wicket:id="waterNUTRIENTS" type="text" /></p>
+                  <p style="align:center;"><input style="text-align: center;" size="1" wicket:id="waterNUTRIENTS" type="text" /></p>
                   </div>
                    </form>
                    
@@ -319,7 +319,7 @@ $(function(){
 	  </div>
 
 	<!-- Fish -->
-    <div class="column-two" style="width: 35%;">
+    <div class="column-three">
 	  <div class="inner">
 		<div class="box-inners">
 			<h2>Fish</h2>
