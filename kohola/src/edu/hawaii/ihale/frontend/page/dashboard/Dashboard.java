@@ -142,6 +142,7 @@ public class Dashboard extends Header {
 
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginator", listView));
+    
     // Update log every 5 seconds.
     systemLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
       private static final long serialVersionUID = 1L;

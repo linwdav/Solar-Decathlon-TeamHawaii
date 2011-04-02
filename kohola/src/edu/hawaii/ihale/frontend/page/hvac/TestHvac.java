@@ -71,9 +71,8 @@ public class TestHvac {
     tester.assertComponent("form:airTemperature", TextField.class);
     tester.assertComponent("form:SubmitTemp", AjaxButton.class);
     tester.assertComponent("form:Feedback", Label.class);
-    tester.assertComponent("tempY", Image.class);
-    tester.assertComponent("tempM", Image.class);
-    tester.assertComponent("tempW", Image.class);
+    tester.assertComponent("tempM", Chart.class);
+    tester.assertComponent("tempW", Chart.class);
     tester.assertComponent("tempD", Chart.class);
 
     // The following line is useful for seeing what's on the page.

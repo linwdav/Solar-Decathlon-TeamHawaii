@@ -131,6 +131,8 @@ public class AquaPonics extends Header {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
+  String onchange = "onchange";
+  
   /**
    * Layout of page.
    * 
@@ -1068,7 +1070,7 @@ public class AquaPonics extends Header {
 
     // Added for jquery control.
     waterTemp.setMarkupId(waterTemp.getId());
-    waterTemp.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    waterTemp.add(new AjaxFormComponentUpdatingBehavior(onchange) {
 
       /**
        * Serial ID.
@@ -1109,7 +1111,7 @@ public class AquaPonics extends Header {
 
     // Added for jquery control.
     waterPh.setMarkupId(waterPh.getId());
-    waterPh.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    waterPh.add(new AjaxFormComponentUpdatingBehavior(onchange) {
 
       /**
        * Serial ID.
@@ -1150,7 +1152,7 @@ public class AquaPonics extends Header {
 
     // Added for jquery control.
     waterLevel.setMarkupId(waterLevel.getId());
-    waterLevel.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    waterLevel.add(new AjaxFormComponentUpdatingBehavior(onchange) {
 
       /**
        * Serial ID.
@@ -1190,7 +1192,7 @@ public class AquaPonics extends Header {
 
     // Added for jquery control.
     waterNutrients.setMarkupId(waterNutrients.getId());
-    waterNutrients.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    waterNutrients.add(new AjaxFormComponentUpdatingBehavior(onchange) {
 
       /**
        * Serial ID.

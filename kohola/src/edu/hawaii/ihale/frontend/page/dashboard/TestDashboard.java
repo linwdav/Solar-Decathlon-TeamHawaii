@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.frontend.page.dashboard;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Date;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.WebMarkupContainerWithAssociatedMarkup;
 import org.apache.wicket.markup.html.basic.Label;
@@ -9,9 +10,13 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.page.SelectModalWindow;
+import edu.hawaii.ihale.frontend.page.messages.MessagesListener;
 
 /**
  * JUnit testing for Dashboard page.
@@ -20,14 +25,81 @@ import edu.hawaii.ihale.frontend.page.SelectModalWindow;
  */
 public class TestDashboard {
 
+  static MessagesListener msgListener;
+  static SolarDecathlonApplication sda;
+  // Start up the WicketTester and check that the page renders.
+  WicketTester tester = new WicketTester(sda);
+
+  /**
+   * Loads items into lists.
+   * 
+   * @throws Exception e.
+   */
+  @BeforeClass
+  public static void setUpBeforeClass() throws Exception {
+    sda = new SolarDecathlonApplication();
+    msgListener = SolarDecathlonApplication.getMessagesListener();
+
+    // Get Current Time and set backoff variables.
+    long currentTime = new Date().getTime();
+    long min = 60 * 1000;
+    long hour = min * 60;
+    long day = hour * 24;
+
+    // Test Message
+    String msg = "Test Message";
+
+    // Populate lists
+    msgListener
+        .messageAdded(currentTime, IHaleSystem.AQUAPONICS, SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - min, IHaleSystem.AQUAPONICS,
+        SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - hour, IHaleSystem.AQUAPONICS,
+        SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - day, IHaleSystem.AQUAPONICS,
+        SystemStatusMessageType.INFO, msg);
+
+    msgListener.messageAdded(currentTime, IHaleSystem.HVAC, SystemStatusMessageType.INFO, msg);
+    msgListener
+        .messageAdded(currentTime - min, IHaleSystem.HVAC, SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - hour, IHaleSystem.HVAC, SystemStatusMessageType.INFO,
+        msg);
+    msgListener
+        .messageAdded(currentTime - day, IHaleSystem.HVAC, SystemStatusMessageType.INFO, msg);
+
+    msgListener.messageAdded(currentTime, IHaleSystem.LIGHTING, SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - min, IHaleSystem.LIGHTING, SystemStatusMessageType.INFO,
+        msg);
+    msgListener.messageAdded(currentTime - hour, IHaleSystem.LIGHTING,
+        SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - day, IHaleSystem.LIGHTING, SystemStatusMessageType.INFO,
+        msg);
+
+    msgListener.messageAdded(currentTime, IHaleSystem.ELECTRIC, SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - min, IHaleSystem.ELECTRIC, SystemStatusMessageType.INFO,
+        msg);
+    msgListener.messageAdded(currentTime - hour, IHaleSystem.ELECTRIC,
+        SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - day, IHaleSystem.ELECTRIC, SystemStatusMessageType.INFO,
+        msg);
+
+    msgListener.messageAdded(currentTime, IHaleSystem.PHOTOVOLTAIC, SystemStatusMessageType.INFO,
+        msg);
+    msgListener.messageAdded(currentTime - min, IHaleSystem.PHOTOVOLTAIC,
+        SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - hour, IHaleSystem.PHOTOVOLTAIC,
+        SystemStatusMessageType.INFO, msg);
+    msgListener.messageAdded(currentTime - day, IHaleSystem.PHOTOVOLTAIC,
+        SystemStatusMessageType.INFO, msg);
+  }
+
   /**
    * Performs JUnit tests on the Dashboard page.
    */
   @SuppressWarnings("unchecked")
   @Test
   public void testPage() {
-    // Start up the WicketTester and check that the page renders.
-    WicketTester tester = new WicketTester(new SolarDecathlonApplication());
+
     tester.startPage(Dashboard.class);
     tester.assertRenderedPage(Dashboard.class);
 
@@ -95,9 +167,6 @@ public class TestDashboard {
     tester.assertComponent("SystemLogContainer", WebMarkupContainer.class);
     tester.assertComponent("SystemLogContainer:StatusMessages", PageableListView.class);
 
-    //WebMarkupContainer systemLog =
-    //    (WebMarkupContainer) tester.getComponentFromLastRenderedPage("SystemLogContainer");
-
     // Check the dropdown box
     DropDownChoice<String> countryDropDownChoice =
         (DropDownChoice<String>) tester.getComponentFromLastRenderedPage("Cities");
@@ -107,5 +176,15 @@ public class TestDashboard {
     // The following line is useful for seeing what's on the page.
     tester.debugComponentTrees();
 
-  }
+  } // End testPage
+  
+  /**
+   * Test status messages log.
+   */
+  public void testStatusMessages() {
+    // TO DO
+    int x = 0;
+    System.out.println(x);
+  } // End testStatusMessages
+
 }
