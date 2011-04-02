@@ -54,10 +54,10 @@ public class Lighting extends Header {
   // String literals for pmd
   private static final String brightID = "amountBright";
   private static final String white = "#FFFFFF";
-  private static final String yellowTag = "<font color=\"#FF9900\">Same: (";
+  private static final String yellowTag = "<font color=\"#FF9900\">(";
   private static final String yellowTagEnd = "%)</font>";
   private static final String greenTagEnd = "%)</font>";
-  private static final String greenTag = "<font color=\"green\">Success: (";
+  private static final String greenTag = "<font color=\"green\">(";
   private static final String CLASS = "class";
   private static final String LIVING_ROOM = "Living Room";
   private static final String DINING_ROOM = "Dining Room";
@@ -390,7 +390,7 @@ public class Lighting extends Header {
     }
 
     // create feedback for intensity
-    intensityFeedback = new Label("intensityfeedback", "");
+    intensityFeedback = new Label("intensityfeedback", "<font color=\"white\">(xxx%)</font>");
     intensityFeedback.setEscapeModelStrings(false);
     intensityFeedback.setOutputMarkupId(true);
 
