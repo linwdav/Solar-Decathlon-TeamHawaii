@@ -66,24 +66,7 @@ public class IHaleBackend implements IHaleCommand {
   /**
    * Object that polls data from HSIM.
    */
-  private static final Dispatcher dispatch;
-
-  /**
-   * Defines all the command map objects.
-   */
-  private static final Map<String, String> commandMap;
-
-  /**
-   * Defines all the URIs for the aquaponics system for sending commands to the system's Arduino
-   * device.
-   */
-  private static final Map<String, String> aquaMap;
-
-  /**
-   * Defines all the URIs for the lighting system for sending commands to the system's Arduino
-   * device.
-   */
-  private static final Map<String, String> lightMap;
+  private static Dispatcher dispatch;
 
   /**
    * The repository that can store all the data for the iHale system.
@@ -117,19 +100,15 @@ public class IHaleBackend implements IHaleCommand {
     systemHistoricalDataRef =
         System.getProperty("user.home") + "/" + folder + "/" + initialDataFile;
 
-    // make a dispatcher
-    log.info("Initiatiating Dispatcher.");
-    // dispatch = new Dispatcher(uriMap, interval);
-
-    // grab all data before it starts
-    // commandMap = dispatch.getCommandMap();
-    // lightMap = dispatch.getLightMap();
-    // aquaMap = dispatch.getAquaMap();
-
+    // Initialize Dispatcher
     dispatch = null;
-    commandMap = null;
-    lightMap = null;
-    aquaMap = null;
+    log.info("Initiatiating Dispatcher.");
+    try {
+      dispatch = new Dispatcher(uriMap, interval);
+    } catch (InterruptedException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
 
     log.info("Running dispatcher at an interval of " + interval + " milliseconds.");
 
@@ -482,33 +461,6 @@ public class IHaleBackend implements IHaleCommand {
    */
   public static Map<String, String> getURImap() {
     return uriMap;
-  }
-
-  /**
-   * Gets this command map for the enumerations.
-   * 
-   * @return Map<String, String>
-   */
-  public static Map<String, String> getCommandMap() {
-    return commandMap;
-  }
-
-  /**
-   * Gets the URI mapping for the Aquaponic's system.
-   * 
-   * @return Map<String, String>
-   */
-  public static Map<String, String> getAquaponicsMap() {
-    return aquaMap;
-  }
-
-  /**
-   * Gets the URI mapping for the Lighting system.
-   * 
-   * @return Map<String, String>
-   */
-  public static Map<String, String> getLightingMap() {
-    return lightMap;
   }
 
   /**
