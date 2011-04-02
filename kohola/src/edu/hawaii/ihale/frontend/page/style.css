@@ -126,7 +126,6 @@ table.bare td, table.bare th { padding: 0 !important; background: none !importan
 table.bare tr:hover td { background: none !important; }
 table.log { background: none !important; padding: 0 !important; margin: 0 !important;}
 table.log th { background: #4c4c4c; color: #fff; vertical-align: middle;  font-size: 11pt; padding: 10px; height: 20px; }
-table.log tr:hover td { background: #d4ffd4; }
 
 /* Table Sorter */
 table.tablesorter {
