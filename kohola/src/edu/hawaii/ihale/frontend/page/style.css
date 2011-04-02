@@ -193,7 +193,7 @@ ul.tab-content li *:last-child { margin-bottom: 0px; }
 
 /* Color Picker */
 .icolor {position:inherit;}
-.icolor_ct {width:400px; height:350px;position:relative;}
+.icolor_ct {width:95%; height:275px;position:relative;}
 .icolor_ft{position:relative;}
 .icolor td{ border: solid 1px #000000;	cursor:pointer;}
 .icolor table{background-color: #FFFFFF;border: solid 1px #ccc;}
