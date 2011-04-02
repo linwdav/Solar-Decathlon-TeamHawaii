@@ -159,37 +159,7 @@ public class IHaleBackend implements IHaleCommand {
 
     return uris;
   }
-
-  /**
-   * This method illustrates a couple examples of what you might do after you got some state
-   * information from the house.
-   */
-  public void exampleStateFromHouseSystems() {
-    // Let's say I found out somehow that the Temperature of the house was 22.
-    // First I have to represent this information appropriately.
-    IHaleSystem system = IHaleSystem.HVAC;
-    IHaleState state = IHaleState.TEMPERATURE;
-    Integer temperature = 22;
-    Long timestamp = (new Date()).getTime();
-
-    // Now I can create a repository instance and store my state info.
-    Repository repository = new Repository();
-    repository.store(system, state, timestamp, temperature);
-
-    // A little while later, I find out that there are some dead fish in the tank.
-    // So let's add that info to the repository.
-    system = IHaleSystem.AQUAPONICS;
-    state = IHaleState.DEAD_FISH;
-    Integer numDeadFish = 2; // R.I.P.
-    timestamp = (new Date()).getTime();
-    repository.store(system, state, timestamp, numDeadFish);
-
-    // It's bad when fish die, so let's send a high priority status message.
-    SystemStatusMessage message =
-        new SystemStatusMessage(timestamp, system, SystemStatusMessageType.ALERT,
-            "Fish are dying!!! Do something!");
-    repository.store(message);
-  }
+ 
 
   /**
    * A sample main program.
@@ -465,12 +435,5 @@ public class IHaleBackend implements IHaleCommand {
     return uriMap;
   }
 
-  /**
-   * Gets this repository.
-   * 
-   * @return Map<String, String>
-   */
-  public Repository getRepository() {
-    return repository;
-  }
+ 
 }
