@@ -297,8 +297,9 @@ public class HVACData {
           // and home.
           boolean occupantsSleeping = isOccupantsSleeping(currentTime);
           if (occupantsHome && occupantsSleeping) {
-            // Decide arbitrarily that the home can be 10F colder when occupants are asleep.
-            currentHomeTemp = winterEfficientTempWhenOccupantHome - fahrenToCelsius(10);
+            // Decide arbitrarily that the home can be 10F colder when occupants are asleep. 
+            currentHomeTemp = winterEfficientTempWhenOccupantHome - Math.abs(fahrenToCelsius(10));
+
           }
         }
       }
