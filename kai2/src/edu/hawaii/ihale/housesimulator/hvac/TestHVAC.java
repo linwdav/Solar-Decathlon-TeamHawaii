@@ -174,10 +174,10 @@ public class TestHVAC {
     xmlRep = createPutXmlRepresentation(Integer.toString(desiredTemp));
     putClient.put(xmlRep);
  
-    System.out.println();
-    System.out.println("Current HVAC state after setting a desired temperature.");
-    HVACData.printHVACSystemState();
-    System.out.println();
+    //System.out.println();
+    //System.out.println("Current HVAC state after setting a desired temperature.");
+    //HVACData.printHVACSystemState();
+    //System.out.println();
     
     // When the PUT request to change the home temperature was issued.
     timestampWhenPutIssued = hvac.getWhenDesiredTempCommandIssued();
@@ -197,9 +197,9 @@ public class TestHVAC {
     assertEquals("The home temperature should decrease by 2C after 6.5 minutes elapsed", 
         currentHomeTemp - 2, newCurrentHomeTemp);
     
-    System.out.println("Current HVAC state 6.5 mintues after setting a desired temperature.");
-    HVACData.printHVACSystemState();
-    System.out.println();
+    //System.out.println("Current HVAC state 6.5 mintues after setting a desired temperature.");
+    //HVACData.printHVACSystemState();
+    //System.out.println();
   }
 
   /**
