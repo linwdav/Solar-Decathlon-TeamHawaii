@@ -121,6 +121,11 @@ public class XmlHandler {
 */
         // Store to the repository
         repository.store(systemEnum, roomEnum, stateEnum, timestamp, finalVal);
+        System.err.print("Storing: " + systemEnum.toString() + " ");
+        if (roomEnum != null) {
+          System.err.print(roomEnum.toString() + " ");
+        }
+         System.err.println(stateEnum.toString() + " " + finalVal.toString());
       }
     }
 
@@ -213,8 +218,7 @@ public class XmlHandler {
             "/energy/text()", doc, XPathConstants.STRING);
       }
       else {
-        System.err.println("Unknown meter: " + title);
-        systemEnum = null;
+        System.err.println("Unknown meter: " + title + " (This is okay)");
       }
 /*      if (systemEnum != null) {
         System.out.print(systemEnum.toString() + " ");
@@ -242,7 +246,7 @@ public class XmlHandler {
       }
       }
       catch (Exception e) {
-        return false;
+        continue;
       }
 /*      System.out.print(stateEnum.toString());
       if (roomEnum != null) {
@@ -251,7 +255,16 @@ public class XmlHandler {
       System.out.println(" " + tempVal);
 */
       // Store to the repository
+      try {
       repository.store(systemEnum, roomEnum, stateEnum, timestamp, finalVal);
+      System.err.println("Storing: " + systemEnum.toString() + " " 
+          + stateEnum.toString() + " " 
+          + finalVal.toString());
+      }
+      catch (Exception e) {
+        e.getStackTrace();
+        continue;
+      }
       
     }
 

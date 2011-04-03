@@ -9,12 +9,12 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
  * @author Backend Team
  *
  */
-public class Dispatcher {
+public class Dispatcher extends Thread {
   /** The interval to wait between polling.*/
   private long interval;
   /** The map containing all URI values for each system. */
   private Map<String, String> uriMap;
-  /** The threads used for polling. */
+  /** The PollingDevices. */
   private PollDevice[] pollDevices; 
   
   /** Initializes the dispatcher and starts it.
@@ -26,7 +26,6 @@ public class Dispatcher {
     this.interval = interval;
     this.uriMap = map;
     init();
-    poll();
   }
 
   /**
@@ -48,12 +47,13 @@ public class Dispatcher {
       System.err.println("An error occured initializing polling threads!");
       e.printStackTrace();
     }
+
   }
 
   /** Polls data continuously from the simulator in set intervals.
-   * @throws InterruptedException 
    */
-  public final void poll() throws InterruptedException {
+  @Override
+  public final void run() {
     while (true) { 
       for (int i = 0; i < pollDevices.length; i++) {
 //        pollDevices[i].run();
@@ -68,7 +68,13 @@ public class Dispatcher {
           e.printStackTrace();
         }
       } */
-      Thread.sleep(interval);
+      try {
+        Thread.sleep(interval);
+      }
+      catch (InterruptedException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
   } 
 }

@@ -14,7 +14,7 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
  * Class for each polling device between the System H simulator and backend.
  * @author Tony Gaskell
  */
-public class PollDevice extends Thread {
+public class PollDevice {
   
   private IHaleSystem system;
   private ClientResource resource;
