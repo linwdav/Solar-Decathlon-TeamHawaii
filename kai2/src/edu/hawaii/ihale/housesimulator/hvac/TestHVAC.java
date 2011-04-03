@@ -27,6 +27,11 @@ import edu.hawaii.ihale.housesimulator.SimulatorServer;
 public class TestHVAC {
 
   private static final String valueAttributeString = "value";
+  private static final int hvacDevicePort = 7102;
+  private String hvacUrl = "http://localhost:" + hvacDevicePort + "/hvac/";
+  private String putUrl;
+  private DomRepresentation xmlRep;
+  private ClientResource putClient;
   
   /**
    * Start up a test server before testing any of the operations on this resource.
@@ -47,10 +52,12 @@ public class TestHVAC {
   public void testGetAndPut() throws Exception {
     
     String putTemp = "25";
-    int hvacDevicePort = 7102;
+    putUrl = hvacUrl + "temperature";
+    putClient = new ClientResource(putUrl);
     
     // Issue a PUT request to the HVAC system to set the home temperature to 25 C.
-    putValue(hvacDevicePort, putTemp);
+    xmlRep = createPutXmlRepresentation(putTemp);
+    putClient.put(xmlRep);
     getValue(hvacDevicePort);
     
     /** Case 2: 
@@ -58,8 +65,8 @@ public class TestHVAC {
      *  reply from the server. **/
     
     String wrongCommand = "wrongcommand";
-    String putUrl = "http://localhost:" + hvacDevicePort + "/hvac/" + wrongCommand;
-    ClientResource putClient = new ClientResource(putUrl);
+    putUrl = hvacUrl + wrongCommand;
+    putClient = new ClientResource(putUrl);
     
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = null;
@@ -110,19 +117,25 @@ public class TestHVAC {
   @Test
   public void testHVACModifyState() throws Exception {
         
-    HVACData.resetHVACSystem();
+    HVACData.resetHVACSystem(); 
     
-    /** Case 1: 
-     *  We want to heat up the room, we'll assert that since it takes approximately 3
-     *  minutes to change the room temperature by 1C, if we check the state of the home, it
-     *  should be 1C hotter than it was 3 minutes ago. */
+    /********************************************************************************************* 
+     * Case 1: 
+     * 
+     * We want to heat up the room, we'll assert that since it takes approximately 3
+     * minutes to change the room temperature by 1C, if we check the state of the home, it
+     * should be 1C hotter than it was 3 minutes ago. 
+     * 
+     *********************************************************************************************/
     
     int currentHomeTemp = getValue(7102);
     // Arbitrarily decide to heat the home by 2C.
     int desiredTemp = currentHomeTemp + 2;
-    
-    putValue(7102, Integer.toString(desiredTemp));
-    
+    putUrl = hvacUrl + "temperature";
+    putClient = new ClientResource(putUrl);
+    xmlRep = createPutXmlRepresentation(Integer.toString(desiredTemp));
+    putClient.put(xmlRep);
+
     // When the PUT request to change the home temperature was issued.
     long timestampWhenPutIssued = HVACData.getWhenDesiredTempCommandIssued();
     // The current temperature should change 1 degree C after approximately 3 minutes has 
@@ -144,17 +157,25 @@ public class TestHVAC {
     
     assertEquals("The home temperature should increase by 1C after 3.5 minutes elapsed", 
         currentHomeTemp + 1, newCurrentHomeTemp);
-    
-    /** Case 2: 
-     *  Similar to Case 1 but we'll cool down the room and we'll test for 2C change. */
+        
+    /********************************************************************************************* 
+     * Case 2: 
+     * 
+     * Similar to Case 1 but we'll cool down the room and we'll test for 2C change. 
+     * 
+     *********************************************************************************************/ 
     
     HVACData.resetHVACSystem();
-    
+     
     currentHomeTemp = getValue(7102);
     // Arbitrarily decide to cool the home by 4C.
     desiredTemp = currentHomeTemp - 4;
-    
-    putValue(7102, Integer.toString(desiredTemp));
+    xmlRep = createPutXmlRepresentation(Integer.toString(desiredTemp));
+    putClient.put(xmlRep);
+ 
+    System.out.println("Current HVAC state after setting a desired temperature.");
+    HVACData.printHVACSystemState();
+    System.out.println();
     
     // When the PUT request to change the home temperature was issued.
     timestampWhenPutIssued = HVACData.getWhenDesiredTempCommandIssued();
@@ -174,9 +195,14 @@ public class TestHVAC {
     assertEquals("The home temperature should decrease by 2C after 6.5 minutes elapsed", 
         currentHomeTemp - 2, newCurrentHomeTemp);
     
-    /** Case 3:
-     *  **/
+    System.out.println("Current HVAC state 6.5 mintues after setting a desired temperature.");
+    HVACData.printHVACSystemState();
+    System.out.println();
   }
+
+  
+  
+  
   
   /**
    * Helper function that queries the HVAC system with a GET request to retrieve the current
@@ -225,19 +251,17 @@ public class TestHVAC {
   }
   
   /**
-   * Helper function that PUTs a value to the HVAC system.
-   * 
-   * @param port The port of the HVAC control device that we are issuing a PUT request to.
+   * Creates a XML representation of a PUT request to the HVAC system to set the home
+   * at a certain temperature.
+   *
    * @param value The desired temperature we want the HVAC system to maintain the home at.
+   * @return The XML representation for a PUT request to the HVAC system.
    * @throws ParserConfigurationException If there is a problem with the parser.
    * @throws IOException If there is a problem building the document.
    */
-  public static void putValue(int port, String value) throws ParserConfigurationException,
-      IOException {
+  public static DomRepresentation createPutXmlRepresentation(String value) 
+    throws ParserConfigurationException, IOException {
     
-    String putUrl = "http://localhost:" + port + "/hvac/temperature";
-    ClientResource putClient = new ClientResource(putUrl);
-
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
@@ -254,9 +278,9 @@ public class TestHVAC {
     rootElement.appendChild(temperatureElement);
 
     // Convert Document to DomRepresentation.
-    DomRepresentation result = new DomRepresentation();
-    result.setDocument(doc);
-
-    putClient.put(result);
+    DomRepresentation putXmlRepresentation = new DomRepresentation();
+    putXmlRepresentation.setDocument(doc);
+    
+    return putXmlRepresentation;
   }
 }

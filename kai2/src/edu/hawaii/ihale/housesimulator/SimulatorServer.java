@@ -89,12 +89,12 @@ public class SimulatorServer extends Application {
     // ranges 7101+.
     VirtualHost host = new VirtualHost(component.getContext());
     host.setHostPort("7001");
-    host.attach("/photovoltaics", new PhotovoltaicsSystem());
+    host.attach("/photovoltaic", new PhotovoltaicsSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
     host.setHostPort("7002");
-    host.attach("/electrical", new ElectricalSystem());
+    host.attach("/electric", new ElectricalSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
@@ -174,8 +174,8 @@ public class SimulatorServer extends Application {
     prop.setProperty("lighting-bathroom-state", lightingBathroom);
     prop.setProperty("lighting-bathroom-control", lightingBathroom);
     prop.setProperty("lighting-bathroom-color", lightingBathroom);
-    prop.setProperty("pv-state", pv);
-    prop.setProperty("electrical-state", electrical);
+    prop.setProperty("photovoltaic-state", pv);
+    prop.setProperty("electric-state", electrical);
 
     // The properties file already exists.
     if (propFile.exists()) {

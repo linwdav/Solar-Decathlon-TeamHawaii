@@ -56,7 +56,7 @@ public class TestPhotovoltaics {
     }  
     
     // Set up the GET client
-    String getUrl = "http://localhost:7001/photovoltaics/state";
+    String getUrl = "http://localhost:7001/photovoltaic/state";
     ClientResource getClient = new ClientResource(getUrl);
     
     // Get the XML representation.

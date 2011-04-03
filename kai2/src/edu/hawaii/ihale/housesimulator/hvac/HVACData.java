@@ -66,6 +66,9 @@ public class HVACData {
   /** The amount of minutes the HVAC system requires to change the home temperature 1 degree C. **/
   private static final int numMinOneDegreeCelChange = 3;
   
+  /** The current temperature outside the home. **/
+  private static int currentOutsideTemp;
+  
   /** The current home temperature, defaulted to -1000 to imply it hasn't been initialized to a
    *  valid value. **/
   private static int currentHomeTemp = -1000;
@@ -170,8 +173,6 @@ public class HVACData {
       (avgHighTemp - avgLowTemp) / (double) (24 - hottestHourInDay + sunriseHour);
     
     int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-    int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
-    int currentOutsideTemp;
     
     // Trend for currentTemp is to rise, beginning from sunrise to the hottest point in the day.
     if (currentHour >= sunriseHour && currentHour <= hottestHourInDay) {
@@ -251,7 +252,6 @@ public class HVACData {
         // otherwise the trend is to cool down the room.
         else if (desiredTemp < currentHomeTemp) {
           currentHomeTemp = baseHomeTemp - (int) (
-              //((new Date().getTime()) - whenDesiredTempCommandIssued) 
               (currentTime.getTime() - whenDesiredTempCommandIssued) 
               / (1000 * 60 * numMinOneDegreeCelChange));       
         }
@@ -263,14 +263,7 @@ public class HVACData {
     // Home temperatures will be influenced by the outside temperature.
     else {
       
-      // Occupants are assumed to be out of the home for work on the weekdays from 9:00 AM to 
-      // 5:00 PM for AM/PM system or 0900 to 1700 hour system.
-      if ((currentHour >= 9 && currentHour <= 17) && (currentDay > 1 && currentDay < 7)) {
-        occupantsHome = false;
-      }
-      else {
-        occupantsHome = true;
-      }
+      occupantsHome = isOccupantsHome(currentTime);
       
       // Situation 2a:
       // If the home has occupants, the home temperature should be maintained at a comfortable
@@ -297,6 +290,16 @@ public class HVACData {
         // energy efficiency when the outside weather is cold.
         else if (currentOutsideTemp < 72) {
           currentHomeTemp = winterEfficientTempWhenOccupantHome;
+          
+          // If the outside temperature is really cold, and the occupants are sleeping, their 
+          // bed-wear and blankets will provide extra warmth, reducing the HVAC system's burden, so
+          // the current home temperature can be lower than when the occupants are normally awake
+          // and home.
+          boolean occupantsSleeping = isOccupantsSleeping(currentTime);
+          if (occupantsHome && occupantsSleeping) {
+            // Decide arbitrarily that the home can be 10F colder when occupants are asleep.
+            currentHomeTemp = winterEfficientTempWhenOccupantHome - fahrenToCelsius(10);
+          }
         }
       }
       
@@ -325,26 +328,61 @@ public class HVACData {
         }
       }
     }
-
-    System.out.println("----------------------");
-    System.out.println("System: HVAC");
-    System.out.println("Current time is: " + new Date());
-    System.out.println("Temperature: " + currentHomeTemp + "C " + "(Desired: " + desiredTemp + ")");
-    if (occupantsHome) {
-      System.out.println("The occupants are home.");
-    }
-    else {
-      System.out.println("The occupants are not home.");
-    }
-    if (desiredTempHasBeenSet) {
-      System.out.print("Desired temperature has been issued at: ");
-      System.out.println(whenDesiredTempCommandIssued);
-    }
-    else {
-      System.out.println("No desired temperature has been set.");
-    }
-    System.out.println("currentOutsideTemp is: " + currentOutsideTemp + "C");
+  }
+  
+  /**
+   * Determines if there are occupants currently at home or out of the home.
+   *
+   * @param currentTime A Date object with the time of when we are interested if the occupants 
+   *                    are home. I.e., if we are interested to know if the occupants are at home
+   *                    at 1:00 PM on Saturdays, the Date object will be Saturday with an hour time 
+   *                    of 1:00 PM.   
+   * @return True if occupants are home, false otherwise.
+   */
+  private static boolean isOccupantsHome(Date currentTime) {
     
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(currentTime);    
+    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+    int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
+    boolean occupantsHome;
+    
+    // Occupants are assumed to be out of the home for work on the weekdays from 9:00 AM to 
+    // 5:00 PM for AM/PM system or 0900 to 1700 hour system.
+    if ((currentHour >= 9 && currentHour <= 17) && (currentDay > 1 && currentDay < 7)) {
+      occupantsHome = false;
+    }
+    else {
+      occupantsHome = true;
+    }
+    return occupantsHome;
+  }
+  
+  /**
+   * Determines if the occupants of the home are currently asleep or not.
+   *
+   * @param currentTime A Date object with the time of when we are interested in the occupants 
+   *                    sleep state. I.e., if we are interested to know if the occupants are 
+   *                    sleeping at 6:00 AM the Date object will be an arbitrary day with a time 
+   *                    of 6:00 AM.
+   * @return True if the occupants are currently sleeping, false otherwise.
+   */
+  private static boolean isOccupantsSleeping(Date currentTime) {
+    
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(currentTime);    
+    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+    boolean occupantsSleeping;
+    
+    // Occupants are assumed to be sleeping from 11:00 PM to 7:00 AM for AM/PM system 
+    // or 2300 to 700 hour system.
+    if (currentHour >= 23 && currentHour <= 7) {
+      occupantsSleeping = false;
+    }
+    else {
+      occupantsSleeping = true;
+    }
+    return occupantsSleeping;
   }
   
   /**
@@ -402,12 +440,36 @@ public class HVACData {
   }
   
   /**
+   * Prints the current state of the HVAC system.
+   */
+  public static void printHVACSystemState() {
+    
+    System.out.println("----------------------");
+    System.out.println("System: HVAC");
+    System.out.println("Current time is: " + currentTime);
+    System.out.println("Temperature: " + currentHomeTemp + "C " + "(Desired: " + desiredTemp + ")");
+    if (occupantsHome) {
+      System.out.println("The occupants are home.");
+    }
+    else {
+      System.out.println("The occupants are not home.");
+    }
+    if (desiredTempHasBeenSet) {
+      System.out.print("Desired temperature has been issued at: ");
+      System.out.println(new Date(whenDesiredTempCommandIssued));
+    }
+    else {
+      System.out.println("No desired temperature has been set.");
+    }
+    System.out.println("currentOutsideTemp is: " + currentOutsideTemp + "C");
+  }
+  
+  /**
    * Returns the data as an XML Document instance.
    * 
    * @return HVAC state data in XML representation.
    * @throws Exception If problems occur creating the XML.
    */
-  //public static DomRepresentation toXml(Long timestamp) throws Exception {
   public static DomRepresentation toXml() throws Exception {  
     
     // Re-initialize temperature values.

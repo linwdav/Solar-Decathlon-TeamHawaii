@@ -43,7 +43,7 @@ public class HVACPutResource extends ServerResource {
     String arg = ((Element) argList.item(0)).getAttribute("value");
 
     String putCommand = (String) this.getRequestAttributes().get("putcommand");
-
+    
     if ("temperature".equals(putCommand) && 
         IHaleCommandType.SET_TEMPERATURE.toString().equals(command)) {
       HVACData.setDesiredTemp(Integer.parseInt(arg));
