@@ -20,8 +20,7 @@ public class AquaponicsData {
   // /** Test number generation. */
   // public static void main(String[] args) {
   // for (int i = 0; i < 10; i++) {
-  // System.out.println((maxOxygen - minOxygen)
-  // * ((circulation - minCirc) / (maxCirc - minCirc)) + minOxygen);
+  // System.out.println((randomGen.nextDouble() * (maxPH - minPH)) + minPH);
   // }
   // }
 
@@ -83,13 +82,13 @@ public class AquaponicsData {
   // DO NOT touch these formulas!
   // Initial desired values are set between the minimum and maximum safe ranges automatically.
   /** The desired electrical conductivity. */
-  private static double desiredEC = ec;
+  private static double desiredEC = (randomGen.nextDouble() * (maxEC - minEC)) + minEC;
   /** The desired temperature. */
-  private static int desiredTemperature = temperature;
+  private static int desiredTemperature = randomGen.nextInt(maxTemp - minTemp + 1) + minTemp;
   /** The desired water level. */
-  private static int desiredWaterLevel = water_level;
+  private static int desiredWaterLevel = (randomGen.nextInt(maxWater - minWater + 1)) + minWater;
   /** The desired pH. */
-  private static double desiredPh = ph;
+  private static double desiredPh = (randomGen.nextDouble() * (maxPH - minPH)) + minPH;
 
   /**
    * Resets the desired system state values randomly to within acceptable range. DO NOT touch these
@@ -106,7 +105,7 @@ public class AquaponicsData {
    * Simulates changes due to desired values, relationship models, and a small degree of randomness.
    */
   public static void modifySystemState() {
-    //printConditions();
+    // printConditions();
     changeCirculation();
     changeDeadFish();
     changeEC();
@@ -149,8 +148,8 @@ public class AquaponicsData {
       dead_fish += fishDeath;
       alive_fish -= fishDeath;
       if (fishDeath > 0) {
-        // Each dead fish increases EC by 0.5
-        ec += (0.5 * fishDeath);
+        // Each dead fish increases EC by 0.1
+        ec += 0.1;
       }
     }
   }
