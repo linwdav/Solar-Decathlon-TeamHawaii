@@ -560,9 +560,7 @@ public class HVACData {
     setCurrentTime(timestamp);
     // Re-initialize temperature values.
     modifySystemState();
-    
-    System.out.println("Inside toXML: " + new Date(timestamp));
-    
+        
     String system = IHaleSystem.HVAC.toString();
     String device = "arduino-3";
     String timestampString = timestamp.toString();
