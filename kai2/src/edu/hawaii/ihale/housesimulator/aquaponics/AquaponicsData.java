@@ -17,13 +17,13 @@ import org.w3c.dom.Element;
  */
 public class AquaponicsData {
 
-  /** Test number generation. */
-  public static void main(String[] args) {
-    for (int i = 0; i < 10; i++) {
-      System.out.println((maxOxygen - minOxygen)
-          * ((circulation - minCirc) / (maxCirc - minCirc)) + minOxygen);
-    }
-  }
+  // /** Test number generation. */
+  // public static void main(String[] args) {
+  // for (int i = 0; i < 10; i++) {
+  // System.out.println((maxOxygen - minOxygen)
+  // * ((circulation - minCirc) / (maxCirc - minCirc)) + minOxygen);
+  // }
+  // }
 
   /** Random generator. */
   private static final Random randomGen = new Random();
@@ -140,20 +140,19 @@ public class AquaponicsData {
    * Change number of dead fish according to current conditions.
    */
   public static void changeDeadFish() {
-      if ((ec < minEC) || (ec > maxEC) || (temperature < minTemp) || (temperature > maxTemp)
-          || (water_level < minWater) || (water_level > maxWater) || (ph < minPH) || (ph > maxPH)
-          || (oxygen < minOxygen) || (oxygen > maxOxygen)) {
-        // 50% chance of 1 fish dying.        
-        if (alive_fish > 0) {
-          int fishDeath = randomGen.nextInt(2);
-          dead_fish += fishDeath;
-          alive_fish -= fishDeath;
-          if (fishDeath > 0) {
-            // Each dead fish increases EC by 0.1
-            ec += (0.1 * fishDeath);
-          }
-        }
+    if (((ec < minEC) || (ec > maxEC) || (temperature < minTemp) || (temperature > maxTemp)
+        || (water_level < minWater) || (water_level > maxWater) || (ph < minPH) || (ph > maxPH)
+        || (oxygen < minOxygen) || (oxygen > maxOxygen))
+        && (alive_fish > 0)) {
+      // 50% chance of 1 fish dying.
+      int fishDeath = randomGen.nextInt(2);
+      dead_fish += fishDeath;
+      alive_fish -= fishDeath;
+      if (fishDeath > 0) {
+        // Each dead fish increases EC by 0.1
+        ec += (0.1 * fishDeath);
       }
+    }
   }
 
   /**
