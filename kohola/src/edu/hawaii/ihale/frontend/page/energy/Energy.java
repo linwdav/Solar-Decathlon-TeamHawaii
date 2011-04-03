@@ -103,7 +103,8 @@ public class Energy extends Header {
      };
     
      // Help Image
-     helpLink.add(new Image("helpEnergy", new ResourceReference(Header.class, "images/icons/help.png")));
+     helpLink.add(new Image("helpEnergy", new ResourceReference
+         (Header.class, "images/icons/help.png")));
 
      add(helpLink);
     

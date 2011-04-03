@@ -118,7 +118,8 @@ public class Hvac extends Header {
      };
     
      // Help Image
-     helpLink.add(new Image("helpHvac", new ResourceReference(Header.class, "images/icons/help.png")));
+     helpLink.add(new Image("helpHvac", new ResourceReference(Header.class, 
+         "images/icons/help.png")));
 
      add(helpLink);     
     

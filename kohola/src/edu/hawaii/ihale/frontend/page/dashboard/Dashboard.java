@@ -126,7 +126,8 @@ public class Dashboard extends Header {
      };
     
      // Help Image
-     helpLink.add(new Image("helpDash", new ResourceReference(Header.class, "images/icons/help.png")));
+     helpLink.add(new Image("helpDash", new ResourceReference(Header.class, 
+         "images/icons/help.png")));
 
      add(helpLink);
     
