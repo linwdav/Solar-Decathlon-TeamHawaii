@@ -37,7 +37,7 @@ public class TestIHaleBackend {
   public void testParseURIPropertyFileValid() throws IOException {
     Map<String, String> uri = IHaleBackend.parseURIPropertyFile(IHaleBackend.deviceConfigRef);
 
-    assertEquals("Electrical state", "http://localhost:7002/", uri.get("electrical-state"));
+    assertEquals("Electric state", "http://localhost:7002/", uri.get("electric-state"));
   }
 
   /**
@@ -105,7 +105,7 @@ public class TestIHaleBackend {
 
     // Test valid input
     backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE, value);
-    assertEquals("temperature changed", value, repo.getAquaponicsTemperature().getValue());
+    assertEquals("temperature changed", value, repo.getAquaponicsTemperatureCommand().getValue());
   }
 
   /**
@@ -139,7 +139,7 @@ public class TestIHaleBackend {
     // Test valid input
     backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
         IHaleCommandType.SET_LIGHTING_LEVEL, value);
-    assertEquals("temperature changed", value, repo.getAquaponicsTemperature().getValue());
+    assertEquals("temperature changed", value, repo.getLightingLevelCommand(IHaleRoom.BATHROOM).getValue());
   }
 
   /**
