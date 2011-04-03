@@ -534,9 +534,9 @@ public class Hvac extends Header {
    * @return A string array.
    */
   private String[] generateXAxis(int type) {
-    String[] axisDayLabels = new String[13];
-    String[] axisWeekLabels = new String[7];
-    String[] axisMonthLabels = new String[7];
+    //String[] axisDayLabels = new String[13];
+    //String[] axisWeekLabels = new String[7];
+    //String[] axisMonthLabels = new String[7];
     Calendar calendar = Calendar.getInstance();
 
     int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -545,7 +545,7 @@ public class Hvac extends Header {
     int currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
     if (type == 0) {
-      axisDayLabels = new String[13];
+      String[] axisDayLabels = new String[13];
       for (int i = 0; i <= 12; i++) {
 
         currentHour %= 12;
@@ -559,6 +559,7 @@ public class Hvac extends Header {
     }
 
     if (type == 1) {
+      String[] axisWeekLabels = new String[7];
       String[] daysOfWeek = { "Sat", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri" };
       // x-axis is the past 7 days starting from current day.
       for (int i = 0; i <= 5; i++) {
@@ -569,6 +570,7 @@ public class Hvac extends Header {
       return axisWeekLabels;
     }
     else {
+      String[] axisMonthLabels = new String[7];
       int[] months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
       for (int i = 0; i <= 5; i++) {
