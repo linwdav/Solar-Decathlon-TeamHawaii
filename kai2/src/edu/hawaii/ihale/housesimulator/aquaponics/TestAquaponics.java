@@ -45,12 +45,12 @@ public class TestAquaponics {
   @Test
   public void testGetAndPut() throws Exception {
     // Put the values to our system.
-    putValue("temperature", "SET_TEMPERATURE", "30");
+    putValue("temperature", "SET_TEMPERATURE", "29");
     putValue("feed", "FEED_FISH", "10.0");
     putValue("harvest", "HARVEST_FISH", "0");
-    putValue("nutrients", "SET_NUTRIENTS", "1.5");
+    putValue("nutrients", "SET_NUTRIENTS", "15.0");
     putValue("ph", "SET_PH", "7.4");
-    putValue("water/level", "SET_WATER_LEVEL", "250");
+    putValue("water/level", "SET_WATER_LEVEL", "42");
 
     // Speed up time simulation to see if our value falls within the desired range.
     for (int i = 0; i < 50; i++) {
@@ -108,10 +108,10 @@ public class TestAquaponics {
     assertEquals("Checking that key is OXYGEN", oxygenKey, "OXYGEN");
 
     // Check that the returned value is within a delta of our PUT value.
-    assertEquals(1.5, Double.parseDouble(ecValue), 0.7);
-    assertEquals(29.0, Double.parseDouble(tempValue), 10);
-    assertEquals(7.4, Double.parseDouble(phValue), 0.7);
-    assertEquals(250, Integer.parseInt(waterValue), 200);
+    assertEquals(15, Double.parseDouble(ecValue), 10);
+    assertEquals(29.0, Double.parseDouble(tempValue), 16);
+    assertEquals(7.4, Double.parseDouble(phValue), 0.2);
+    assertEquals(42, Integer.parseInt(waterValue), 8);
 
   }
 
