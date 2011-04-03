@@ -74,6 +74,9 @@ public class PhotovoltaicsData {
     String voltageTag = "voltage";
     String currentTag = "current";
 
+    // Amount of Watts per second.
+    long energyWs = energy * 1000 * 60 * 60;
+    
     doc.setXmlVersion("1.0");
 
     // Create root tag.
@@ -144,7 +147,7 @@ public class PhotovoltaicsData {
     meterElementB.appendChild(energyElementB);
      // Create energyWs tag.
      Element energyWsElement = doc.createElement(energyWsTag);
-     energyWsElement.setTextContent(dummyOutput());
+     energyWsElement.setTextContent(String.valueOf(energyWs));
      meterElementB.appendChild(energyWsElement);
     // Create power tag.
     Element powerElementB = doc.createElement(powerTag);
