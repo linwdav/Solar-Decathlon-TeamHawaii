@@ -369,7 +369,7 @@ public class Hvac extends Header {
 
     ChartProvider provider = new ChartProvider(new Dimension(650, 275), ChartType.LINE_XY, data);
     provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (°F / Hour)");
+    provider.setTitle("Inside Temperature (&#176;F / Hour)");
     ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
     axisX.setLabels(generateXAxis(0));
 
@@ -440,7 +440,7 @@ public class Hvac extends Header {
 
     ChartProvider provider = new ChartProvider(new Dimension(650, 275), ChartType.LINE_XY, data);
     provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (°F / Hour)");
+    provider.setTitle("Inside Temperature (&#176;F / Hour)");
     ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
     axisX.setLabels(generateXAxis(1));
     provider.addAxis(axisX);
@@ -511,7 +511,7 @@ public class Hvac extends Header {
 
     ChartProvider provider = new ChartProvider(new Dimension(650, 275), ChartType.LINE_XY, data);
     provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (°F / Hour)");
+    provider.setTitle("Inside Temperature (&#176;F / Hour)");
     ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
     axisX.setLabels(generateXAxis(2));
     provider.addAxis(axisX);
