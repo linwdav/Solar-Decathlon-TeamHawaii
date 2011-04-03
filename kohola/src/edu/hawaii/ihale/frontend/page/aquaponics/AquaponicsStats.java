@@ -67,8 +67,7 @@ public class AquaponicsStats extends Header {
    * @throws Exception The exception.
    */
   public AquaponicsStats() throws Exception {
-    System.out.println("ONE MONTH:" + oneMonthInMillis);
-    System.out.println(new Date().getTime());
+
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(2);
 
     int currentGraphDisplay =
@@ -291,7 +290,6 @@ public class AquaponicsStats extends Header {
       break;
     }
 
-    System.out.println("INTERVAL:" + intervalInMillis);
     // This is the time to get data from or 'since'
     long startTime = currentTime - intervalInMillis;
     

@@ -2,12 +2,14 @@ package edu.hawaii.ihale.frontend;
 
 import java.text.DecimalFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.IHaleBackend;
 
@@ -23,6 +25,7 @@ public class RepositoryRefresher {
   /** instance of the repository to use the store(). */
   public Repository repository;
   static boolean enabled = true;
+  List<TimestampIntegerPair> list;
 
   /**
    * Constructor.
@@ -66,13 +69,17 @@ public class RepositoryRefresher {
             getRandomDouble(14, 0));
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.DEAD_FISH, timestamp,
             getRandomInteger(100, 1));
+        repository.store(IHaleSystem.AQUAPONICS, IHaleState.PH, timestamp,
+            getRandomDouble(8, 6));
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.ELECTRICAL_CONDUCTIVITY, timestamp,
             getRandomDouble(14, 0));
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.OXYGEN, timestamp,
             getRandomDouble(4, 6));
         repository.store(IHaleSystem.AQUAPONICS, IHaleState.TURBIDITY, timestamp,
             getRandomDouble(101, 0));
-
+        repository.store(IHaleSystem.AQUAPONICS, IHaleState.TEMPERATURE, timestamp,
+            getRandomInteger(86, 80));
+        
         repository.store(IHaleSystem.PHOTOVOLTAIC, IHaleState.ENERGY, timestamp,
             getRandomInteger(100, 1));
         repository.store(IHaleSystem.PHOTOVOLTAIC, IHaleState.POWER, timestamp,
