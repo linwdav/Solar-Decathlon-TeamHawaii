@@ -18,7 +18,9 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem; 
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.impl.Repository;
+
 /**
  * JUnit tests the IHaleBackend.
  * 
@@ -38,7 +40,7 @@ public class TestIHaleBackend {
    */
   @BeforeClass
   public static void beforeClass() throws XPathExpressionException, ParserConfigurationException,
-      SAXException, IOException {  
+      SAXException, IOException {
     backend = IHaleBackend.getInstance();
   }
 
@@ -99,8 +101,8 @@ public class TestIHaleBackend {
       if (nl.item(i).getNodeName().equals("state")) {
         attributes = nl.item(i).getAttributes();
         if (attributes.getNamedItem("key").getNodeValue().equals("TEMPERATURE")) {
-          assertEquals("HVAC temperature changed", value.toString(),
-              attributes.getNamedItem("value").getNodeValue());
+          assertEquals("HVAC temperature changed", value, new Repository()
+              .getHvacTemperatureCommand().getValue());
           break;
         }
       }
