@@ -32,6 +32,7 @@ public class HVACPutResource extends ServerResource {
   @Put
   public Representation putValue(Representation representation) throws Exception {
     
+    HVACData hvac = new HVACData();
     DomRepresentation domRep = new DomRepresentation(representation);
     Document domDoc = domRep.getDocument();
 
@@ -54,7 +55,7 @@ public class HVACPutResource extends ServerResource {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
     
-    System.out.println(new Date(HVACData.getWhenDesiredTempCommandIssued()) + 
+    System.out.println(new Date(hvac.getWhenDesiredTempCommandIssued()) + 
         " --> HVAC system was instructed to set to maintain the home temperature to " + 
         arg + "C.");
     

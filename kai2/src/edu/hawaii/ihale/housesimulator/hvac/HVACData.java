@@ -393,7 +393,7 @@ public class HVACData {
    * @return Returns true if the HVAC system has been issued a command to maintain the home at a 
    *         specific temperature, false otherwise.
    */
-  public static boolean desiredTempCommandIssued() {
+  public boolean desiredTempCommandIssued() {
     return desiredTempHasBeenSet;
   }
   
@@ -425,7 +425,7 @@ public class HVACData {
    *
    * @return The timestamp of when the HVAC PUT request was successfully accepted.
    */
-  public static long getWhenDesiredTempCommandIssued() {
+  public long getWhenDesiredTempCommandIssued() {
     return whenDesiredTempCommandIssued;
   }
   
@@ -434,7 +434,7 @@ public class HVACData {
    *
    * @return Current home temperature.
    */
-  public static int getCurrentHomeTemp() {
+  public int getCurrentHomeTemp() {
     return currentHomeTemp;
   }
   
@@ -443,7 +443,7 @@ public class HVACData {
    *
    * @return The desired temperature the HVAC system is to maintain the home at.
    */
-  public static int getDesiredTemp() {
+  public int getDesiredTemp() {
     return desiredTemp;
   }
   
@@ -452,7 +452,7 @@ public class HVACData {
    *
    * @return The current temperature outside the home.
    */
-  public static int currentOutsideTemp() {
+  public int currentOutsideTemp() {
     return currentOutsideTemp;
   }
   /**

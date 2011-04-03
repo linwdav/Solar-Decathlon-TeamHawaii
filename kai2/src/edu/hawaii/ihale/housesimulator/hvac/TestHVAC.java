@@ -118,7 +118,8 @@ public class TestHVAC {
   public void testHVACModifyState() throws Exception {
         
     HVACData.resetHVACSystem(); 
-    
+    HVACData hvac = new HVACData();
+
     /********************************************************************************************* 
      * Case 1: 
      * 
@@ -135,9 +136,9 @@ public class TestHVAC {
     putClient = new ClientResource(putUrl);
     xmlRep = createPutXmlRepresentation(Integer.toString(desiredTemp));
     putClient.put(xmlRep);
-
+    
     // When the PUT request to change the home temperature was issued.
-    long timestampWhenPutIssued = HVACData.getWhenDesiredTempCommandIssued();
+    long timestampWhenPutIssued = hvac.getWhenDesiredTempCommandIssued();
     // The current temperature should change 1 degree C after approximately 3 minutes has 
     // elapsed since the PUT request has been successfully sent.
     long timestampTempChangeOccur = timestampWhenPutIssued + (1000 * 60 * 3) + 30000;
@@ -179,7 +180,7 @@ public class TestHVAC {
     System.out.println();
     
     // When the PUT request to change the home temperature was issued.
-    timestampWhenPutIssued = HVACData.getWhenDesiredTempCommandIssued();
+    timestampWhenPutIssued = hvac.getWhenDesiredTempCommandIssued();
     // The current temperature should change 2 degree C after approximately 6 minutes has 
     // elapsed since the PUT request has been successfully sent.
     timestampTempChangeOccur = timestampWhenPutIssued + (1000 * 60 * 6) + 30000;
