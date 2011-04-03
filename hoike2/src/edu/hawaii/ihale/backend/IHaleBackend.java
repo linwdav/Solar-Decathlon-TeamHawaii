@@ -2,6 +2,7 @@ package edu.hawaii.ihale.backend;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
@@ -192,15 +193,30 @@ public class IHaleBackend implements IHaleCommand {
    */
   public static Map<String, String> parseURIPropertyFile(String file) throws IOException {
     Map<String, String> uris = new HashMap<String, String>();
+    
+    if (file == null) {
+      throw new FileNotFoundException("File cannot be null.");
+    }
 
+    File f = new File(file);
     FileInputStream is = null;
     Properties prop = new Properties();
     Logger log = Logger.getLogger(IHaleBackend.class.toString());
 
     log.info("Reading file at: " + file);
+    
+    // Check the file.
+    if (!f.isFile()) {
+      throw new IOException("File is invalid.");
+    }
+    
+    if (!f.canRead()) {
+      throw new IOException("File read permissions is denied.");
+    }
 
+    // Read the file content
     try {
-      is = new FileInputStream(file);
+      is = new FileInputStream(f);
 
       prop.load(is);
 
@@ -253,7 +269,11 @@ public class IHaleBackend implements IHaleCommand {
 
     ClientResource client = null;
     PutCommand cmd = null;
-
+    
+    if (arg == null) {
+      throw new RuntimeException("Argument cannot be null.");
+    }
+    
     // All command invocations should be saved in the repository. Here's how you do it.
     Long timestamp = (new Date()).getTime();
     IHaleState state = ApiDictionary.iHaleCommandType2State(command);
@@ -295,6 +315,7 @@ public class IHaleBackend implements IHaleCommand {
       throw new RuntimeException("Failed to create Dom Representation.", e);
     }
     catch (Exception e) {
+      e.printStackTrace();
       throw new RuntimeException("Failed to create command XML.", e);
     }
     finally {
