@@ -124,7 +124,6 @@ public class IHaleBackend implements IHaleCommand {
       dispatch = new Dispatcher(uriMap, interval);
     }
     catch (InterruptedException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     } 
     

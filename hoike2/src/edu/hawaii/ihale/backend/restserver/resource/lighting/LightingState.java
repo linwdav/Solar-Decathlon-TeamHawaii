@@ -1,6 +1,8 @@
 package edu.hawaii.ihale.backend.restserver.resource.lighting;
 
 import java.util.Map;
+import org.restlet.data.Status;
+import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
@@ -24,24 +26,35 @@ public class LightingState extends ServerResource {
   @Get
   public Representation getState() throws Exception {
 
+    Representation rep = null;
     Map<String, String> queryMap = getQuery().getValuesMap();
+    Status status = Status.CLIENT_ERROR_UNPROCESSABLE_ENTITY;
+    Long timestamp;
+    IHaleRoom room = IHaleRoom.valueOf(queryMap.get("room"));
 
-    if (queryMap.containsKey("room")) {
-      IHaleRoom room = IHaleRoom.valueOf(queryMap.get("room"));
-      if (room.equals(IHaleRoom.LIVING) || room.equals(IHaleRoom.DINING)
-          || room.equals(IHaleRoom.KITCHEN) || room.equals(IHaleRoom.BATHROOM)) {
-        if (queryMap.containsKey("since")) {
-          Long timestamp = Long.valueOf(queryMap.get("since"));
-          return LightingData.toXmlSince(room, timestamp);
-        }
-        else {
-          return LightingData.toXml(room);
+    if (IHaleRoom.valueOf(room.toString()) != null) {
+
+      if (queryMap.containsKey("since")) {
+        timestamp = Long.valueOf(queryMap.get("since"));
+
+        if (timestamp != null) {
+          rep = LightingData.toXmlSince(room, timestamp);
+          status = Status.SUCCESS_OK;
         }
       }
       else {
-        throw new NullPointerException("IHaleRoom is invalid.");
+        rep = LightingData.toXml(room);
+        status = Status.SUCCESS_OK;
       }
     }
-    throw new NullPointerException("IHaleRoom is invalid.");
+
+    // Default case
+    if (rep == null) {
+      rep = new EmptyRepresentation();
+    }
+
+    getResponse().setStatus(status);
+
+    return rep;
   }
 }

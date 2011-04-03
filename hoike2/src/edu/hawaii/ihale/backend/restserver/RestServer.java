@@ -47,7 +47,7 @@ public class RestServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    runServer(8111);
+    //runServer(8111);
   }
 
   /**

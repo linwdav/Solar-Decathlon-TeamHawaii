@@ -1,11 +1,14 @@
 package edu.hawaii.ihale.backend.restserver.resource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.impl.Repository; 
+import edu.hawaii.ihale.api.repository.impl.Repository;
 
 /**
  * Creates the abstract object to reference the data in the repository.
@@ -18,7 +21,7 @@ public class SystemData {
   /**
    * Reference to the IHaleBackend static Repository object.
    */
-  protected static Repository repository;
+  protected static final Repository repository;
 
   /**
    * XML state tag name.
@@ -51,7 +54,7 @@ public class SystemData {
   public static final String XML_ATTRIBUTE_SYSTEM;
 
   /**
-   * XML system attribute name.
+   * XML timestamp attribute name.
    */
   public static final String XML_ATTRIBUTE_TIMESTAMP;
 
@@ -62,6 +65,7 @@ public class SystemData {
     XML_TAG_STATE = "state";
     XML_TAG_STATE_DATA = "state-data";
     XML_TAG_STATE_HISTORY = "state-history";
+
     XML_ATTRIBUTE_KEY = "key";
     XML_ATTRIBUTE_VALUE = "value";
     XML_ATTRIBUTE_SYSTEM = "system";
@@ -71,7 +75,7 @@ public class SystemData {
   }
 
   /**
-   * Appends a state key-value pair to the state-data root element.
+   * Appends a state key-value pair to the state-data root element, then returns that node.
    * 
    * @param doc Document
    * @param root Node
@@ -80,17 +84,17 @@ public class SystemData {
    * @return Node
    */
   protected static Node appendStateNode(Document doc, Node root, IHaleState key, Object value) {
-
+    
     Element element = doc.createElement(XML_TAG_STATE);
     element.setAttribute(XML_ATTRIBUTE_KEY, key.toString());
-    element.setAttribute(XML_ATTRIBUTE_VALUE, value.toString());
+    element.setAttribute(XML_ATTRIBUTE_VALUE, String.valueOf(value));
     root.appendChild(element);
 
     return element;
   }
 
   /**
-   * Creates the state-data as the root element.
+   * Creates the state-data as the root element, then returns that node.
    * 
    * @param doc Document
    * @param root Node
@@ -108,20 +112,31 @@ public class SystemData {
     return element;
   }
 
-  
   /**
-   * Creates the state-history as the root element.
+   * Creates the state-history as the root element, then returns that node.
    * 
    * @param doc Document
-   * @param root Node
-   * @return root
+   * 
+   * @return Node
    */
-  protected static Node appendStateHistoryNode(Document doc, Node root) {
+  protected static Node appendStateHistoryNode(Document doc) {
     Element element = doc.createElement(XML_TAG_STATE_HISTORY);
-    root.appendChild(element);
+    doc.appendChild(element);
 
     return element;
   }
   
-  
+  /**
+   * Creates the document.
+   * 
+   * @return Document
+   * 
+   * @throws ParserConfigurationException Thrown when document fails to build.
+   */
+  protected static Document createDocument() throws ParserConfigurationException {
+    final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    final DocumentBuilder docBuilder = factory.newDocumentBuilder();
+    
+    return docBuilder.newDocument();
+  }
 }

@@ -1,9 +1,12 @@
 package edu.hawaii.ihale.backend.restserver.resource.electrical;
 
+import java.util.Map;
+import org.restlet.data.Status;
 import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
+import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsData;
 
 /**
  * A server resource that will handle requests regarding the Electricity system. Supported
@@ -20,7 +23,30 @@ public class ElectricalState extends ServerResource {
    */
   @Get
   public Representation getState() throws Exception {
-    // Return the representation.
-    return new EmptyRepresentation();
+    
+    Representation rep = null;
+    Map<String, String> queryMap = getQuery().getValuesMap();
+    Status status = Status.CLIENT_ERROR_UNPROCESSABLE_ENTITY;
+
+    if (queryMap.containsKey("since")) {
+      Long timestamp = Long.valueOf(queryMap.get("since"));
+      if (timestamp != null) {
+        rep = AquaponicsData.toXmlSince(timestamp);
+        status = Status.SUCCESS_OK;
+      }
+    }
+    else {
+      rep = AquaponicsData.toXml();
+      status = Status.SUCCESS_OK;
+    }
+
+    // Default case.
+    if (rep == null) {
+      rep = new EmptyRepresentation();
+    }
+
+    getResponse().setStatus(status);
+
+    return rep;
   }
 }

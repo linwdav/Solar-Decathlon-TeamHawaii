@@ -2,10 +2,10 @@ package edu.hawaii.ihale.backend.restserver.resource.lighting;
 
 import java.io.IOException;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.EmptyRepresentation;
+import org.restlet.representation.Representation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
@@ -41,9 +41,7 @@ public class LightingData extends SystemData {
     TimestampBooleanPair enabled = repository.getLightingEnabled(room);
     TimestampStringPair color = repository.getLightingColor(room);
 
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = factory.newDocumentBuilder();
-    Document doc = docBuilder.newDocument();
+    Document doc = createDocument();
 
     // Creates the state-data root node.
     Node rootNode = appendStateDataNode(doc, doc, IHaleSystem.LIGHTING, level.getTimestamp());
@@ -70,19 +68,21 @@ public class LightingData extends SystemData {
    * @throws ParserConfigurationException Thrown when a problem occurs when creating the XML.
    * @throws IOException Thrown when a problem occurs creating the DomRepresentation object.
    */
-  public static DomRepresentation toXmlSince(IHaleRoom room, Long timestamp)
+  public static Representation toXmlSince(IHaleRoom room, Long timestamp)
       throws ParserConfigurationException, IOException {
+    
+    if (timestamp == null) {
+      return new EmptyRepresentation();
+    }
 
     List<TimestampIntegerPair> level = repository.getLightingLevelSince(room, timestamp);
     List<TimestampBooleanPair> enabled = repository.getLightingEnabledSince(room, timestamp);
     List<TimestampStringPair> color = repository.getLightingColorSince(room, timestamp);
 
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = factory.newDocumentBuilder();
-    Document doc = docBuilder.newDocument();
+    Document doc = createDocument();
 
     // Creates the state-history root node.
-    Node rootNode = appendStateHistoryNode(doc, doc);
+    Node rootNode = appendStateHistoryNode(doc);
 
     Node stateDataNode;
 

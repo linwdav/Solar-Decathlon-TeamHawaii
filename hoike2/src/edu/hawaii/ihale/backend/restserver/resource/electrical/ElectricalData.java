@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.resource.hvac;
+package edu.hawaii.ihale.backend.restserver.resource.electrical;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,58 +14,53 @@ import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
 /**
- * Provides data on the Aquaponics system, as well as an XML representation. Adapted from the Team
- * Kai's source code.
+ * Handles the creation of the Electrical data representation.
  * 
- * @author Anthony Kinsey, Michael Cera
- * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  * @author Bret K. Ikehara
  */
-public class HvacData extends SystemData {
-
+public class ElectricalData extends SystemData {
   /**
-   * Returns the data as an XML Document instance.
+   * Creates the Dom Representation of electrical data.
    * 
-   * @return The data as XML.
+   * @return Representation
    * @throws ParserConfigurationException Thrown when a problem occurs when creating the XML.
    * @throws IOException Thrown when a problem occurs creating the DomRepresentation object.
    */
-  public static DomRepresentation toXml() throws ParserConfigurationException, IOException {
+  public static Representation toXml() throws IOException, ParserConfigurationException {
 
-    TimestampIntegerPair temperature = repository.getHvacTemperature();
+    TimestampIntegerPair energy = repository.getElectricalEnergy();
+    TimestampIntegerPair power = repository.getElectricalPower();
 
     Document doc = createDocument();
 
-    // Creates the state-data root node.
-    Node rootNode = appendStateDataNode(doc, doc, IHaleSystem.HVAC, temperature.getTimestamp());
+    Node rootNode = appendStateDataNode(doc, doc, IHaleSystem.ELECTRIC, energy.getTimestamp());
 
-    // Appends the state values.
-    appendStateNode(doc, rootNode, IHaleState.TEMPERATURE, temperature.getValue());
+    appendStateNode(doc, rootNode, IHaleState.ENERGY, energy.getValue());
+    appendStateNode(doc, rootNode, IHaleState.POWER, power.getValue());
 
-    // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
     result.setDocument(doc);
-
-    // Return the XML in DomRepresentation form.
     return result;
   }
 
   /**
    * Returns the data as an XML Document instance.
    * 
-   * @param timestamp The timestamp to be used as the "begin" time.
+   * @param timestamp Long
    * @return The data as XML.
+   * 
    * @throws ParserConfigurationException Thrown when a problem occurs when creating the XML.
    * @throws IOException Thrown when a problem occurs creating the DomRepresentation object.
    */
   public static Representation toXmlSince(Long timestamp) throws ParserConfigurationException,
       IOException {
-    
+
     if (timestamp == null) {
       return new EmptyRepresentation();
     }
 
-    List<TimestampIntegerPair> temperature = repository.getHvacTemperatureSince(timestamp);
+    List<TimestampIntegerPair> energyList = repository.getElectricalEnergySince(timestamp);
+    List<TimestampIntegerPair> powerList = repository.getElectricalPowerSince(timestamp);
 
     Document doc = createDocument();
 
@@ -75,12 +70,17 @@ public class HvacData extends SystemData {
     Node stateDataNode;
 
     // Appends the state-data for each entry.
-    int size = temperature.size();
+    int size = energyList.size();
     for (int i = 0; i < size; i++) {
-      stateDataNode =
-          appendStateDataNode(doc, rootNode, IHaleSystem.HVAC, temperature.get(i).getTimestamp());
-      appendStateNode(doc, stateDataNode, IHaleState.TEMPERATURE, temperature.get(i).getValue());
+      long time = energyList.get(i).getTimestamp();
+      int energy = energyList.get(i).getValue();
+      int power = powerList.get(i).getValue();
+      
+      stateDataNode = appendStateDataNode(doc, rootNode, IHaleSystem.ELECTRIC, time);
+      appendStateNode(doc, stateDataNode, IHaleState.ENERGY, energy);
+      appendStateNode(doc, stateDataNode, IHaleState.POWER, power);
     }
+
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
     result.setDocument(doc);

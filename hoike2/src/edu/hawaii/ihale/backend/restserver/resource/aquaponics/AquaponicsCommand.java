@@ -5,6 +5,7 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
+import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
@@ -30,51 +31,43 @@ public class AquaponicsCommand extends ServerResource {
   public Representation sendCommand(Representation representation) {
 
     Map<String, String> queryMap = getQuery().getValuesMap();
-    String command = (String) this.getRequestAttributes().get("command");
     IHaleSystem system = IHaleSystem.AQUAPONICS;
-    IHaleCommandType commandType;
-    Object commandArg;
+    Status status = Status.CLIENT_ERROR_NOT_ACCEPTABLE;
+    
+    String commandParam = this.getRequestAttributes().get("command").toString();
+    IHaleCommandType command = IHaleCommandType.valueOf(commandParam);
+    IHaleState state = ApiDictionary.iHaleCommandType2State(command);
+    
+    String arg = queryMap.containsKey("arg") ? queryMap.get("arg") : null;
 
-    if (queryMap.containsKey("arg")) {
+    Object commandArg = null;
+    
+    if (arg != null && state.isType(arg)) {
 
-      String arg = queryMap.get("arg");
-      if ((command.equals(IHaleCommandType.SET_TEMPERATURE.toString()) &&
-          (IHaleState.SET_TEMPERATURE_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.SET_TEMPERATURE;
+      // decided how to parse argument
+      switch (command) {
+      case SET_TEMPERATURE:
+      case HARVEST_FISH:
         commandArg = Integer.parseInt(arg);
-        backend.doCommand(system, null, commandType, commandArg);
-      }
-      else if ((command.equals(IHaleCommandType.FEED_FISH.toString()) &&
-          (IHaleState.FEED_FISH_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.FEED_FISH;
+        break;
+      case FEED_FISH:
+      case SET_NUTRIENTS:
+      case SET_PH:
         commandArg = Double.parseDouble(arg);
-        backend.doCommand(system, null, commandType, commandArg);
+        break;
+      default:
+        commandArg = null;
+        break;
       }
-      else if ((command.equals(IHaleCommandType.HARVEST_FISH.toString()) &&
-          (IHaleState.HARVEST_FISH_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.HARVEST_FISH;
-        commandArg = Integer.parseInt(arg);
-        backend.doCommand(system, null, commandType, commandArg);
-      }
-      else if ((command.equals(IHaleCommandType.SET_NUTRIENTS.toString()) &&
-          (IHaleState.SET_NUTRIENTS_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.SET_NUTRIENTS;
-        commandArg = Double.parseDouble(arg);
-        backend.doCommand(system, null, commandType, commandArg);
-      }
-      else if ((command.equals(IHaleCommandType.SET_PH.toString()) &&
-          (IHaleState.SET_PH_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.HARVEST_FISH;
-        commandArg = Double.parseDouble(arg);
-        backend.doCommand(system, null, commandType, commandArg);
-      }
-      else {
-        getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
+
+      if (commandArg != null) {
+        backend.doCommand(system, null, command, commandArg);
+        status = Status.SUCCESS_OK;
       }
     }
-    else {
-      getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
-    }
+
+    getResponse().setStatus(status);
+
     return null;
   }
 }

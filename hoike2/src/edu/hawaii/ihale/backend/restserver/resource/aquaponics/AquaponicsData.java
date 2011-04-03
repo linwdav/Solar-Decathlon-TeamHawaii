@@ -2,8 +2,6 @@ package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 import java.io.IOException;
 import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
@@ -42,9 +40,7 @@ public class AquaponicsData extends SystemData {
     TimestampDoublePair ph = repository.getAquaponicsPh();
     TimestampDoublePair oxygen = repository.getAquaponicsOxygen();
 
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = factory.newDocumentBuilder();
-    Document doc = docBuilder.newDocument();
+    Document doc = createDocument();
 
     // Creates the state-data root node.
     Node rootNode =
@@ -93,13 +89,11 @@ public class AquaponicsData extends SystemData {
         repository.getAquaponicsWaterLevelSince(timestamp);
     List<TimestampDoublePair> ph = repository.getAquaponicsPhSince(timestamp);
     List<TimestampDoublePair> oxygen = repository.getAquaponicsOxygenSince(timestamp);
-
-    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-    DocumentBuilder docBuilder = factory.newDocumentBuilder();
-    Document doc = docBuilder.newDocument();
+    
+    Document doc = createDocument();
 
     // Creates the state-history root node.
-    Node rootNode = appendStateHistoryNode(doc, doc);
+    Node rootNode = appendStateHistoryNode(doc);
 
     Node stateDataNode;
 
@@ -118,6 +112,7 @@ public class AquaponicsData extends SystemData {
       appendStateNode(doc, stateDataNode, IHaleState.PH, ph.get(i).getValue());
       appendStateNode(doc, stateDataNode, IHaleState.OXYGEN, oxygen.get(i).getValue());
     }
+    
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
     result.setDocument(doc);

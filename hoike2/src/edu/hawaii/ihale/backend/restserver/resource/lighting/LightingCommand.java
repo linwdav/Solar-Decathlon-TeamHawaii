@@ -5,6 +5,7 @@ import org.restlet.data.Status;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Put;
 import org.restlet.resource.ServerResource;
+import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
@@ -31,44 +32,44 @@ public class LightingCommand extends ServerResource {
   public Representation sendCommand(Representation representation) {
 
     Map<String, String> queryMap = getQuery().getValuesMap();
-    String command = (String) this.getRequestAttributes().get("command");
     IHaleSystem system = IHaleSystem.LIGHTING;
-    IHaleCommandType commandType;
-    IHaleRoom room = null;
-    Object commandArg;
+    Status status = Status.CLIENT_ERROR_NOT_ACCEPTABLE;
+    
+    String commandParam = this.getRequestAttributes().get("command").toString();
+    IHaleCommandType command = IHaleCommandType.valueOf(commandParam);
+    IHaleState state = ApiDictionary.iHaleCommandType2State(command);
+    
+    IHaleRoom room = queryMap.containsKey("room") ? IHaleRoom.valueOf(queryMap.get("room")) : null;
+    
+    String arg = queryMap.containsKey("arg") ? queryMap.get("arg") : null;
 
-    if (queryMap.containsKey("room")) {
-      room = IHaleRoom.valueOf(queryMap.get("room"));
-    }
-
-    if (queryMap.containsKey("arg")) {
-
-      String arg = queryMap.get("arg");
-      if ((command.equals(IHaleCommandType.SET_LIGHTING_LEVEL.toString()) &&
-          (IHaleState.SET_LIGHTING_LEVEL_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.SET_LIGHTING_LEVEL;
+    Object commandArg = null;
+ 
+    if (room != null && arg != null && state.isType(arg)) {
+      
+      switch(command) {
+      case SET_LIGHTING_LEVEL:
         commandArg = Integer.parseInt(arg);
-        backend.doCommand(system, room, commandType, commandArg);
-      }
-      else if ((command.equals(IHaleCommandType.SET_LIGHTING_ENABLED.toString()) &&
-          (IHaleState.SET_LIGHTING_ENABLED_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.SET_LIGHTING_ENABLED;
+        break;
+      case SET_LIGHTING_ENABLED:
         commandArg = Boolean.parseBoolean(arg);
-        backend.doCommand(system, room, commandType, commandArg);
-      }
-      else if ((command.equals(IHaleCommandType.SET_LIGHTING_COLOR.toString()) &&
-          (IHaleState.SET_LIGHTING_COLOR_COMMAND.isType(arg)))) {
-        commandType = IHaleCommandType.SET_LIGHTING_COLOR;
+        break;
+      case SET_LIGHTING_COLOR:
         commandArg = arg;
-        backend.doCommand(system, room, commandType, commandArg);
+        break;
+      default:
+        commandArg = null;
+        break;
       }
-      else {
-        getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
+      
+      if (commandArg != null) {
+        status = Status.SUCCESS_OK;
+        backend.doCommand(system, null, command, commandArg);
       }
     }
-    else {
-      getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
-    }
+    
+    getResponse().setStatus(status);
+    
     return null;
   }
 }
