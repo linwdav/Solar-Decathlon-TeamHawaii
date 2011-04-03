@@ -63,9 +63,6 @@ public class TestEnergy {
     tester.assertComponent("MonthGraph", WebMarkupContainer.class);
     tester.assertComponent("CurrentConsumption", Label.class);
     tester.assertComponent("CurrentGeneration", Label.class);
-    tester.assertComponent("HvacSetting", Link.class);
-    tester.assertComponent("AquaponicsSetting", Link.class);
-    tester.assertComponent("LightingSetting", Link.class);
 
     // The following line is useful for seeing what's on the page.
     tester.debugComponentTrees();
