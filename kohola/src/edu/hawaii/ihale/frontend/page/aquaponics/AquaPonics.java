@@ -59,6 +59,7 @@ public class AquaPonics extends Header {
   private Label circulationColorLabel;
   private Label turbidityColorLabel;
 
+  // Text field for the controls
   private TextField<String> waterTemp;
   private TextField<String> waterPh;
   private TextField<String> waterLevel;
@@ -81,29 +82,30 @@ public class AquaPonics extends Header {
   private static final String WARNG_BACKGROUND = "background-color:#FF9900;";
   private static final String NORM_BACKGROUND = "background-color:green;";
 
-  // recommended values for aquaponics
+  // Range values for each system
   private static final long TEMPERATURE_RANGE_START = 82;
   private static final long TEMPERATURE_RANGE_END = 86;
   private static final long TEMPERATURE_ALERT_RANGE_START = 68;
   private static final long TEMPERATURE_ALERT_RANGE_END = 113;
   private static final double PH_RANGE_START = 6.8;
   private static final double PH_RANGE_END = 8.0;
-  private static final double PH_ACCEPTED_DIFFERENCE = 0.5;
+  private static final double PH_ACCEPTED_DIFFERENCE = 1.0;
   private static final double OXYGEN_RANGE_START = 4.50;
   private static final double OXYGEN_RANGE_END = 5.50;
   private static final double OXYGEN_ACCEPTED_DIFFERENCE = 0.2;
-  private static final double EC_RANGE_START = 10;
-  private static final double EC_RANGE_END = 20;
+  private static final double EC_RANGE_START = 10.0;
+  private static final double EC_RANGE_END = 20.0;
+  private static final double EC_ACCEPTED_DIFFERENCE = 2.0;
   private static final int LEVEL_RANGE_START = 36;
   private static final int LEVEL_RANGE_END = 48;
-  private static final int LEVEL_ACCEPTED_DIFFERENCE = 12;
+  private static final int LEVEL_ACCEPTED_DIFFERENCE = 2;
   private static final int CIRCULATION_RANGE_START = 60;
   private static final int CIRCULATION_RANGE_END = 100;
   private static final int CIRCULATION_ACCEPTED_DIFFERENCE = 10;
   private static final int TURBIDITY_RANGE_START = 0;
   private static final int TURBIDITY_RANGE_END = 100;
-  private static final int TURBIDITY_ACCEPTED_DIFFERENCE = 10;
-  private static final int FISH_TOTAL = 100;
+  private static final int TURBIDITY_ACCEPTED_DIFFERENCE = 5;
+  //private static final int FISH_TOTAL = 20;
 
   // labels for recommended values
   private static final Label recommendedTempLabel = new Label("RecommendedTempLabel",
@@ -135,6 +137,7 @@ public class AquaPonics extends Header {
   private static final List<String> num = Arrays.asList(new String[] { "1", "2", "3", "4", "5",
       "6", "7", "8", "9", "10" });
   
+  // Default selected value for the dropdowns
   private String selectedFeedAmnt = "0.5";
   private String selectedFishNum = "1";
 
@@ -157,8 +160,9 @@ public class AquaPonics extends Header {
 
     final String onChange = "onchange";
 
-    
-    // Messages
+    /*****************
+     ** System Logs **
+     *****************/
     // Add messages as a list view to each page
 
     // Get all messages applicable to this page
@@ -222,8 +226,29 @@ public class AquaPonics extends Header {
     add(systemLog);
 
     // End messages section
+    
+    /******************************************
+     ** Tab button for Aquaponics Statistics **
+     ******************************************/
+    Link<String> statsButton = new Link<String>("statsButton") {
+        private static final long serialVersionUID = 1L;
 
-    // model for the temperature feedback (WARNG or ALERT) label on page.
+        /** Upon clicking this link, go to AquaponicsStatsPage. */
+        @Override
+        public void onClick() {
+          try {
+            setResponsePage(AquaponicsStats.class);
+          }
+          catch (Exception e) {
+            e.printStackTrace();
+          }
+        }
+      };
+
+    /********************************************************
+     ** Feedback Message for all System (Warning or Alert) **
+     ********************************************************/
+    /** model for the TEMPERATURE feedback (WARNG or ALERT) label on page. */
     Model<String> tempStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -260,7 +285,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    // model for the pH feedback (WARNG or ALERT) label on page.
+    /** model for the PH feedback (WARNG or ALERT) label on page. */
     Model<String> pHStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -270,11 +295,14 @@ public class AquaPonics extends Header {
         // set the text and color according to the value
         double value = SolarDecathlonApplication.getAquaponics().getPH();
         String status;
-        if (Math.abs(value - PH_RANGE_START) < PH_ACCEPTED_DIFFERENCE
-            || Math.abs(value - PH_RANGE_END) < PH_ACCEPTED_DIFFERENCE) {
+        if ((value <= (PH_RANGE_START) &&
+            value >= Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)) 
+            || (value >= (PH_RANGE_END) &&
+            value <= Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE)) ) {
           status = WARNG_MESSAGE;
         }
-        else if (value < PH_RANGE_START || value > PH_RANGE_END) {
+        else if (value < Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)
+            || value > Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE)) {
           status = ALERT_MESSAGE;
         }
         else {
@@ -298,7 +326,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    // model for the oxygen feedback (WARNG or ALERT) label on page.
+    /** model for the OXYGEN feedback (WARNG or ALERT) label on page.*/
     Model<String> oxygenStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -336,7 +364,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    // model for the EC feedback (WARNG or ALERT) label on page.
+    /** model for the EC feedback (WARNG or ALERT) label on page. */
     Model<String> eCStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -346,11 +374,14 @@ public class AquaPonics extends Header {
         // set the text and color according to the value
         double value = SolarDecathlonApplication.getAquaponics().getConductivity();
         String status;
-        if (Math.abs(value - EC_RANGE_START) < PH_ACCEPTED_DIFFERENCE
-            || Math.abs(value - EC_RANGE_END) < PH_ACCEPTED_DIFFERENCE) {
-          status = WARNG_MESSAGE;
-        }
-        else if (value < EC_RANGE_START || value > EC_RANGE_END) {
+        if ((value <= (EC_RANGE_START) &&
+                value >= Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)) 
+                || (value >= (EC_RANGE_END) &&
+                value <= Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) ) {
+              status = WARNG_MESSAGE;
+            }
+            else if (value < Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)
+                || value > Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) {
           status = ALERT_MESSAGE;
         }
         else {
@@ -374,7 +405,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    // model for the water level feedback (WARNG or ALERT) label on page.
+    /* model for the WATER LEVEL feedback (WARNG or ALERT) label on page.*/
     Model<String> levelStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -412,7 +443,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    // model for the circulation feedback (WARNG or ALERT) label on page.
+    /** model for the CIRCULATION feedback (WARNG or ALERT) label on page. */
     Model<String> circulationStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -451,7 +482,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    // model for the turbidity feedback (WARNG or ALERT) label on page.
+    /** model for the TURBIDITY feedback (WARNG or ALERT) label on page. */
     Model<String> turbidityStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -490,7 +521,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    // model for the dead fish feedback (WARNG or ALERT) label on page.
+    /** model for the DEAD FISH feedback (WARNG or ALERT) label on page. */
     Model<String> fishStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -501,7 +532,7 @@ public class AquaPonics extends Header {
         int value = SolarDecathlonApplication.getAquaponics().getDeadFish();
         String status;
 
-        if (value < FISH_TOTAL) {
+        if (value > 0) {
           status = ALERT_MESSAGE;
         }
         else {
@@ -534,21 +565,10 @@ public class AquaPonics extends Header {
     circulationStatusLabel.setEscapeModelStrings(false);
     turbidityStatusLabel.setEscapeModelStrings(false);
     fishStatusLabel.setEscapeModelStrings(false);
-
-    Link<String> statsButton = new Link<String>("statsButton") {
-      private static final long serialVersionUID = 1L;
-
-      /** Upon clicking this link, go to AquaponicsStatsPage. */
-      @Override
-      public void onClick() {
-        try {
-          setResponsePage(AquaponicsStats.class);
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
+    
+    /*************************************************************
+     ** Determine the Background Color (Green, Yellow, and Red) **
+     *************************************************************/
     // color for current temp div
     Model<String> tempColorModel = new Model<String>() {
 
@@ -582,11 +602,14 @@ public class AquaPonics extends Header {
       public String getObject() {
         double value = SolarDecathlonApplication.getAquaponics().getPH();
         String color;
-        if (Math.abs(value - PH_RANGE_START) < PH_ACCEPTED_DIFFERENCE
-            || Math.abs(value - PH_RANGE_END) < PH_ACCEPTED_DIFFERENCE) {
+        if ((value <= (PH_RANGE_START) &&
+                value >= Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)) 
+                || (value >= (PH_RANGE_END) &&
+                value <= Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE))) {
           color = WARNG_BACKGROUND;
         }
-        else if (value < PH_RANGE_START || value > PH_RANGE_END) {
+        else if (value < Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)
+                || value > Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE)) {
           color = ALERT_BACKGROUND;
         }
         else {
@@ -630,11 +653,14 @@ public class AquaPonics extends Header {
       public String getObject() {
         double value = SolarDecathlonApplication.getAquaponics().getConductivity();
         String color;
-        if (Math.abs(value - EC_RANGE_START) < PH_ACCEPTED_DIFFERENCE
-            || Math.abs(value - EC_RANGE_END) < PH_ACCEPTED_DIFFERENCE) {
+        if ((value <= (EC_RANGE_START) &&
+                value >= Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)) 
+                || (value >= (EC_RANGE_END) &&
+                value <= Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE))) {
           color = WARNG_BACKGROUND;
         }
-        else if (value < EC_RANGE_START || value > EC_RANGE_END) {
+        else if (value < Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)
+                || value > Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) {
           color = ALERT_BACKGROUND;
         }
         else {
@@ -1042,10 +1068,13 @@ public class AquaPonics extends Header {
 
     add(turbidityOuterDiv);
 
+    /*********************
+     ** Slider Controls **
+     *********************/
     // Create a new form for the Controls
     Form<String> tempform = new Form<String>("form");
 
-    /** Change Temperature **/
+    /** Change Temperature */
     setTemp = SolarDecathlonApplication.getAquaponics().getTemp();
 
     // Add the control for the water temp slider
@@ -1211,6 +1240,9 @@ public class AquaPonics extends Header {
     add(tempform);
     tempform.setOutputMarkupId(true);
 
+    /***************************************
+     ** Display and Controls for the Fish **
+     ***************************************/
     // create divs for dead fish according to the hierarchy in html
     WebMarkupContainerWithAssociatedMarkup fishDiv =
         new WebMarkupContainerWithAssociatedMarkup("FishDiv");
@@ -1237,7 +1269,7 @@ public class AquaPonics extends Header {
     // Form for both the Feeding and Harvesting
     Form<String> feedForm = new Form<String>("FishForm");
 
-    // Drop down list for Feeding
+    /** Drop down list for Feeding */
     DropDownChoice<String> feedAmount =
         new DropDownChoice<String>("FeedAmount",
             new PropertyModel<String>(this, "selectedFeedAmnt"), amount);
@@ -1263,7 +1295,7 @@ public class AquaPonics extends Header {
 
     });
 
-    // Drop down list for Harvesting
+    /** Drop down list for Harvesting */
     DropDownChoice<String> fishNum =
         new DropDownChoice<String>("FishNum", new PropertyModel<String>(this, "selectedFishNum"),
             num);
@@ -1290,6 +1322,7 @@ public class AquaPonics extends Header {
 
     });
 
+    // Add form to page
     add(feedForm);
     feedForm.setOutputMarkupId(true);
 
