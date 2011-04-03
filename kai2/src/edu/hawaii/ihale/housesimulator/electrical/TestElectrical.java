@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.housesimulator.electrical;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Calendar;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -24,6 +25,7 @@ public class TestElectrical {
    */
   @BeforeClass
   public static void startServer() throws Exception {
+
     SimulatorServer.runServer();
   }
 
@@ -34,23 +36,18 @@ public class TestElectrical {
   @Test
   public void testGet() throws Exception {
 
-    // Speed up time simulation to see if our value falls within the desired range.
-    for (int i = 0; i < 50; i++) {
-//      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
-//      Date date = new Date();
-//      System.out.println("**********************");
-//      System.out.println(dateFormat.format(date));
-//      AquaponicsData.modifySystemState();
-//      HVACData.modifySystemState();
-//      LightingData.modifySystemState();
-//      PhotovoltaicsData.modifySystemState();
-      ElectricalData.modifySystemState();
-    }
+    // Hourly average is a static value, and can range from -50 to +50 of any average.
+    long hourlyAverage = ElectricalData.getHourlyAverage(Calendar.HOUR_OF_DAY);
+    long hourlyRange = 50;
+    // Power ranges from -25 to 25 and is centered around 0.
+    long powerValue = 0;
+    long powerRange = 25;
+    
+    ElectricalData.modifySystemState();
 
     // Set up the GET client
     //String getUrl = "http://localhost:7002/electric/state";
     String getUrl = "http://localhost:7002/cgi-bin/egauge?tot";
-    System.out.println(getUrl);
     ClientResource getClient = new ClientResource(getUrl);
     
     // Get the XML representation.
@@ -71,10 +68,10 @@ public class TestElectrical {
     
     // Check that we are returning the correct title.
     assertEquals("Checking that title is \"Grid\"", title, "Grid");
-
+    
     // Check that the returned value is within a delta of our value.
-    assertEquals(1900.0, Double.parseDouble(energy), 450);
-    assertEquals(0, Double.parseDouble(power), 25);
+    assertEquals(hourlyAverage, Double.parseDouble(energy), hourlyRange);
+    assertEquals(powerValue, Double.parseDouble(power), powerRange);
 
   }
 }

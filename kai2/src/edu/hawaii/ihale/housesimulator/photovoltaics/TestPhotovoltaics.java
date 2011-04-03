@@ -1,10 +1,7 @@
 package edu.hawaii.ihale.housesimulator.photovoltaics;
 
 import static org.junit.Assert.assertEquals;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -13,10 +10,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.housesimulator.SimulatorServer;
-import edu.hawaii.ihale.housesimulator.aquaponics.AquaponicsData;
-import edu.hawaii.ihale.housesimulator.electrical.ElectricalData;
-import edu.hawaii.ihale.housesimulator.hvac.HVACData;
-import edu.hawaii.ihale.housesimulator.lighting.LightingData;
+
 
 /**
  * Tests the HTTP operations of the system.
@@ -41,19 +35,8 @@ public class TestPhotovoltaics {
   @Test
   public void testGet() throws Exception {
 
-    
-    // Speed up time simulation to see if our value falls within the desired range.
-    for (int i = 0; i < 50; i++) {
-      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
-      Date date = new Date();
-      System.out.println("**********************");
-      System.out.println(dateFormat.format(date));
-      AquaponicsData.modifySystemState();
-      HVACData.modifySystemState();
-      LightingData.modifySystemState();
       PhotovoltaicsData.modifySystemState();
-      ElectricalData.modifySystemState();   
-    }  
+
     
     // Set up the GET client
     //String getUrl = "http://localhost:7001/photovoltaic/state";

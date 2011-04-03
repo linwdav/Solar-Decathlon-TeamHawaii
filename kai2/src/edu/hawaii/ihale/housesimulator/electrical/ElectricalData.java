@@ -46,10 +46,10 @@ public class ElectricalData {
   public static void modifySystemState() {
     changePoints(Calendar.HOUR_OF_DAY);
 
-    System.out.println("----------------------");
-    System.out.println("System: Electrical");
-    System.out.println("Energy: " + energy);
-    System.out.println("Power: " + power);
+//    System.out.println("----------------------");
+//    System.out.println("System: Electrical");
+//    System.out.println("Energy: " + energy);
+//    System.out.println("Power: " + power);
   }
 
   /**

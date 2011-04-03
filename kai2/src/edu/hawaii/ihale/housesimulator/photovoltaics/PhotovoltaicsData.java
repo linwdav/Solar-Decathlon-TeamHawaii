@@ -43,10 +43,10 @@ public class PhotovoltaicsData {
   public static void modifySystemState() {
     changePoints(Calendar.HOUR_OF_DAY);
 
-    System.out.println("----------------------");
-    System.out.println("System: Photovoltaics");
-    System.out.println("Energy: " + energy);
-    System.out.println("Power: " + power);
+//    System.out.println("----------------------");
+//    System.out.println("System: Photovoltaics");
+//    System.out.println("Energy: " + energy);
+//    System.out.println("Power: " + power);
   }
 
   /**
@@ -192,7 +192,7 @@ public class PhotovoltaicsData {
     
      // Frequency tag.
      Element frequencyElement = doc.createElement("frequency");
-     frequencyElement.setTextContent("value here");
+     frequencyElement.setTextContent(dummyOutput());
      rootElement.appendChild(frequencyElement);
      // First voltage tag.
      Element voltageElementA = doc.createElement(voltageTag);
@@ -344,7 +344,6 @@ public class PhotovoltaicsData {
     Random random = new Random();
     int randP = random.nextInt(10);
     int randE = random.nextInt(10);
-    //System.out.println(hour);
     long changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
     if (hourlyAverage[hour] == 1) {
       energy = 1;
