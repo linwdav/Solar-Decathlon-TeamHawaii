@@ -6,6 +6,9 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Test;
+import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.IHaleBackend;
+import edu.hawaii.ihale.frontend.RepositoryRefresher;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.page.SelectModalWindow;
 
@@ -21,6 +24,13 @@ public class TestEnergy {
    */
   @Test
   public void testPage() {
+    
+    // populate the repository
+    IHaleBackend backend = new IHaleBackend();
+    Repository repository = new Repository();
+    RepositoryRefresher refresh = new RepositoryRefresher(backend, repository);
+    refresh.start(500);
+         
     // Start up the WicketTester and check that the page renders.
     WicketTester tester = new WicketTester(new SolarDecathlonApplication());
     tester.startPage(Energy.class);
@@ -63,7 +73,7 @@ public class TestEnergy {
     tester.assertComponent("MonthGraph", WebMarkupContainer.class);
     tester.assertComponent("CurrentConsumption", Label.class);
     tester.assertComponent("CurrentGeneration", Label.class);
-
+   
     // The following line is useful for seeing what's on the page.
     tester.debugComponentTrees();
 
