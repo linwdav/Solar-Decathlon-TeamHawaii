@@ -31,7 +31,6 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
-import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
@@ -111,23 +110,22 @@ public class Lighting extends Header {
   public Lighting() {
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(3);
 
-    Repository repository = new Repository();
-    livingState = repository.getLightingEnabled(IHaleRoom.LIVING).getValue();
-    diningState = repository.getLightingEnabled(IHaleRoom.DINING).getValue();
-    kitchenState = repository.getLightingEnabled(IHaleRoom.KITCHEN).getValue();
-    bathroomState = repository.getLightingEnabled(IHaleRoom.BATHROOM).getValue();
+    livingState = SolarDecathlonApplication.getLights().getLivingRoom().getLightingEnabled();
+    diningState = SolarDecathlonApplication.getLights().getDiningRoom().getLightingEnabled();
+    kitchenState = SolarDecathlonApplication.getLights().getKitchenRoom().getLightingEnabled();
+    bathroomState = SolarDecathlonApplication.getLights().getBathroom().getLightingEnabled();
     Form<String> form = new Form<String>("form");
 
     // Add the control for the intensity slider
-    setLivingIntensity = repository.getLightingLevel(IHaleRoom.LIVING).getValue();
-    setDiningIntensity = repository.getLightingLevel(IHaleRoom.DINING).getValue();
-    setKitchenIntensity = repository.getLightingLevel(IHaleRoom.KITCHEN).getValue();
-    setBathroomIntensity = repository.getLightingLevel(IHaleRoom.BATHROOM).getValue();
+    setLivingIntensity = SolarDecathlonApplication.getLights().getLivingRoom().getLightingLevel();
+    setDiningIntensity = SolarDecathlonApplication.getLights().getDiningRoom().getLightingLevel();
+    setKitchenIntensity = SolarDecathlonApplication.getLights().getKitchenRoom().getLightingLevel();
+    setBathroomIntensity = SolarDecathlonApplication.getLights().getBathroom().getLightingLevel();
 
-    desiredLivingColor = repository.getLightingColor(IHaleRoom.LIVING).getValue();
-    desiredDiningColor = repository.getLightingColor(IHaleRoom.DINING).getValue();
-    desiredKitchenColor = repository.getLightingColor(IHaleRoom.KITCHEN).getValue();
-    desiredBathroomColor = repository.getLightingColor(IHaleRoom.BATHROOM).getValue();
+    desiredLivingColor = SolarDecathlonApplication.getLights().getLivingRoom().getLightingColor();
+    desiredDiningColor = SolarDecathlonApplication.getLights().getDiningRoom().getLightingColor();
+    desiredKitchenColor = SolarDecathlonApplication.getLights().getKitchenRoom().getLightingColor();
+    desiredBathroomColor = SolarDecathlonApplication.getLights().getBathroom().getLightingColor();
 
     // Messages
     // Add messages as a list view to each page
@@ -153,11 +151,11 @@ public class Lighting extends Header {
      // Help Image
      helpLink.add(new Image("helpLighting", new ResourceReference(Header.class, "images/icons/help.png")));
 
-     add(helpLink);    
-    
+     add(helpLink);   
+     
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
-        new PageableListView<SystemStatusMessage>("LightingStatusMessages", msgs, 15) {
+        new PageableListView<SystemStatusMessage>("LightingStatusMessages", msgs, 10) {
 
           private static final long serialVersionUID = 1L;
 
@@ -408,7 +406,7 @@ public class Lighting extends Header {
     }
 
     // create feedback for intensity
-    intensityFeedback = new Label("intensityfeedback", "&nbsp;");
+    intensityFeedback = new Label("intensityfeedback", "");
     intensityFeedback.setEscapeModelStrings(false);
     intensityFeedback.setOutputMarkupId(true);
 
@@ -427,74 +425,50 @@ public class Lighting extends Header {
        */
       @Override
       protected void onUpdate(AjaxRequestTarget target) {
-        setColor = colorChange.getValue();
+        setColor = colorChange.getDefaultModelObjectAsString();
 
         IHaleSystem system = IHaleSystem.LIGHTING;
         IHaleCommandType command = IHaleCommandType.SET_LIGHTING_COLOR;
         IHaleRoom room;
 
         if (LIVING_ROOM.equals(currentRoom)) {
-          if (desiredLivingColor.equals(setColor)) {
-            return;
-          }
-          else {
-            desiredLivingColor = setColor;
-            room = IHaleRoom.LIVING;
-            SolarDecathlonApplication.getBackend().doCommand(system, room, command,
-                desiredLivingColor);
-            if (DEBUG) {
-              System.out.println("do command sent for living room lights color with color: "
-                  + desiredLivingColor);
-            }
-            return;
+          desiredLivingColor = setColor;
+          room = IHaleRoom.LIVING;
+          SolarDecathlonApplication.getBackend().doCommand(system, room, command,
+              desiredLivingColor);
+          if (DEBUG) {
+            System.out.println("do command sent for living room lights color with color: "
+                + desiredLivingColor);
           }
         }
         else if (DINING_ROOM.equals(currentRoom)) {
-          if (desiredDiningColor.equals(setColor)) {
-            return;
-          }
-          else {
-            desiredDiningColor = setColor;
-            room = IHaleRoom.DINING;
-            SolarDecathlonApplication.getBackend().doCommand(system, room, command,
-                desiredDiningColor);
-            if (DEBUG) {
-              System.out.println("do command sent for dining room lights color with color: "
-                  + desiredDiningColor);
-            }
-            return;
+          desiredDiningColor = setColor;
+          room = IHaleRoom.DINING;
+          SolarDecathlonApplication.getBackend().doCommand(system, room, command,
+              desiredDiningColor);
+          if (DEBUG) {
+            System.out.println("do command sent for dining room lights color with color: "
+                + desiredDiningColor);
           }
         }
         else if (KITCHEN.equals(currentRoom)) {
-          if (desiredKitchenColor.equals(setColor)) {
-            return;
-          }
-          else {
-            desiredKitchenColor = setColor;
-            room = IHaleRoom.KITCHEN;
-            SolarDecathlonApplication.getBackend().doCommand(system, room, command,
-                desiredKitchenColor);
-            if (DEBUG) {
-              System.out.println("do command sent for kitchen room lights color with color: "
-                  + desiredKitchenColor);
-            }
-            return;
+          desiredKitchenColor = setColor;
+          room = IHaleRoom.KITCHEN;
+          SolarDecathlonApplication.getBackend().doCommand(system, room, command,
+              desiredKitchenColor);
+          if (DEBUG) {
+            System.out.println("do command sent for kitchen room lights color with color: "
+                + desiredKitchenColor);
           }
         }
         else if (BATHROOM.equals(currentRoom)) {
-          if (desiredBathroomColor.equals(setColor)) {
-            return;
-          }
-          else {
-            desiredBathroomColor = setColor;
-            room = IHaleRoom.BATHROOM;
-            SolarDecathlonApplication.getBackend().doCommand(system, room, command,
-                desiredBathroomColor);
-            if (DEBUG) {
-              System.out.println("do command sent for bathroom room lights color with color: "
-                  + desiredBathroomColor);
-            }
-            return;
+          desiredBathroomColor = setColor;
+          room = IHaleRoom.BATHROOM;
+          SolarDecathlonApplication.getBackend().doCommand(system, room, command,
+              desiredBathroomColor);
+          if (DEBUG) {
+            System.out.println("do command sent for bathroom room lights color with color: "
+                + desiredBathroomColor);
           }
         }
       }
@@ -504,6 +478,7 @@ public class Lighting extends Header {
     form.add(intensityFeedback);
     add(form);
 
+    Form<String> testForm = new Form<String>("testForm");
     roomChoices =
         new DropDownChoice<String>("room", new PropertyModel<String>(this, "currentRoom"), rooms);
 
@@ -516,49 +491,31 @@ public class Lighting extends Header {
        */
       @Override
       protected void onUpdate(AjaxRequestTarget target) {
-        Repository repository = new Repository();
         String newSelection = roomChoices.getDefaultModelObjectAsString();
         currentRoom = newSelection;
         System.out.println("new room selection: " + newSelection);
         if (LIVING_ROOM.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(LIVING_ROOM);
-          // set button to living state
-          livingState = repository.getLightingEnabled(IHaleRoom.LIVING).getValue();
-          setButtons(livingState);
-          // set intensity to living state
         }
         else if (DINING_ROOM.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(DINING_ROOM);
-          // set button to dining state
-          diningState = repository.getLightingEnabled(IHaleRoom.DINING).getValue();
-          setButtons(diningState);
-          // set intensity to dining state
         }
         else if (KITCHEN.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(KITCHEN);
-          // set button to kitchen state
-          kitchenState = repository.getLightingEnabled(IHaleRoom.KITCHEN).getValue();
-          setButtons(kitchenState);
-          // set intensity to kitchen state
         }
         else if (BATHROOM.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(BATHROOM);
-          // set button to bathroom state
-          bathroomState = repository.getLightingEnabled(IHaleRoom.BATHROOM).getValue();
-          setButtons(bathroomState);
-          // set intensity to bathroom state
         }
 
         // reset feedback
         intensityFeedback.setDefaultModelObject("");
         // add components in the page we want to update to the target.
         target.addComponent(intensityFeedback);
-        target.addComponent(onButton);
-        target.addComponent(offButton);
         setResponsePage(Lighting.class);
       }
     });
-    add(roomChoices.setRequired(true));
+    testForm.add(roomChoices.setRequired(true));
+    add(testForm);
     add(onButton);
     add(offButton);
     // add(form);
@@ -570,12 +527,14 @@ public class Lighting extends Header {
    * @param enabled Whether the lights are on.
    */
   private void setButtons(final boolean enabled) {
-    onButton.add(new AbstractBehavior() {
 
+    onButton.add(new AbstractBehavior() {
       // support serialization
       private static final long serialVersionUID = 1L;
 
       public void onComponentTag(Component component, ComponentTag tag) {
+        System.out.println("state: " + enabled);
+
         if (enabled) {
           tag.put(CLASS, buttonOn);
         }
@@ -610,7 +569,8 @@ public class Lighting extends Header {
    */
   private void handleRoomState(String roomName, boolean enabled) {
 
-    IHaleBackend backend = new IHaleBackend();
+    IHaleBackend backend;
+    backend = new IHaleBackend();
 
     if (LIVING_ROOM.equals(roomName)) {
       livingState = enabled;
@@ -630,7 +590,7 @@ public class Lighting extends Header {
     if (BATHROOM.equals(roomName)) {
       bathroomState = enabled;
       backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
-          IHaleCommandType.SET_LIGHTING_ENABLED, true);
+          IHaleCommandType.SET_LIGHTING_ENABLED, enabled);
     }
 
     if (enabled) {

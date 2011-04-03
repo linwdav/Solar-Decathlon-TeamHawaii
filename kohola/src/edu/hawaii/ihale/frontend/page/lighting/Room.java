@@ -39,7 +39,7 @@ public class Room {
    * Returns whether the light in this room is on.
    * @return Whether the light is enabled.
    */
-  public boolean isLightingEnabled() {
+  public boolean getLightingEnabled() {
     return lightingEnabled;
   }
   
