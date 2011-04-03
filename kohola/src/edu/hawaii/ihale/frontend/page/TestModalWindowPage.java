@@ -17,7 +17,6 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
 import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
-import edu.hawaii.ihale.frontend.page.SelectModalWindow;
 import edu.hawaii.ihale.frontend.page.dashboard.Dashboard;
 import edu.hawaii.ihale.frontend.page.messages.MessagesListener;
 
@@ -173,9 +172,9 @@ public class TestModalWindowPage {
     tester.assertComponent("modalwindow", SelectModalWindow.class);
 
     Repository repository = new Repository();
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.PH, 001020L, 1.0);
+    repository.store(IHaleSystem.AQUAPONICS, IHaleState.PH, 101020L, 1.0);
     
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.CIRCULATION, 001020L, 1.0);
+    repository.store(IHaleSystem.AQUAPONICS, IHaleState.CIRCULATION, 101020L, 1.0);
     // Check the dropdown box
     DropDownChoice<String> countryDropDownChoice =
         (DropDownChoice<String>) tester.getComponentFromLastRenderedPage("Cities");
