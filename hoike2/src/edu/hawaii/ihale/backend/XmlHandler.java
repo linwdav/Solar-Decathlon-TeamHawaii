@@ -223,6 +223,7 @@ public class XmlHandler {
       System.out.println(timestamp);
 */
       // Cast data according to the current IHaleState enum.
+      try {
       if (stateEnum.getType().equals(Double.class)) {
         finalVal = Double.parseDouble(tempVal);
       }
@@ -238,6 +239,10 @@ public class XmlHandler {
       else {
         System.err.println("ERROR: Could not parse value: " + tempVal + 
             " for IHaleState: " + stateEnum.toString());
+      }
+      }
+      catch (Exception e) {
+        return false;
       }
 /*      System.out.print(stateEnum.toString());
       if (roomEnum != null) {

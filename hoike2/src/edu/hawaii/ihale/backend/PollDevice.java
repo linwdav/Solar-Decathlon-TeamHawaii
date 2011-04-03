@@ -7,7 +7,6 @@ import javax.xml.xpath.XPathExpressionException;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
 
-import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 
 
@@ -18,19 +17,16 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 public class PollDevice extends Thread {
   
   private IHaleSystem system;
-  private IHaleRoom room;
   private ClientResource resource;
   
   /**
    * Constructor method.
    * @author Tony Gaskell
    * @param system the system of the device.
-   * @param room the room of the device, null if none.
    * @param domain the URI domain.
    */
-  public PollDevice(IHaleSystem system, IHaleRoom room, String domain) {
+  public PollDevice(IHaleSystem system, String domain) {
     this.system = system;
-    this.room = room;
     if (system.equals(IHaleSystem.AQUAPONICS)
         || system.equals(IHaleSystem.HVAC) 
         || system.equals(IHaleSystem.LIGHTING)) {
@@ -45,8 +41,7 @@ public class PollDevice extends Thread {
    * Polls a device given it's system (and room).
    * @author Tony Gaskell
    */
-  @Override
-  public void run() {
+  public void poll() {
     XmlHandler handler = new XmlHandler();
 
       // Check which system is being polled to ensure the correct parser is called.
@@ -87,13 +82,6 @@ public class PollDevice extends Thread {
           e.printStackTrace();
         }
       }
-
-      System.err.print("Error polling: " + system.toString());
-      if (room != null ) {
-        System.err.print(" " + room.toString());
-      }
-      System.out.println();
-
   }
 }
 
