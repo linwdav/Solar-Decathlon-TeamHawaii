@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 import java.io.File;
-import java.util.Date;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.xpath.XPath;
@@ -25,7 +24,6 @@ import org.w3c.dom.Element;
  */
 public class TestSimulator {
   
-  private static final long initialTimestamp = new Date().getTime();
   private static final String dir = ".ihale";
   private static final String propFilename = "device-urls.properties";
   private static final String xmlFilename = "initial-data.xml";
@@ -75,18 +73,7 @@ public class TestSimulator {
     
     File propFile = new File(theDir, propFilename);
     assertTrue("Checking if device-urls.properties exists.", propFile.exists());
-    
-    /** TO-DO:
-     *  Open up the device-urls.properties file and confirm various keys and associated values 
-     *  were properly established within the file.
-     *  
-     *  Open up the initial-data.xml file and confirm at least a record for each system was created
-     *  or possible count the number of state-data elements and assert it matches up or possibly
-     *  for various timestamps for a system and assert historical records are taken at appropriate
-     *  time snap-shots.
-     */
-    System.out.println(initialTimestamp); // To abide QA rules. Will utilize the field efficiently.
-    
+        
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     factory.setNamespaceAware(true);
     DocumentBuilder builder = factory.newDocumentBuilder();
