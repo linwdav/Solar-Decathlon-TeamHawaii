@@ -58,12 +58,9 @@ public class TestAquaponicsStats {
     tester.assertComponent("CurrentWeatherHeader", Label.class);
     tester.assertComponent("OutsideTemperatureHeader", Label.class);
     tester.assertComponent("InsideTemperatureHeader", Label.class);
-    tester.assertComponent("dayWaterLevelGraph", Link.class);
     tester.assertComponent("dayPhGraph", Link.class);
     tester.assertComponent("dayTemperatureGraph", Link.class);
     tester.assertComponent("dayConductivityGraph", Link.class);
-    tester.assertComponent("dayPowerGraph", Link.class);
-    tester.assertComponent("dayWaterGraph", Link.class);
     tester.assertComponent("mainButton", Link.class);
     tester.assertComponent("dayChartType", Label.class);
     tester.assertComponent("weekChartType", Label.class);

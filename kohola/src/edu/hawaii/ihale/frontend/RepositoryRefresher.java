@@ -2,14 +2,12 @@ package edu.hawaii.ihale.frontend;
 
 import java.text.DecimalFormat;
 import java.util.Date;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.IHaleBackend;
 
@@ -25,7 +23,6 @@ public class RepositoryRefresher {
   /** instance of the repository to use the store(). */
   public Repository repository;
   static boolean enabled = true;
-  List<TimestampIntegerPair> list;
 
   /**
    * Constructor.

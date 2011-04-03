@@ -349,7 +349,7 @@ public class AquaponicsStats extends Header {
    * ready for insertion into a google chart URI.
    * 
    * @param list The list of data.  Either double or integer objects.
-   * @param nextInterval The next time to gather data to average from.
+   * @param nextIntervalIn The next time to gather data to average from.
    * @param stepSizeInMillis The size of the intervals we are averaging over.
    * @param scaleFactor The scale of the chart.
    * @return The google-chart compatible data string.
@@ -359,7 +359,7 @@ public class AquaponicsStats extends Header {
     
     long nextInterval = nextIntervalIn;
     
-    String dataString = "";
+    StringBuffer dataString = new StringBuffer();
     
     // Tracks how many points we've counted in total
     int totalNumPoints = 0;
@@ -406,16 +406,17 @@ public class AquaponicsStats extends Header {
 
     // Scale and Combine data points into string for chart.
     for (Double i : avgList) {
-      dataString += (i * scaleFactor);
+      dataString.append(i * scaleFactor);
 
       // Only add a comma if we're not at the end of the list
       if (index < avgList.size()) {
-        dataString += ",";
+        String comma = ",";
+        dataString.append(comma);
       }
       index++;
     } // End For each loop
     
-    return dataString;
+    return dataString.toString();
   } // End Generate Data String for Double
   
   /**
@@ -423,7 +424,7 @@ public class AquaponicsStats extends Header {
    * ready for insertion into a google chart URI.
    * 
    * @param list The list of data.  Either double or integer objects.
-   * @param nextInterval The next time to gather data to average from.
+   * @param nextIntervalIn The next time to gather data to average from.
    * @param stepSizeInMillis The size of the intervals we are averaging over.
    * @param scaleFactor The scale of the chart.
    * @return The google-chart compatible data string.
@@ -433,7 +434,7 @@ public class AquaponicsStats extends Header {
     
     long nextInterval = nextIntervalIn;
     
-    String dataString = "";
+    StringBuffer dataString = new StringBuffer();
     
     // Tracks how many points we've counted in total
     int totalNumPoints = 0;
@@ -480,16 +481,17 @@ public class AquaponicsStats extends Header {
 
     // Scale and Combine data points into string for chart.
     for (Double i : avgList) {
-      dataString += (i * scaleFactor);
+      dataString.append (i * scaleFactor);
 
       // Only add a comma if we're not at the end of the list
       if (index < avgList.size()) {
-        dataString += ",";
+        String comma = ",";
+        dataString.append(comma);
       }
       index++;
     } // End For each loop
     
-    return dataString;
+    return dataString.toString();
   } // End Generate DataString for Integer
   
   /**
@@ -499,7 +501,7 @@ public class AquaponicsStats extends Header {
    * @return String to generate the axis.
    */
   private String generateXAxis(int interval) {
-    String returnString = "";
+    StringBuffer returnString = new StringBuffer(50);
     // Get the current date
     Calendar current = Calendar.getInstance();
     
@@ -523,7 +525,8 @@ public class AquaponicsStats extends Header {
      int dayLength = 24;
      
      for (int i = 1; i <= dayLength; i++) {
-       returnString += "|" + hours[hour++];
+       String appendString = "|" + hours[hour++];
+       returnString.append(appendString);
      }
      
      break;
@@ -543,18 +546,20 @@ public class AquaponicsStats extends Header {
 
       // Construct string for axis
       for (int i = 1; i <= weekLength; i++) {
-        returnString += "|" + days[day++];
+        String appendString = "|" + days[day++];
+        returnString.append( appendString );
       }
       break;
       
     // Month
     case 2:
-      returnString += "|3 Weeks Ago|2 Weeks Ago|1 Week Ago|This Week";
+      String appendString = "|3 Weeks Ago|2 Weeks Ago|1 Week Ago|This Week";
+      returnString.append(appendString);
       break;
     default:
       break;
     }
-    return returnString;
+    return returnString.toString();
   } // End Generate Graph Function
   
   /**
