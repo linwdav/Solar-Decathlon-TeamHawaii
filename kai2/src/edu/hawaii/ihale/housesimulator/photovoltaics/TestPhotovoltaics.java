@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.housesimulator.photovoltaics;
 
 import static org.junit.Assert.assertEquals;
+import java.util.Calendar;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,11 +36,10 @@ public class TestPhotovoltaics {
   @Test
   public void testGet() throws Exception {
 
-      PhotovoltaicsData.modifySystemState();
+    PhotovoltaicsData.modifySystemState();
 
     
     // Set up the GET client
-    //String getUrl = "http://localhost:7001/photovoltaic/state";
     String getUrl = "http://localhost:7001/cgi-bin/egauge?tot";
     ClientResource getClient = new ClientResource(getUrl);
     
@@ -61,10 +61,33 @@ public class TestPhotovoltaics {
 
     // Check that we are returning the correct title.
     assertEquals("Checking that title is \"Solar\"", title, "Solar");
+   
     
+    // Data validation block
+    long hourlyAverage = PhotovoltaicsData.getHourlyAverage(Calendar.HOUR_OF_DAY);
+    long hourlyRange = hourlyAverage / 10;
     // Check that the returned value is within a delta of our value.
-    assertEquals(1500, Double.parseDouble(energy), 1750); 
-    assertEquals(700, Double.parseDouble(power), 700); 
-
+    assertEquals(hourlyAverage, Double.parseDouble(energy), hourlyRange); 
+    assertEquals(0, Double.parseDouble(power), (hourlyRange * 3 / 4)); 
+    
+//    // Repeat the data validation block with different values for coverage testing.
+//    hourlyAverage = PhotovoltaicsData.getHourlyAverage(Calendar.HOUR_OF_DAY + 6);
+//    hourlyRange = hourlyAverage / 10;
+//    // Check that the returned value is within a delta of our value.
+//    assertEquals(hourlyAverage, Double.parseDouble(energy), hourlyRange); 
+//    assertEquals(0, Double.parseDouble(power), (hourlyRange * 3 / 4)); 
+//    
+//    hourlyAverage = PhotovoltaicsData.getHourlyAverage(Calendar.HOUR_OF_DAY + 12);
+//    hourlyRange = hourlyAverage / 10;
+//    // Check that the returned value is within a delta of our value.
+//    assertEquals(hourlyAverage, Double.parseDouble(energy), hourlyRange); 
+//    assertEquals(0, Double.parseDouble(power), (hourlyRange * 3 / 4)); 
+//    
+//    hourlyAverage = PhotovoltaicsData.getHourlyAverage(Calendar.HOUR_OF_DAY + 18);
+//    hourlyRange = hourlyAverage / 10;
+//    // Check that the returned value is within a delta of our value.
+//    assertEquals(hourlyAverage, Double.parseDouble(energy), hourlyRange); 
+//    assertEquals(0, Double.parseDouble(power), (hourlyRange * 3 / 4)); 
+  
   }
 }
