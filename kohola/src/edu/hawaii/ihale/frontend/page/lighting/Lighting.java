@@ -143,17 +143,17 @@ public class Lighting extends Header {
       private static final long serialVersionUID = 1L;
 
       public void onClick() {
-        ((SolarDecathlonSession)getSession()).getHelpSession().setCurrentTab(4);
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(4);
         setResponsePage(Help.class);
       }
-     };
-    
-     // Help Image
-     helpLink.add(new Image("helpLighting", new ResourceReference(Header.class, 
-         "images/icons/help.png")));
+    };
 
-     add(helpLink);   
-     
+    // Help Image
+    helpLink.add(new Image("helpLighting", new ResourceReference(Header.class,
+        "images/icons/help.png")));
+
+    add(helpLink);
+
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("LightingStatusMessages", msgs, 10) {
@@ -265,7 +265,7 @@ public class Lighting extends Header {
       /** Provide user feeback after they set a new desired temperature */
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
-        IHaleSystem system = IHaleSystem.HVAC;
+        IHaleSystem system = IHaleSystem.LIGHTING;
         IHaleCommandType command = IHaleCommandType.SET_LIGHTING_LEVEL;
         IHaleRoom room;
 
