@@ -49,7 +49,7 @@ public class TestAquaponics {
     putValue("water/level", "SET_WATER_LEVEL", "42");
 
     // Speed up time simulation to see if our value falls within the desired range.
-    for (int i = 0; i < 50; i++) {
+    for (int i = 0; i < 100; i++) {
       AquaponicsData.modifySystemState();
       //HVACData.modifySystemState();
       //LightingData.modifySystemState();

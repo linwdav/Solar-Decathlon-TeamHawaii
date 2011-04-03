@@ -19,7 +19,7 @@ public class AquaponicsData {
 
   // /** Test number generation. */
   // public static void main(String[] args) {
-  // for (int i = 0; i < 10; i++) {
+  // for (int i = 0; i < 100; i++) {
   // System.out.println((randomGen.nextDouble() * (maxPH - minPH)) + minPH);
   // }
   // }
@@ -98,14 +98,14 @@ public class AquaponicsData {
     desiredEC = (randomGen.nextDouble() * (maxEC - minEC)) + minEC;
     desiredTemperature = randomGen.nextInt(maxTemp - minTemp + 1) + minTemp;
     desiredWaterLevel = (randomGen.nextInt(maxWater - minWater + 1)) + minWater;
-    desiredPh = (randomGen.nextDouble() * (maxEC - minEC)) + minEC;
+    desiredPh = (randomGen.nextDouble() * (maxPH - minPH)) + minPH;
   }
 
   /**
    * Simulates changes due to desired values, relationship models, and a small degree of randomness.
    */
   public static void modifySystemState() {
-    // printConditions();
+    printConditions();
     changeCirculation();
     changeDeadFish();
     changeEC();
@@ -199,16 +199,16 @@ public class AquaponicsData {
    */
   public static void changeWaterLevel() {
     if (water_level < desiredWaterLevel) {
-      // 50% chance to increment water_level by 1 unit.
+      // 50% chance to increment water_level by 0 to 2 units.
       water_level += randomGen.nextInt(2) + randomGen.nextInt(2);
     }
     else if (water_level > desiredWaterLevel) {
-      // 50% chance to decrement water_level by 1 unit.
-      water_level -= randomGen.nextInt(2);
+      // 50% chance to decrement water_level by 0 to 2 units.
+      water_level -= randomGen.nextInt(2) + randomGen.nextInt(2);
     }
     else {
-      // Increment or decrement water_level by 0 to 1 unit to reflect randomness.
-      water_level += randomGen.nextInt(2) - randomGen.nextInt(2);
+      // 50% chance of Increment or decrement water by 0 to 1 unit to reflect randomness.
+      water_level += randomGen.nextInt(2) * (randomGen.nextInt(2) - randomGen.nextInt(2));
     }
   }
 
@@ -218,11 +218,11 @@ public class AquaponicsData {
   public static void changePH() {
     if (ph < desiredPh) {
       // 25% chance of incrementing by 0.1
-      ph += (randomGen.nextInt(2) * randomGen.nextInt(2)) * 0.1;
+      ph += (randomGen.nextInt(2)) * (randomGen.nextInt(2)) * 0.1;
     }
     else if (ph > desiredPh) {
       // 25% chance of decrementing by 0.1
-      ph -= (randomGen.nextInt(2) * randomGen.nextInt(2)) * 0.1;
+      ph -= (randomGen.nextInt(2)) * (randomGen.nextInt(2)) * 0.1;
     }
     else {
       // 12.5% chance of incrementing or decrementing 0.1 from desired PH.

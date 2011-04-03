@@ -41,6 +41,7 @@ public class SimulationTimer {
       public void run() {
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd EEE HH:mm:ss", Locale.US);
         Date date = new Date();
+        System.out.println();
         System.out.println(dateFormat.format(date));
         System.out.println("======================================================================"
             + "==================");
