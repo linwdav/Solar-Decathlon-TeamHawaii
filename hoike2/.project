@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>device-urls.properties</name>
-			<type>1</type>
-			<location>C:/Users/breti/.ihale/device-urls.properties</location>
-		</link>
-	</linkedResources>
 </projectDescription>
