@@ -340,7 +340,7 @@ public class HVACData {
    *                    of 1:00 PM.   
    * @return True if occupants are home, false otherwise.
    */
-  private static boolean isOccupantsHome(Date currentTime) {
+  public static boolean isOccupantsHome(Date currentTime) {
     
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(currentTime);    
@@ -368,7 +368,7 @@ public class HVACData {
    *                    of 6:00 AM.
    * @return True if the occupants are currently sleeping, false otherwise.
    */
-  private static boolean isOccupantsSleeping(Date currentTime) {
+  public static boolean isOccupantsSleeping(Date currentTime) {
     
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(currentTime);    
@@ -384,6 +384,17 @@ public class HVACData {
       occupantsSleeping = true;
     }
     return occupantsSleeping;
+  }
+  
+  /**
+   * Determine if the HVAC system has been issued a command to maintain the home at a specified 
+   * temperature.
+   *
+   * @return Returns true if the HVAC system has been issued a command to maintain the home at a 
+   *         specific temperature, false otherwise.
+   */
+  public static boolean desiredTempCommandIssued() {
+    return desiredTempHasBeenSet;
   }
   
   /**
@@ -418,6 +429,32 @@ public class HVACData {
     return whenDesiredTempCommandIssued;
   }
   
+  /**
+   * Returns the current home temperature in Celsius.
+   *
+   * @return Current home temperature.
+   */
+  public static int getCurrentHomeTemp() {
+    return currentHomeTemp;
+  }
+  
+  /**
+   * Returns the desired temperature the HVAC system is to maintain the home at.
+   *
+   * @return The desired temperature the HVAC system is to maintain the home at.
+   */
+  public static int getDesiredTemp() {
+    return desiredTemp;
+  }
+  
+  /**
+   * Returns the current temperature outside the home.
+   *
+   * @return The current temperature outside the home.
+   */
+  public static int currentOutsideTemp() {
+    return currentOutsideTemp;
+  }
   /**
    * Sets static fields that assist to simulate HVAC temperature control within the home by setting
    * them to false to emulate a HVAC turn off/reset. Useful for debugging purposes such as JUnit
