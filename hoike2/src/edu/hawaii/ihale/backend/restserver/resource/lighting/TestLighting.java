@@ -2,7 +2,6 @@ package edu.hawaii.ihale.backend.restserver.resource.lighting;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.io.IOException;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -71,10 +70,10 @@ public class TestLighting {
   @Test
   public void testPut() throws Exception {
 
-    Repository repository = new Repository();
-
-    // Run the REST server.
+    // Start the REST server.
     RestServer.runServer(8111);
+    
+    Repository repository = new Repository();
 
     // Send PUT command to server.
     String uri = "http://localhost:8111/LIGHTING/command/SET_LIGHTING_LEVEL?arg=50&room=LIVING";
@@ -83,17 +82,22 @@ public class TestLighting {
 
     assertEquals("Checking sent argument", Integer.valueOf(50),
         repository.getLightingLevelCommand(IHaleRoom.LIVING).getValue());
+    
+    // Shut down the REST server.
+    RestServer.stopServer();
   }
 
   /**
    * Tests GET command with lighting. Won't work until we test with a simulator.
-   * 
-   * @throws IOException Thrown if Document creation fails.
+   * @throws Exception Thrown if Document creation or server fails.
    */
   @Ignore
   @Test
-  public void testGet() throws IOException {
+  public void testGet() throws Exception {
 
+    // Start the REST server.
+    RestServer.runServer(8111);
+    
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/LIGHTING/state?room=LIVING";
     ClientResource client = new ClientResource(uri);
@@ -118,5 +122,7 @@ public class TestLighting {
 
     assertEquals("Checking that this is XML for the state history.", "state-history", rootNodeName);
 
+    // Shut down the REST server.
+    RestServer.stopServer();
   }
 }

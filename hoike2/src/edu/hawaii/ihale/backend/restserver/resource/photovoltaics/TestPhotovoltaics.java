@@ -132,7 +132,7 @@ public class TestPhotovoltaics {
 
     assertEquals("Checking that this is XML for the state history.", "state-history", rootNodeName);
 
-    // Shuts down the REST server
+    // Shut down the REST server.
     RestServer.stopServer();
   }
 }

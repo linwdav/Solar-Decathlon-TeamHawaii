@@ -62,9 +62,9 @@ public class LightingCommand extends ServerResource {
         break;
       }
       
-      if (commandArg != null) {
+      if (commandArg != null && room != null) {
         status = Status.SUCCESS_OK;
-        backend.doCommand(system, null, command, commandArg);
+        backend.doCommand(system, room, command, commandArg);
       }
     }
     
