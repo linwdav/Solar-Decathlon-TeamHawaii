@@ -2,7 +2,6 @@ package edu.hawaii.ihale.backend.restserver.resource.electrical;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.util.Date;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -65,7 +64,7 @@ public class TestElectrical {
   @Test
   public void testToXmlSince() throws Exception {
 
-    DomRepresentation dom = (DomRepresentation) ElectricalData.toXmlSince((new Date()).getTime());
+    DomRepresentation dom = (DomRepresentation) ElectricalData.toXmlSince(Long.valueOf(1));
     Document doc = dom.getDocument();
 
     Element rootEl = doc.getDocumentElement();
