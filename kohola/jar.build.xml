@@ -22,7 +22,7 @@
 		<unjar dest="${tmp.dir}">
 			<fileset dir="${basedir}/ihale-api">
 				<include name="ihale-api.jar" />
-				<include name="ihale-api-backend-example.jar" />
+				<include name="ihale-backend.jar" />
 				<include name="wicket-googlecharts-api.jar" />
 			</fileset>
 			<fileset dir="${lib.dir}/wicket">
