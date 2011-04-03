@@ -1,85 +1,99 @@
 package edu.hawaii.ihale.backend;
 
 import java.io.IOException;
+
 import javax.xml.xpath.XPathExpressionException;
-import org.restlet.representation.Representation;
+
 import org.restlet.resource.ClientResource;
+import org.restlet.resource.ResourceException;
+
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 
+
 /**
- * A Class to handle the polling of data from the HSim.
- * @author Tony Gaskell, Greg Burgess
- *
+ * Class for each polling device between the System H simulator and backend.
+ * @author Tony Gaskell
  */
-public class PollDevice implements Runnable {
+public class PollDevice extends Thread {
   
   private IHaleSystem system;
   private IHaleRoom room;
   private ClientResource resource;
   
   /**
-   * Constructor.
-   * @param system The System which this object will poll data from.
-   * @param room The room (if applicable) this object will poll data from.
-   * @param domain The root URI of the device.
+   * Constructor method.
+   * @author Tony Gaskell
+   * @param system the system of the device.
+   * @param room the room of the device, null if none.
+   * @param domain the URI domain.
    */
   public PollDevice(IHaleSystem system, IHaleRoom room, String domain) {
     this.system = system;
     this.room = room;
-    String state = "/state";
-    String uriString = "";
-    if (system == IHaleSystem.ELECTRIC) {
-      uriString = domain + "electrical" + state;
+    if (system.equals(IHaleSystem.AQUAPONICS)
+        || system.equals(IHaleSystem.HVAC) 
+        || system.equals(IHaleSystem.LIGHTING)) {
+      this.resource = new ClientResource(domain + system.toString().toLowerCase() + "/state");
     }
-    else if (system == IHaleSystem.PHOTOVOLTAIC) {
-      uriString = domain + "photovoltaics" + state;
+    else if (system.equals(IHaleSystem.ELECTRIC) || system.equals(IHaleSystem.PHOTOVOLTAIC)) {
+      this.resource = new ClientResource(domain + "cgi-bin/egauge?tot");
     }
-    else {
-      uriString = domain + system.toString().toLowerCase() + state;
-      if (domain == null) {
-        System.out.println(system.toString() + " is null");
-      }
-    }
-    this.resource = new ClientResource(uriString); 
   }
 
   /**
-   * Activates the thread.
+   * Polls a device given it's system (and room).
+   * @author Tony Gaskell
    */
   @Override
   public void run() {
     XmlHandler handler = new XmlHandler();
-    try {
+
       // Check which system is being polled to ensure the correct parser is called.
       if (system.equals(IHaleSystem.AQUAPONICS)
           || system.equals(IHaleSystem.HVAC)
           || system.equals(IHaleSystem.LIGHTING)) {
-        handler.xml2StateEntry(resource.get());
+        try {
+          handler.xml2StateEntry(resource.get());
+        }
+        catch (XPathExpressionException e) {
+          System.err.println("There was an error parsing the XML file.");
+          e.printStackTrace();
+        }
+        catch (ResourceException e) {
+          System.err.println("There retrieving " + system.toString() + " data.");
+          e.printStackTrace();
+        }
+        catch (IOException e) {
+          System.err.println("IO exception.");
+          e.printStackTrace();
+        }
       }
       else if (system.equals(IHaleSystem.ELECTRIC)
           || system.equals(IHaleSystem.PHOTOVOLTAIC)) {
-        Representation rep = resource.get();
-        if (rep == null) {
-          System.out.println(system.toString() + " is null"); 
+        try {
+          handler.eGauge2StateEntry(resource.get());
         }
-        handler.eGauge2StateEntry(rep);
+        catch (XPathExpressionException e) {
+          System.err.println("There was an error parsing the XML file.");
+          e.printStackTrace();
+        }
+        catch (ResourceException e) {
+          System.err.println("There retrieving " + system.toString() + " data.");
+          e.printStackTrace();
+        }
+        catch (IOException e) {
+          System.err.println("IO exception.");
+          e.printStackTrace();
+        }
       }
-    }
-    catch (XPathExpressionException e) {
+
       System.err.print("Error polling: " + system.toString());
       if (room != null ) {
         System.err.print(" " + room.toString());
       }
       System.out.println();
-    }
-    catch (IOException e) {
-      System.err.print("Error polling: " + system.toString());
-      if (room != null ) {
-        System.err.print(" " + room.toString());
-      }
-      System.out.println();
-    }
+
   }
 }
 
