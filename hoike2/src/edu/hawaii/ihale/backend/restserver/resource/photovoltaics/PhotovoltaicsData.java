@@ -69,9 +69,8 @@ public class PhotovoltaicsData extends SystemData {
     Document doc = createDocument();
 
     // Creates the state-history root node.
-    Node rootNode = 
-      appendStateDataNode(doc, doc, IHaleSystem.PHOTOVOLTAIC, timestamp);
-
+    Node rootNode = appendStateHistoryNode(doc);
+    appendStateDataNode(doc, rootNode, IHaleSystem.PHOTOVOLTAIC, timestamp);
 
     Node stateDataNode;
 
