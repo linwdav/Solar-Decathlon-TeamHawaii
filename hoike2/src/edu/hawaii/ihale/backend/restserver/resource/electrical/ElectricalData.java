@@ -28,14 +28,14 @@ public class ElectricalData extends SystemData {
    */
   public static Representation toXml() throws IOException, ParserConfigurationException {
 
-    TimestampIntegerPair energy = repository.getElectricalEnergy();
+    // TimestampIntegerPair energy = repository.getElectricalEnergy();
     TimestampIntegerPair power = repository.getElectricalPower();
 
     Document doc = createDocument();
 
-    Node rootNode = appendStateDataNode(doc, doc, IHaleSystem.ELECTRIC, energy.getTimestamp());
+    Node rootNode = appendStateDataNode(doc, doc, IHaleSystem.ELECTRIC, power.getTimestamp());
 
-    appendStateNode(doc, rootNode, IHaleState.ENERGY, energy.getValue());
+    // appendStateNode(doc, rootNode, IHaleState.ENERGY, energy.getValue());
     appendStateNode(doc, rootNode, IHaleState.POWER, power.getValue());
 
     DomRepresentation result = new DomRepresentation();
@@ -59,25 +59,26 @@ public class ElectricalData extends SystemData {
       return new EmptyRepresentation();
     }
 
-    List<TimestampIntegerPair> energyList = repository.getElectricalEnergySince(timestamp);
+    // List<TimestampIntegerPair> energyList = repository.getElectricalEnergySince(timestamp);
     List<TimestampIntegerPair> powerList = repository.getElectricalPowerSince(timestamp);
 
     Document doc = createDocument();
 
     // Creates the state-history root node.
     Node rootNode = appendStateHistoryNode(doc);
+    appendStateDataNode(doc, rootNode, IHaleSystem.ELECTRIC, timestamp);
 
     Node stateDataNode;
 
     // Appends the state-data for each entry.
-    int size = energyList.size();
+    int size = powerList.size();
     for (int i = 0; i < size; i++) {
-      long time = energyList.get(i).getTimestamp();
-      int energy = energyList.get(i).getValue();
+      long time = powerList.get(i).getTimestamp();
+      // int energy = energyList.get(i).getValue();
       int power = powerList.get(i).getValue();
       
       stateDataNode = appendStateDataNode(doc, rootNode, IHaleSystem.ELECTRIC, time);
-      appendStateNode(doc, stateDataNode, IHaleState.ENERGY, energy);
+      // appendStateNode(doc, stateDataNode, IHaleState.ENERGY, energy);
       appendStateNode(doc, stateDataNode, IHaleState.POWER, power);
     }
 

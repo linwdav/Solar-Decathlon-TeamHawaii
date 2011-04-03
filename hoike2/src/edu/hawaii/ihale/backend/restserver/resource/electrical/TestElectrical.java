@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.restserver.resource.photovoltaics;
+package edu.hawaii.ihale.backend.restserver.resource.electrical;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -16,12 +16,12 @@ import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
 /**
- * Tests the aquaponics data to ensure that the XML representation is correct.
+ * Tests the electrical data to ensure that the XML representation is correct.
  * 
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestPhotovoltaics {
+public class TestElectrical {
 
   /**
    * Test toXML method.
@@ -33,13 +33,13 @@ public class TestPhotovoltaics {
 
     NodeList nl = null;
 
-    DomRepresentation dom = (DomRepresentation) PhotovoltaicsData.toXml();
+    DomRepresentation dom = (DomRepresentation) ElectricalData.toXml();
     Document doc = dom.getDocument();
 
     Element rootEl = doc.getDocumentElement();
 
     assertEquals("Root element", SystemData.XML_TAG_STATE_DATA, rootEl.getTagName());
-    assertEquals("Photovoltaic System", IHaleSystem.PHOTOVOLTAIC.toString(),
+    assertEquals("Electric System", IHaleSystem.ELECTRIC.toString(),
         rootEl.getAttribute(SystemData.XML_ATTRIBUTE_SYSTEM));
     assertNotNull("Timestamp", rootEl.getAttribute(SystemData.XML_ATTRIBUTE_TIMESTAMP));
 
@@ -48,8 +48,7 @@ public class TestPhotovoltaics {
     for (int i = 0; i < nl.getLength(); i++) {
       Element el = (Element) nl.item(i);
       String keyAttr = el.getAttribute(SystemData.XML_ATTRIBUTE_KEY);
-      if (IHaleState.ENERGY.toString().equals(keyAttr)
-          || IHaleState.POWER.toString().equals(keyAttr)) {
+      if (IHaleState.POWER.toString().equals(keyAttr)) {
         assertNotNull("State value", el.getAttribute(SystemData.XML_ATTRIBUTE_VALUE));
       }
       else {
@@ -64,10 +63,9 @@ public class TestPhotovoltaics {
    * @throws Exception Thrown when JUnit test fails.
    */
   @Test
-  public void testToXmlSince() throws Exception {    
+  public void testToXmlSince() throws Exception {
 
-    DomRepresentation dom =
-        (DomRepresentation) PhotovoltaicsData.toXmlSince((new Date()).getTime());
+    DomRepresentation dom = (DomRepresentation) ElectricalData.toXmlSince((new Date()).getTime());
     Document doc = dom.getDocument();
 
     Element rootEl = doc.getDocumentElement();
@@ -79,7 +77,7 @@ public class TestPhotovoltaics {
     Element stateDataNode = (Element) stateDataNl.item(0);
 
     assertEquals("Root element", SystemData.XML_TAG_STATE_DATA, stateDataNode.getTagName());
-    assertEquals("Photovoltaic System", IHaleSystem.PHOTOVOLTAIC.toString(),
+    assertEquals("Electrical System", IHaleSystem.ELECTRIC.toString(),
         stateDataNode.getAttribute(SystemData.XML_ATTRIBUTE_SYSTEM));
     assertNotNull("Timestamp", stateDataNode.getAttribute(SystemData.XML_ATTRIBUTE_TIMESTAMP));
 
@@ -87,8 +85,7 @@ public class TestPhotovoltaics {
     for (int i = 0; i < stateNl.getLength(); i++) {
       Element el = (Element) stateNl.item(i);
       String keyAttr = el.getAttribute(SystemData.XML_ATTRIBUTE_KEY);
-      if (IHaleState.ENERGY.toString().equals(keyAttr)
-          || IHaleState.POWER.toString().equals(keyAttr)) {
+      if (IHaleState.POWER.toString().equals(keyAttr)) {
         assertNotNull("State value", el.getAttribute(SystemData.XML_ATTRIBUTE_VALUE));
       }
       else {
@@ -98,7 +95,7 @@ public class TestPhotovoltaics {
   }
 
   /**
-   * Tests GET command with photovoltaics. Won't work until we test with a simulator.
+   * Tests GET command with electric. Won't work until we test with a simulator.
    * 
    * @throws Exception Thrown when document creation or server fails.
    */
@@ -108,9 +105,9 @@ public class TestPhotovoltaics {
 
     // Start the REST server.
     RestServer.runServer(8111);
-    
+
     // Send GET command to server to retrieve XML of the current state.
-    String uri = "http://localhost:8111/PHOTOVOLTAIC/state";
+    String uri = "http://localhost:8111/ELECTRIC/state";
     ClientResource client = new ClientResource(uri);
 
     DomRepresentation stateRepresentation = new DomRepresentation(client.get());
@@ -122,7 +119,7 @@ public class TestPhotovoltaics {
     assertEquals("Checking that this is XML for the current state.", "state-data", rootNodeName);
 
     // Send GET command to server to retrieve XML of the state history.
-    uri = "http://localhost:8111/PHOTOVOLTAIC/state?since=1";
+    uri = "http://localhost:8111/ELECTRIC/state?since=1";
     client = new ClientResource(uri);
 
     stateRepresentation = new DomRepresentation(client.get());
