@@ -73,7 +73,7 @@ $(function(){
   <a class="green-button" href="#">Aquaponics Main</a>
   <a wicket:id="statsButton" class="gray-button" href="#">Aquaponics Statistics</a>
   
-  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
+  <a class="icon-right" wicket:id="helpLink"><img wicket:id="helpAqua" /></a>
   <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
   <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
   <div class="clear"></div>
@@ -90,11 +90,6 @@ $(function(){
 	  
 	  <h2>Status</h2>
 	  
-	  <div class="right" style="margin-right:10px;">
-  		<div class="status-bar-med right" style="margin-top:-10px;">35gal (35%)&nbsp;&nbsp;</div>
-      <div class="clear"></div>
-      <div class="right" style="font-weight:bold;margin:1px 0 10px 0;">Water Tank Reserves</div>
-    </div>
 	  <div class="clear"></div>
 	  
 	  <!-- ONE ROW OF STATUS BOXES -->

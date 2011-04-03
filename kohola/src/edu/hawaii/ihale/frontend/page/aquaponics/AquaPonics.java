@@ -8,6 +8,7 @@ import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.IClusterable;
 import org.apache.wicket.MarkupContainer;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.form.AjaxFormComponentUpdatingBehavior;
@@ -21,6 +22,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
@@ -34,6 +36,7 @@ import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 import edu.hawaii.ihale.frontend.page.Header;
+import edu.hawaii.ihale.frontend.page.help.Help;
 
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 
@@ -179,6 +182,21 @@ public class AquaPonics extends Header {
 				"AquaponicsLogContainer");
 		systemLog.setOutputMarkupId(true);
 
+    // Help button link
+    Link<String> helpLink = new Link<String>("helpLink") {
+      private static final long serialVersionUID = 1L;
+
+      public void onClick() {
+        ((SolarDecathlonSession)getSession()).getHelpSession().setCurrentTab(3);
+        setResponsePage(Help.class);
+      }
+     };
+    
+     // Help Image
+     helpLink.add(new Image("helpAqua", new ResourceReference(Header.class, "images/icons/help.png")));
+
+     add(helpLink);		
+		
 		// Create Listview
 		PageableListView<SystemStatusMessage> listView = new PageableListView<SystemStatusMessage>(
 				"AquaponicsStatusMessages", msgs, 10) {
