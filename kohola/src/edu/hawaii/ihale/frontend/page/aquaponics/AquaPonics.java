@@ -1,13 +1,9 @@
 package edu.hawaii.ihale.frontend.page.aquaponics;
 
-import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
-import org.apache.wicket.IClusterable;
-import org.apache.wicket.MarkupContainer;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
@@ -26,7 +22,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
-import org.apache.wicket.model.CompoundPropertyModel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
@@ -70,9 +65,6 @@ public class AquaPonics extends Header {
 	private TextField<String> waterNutrients;
 
 	private static String dash = "-";
-
-	private String selectedFeedAmnt = "0";
-	private String selectedFishNum = "0";
 
 	// Initialize variable for doCommands
 	private int setTemp = 0;
@@ -142,14 +134,17 @@ public class AquaPonics extends Header {
 					+ TURBIDITY_RANGE_END + " NTUs");
 
 	// Drop down choices for amount of feed
-	private DropDownChoice<Double> feedAmount;
-	private static final List<Double> amount = Arrays.asList(new Double[] {
-			0.5, 1.0, 2.0, 5.0, 10.0 });
+	private DropDownChoice<String> feedAmount;
+	private static final List<String> amount = Arrays.asList(new String[] {
+			"0.5", "1.0", "2.0", "5.0", "10.0" });
 	
 	// Drop down choices for number of fish to harvest
-	private DropDownChoice<Integer> fishNum;
-	private static final List<Integer> num = Arrays.asList(new Integer[] {
-		 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 });
+	private DropDownChoice<String> fishNum;
+	private static final List<String> num = Arrays.asList(new String[] {
+		 "1", "2", "3", "4", "5", "6", "7", "8", "9", "10" });
+	
+	 private String selectedFeedAmnt = "0.5";
+	  private String selectedFishNum = "1";
 
 	/**
 	 * MarkupContainer for all graphs.
@@ -1279,8 +1274,8 @@ public class AquaPonics extends Header {
 		Form<String> feedForm = new Form<String>("FishForm");
 
 		// Drop down list for Feeding
-		feedAmount = new DropDownChoice<Double>("FeedAmount",
-				new PropertyModel<Double>(this, "selectedFeedAmnt"), amount);
+		feedAmount = new DropDownChoice<String>("FeedAmount",
+				new PropertyModel<String>(this, "selectedFeedAmnt"), amount);
 
 		feedForm.add(feedAmount);
 
@@ -1307,8 +1302,8 @@ public class AquaPonics extends Header {
 
 		
 		// Drop down list for Harvesting
-		fishNum = new DropDownChoice<Integer>("FishNum",
-				new PropertyModel<Integer>(this, "selectedFishNum"), num);
+		fishNum = new DropDownChoice<String>("FishNum",
+				new PropertyModel<String>(this, "selectedFishNum"), num);
 		
 		feedForm.add(fishNum);
 
