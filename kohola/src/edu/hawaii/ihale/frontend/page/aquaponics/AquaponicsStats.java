@@ -2,6 +2,7 @@ package edu.hawaii.ihale.frontend.page.aquaponics;
 
 //import java.util.Map;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import org.apache.wicket.AttributeModifier;
@@ -10,6 +11,7 @@ import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import edu.hawaii.ihale.api.repository.TimestampDoublePair;
+import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.frontend.page.Header;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
@@ -50,7 +52,14 @@ public class AquaponicsStats extends Header {
 
   // Chart types
   static final String ph = "pH";
-  static final String waterLevel = "Water Level";
+  static final String electricalConductivity = "Electrical Conductivity";
+  static final String temperature = "Water Temperature";
+  
+  // Time Durations in Milliseconds
+  static final long oneWeekInMillis = 1000L * 60L * 60L * 24L * 7L;
+  static final long oneDayInMillis = 1000L * 60L * 60L * 24L;
+  static final long oneMonthInMillis = 1000L * 60L * 60L * 24L * 28L;
+  static final long oneHourInMillis = 1000L * 60L * 60L;
 
   /**
    * Layouts of page.
@@ -58,7 +67,8 @@ public class AquaponicsStats extends Header {
    * @throws Exception The exception.
    */
   public AquaponicsStats() throws Exception {
-
+    System.out.println("ONE MONTH:" + oneMonthInMillis);
+    System.out.println(new Date().getTime());
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(2);
 
     int currentGraphDisplay =
@@ -99,8 +109,8 @@ public class AquaponicsStats extends Header {
       }
     };
 
-    // Water Level Graph (by Day)
-    waterLevelGraph = new Link<String>("dayWaterLevelGraph") {
+    // Temperature Graph (by Day)
+    dayTemperatureGraph = new Link<String>("dayTemperatureGraph") {
       private static final long serialVersionUID = 1L;
 
       /** Upon clicking this link, bring up daily pH graph. */
@@ -116,14 +126,12 @@ public class AquaponicsStats extends Header {
       }
     };
 
-    // Hvac Graph (by Day)
-    dayTemperatureGraph = new Link<String>("dayTemperatureGraph") {
+    // Conductivity Graph (by Day)
+    dayConductivityGraph = new Link<String>("dayConductivityGraph") {
       private static final long serialVersionUID = 1L;
 
-      /** Upon clicking this link, bring up daily pH graph. */
       @Override
       public void onClick() {
-        // currentGraphDisplay = 2;
         ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(2);
         try {
           setResponsePage(AquaponicsStats.class);
@@ -134,65 +142,10 @@ public class AquaponicsStats extends Header {
       }
     };
 
-    // Conductivity Graph (by Day)
-    dayConductivityGraph = new Link<String>("dayConductivityGraph") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        // currentGraphDisplay = 3;
-        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(3);
-        try {
-          setResponsePage(AquaponicsStats.class);
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-
-    // Power Graph (by Day)
-    dayPowerGraph = new Link<String>("dayPowerGraph") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        // currentGraphDisplay = 4;
-        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(4);
-        try {
-          setResponsePage(AquaponicsStats.class);
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-
-    // Water Quality Graph (by Day)
-    dayWaterGraph = new Link<String>("dayWaterGraph") {
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public void onClick() {
-        // currentGraphDisplay = 5;
-        ((SolarDecathlonSession) getSession()).getAquaponicsStatsSession().setCurrentGraph(5);
-        try {
-          setResponsePage(AquaponicsStats.class);
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
-    };
-
     // Add items
-
-    add(waterLevelGraph);
     add(dayPhGraph);
     add(dayTemperatureGraph);
     add(dayConductivityGraph);
-    add(dayPowerGraph);
-    add(dayWaterGraph);
     add(mainButton);
 
     // Labels for each chart
@@ -212,9 +165,9 @@ public class AquaponicsStats extends Header {
     WebMarkupContainer monthGraph = new WebMarkupContainer("monthGraphImage");
 
     // Set graph
-    displayWeekGraph(currentGraphDisplay, dayGraph);
-    displayWeekGraph(currentGraphDisplay, weekGraph);
-    displayWeekGraph(currentGraphDisplay, monthGraph);
+    displayGoogleLineChart(0, currentGraphDisplay, dayGraph);
+    displayGoogleLineChart(1, currentGraphDisplay, weekGraph);
+    displayGoogleLineChart(2, currentGraphDisplay, monthGraph);
 
     // Add Chart to page.
     add(dayGraph);
@@ -224,108 +177,231 @@ public class AquaponicsStats extends Header {
   } // end constructor
 
   /**
-   * Displays the corresponding week graph.
+   * Displays the corresponding graph.
    * 
-   * @param currentGraph The current chart to show (e.g., pH, water level)
+   * @param interval This is day (0), week (1), or month (2)
+   * @param currentGraphDisplay The current chart to show (e.g., pH, Temp, EC)
    * @param wmc Container holding graph.
    */
-  private void displayWeekGraph(int currentGraph, WebMarkupContainer wmc) {
-    // Get the current date
-    Calendar current = Calendar.getInstance();
+  private void displayGoogleLineChart (int interval,
+      int currentGraphDisplay, WebMarkupContainer wmc) {
 
-    // Week array
-    String[] days =
-        { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", 
-          "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
-
-    // index for day
-    int day = current.get(Calendar.DAY_OF_WEEK);
-
-    // Generate the week axis based on today's date
-    String weekAxis = "";
-    int weekLength = 7;
-
-    for (int i = 1; i <= weekLength; i++) {
-      weekAxis += "|" + days[day++];
-    }
-
+    // Range of values for y-axis
+    int endRange = 0;
+    
+    // Generate the X-axis string to be used by google chart URL
+    String stringXAxis = generateXAxis(interval);
+    
     // Base string for graph URI
     String graphURI = "http://chart.googleapis.com/chart?";
-
+    
+    // Gives the start and end ranges for a particular type of
+    // graph.
+    switch (currentGraphDisplay) {
+    // PH graph
+    case 0:
+      endRange = 14;
+      break;
+    // Temperature
+    case 1:
+      endRange = 100;
+      break;
+    // Conductivity
+    case 2:
+      endRange = 20;
+      break;
+    default:
+        break;
+    }
+    // Scaling
+    double scale = (double)endRange;
+    double scaleFactor = 100.0 / scale;
+    
     // Common Attributes
     String chartType = "cht=lc"; // lc = line chart
     String chartAxis = "&chxt=x,y"; // Show X & Y axis
-    String chartSize = "&chs=470x350"; // 470 x 350
-    String lineColor = "&chco=0000FF"; // Blue
+    String chartSize = "&chs=510x350"; // width 510 x height 350
+    String lineColor = "&chco=0000FF"; // Blue line
     String lineWeight = "&chls=3"; // line weight = 3
     String tickMarks = "&chxtc=0,10|1,10"; // Tick line length for X and Y Axis = 10px
-    
     // Diamond, Red Markers, 10pixels each
     String shapeMarkers = "&chm=d,FF0000,0,-1,10";
+    // Set Y-Axis
+    String yAxis = "&chxr=1,0," + endRange;
 
     // Show days of week
-    String chartAxisLabels = "&chxl=0:" + weekAxis;
+    String chartAxisLabels = "&chxl=0:" + stringXAxis;
 
-    // Get current time and length of one day in milliseconds
-    long oneWeekInMillis = 1000 * 60 * 60 * 24 * 7;
-    long oneDayInMillis = 1000 * 60 * 60 * 24;
-    long currentTime = current.getTimeInMillis();
-    long startTime = currentTime - oneWeekInMillis;
+    String dataString = generateDataString(interval, currentGraphDisplay, scaleFactor);
 
-    // Get information
-    List<TimestampDoublePair> phList =
-        SolarDecathlonApplication.getRepository().getAquaponicsPhCommmandSince(startTime);
+    String dataPoints = "&chd=t:" + dataString;
 
-    long nextInterval = startTime + oneDayInMillis;
+    // Construct Graph's URI
+    graphURI +=
+        chartType + chartAxis + chartSize + lineColor + lineWeight + tickMarks + chartAxisLabels
+            + shapeMarkers + dataPoints + yAxis;
 
+    wmc.add(new AttributeModifier("src", true, new Model<String>(graphURI)));
+
+  } // End display week graph
+
+  /**
+   * Generates a string comprising of the data.  String is prepared for google
+   * charts.
+   * 
+   * @param interval The interval; day(0), week(1), month(2)
+   * @param currentGraphDisplay The current graph being displayed: PH, EC, Temp, etc.
+   * @param scaleFactor The scale.
+   * @return Data string for google charts.
+   */
+  private String generateDataString(int interval, int currentGraphDisplay, double scaleFactor) {
+    // Get current time
+    long currentTime = new Date().getTime();
+    
+    // This is the interval in milliseconds
+    long intervalInMillis = 0;
+    
+    // String to hold data values
+    String dataString = "";
+    
+    // This is the step size in milliseconds.  
+    // We increment the start time by this amount.
+    // E.g., for a week, we increment by days. 
+    // I.e., this is the next smallest interval.
+    long stepSizeInMillis = 0;
+    
+    // Choose our interval for data (day, week, month)
+    switch (interval) {
+    // Day
+    case 0:
+      intervalInMillis = oneDayInMillis;
+      stepSizeInMillis = oneHourInMillis;
+      break;
+    // Week
+    case 1:
+      intervalInMillis = oneWeekInMillis;
+      stepSizeInMillis = oneDayInMillis;
+      break;
+    // Month
+    case 2:
+      intervalInMillis = oneMonthInMillis;
+      stepSizeInMillis = oneWeekInMillis;
+      break;
+    default:
+      break;
+    }
+
+    System.out.println("INTERVAL:" + intervalInMillis);
+    // This is the time to get data from or 'since'
+    long startTime = currentTime - intervalInMillis;
+    
+    // The time we are collecting data until.  We average all data
+    // up to this point and then go to the next interval/step.
+    long nextInterval = startTime + stepSizeInMillis;
+    
+    
+    // Construct data string based on the graph type being displayed.
+    switch (currentGraphDisplay) {
+    
+    // pH
+    case 0:
+      // Get information
+      List<TimestampDoublePair> phList =
+          SolarDecathlonApplication.getRepository()
+          .getAquaponicsPhSince(startTime);    
+   
+      // Generate data points as google charts string
+      dataString = generateDataStringForDouble(phList, nextInterval, 
+          stepSizeInMillis, scaleFactor);
+      break;
+      
+    // Temperature
+    case 1:
+      // Get information
+      List<TimestampIntegerPair> tempList =
+          SolarDecathlonApplication.getRepository()
+          .getAquaponicsTemperatureSince(startTime);    
+   
+      // Generate data points as google charts string
+      dataString = generateDataStringForInteger(tempList, nextInterval, 
+          stepSizeInMillis, scaleFactor);
+      break;
+      
+    // Conductivity
+    case 2:
+      // Get information
+      List<TimestampDoublePair> ecList =
+          SolarDecathlonApplication.getRepository()
+          .getAquaponicsElectricalConductivitySince(startTime);    
+   
+      // Generate data points as google charts string
+      dataString = generateDataStringForDouble(ecList, nextInterval, 
+          stepSizeInMillis, scaleFactor);
+      break;
+      
+    default:
+      break;
+    } // End switch
+    
+    return dataString;    
+  } // End Generate Data String function
+  
+  /**
+   * Generates a data string given a list of items.  This string is
+   * ready for insertion into a google chart URI.
+   * 
+   * @param list The list of data.  Either double or integer objects.
+   * @param nextInterval The next time to gather data to average from.
+   * @param stepSizeInMillis The size of the intervals we are averaging over.
+   * @param scaleFactor The scale of the chart.
+   * @return The google-chart compatible data string.
+   */
+  private String generateDataStringForDouble(List<TimestampDoublePair> list, 
+      long nextIntervalIn, long stepSizeInMillis, double scaleFactor) {
+    
+    long nextInterval = nextIntervalIn;
+    
+    String dataString = "";
+    
     // Tracks how many points we've counted in total
     int totalNumPoints = 0;
     // Tracks number of points this interval
     int numPoints = 0;
     // Total value for all points this interval
     double sumPoints = 0;
-
     // List to store all averages for each interval
     List<Double> avgList = new LinkedList<Double>();
 
     // Loop through entire list of values
-    for (TimestampDoublePair tdp : phList) {
+    for (TimestampDoublePair element : list) {
       totalNumPoints++;
 
       // As long as the timestamp for the item
       // is more than the interval, then advance the
       // interval.
-      while (tdp.getTimestamp() > nextInterval) {
-
+      while (element.getTimestamp() > nextInterval) {
+        
         // Add 0 to list for that particular day
         if (numPoints == 0) {
           avgList.add(0.0);
-          nextInterval += oneDayInMillis;
+          nextInterval += stepSizeInMillis;
         }
         else {
           avgList.add(sumPoints / (double) numPoints);
           sumPoints = 0;
           numPoints = 0;
-          nextInterval += oneDayInMillis;
+          nextInterval += stepSizeInMillis;
         }
       } // End While
 
       // Add number to current interval
       numPoints++;
-      sumPoints += tdp.getValue();
+      sumPoints += element.getValue();
 
-      if (totalNumPoints == phList.size()) {
+      if (totalNumPoints == list.size()) {
         avgList.add(sumPoints / (double) numPoints);
       }
-
     } // End for each loop
-
-    // pH Specific scaling
-    double scale = 14.0;
-    double scaleFactor = 100.0 / scale;
-
-    // String to hold data values
-    String dataString = "";
 
     // Keep track of where we we are in the list
     int index = 1;
@@ -340,19 +416,149 @@ public class AquaponicsStats extends Header {
       }
       index++;
     } // End For each loop
+    
+    return dataString;
+  } // End Generate Data String for Double
+  
+  /**
+   * Generates a data string given a list of items.  This string is
+   * ready for insertion into a google chart URI.
+   * 
+   * @param list The list of data.  Either double or integer objects.
+   * @param nextInterval The next time to gather data to average from.
+   * @param stepSizeInMillis The size of the intervals we are averaging over.
+   * @param scaleFactor The scale of the chart.
+   * @return The google-chart compatible data string.
+   */
+  private String generateDataStringForInteger(List<TimestampIntegerPair> list, 
+      long nextIntervalIn, long stepSizeInMillis, double scaleFactor) {
+    
+    long nextInterval = nextIntervalIn;
+    
+    String dataString = "";
+    
+    // Tracks how many points we've counted in total
+    int totalNumPoints = 0;
+    // Tracks number of points this interval
+    int numPoints = 0;
+    // Total value for all points this interval
+    double sumPoints = 0;
+    // List to store all averages for each interval
+    List<Double> avgList = new LinkedList<Double>();
 
-    String yAxis = "&chxr=1,0," + scale;
-    String dataPoints = "&chd=t:" + dataString;
+    // Loop through entire list of values
+    for (TimestampIntegerPair element : list) {
+      totalNumPoints++;
 
-    // Construct Graph's URI
-    graphURI +=
-        chartType + chartAxis + chartSize + lineColor + lineWeight + tickMarks + chartAxisLabels
-            + shapeMarkers + dataPoints + yAxis;
+      // As long as the timestamp for the item
+      // is more than the interval, then advance the
+      // interval.
+      while (element.getTimestamp() > nextInterval) {
 
-    wmc.add(new AttributeModifier("src", true, new Model<String>(graphURI)));
+        // Add 0 to list for that particular interval
+        if (numPoints == 0) {
+          avgList.add(0.0);
+          nextInterval += stepSizeInMillis;
+        }
+        else {
+          avgList.add(sumPoints / (double) numPoints);
+          sumPoints = 0;
+          numPoints = 0;
+          nextInterval += stepSizeInMillis;
+        }
+      } // End While
 
-  } // End display week graph
+      // Add number to current interval
+      numPoints++;
+      sumPoints += element.getValue();
 
+      if (totalNumPoints == list.size()) {
+        avgList.add(sumPoints / (double) numPoints);
+      }
+    } // End for each loop
+
+    // Keep track of where we we are in the list
+    int index = 1;
+
+    // Scale and Combine data points into string for chart.
+    for (Double i : avgList) {
+      dataString += (i * scaleFactor);
+
+      // Only add a comma if we're not at the end of the list
+      if (index < avgList.size()) {
+        dataString += ",";
+      }
+      index++;
+    } // End For each loop
+    
+    return dataString;
+  } // End Generate DataString for Integer
+  
+  /**
+   * This function generate the axis string for a Google Chart.
+   * 
+   * @param interval The time interval.  Day (0), Week (1), Month (2)
+   * @return String to generate the axis.
+   */
+  private String generateXAxis(int interval) {
+    String returnString = "";
+    // Get the current date
+    Calendar current = Calendar.getInstance();
+    
+    switch (interval) {
+    
+    // Day Chart
+    case 0:
+     String[] hours = { "12AM", " ", "2", " ", "4", " ",
+         "6", " ", "8", " ", "10", " ",
+         "12PM", " ", "2", " ", "4", " ",
+         "6", " ", "8", " ", "10", " ",
+         "12AM", " ", "2", " ", "4", " ",
+         "6", " ", "8", " ", "10", " ",
+         "12PM", " ", "2", " ", "4", " ",
+         "6", " ", "8", " ", "10", " ",};
+     
+     // index for hour
+     int hour = current.get(Calendar.HOUR_OF_DAY);
+     
+     // Generate day axis based on time now
+     int dayLength = 24;
+     
+     for (int i = 1; i <= dayLength; i++) {
+       returnString += "|" + hours[hour++];
+     }
+     
+     break;
+     
+    // Week Chart
+    case 1:
+      // Week array
+      String[] days =
+          { "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun", 
+            "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" };
+
+      // index for day
+      int day = current.get(Calendar.DAY_OF_WEEK);
+
+      // Generate the week axis based on today's date
+      int weekLength = 7;
+
+      // Construct string for axis
+      for (int i = 1; i <= weekLength; i++) {
+        returnString += "|" + days[day++];
+      }
+      break;
+      
+    // Month
+    case 2:
+      returnString += "|3 Weeks Ago|2 Weeks Ago|1 Week Ago|This Week";
+      break;
+    default:
+      break;
+    }
+    return returnString;
+  } // End Generate Graph Function
+  
   /**
    * Changes the label accordingly.
    * 
@@ -382,32 +588,17 @@ public class AquaponicsStats extends Header {
       break;
 
     case 1:
-      waterLevelGraph.add(new AttributeModifier(classContainer, true, new Model<String>(
+      dayTemperatureGraph.add(new AttributeModifier(classContainer, true, new Model<String>(
           buttonContainer)));
-      dayLabel.setDefaultModelObject("Water level");
-      setGraphLabels(waterLevel);
+      setGraphLabels(temperature);
       break;
 
     case 2:
-      dayTemperatureGraph.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 3:
       dayConductivityGraph.add(new AttributeModifier(classContainer, true, new Model<String>(
           buttonContainer)));
+      setGraphLabels(electricalConductivity);
       break;
-
-    case 4:
-      dayPowerGraph.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
-    case 5:
-      dayWaterGraph.add(new AttributeModifier(classContainer, true, new Model<String>(
-          buttonContainer)));
-      break;
-
+      
     default:
       break;
     } // End Switch
