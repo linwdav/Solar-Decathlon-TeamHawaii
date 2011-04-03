@@ -73,7 +73,6 @@ public class PhotovoltaicsData {
     String typeAttr = "type";
     String voltageTag = "voltage";
     String currentTag = "current";
-    String blank = "blank";
 
     doc.setXmlVersion("1.0");
 
@@ -91,7 +90,7 @@ public class PhotovoltaicsData {
      cpowerElementA.setAttribute(srcTag, gridTag);
      cpowerElementA.setAttribute("i", "2");
      cpowerElementA.setAttribute("u", "8");
-     cpowerElementA.setTextContent(blank);
+     cpowerElementA.setTextContent(dummyOutput());
      rootElement.appendChild(cpowerElementA);
     
      // Second cpower tag.
@@ -99,7 +98,7 @@ public class PhotovoltaicsData {
      cpowerElementB.setAttribute(srcTag, solarTag);
      cpowerElementB.setAttribute("i", "4");
      cpowerElementB.setAttribute("u", "8");
-     cpowerElementB.setTextContent(blank);
+     cpowerElementB.setTextContent(dummyOutput());
      rootElement.appendChild(cpowerElementB);
     
      // Third cpower tag.
@@ -107,7 +106,7 @@ public class PhotovoltaicsData {
      cpowerElementC.setAttribute(srcTag, gridTag);
      cpowerElementC.setAttribute("i", "3");
      cpowerElementC.setAttribute("u", "8");
-     cpowerElementC.setTextContent(blank);
+     cpowerElementC.setTextContent(dummyOutput());
      rootElement.appendChild(cpowerElementC);
     
      // Fourth cpower tag.
@@ -115,7 +114,7 @@ public class PhotovoltaicsData {
      cpowerElementD.setAttribute(srcTag, solarTag);
      cpowerElementD.setAttribute("i", "4");
      cpowerElementD.setAttribute("u", "8");
-     cpowerElementD.setTextContent(blank);
+     cpowerElementD.setTextContent(dummyOutput());
      rootElement.appendChild(cpowerElementD);
 
      // First meter tag for Grid.
@@ -124,15 +123,15 @@ public class PhotovoltaicsData {
      rootElement.appendChild(meterElementA);
      // Create energy tag.
      Element energyElementA = doc.createElement(energyTag);
-     energyElementA.setTextContent(blank);
+     energyElementA.setTextContent(dummyOutput());
      meterElementA.appendChild(energyElementA);
      // Create energyWs tag.
      Element energyWsElementA = doc.createElement(energyWsTag);
-     energyWsElementA.setTextContent(blank);
+     energyWsElementA.setTextContent(dummyOutput());
      meterElementA.appendChild(energyWsElementA);
      // Create power tag.
      Element powerElementA = doc.createElement(powerTag);
-     powerElementA.setTextContent(blank);
+     powerElementA.setTextContent(dummyOutput());
      meterElementA.appendChild(powerElementA);
 
     // Second meter tag for Solar.
@@ -145,7 +144,7 @@ public class PhotovoltaicsData {
     meterElementB.appendChild(energyElementB);
      // Create energyWs tag.
      Element energyWsElement = doc.createElement(energyWsTag);
-     energyWsElement.setTextContent(blank);
+     energyWsElement.setTextContent(dummyOutput());
      meterElementB.appendChild(energyWsElement);
     // Create power tag.
     Element powerElementB = doc.createElement(powerTag);
@@ -159,15 +158,15 @@ public class PhotovoltaicsData {
      rootElement.appendChild(meterElementC);
      // Create energy tag.
      Element energyElementC = doc.createElement(energyTag);
-     energyElementC.setTextContent(blank);
+     energyElementC.setTextContent(dummyOutput());
      meterElementC.appendChild(energyElementC);
      // Create energyWs tag.
      Element energyWsElementC = doc.createElement(energyWsTag);
-     energyWsElementC.setTextContent(blank);
+     energyWsElementC.setTextContent(dummyOutput());
      meterElementC.appendChild(energyWsElementC);
      // Create power tag.
      Element powerElementC = doc.createElement(powerTag);
-     powerElementC.setTextContent(blank);
+     powerElementC.setTextContent(dummyOutput());
      meterElementC.appendChild(powerElementC);
     
      // Fourth meter tag for Solar.
@@ -177,15 +176,15 @@ public class PhotovoltaicsData {
      rootElement.appendChild(meterElementD);
      // Create energy tag.
      Element energyElementD = doc.createElement(energyTag);
-     energyElementD.setTextContent(blank);
+     energyElementD.setTextContent(dummyOutput());
      meterElementD.appendChild(energyElementD);
      // Create energyWs tag.
      Element energyWsElementD = doc.createElement(energyWsTag);
-     energyWsElementD.setTextContent(blank);
+     energyWsElementD.setTextContent(dummyOutput());
      meterElementD.appendChild(energyWsElementD);
      // Create power tag.
      Element powerElementD = doc.createElement(powerTag);
-     powerElementD.setTextContent(blank);
+     powerElementD.setTextContent(dummyOutput());
      meterElementD.appendChild(powerElementD);
     
      // Frequency tag.
@@ -194,23 +193,23 @@ public class PhotovoltaicsData {
      rootElement.appendChild(frequencyElement);
      // First voltage tag.
      Element voltageElementA = doc.createElement(voltageTag);
-     voltageElementA.setTextContent(blank);
+     voltageElementA.setTextContent(dummyOutput());
      rootElement.appendChild(voltageElementA);
      // Second voltage tag.
      Element voltageElementB = doc.createElement(voltageTag);
-     voltageElementB.setTextContent(blank);
+     voltageElementB.setTextContent(dummyOutput());
      rootElement.appendChild(voltageElementB);
      // First current tag.
      Element currentElementA = doc.createElement(currentTag);
-     currentElementA.setTextContent(blank);
+     currentElementA.setTextContent(dummyOutput());
      rootElement.appendChild(currentElementA);
      // Second current tag.
      Element currentElementB = doc.createElement(currentTag);
-     currentElementB.setTextContent(blank);
+     currentElementB.setTextContent(dummyOutput());
      rootElement.appendChild(currentElementB);
      // Third current tag.
      Element currentElementC = doc.createElement(currentTag);
-     currentElementC.setTextContent(blank);
+     currentElementC.setTextContent(dummyOutput());
      rootElement.appendChild(currentElementC);
 
     // Convert Document to DomRepresentation.
@@ -324,6 +323,15 @@ public class PhotovoltaicsData {
     return doc;
   }
 
+  /**
+   * Returns random output for non-critical fields.
+   * 
+   * @return A random value from 0 to 10.
+   */
+  public static String dummyOutput() {
+    return "" + (10 * Math.random());
+  }
+  
   /**
    * Changes the data points based upon the hour provided.
    * 
