@@ -22,14 +22,20 @@ import edu.hawaii.ihale.backend.restserver.resource.photovoltaics.PhotovoltaicsS
  */
 public class RestServer extends Application {
 
+  private static Component component = new Component();
+
   /**
    * Starts a server running on the specified port.
    * 
+   * @return Return true if server is not already running and has been started.
    * @param port The port on which this server should run.
    * @throws Exception if problems occur starting up this server.
    */
-  public static void runServer(int port) throws Exception {
-    Component component = new Component();
+  public static boolean runServer(int port) throws Exception {
+    
+    if (component.isStarted()) {
+      return false;
+    }
     component.getServers().add(Protocol.HTTP, port);
     component.getClients().add(Protocol.HTTP);
 
@@ -38,6 +44,21 @@ public class RestServer extends Application {
     String contextRoot = "";
     component.getDefaultHost().attach(contextRoot, application);
     component.start();
+    return true;
+  }
+  
+  /**
+   * Shuts down the server.
+   * 
+   * @return Return true if server is was running and has been stopped.
+   * @throws Exception Thrown when server fails to shut down.
+   */
+  public static boolean stopServer() throws Exception {
+    if (component.isStarted()) {
+      component.stop();
+      return true;
+    }
+    return false;
   }
 
   /**
@@ -47,7 +68,7 @@ public class RestServer extends Application {
    * @throws Exception If problems occur.
    */
   public static void main(String[] args) throws Exception {
-    //runServer(8111);
+    runServer(8111);
   }
 
   /**
@@ -67,13 +88,13 @@ public class RestServer extends Application {
     router.attach("/HVAC/state", HvacState.class);
     router.attach("/HVAC/command/{command}", HvacCommand.class);
 
-    router.attach("/ELECTRICITY/state", ElectricalState.class);
+    router.attach("/ELECTRIC/state", ElectricalState.class);
 
-    router.attach("/PHOTOVOLTAICS/state", PhotovoltaicsState.class);
-    
+    router.attach("/PHOTOVOLTAIC/state", PhotovoltaicsState.class);
+
     router.attach("/LIGHTING/state", LightingState.class);
     router.attach("/LIGHTING/command/{command}", LightingCommand.class);
-    
+
     // Return the root router
     return router;
   }
