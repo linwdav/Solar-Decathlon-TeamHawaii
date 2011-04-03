@@ -603,16 +603,7 @@ public class Hvac extends Header {
   public String getButtonLabel() {
     return this.buttonLabel;
   }
-
-  /**
-   * Get the button class attribute. For PropertyModel to access.
-   * 
-   * @return The button class attribute.
-   */
-  public String getButtonClass() {
-    return this.buttonClass;
-  }
-
+  
   /**
    * Set the button class attribute.
    * 
@@ -621,16 +612,7 @@ public class Hvac extends Header {
   public void setButtonClass(String newClass) {
     this.buttonClass = newClass;
   }
-
-  /**
-   * Get the button background color. For PropertyModel to access.
-   * 
-   * @return The button background color.
-   */
-  public String getButtonColor() {
-    return this.buttonColor;
-  }
-
+  
   /**
    * Set the button background color.
    * 

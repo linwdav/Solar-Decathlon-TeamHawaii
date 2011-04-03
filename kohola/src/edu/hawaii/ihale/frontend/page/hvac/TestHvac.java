@@ -1,5 +1,13 @@
 package edu.hawaii.ihale.frontend.page.hvac;
 
+import static org.junit.Assert.assertEquals;
+import java.util.Date;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.IHaleBackend;
+//import edu.hawaii.ihale.frontend.RepositoryRefresher;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -7,6 +15,7 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
+import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Test;
 import com.codecommit.wicket.Chart;
@@ -25,6 +34,7 @@ public class TestHvac {
    */
   @Test
   public void testPage() {
+
     // Start up the WicketTester and check that the page renders.
     WicketTester tester = new WicketTester(new SolarDecathlonApplication());
     tester.startPage(Hvac.class);
@@ -75,6 +85,36 @@ public class TestHvac {
     tester.assertComponent("tempW", Chart.class);
     tester.assertComponent("tempD", Chart.class);
 
+    tester.clickLink("button");
+    tester.clickLink("button");
+
+    FormTester formTester = tester.newFormTester("form");
+    
+    // new temperature change
+    formTester.setValue("airTemperature", "60");
+    tester.executeAjaxEvent("form:airTemperature", "onchange");
+    tester.executeAjaxEvent("form:SubmitTemp", "onclick");    
+    assertEquals("Checking new form contents", "60",
+        formTester.getTextComponentValue("airTemperature"));    
+    Label feedback = (Label) tester.getComponentFromLastRenderedPage("form:Feedback");
+    assertEquals("Check feedback", "<font color=\"green\">Success: (60&deg;F)</font>",
+        feedback.getDefaultModelObjectAsString());
+    
+    // same temperature change 
+    tester.executeAjaxEvent("form:airTemperature", "onchange");
+    tester.executeAjaxEvent("form:SubmitTemp", "onclick");
+    assertEquals("Check feedback", "<font color=\"#FF9900\">Same: (60&deg;F)</font>",
+        feedback.getDefaultModelObjectAsString());
+    
+    // trigger the Hvac listener
+    IHaleBackend backend = new IHaleBackend();
+    Repository repository = new Repository();
+    long timestamp = new Date().getTime();
+    backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, 70);
+    repository.store(IHaleSystem.HVAC, IHaleState.TEMPERATURE, timestamp, 70);
+    backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, 50);
+    repository.store(IHaleSystem.HVAC, IHaleState.TEMPERATURE, timestamp, 50);
+        
     // The following line is useful for seeing what's on the page.
     tester.debugComponentTrees();
 
