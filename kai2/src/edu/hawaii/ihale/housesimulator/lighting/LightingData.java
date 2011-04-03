@@ -147,7 +147,7 @@ public class LightingData {
    *
    * @return Current level intensity.
    */
-  public static long getLivingLevel() {
+  public long getLivingLevel() {
     return livingLevel;
   }
   
@@ -156,7 +156,7 @@ public class LightingData {
    *
    * @return Current level intensity.
    */
-  public static long getDiningLevel() {
+  public long getDiningLevel() {
     return diningLevel;
   }
   
@@ -165,7 +165,7 @@ public class LightingData {
    *
    * @return Current level intensity.
    */
-  public static long getKitchenLevel() {
+  public long getKitchenLevel() {
     return kitchenLevel;
   }
   
@@ -174,7 +174,7 @@ public class LightingData {
    *
    * @return Current level intensity.
    */
-  public static long getBathroomLevel() {
+  public long getBathroomLevel() {
     return bathroomLevel;
   }
   
@@ -183,7 +183,7 @@ public class LightingData {
    *
    * @return Current light color.
    */
-  public static String getLivingColor() {
+  public String getLivingColor() {
     return livingColor;
   }
   
@@ -192,7 +192,7 @@ public class LightingData {
    *
    * @return Current light color.
    */
-  public static String getDiningColor() {
+  public String getDiningColor() {
     return diningColor;
   }
   
@@ -201,7 +201,7 @@ public class LightingData {
    *
    * @return Current light color.
    */
-  public static String getKitchenColor() {
+  public String getKitchenColor() {
     return kitchenColor;
   }
   
@@ -210,7 +210,7 @@ public class LightingData {
    *
    * @return Current light color.
    */
-  public static String getBathroomColor() {
+  public String getBathroomColor() {
     return bathroomColor;
   }
   
@@ -219,7 +219,7 @@ public class LightingData {
    *
    * @return Lights on or off.
    */
-  public static boolean isLivingLightsEnabled() {
+  public boolean isLivingLightsEnabled() {
     return livingEnabled;
   }
   
@@ -228,7 +228,7 @@ public class LightingData {
    *
    * @return Lights on or off.
    */
-  public static boolean isDiningLightsEnabled() {
+  public boolean isDiningLightsEnabled() {
     return diningEnabled;
   }
   
@@ -237,7 +237,7 @@ public class LightingData {
    *
    * @return Lights on or off.
    */
-  public static boolean isKitchenEnabled() {
+  public boolean isKitchenEnabled() {
     return kitchenEnabled;
   }
   
@@ -246,7 +246,7 @@ public class LightingData {
    *
    * @return Lights on or off.
    */
-  public static boolean isBathroomEnabled() {
+  public boolean isBathroomEnabled() {
     return bathroomEnabled;
   }
   
