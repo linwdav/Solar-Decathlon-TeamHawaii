@@ -89,12 +89,14 @@ public class SimulatorServer extends Application {
     // ranges 7101+.
     VirtualHost host = new VirtualHost(component.getContext());
     host.setHostPort("7001");
-    host.attach("/photovoltaic", new PhotovoltaicsSystem());
+    //host.attach("/photovoltaic", new PhotovoltaicsSystem());
+    host.attach("/cgi-bin/egauge", new PhotovoltaicsSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
     host.setHostPort("7002");
-    host.attach("/electric", new ElectricalSystem());
+    //host.attach("/electric", new ElectricalSystem());
+    host.attach("/cgi-bin/egauge", new ElectricalSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
@@ -366,9 +368,7 @@ public class SimulatorServer extends Application {
     // for all house system but Lighting.
     for (int i = 0; i < 12; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      // returnDoc = ...Electric System...
-      // returnDoc = ...PV System...              
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);   
       timestampPast -= timestampDecrement;
     }
     
@@ -380,9 +380,7 @@ public class SimulatorServer extends Application {
     // all house system but Lighting.
     for (int i = 0; i < 24; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      // returnDoc = ...Electric System...
-      // returnDoc = ...PV System...              
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);          
       timestampPast -= timestampDecrement;
     }
     
@@ -395,9 +393,7 @@ public class SimulatorServer extends Application {
     // Lighting.
     for (int i = 0; i < 31; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      // returnDoc = ...Electric System...
-      // returnDoc = ...PV System...              
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);      
       timestampPast -= timestampDecrement;
     }
               
@@ -408,10 +404,9 @@ public class SimulatorServer extends Application {
     baseTime.put("hour", Calendar.HOUR_OF_DAY);
     baseTime.put("minute", Calendar.MINUTE);
     baseTime.put("second", Calendar.SECOND);
-    //baseTime.put("timestamp", (int) (new Date()).getTime() / 1000);
     baseTime.put("timestamp", (int) (timestamp / 1000));
 
-    // Historic points are appended while passed to electric data generation.
+    // Historic points are appended while passed to electric and photovoltaic data generation.
     returnDoc = ElectricalData.generateHistoricData(baseTime, returnDoc);
     returnDoc = PhotovoltaicsData.generateHistoricData(baseTime, returnDoc);
     return returnDoc;

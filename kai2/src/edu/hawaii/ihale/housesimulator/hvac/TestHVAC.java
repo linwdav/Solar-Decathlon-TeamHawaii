@@ -200,10 +200,6 @@ public class TestHVAC {
     System.out.println();
   }
 
-  
-  
-  
-  
   /**
    * Helper function that queries the HVAC system with a GET request to retrieve the current
    * home temperature. Also asserts that the returned XML DomRepresentation from the GET request 

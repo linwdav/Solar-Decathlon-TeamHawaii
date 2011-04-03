@@ -21,7 +21,8 @@ public class ElectricalSystem extends Application {
     // Create a router restlet.
     Router router = new Router(getContext());
     // Attach the resources to the router.
-    router.attach("/state", ElectricalGetResource.class);
+    //router.attach("/state", ElectricalGetResource.class);
+    router.attach("", ElectricalGetResource.class);
     // Return the root router
     return router;
   }

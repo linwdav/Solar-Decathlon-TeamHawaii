@@ -48,9 +48,11 @@ public class TestElectrical {
     }
 
     // Set up the GET client
-    String getUrl = "http://localhost:7002/electric/state";
+    //String getUrl = "http://localhost:7002/electric/state";
+    String getUrl = "http://localhost:7002/cgi-bin/egauge?tot";
+    System.out.println(getUrl);
     ClientResource getClient = new ClientResource(getUrl);
-
+    
     // Get the XML representation.
     DomRepresentation domRep = new DomRepresentation(getClient.get());
     Document domDoc = domRep.getDocument();
