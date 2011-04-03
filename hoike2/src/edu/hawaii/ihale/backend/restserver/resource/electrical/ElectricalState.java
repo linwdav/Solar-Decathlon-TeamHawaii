@@ -6,7 +6,6 @@ import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
-import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsData;
 
 /**
  * A server resource that will handle requests regarding the Electricity system. Supported
@@ -31,12 +30,12 @@ public class ElectricalState extends ServerResource {
     if (queryMap.containsKey("since")) {
       Long timestamp = Long.valueOf(queryMap.get("since"));
       if (timestamp != null) {
-        rep = AquaponicsData.toXmlSince(timestamp);
+        rep = ElectricalData.toXmlSince(timestamp);
         status = Status.SUCCESS_OK;
       }
     }
     else {
-      rep = AquaponicsData.toXml();
+      rep = ElectricalData.toXml();
       status = Status.SUCCESS_OK;
     }
 

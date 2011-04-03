@@ -66,7 +66,6 @@ public class ElectricalData extends SystemData {
 
     // Creates the state-history root node.
     Node rootNode = appendStateHistoryNode(doc);
-    appendStateDataNode(doc, rootNode, IHaleSystem.ELECTRIC, timestamp);
 
     Node stateDataNode;
 
