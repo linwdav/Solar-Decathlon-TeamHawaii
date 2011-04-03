@@ -28,8 +28,7 @@
   </path>
 
   <!-- Basic properties for this system. -->
-  <property name="system.name" value="ihale-backend" />
-  <property name="system.main.class" value="edu.hawaii.ihale.backend.IHaleBackend" />
+  <property name="system.name" value="ihale-backend-hoike2" />
   <property name="majorVersionNumber" value="2" />
   <property name="minorVersionNumber" value="0" />
   <tstamp>
