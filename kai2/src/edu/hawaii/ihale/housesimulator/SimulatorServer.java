@@ -218,27 +218,27 @@ public class SimulatorServer extends Application {
     else {
 
       System.out.println("Creating properties file: " + propFile.getAbsolutePath());
-      // Create the Directory.
-      if (theDir.mkdir()) {
-        // Create the Properties file.
-        if (propFile.createNewFile()) {
-          // Try to store the properties object in the properties file.
-          try {
-            fis = new FileOutputStream(propFile);
-            prop.store(fis, null);
-            fis.close();
-          }
-          catch (IOException ex) {
-            ex.printStackTrace();
-          }
+      
+      // Create the Directory if doesn't exist.      
+      if (!theDir.exists() && !theDir.mkdir()) {
+        System.out.println("Could not create the directory, exiting.");
+        System.exit(1);
+      }
+
+      // Create the Properties file.
+      if (propFile.createNewFile()) {
+        // Try to store the properties object in the properties file.
+        try {
+          fis = new FileOutputStream(propFile);
+          prop.store(fis, null);
+          fis.close();
         }
-        else {
-          System.out.println("Failed to create properties file: " + propFile.getAbsolutePath());
-          System.exit(1);
+        catch (IOException ex) {
+          ex.printStackTrace();
         }
       }
       else {
-        System.out.println("Failed to create directory: " + theDir.getAbsolutePath());
+        System.out.println("Failed to create properties file: " + propFile.getAbsolutePath());
         System.exit(1);
       }
     }
@@ -314,6 +314,12 @@ public class SimulatorServer extends Application {
     // The XML file does not exist.
     else {
 
+      // Create the Directory if doesn't exist.      
+      if (!theDir.exists() && !theDir.mkdir()) {
+        System.out.println("Could not create the directory, exiting.");
+        System.exit(1);
+      }
+      
       System.out.println("Creating properties file: " + xmlFile.getAbsolutePath());
 
       try {
