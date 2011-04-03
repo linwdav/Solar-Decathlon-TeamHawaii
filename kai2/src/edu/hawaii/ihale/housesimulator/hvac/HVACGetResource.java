@@ -24,6 +24,9 @@ public class HVACGetResource extends ServerResource {
   public Representation getState() throws Exception {
     // Return the representation.
     HVACData.setCurrentTime(new Date().getTime());
-    return HVACData.toXml();//(new Date().getTime());
+    
+    System.out.println(new Date() + " --> HVAC state information was requested.");
+    
+    return HVACData.toXml();
   }
 }

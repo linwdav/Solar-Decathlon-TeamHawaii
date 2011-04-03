@@ -173,6 +173,7 @@ public class TestHVAC {
     xmlRep = createPutXmlRepresentation(Integer.toString(desiredTemp));
     putClient.put(xmlRep);
  
+    System.out.println();
     System.out.println("Current HVAC state after setting a desired temperature.");
     HVACData.printHVACSystemState();
     System.out.println();

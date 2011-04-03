@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.housesimulator.photovoltaics;
 
+import java.util.Date;
 import java.util.Map;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
@@ -26,6 +27,9 @@ public class PhotovoltaicsGetResource extends ServerResource {
 
     // Currently only supports query parameter "tot".
     if (queryMap.containsKey("tot")) {
+      
+      System.out.println(new Date() + " --> PV state information was requested.");
+      
       // Return the representation.
       return PhotovoltaicsData.toXml();
     }

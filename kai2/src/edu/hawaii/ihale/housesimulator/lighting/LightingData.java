@@ -101,15 +101,155 @@ public class LightingData {
     else {
       bathroomLevel = 0;
     }
-
-    System.out.println("----------------------");
-    System.out.println("System: Lighting");
-    System.out.println("Living Room Level: " + livingLevel);
-    System.out.println("Dining Room Level: " + diningLevel);
-    System.out.println("Kitchen Room Level: " + kitchenLevel);
-    System.out.println("Bathroom Level: " + bathroomLevel);
   }
 
+  /**
+   * Prints the current state of the HVAC system.
+   */
+  public static void printLightingSystemState() {
+    System.out.println("----------------------");
+    System.out.println("System: Lighting");
+    if (livingEnabled) {
+      System.out.println("Living room level: " + livingLevel);
+      System.out.println("Living room color: " + livingColor);
+    }
+    else {
+      System.out.println("Living room lights are off.");
+    }
+    
+    if (diningEnabled) {
+      System.out.println("Dining room level: " + diningLevel);
+      System.out.println("Dining room color: " + diningColor);
+    }
+    else {
+      System.out.println("Dining room lights are off.");
+    }
+    
+    if (kitchenEnabled) {
+      System.out.println("Kitchen room level: " + kitchenLevel);
+      System.out.println("Kitchen room color: " + kitchenColor);
+    }
+    else {
+      System.out.println("Kitchen room lights are off.");
+    }
+    
+    if (bathroomEnabled) {
+      System.out.println("Bathroom level: " + bathroomLevel);
+      System.out.println("Bathroom color: " + bathroomColor);
+    }
+    else {
+      System.out.println("Bathroom lights are off.");
+    }
+  }
+  
+  /**
+   * Return the current level intensity for the living room.
+   *
+   * @return Current level intensity.
+   */
+  public static long getLivingLevel() {
+    return livingLevel;
+  }
+  
+  /**
+   * Return the current level intensity for the dining room.
+   *
+   * @return Current level intensity.
+   */
+  public static long getDiningLevel() {
+    return diningLevel;
+  }
+  
+  /**
+   * Return the current level intensity for the kitchen room.
+   *
+   * @return Current level intensity.
+   */
+  public static long getKitchenLevel() {
+    return kitchenLevel;
+  }
+  
+  /**
+   * Return the current level intensity for the bathroom.
+   *
+   * @return Current level intensity.
+   */
+  public static long getBathroomLevel() {
+    return bathroomLevel;
+  }
+  
+  /**
+   * Return the current light color for the living room.
+   *
+   * @return Current light color.
+   */
+  public static String getLivingColor() {
+    return livingColor;
+  }
+  
+  /**
+   * Return the current light color for the dining room.
+   *
+   * @return Current light color.
+   */
+  public static String getDiningColor() {
+    return diningColor;
+  }
+  
+  /**
+   * Return the current light color for the kitchen room.
+   *
+   * @return Current light color.
+   */
+  public static String getKitchenColor() {
+    return kitchenColor;
+  }
+  
+  /**
+   * Return the current light color for the bathroom.
+   *
+   * @return Current light color.
+   */
+  public static String getBathroomColor() {
+    return bathroomColor;
+  }
+  
+  /**
+   * Returns true if the living lights are on, off otherwise.
+   *
+   * @return Lights on or off.
+   */
+  public static boolean isLivingLightsEnabled() {
+    return livingEnabled;
+  }
+  
+  /**
+   * Returns true if the dining lights are on, off otherwise.
+   *
+   * @return Lights on or off.
+   */
+  public static boolean isDiningLightsEnabled() {
+    return diningEnabled;
+  }
+  
+  /**
+   * Returns true if the kitchen lights are on, off otherwise.
+   *
+   * @return Lights on or off.
+   */
+  public static boolean isKitchenEnabled() {
+    return kitchenEnabled;
+  }
+  
+  /**
+   * Returns true if the bathroom lights are on, off otherwise.
+   *
+   * @return Lights on or off.
+   */
+  public static boolean isBathroomEnabled() {
+    return bathroomEnabled;
+  }
+  
   /**
    * Sets the living room lighting level.
    * 

@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.housesimulator.electrical;
 
+import java.util.Date;
 import java.util.Map;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
@@ -26,6 +27,9 @@ public class ElectricalGetResource extends ServerResource {
 
     // Currently only supports query parameter "tot".
     if (queryMap.containsKey("tot")) {
+      
+      System.out.println(new Date() + " --> Electrical state information was requested.");
+      
       // Return the representation.
       return ElectricalData.toXml();
     }
