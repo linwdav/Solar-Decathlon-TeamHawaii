@@ -174,7 +174,7 @@ public class TestDashboard {
         .getChoices().size(), 2);
 
     // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
+    //tester.debugComponentTrees();
 
   } // End testPage
   

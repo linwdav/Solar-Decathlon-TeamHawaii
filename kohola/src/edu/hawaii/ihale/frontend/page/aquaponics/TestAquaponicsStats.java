@@ -59,7 +59,7 @@ public class TestAquaponicsStats {
     tester.assertComponent("CurrentWeatherHeader", Label.class);
     tester.assertComponent("OutsideTemperatureHeader", Label.class);
     tester.assertComponent("InsideTemperatureHeader", Label.class);
-    tester.assertComponent("dayReservesGraph", Link.class);
+    tester.assertComponent("dayWaterLevelGraph", Link.class);
     tester.assertComponent("dayPhGraph", Link.class);
     tester.assertComponent("dayTemperatureGraph", Link.class);
     tester.assertComponent("dayConductivityGraph", Link.class);
@@ -67,12 +67,14 @@ public class TestAquaponicsStats {
     tester.assertComponent("dayWaterGraph", Link.class);
     tester.assertComponent("mainButton", Link.class);
     tester.assertComponent("dayChartType", Label.class);
-    tester.assertComponent("detailTitle", Label.class);
-    tester.assertComponent("detailsText", Label.class);
+    tester.assertComponent("weekChartType", Label.class);
+    tester.assertComponent("monthChartType", Label.class);
     tester.assertComponent("dayGraphImage", Chart.class);
+    tester.assertComponent("weekGraphImage", Chart.class);
+    tester.assertComponent("monthGraphImage", Chart.class);
 
     // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
+    // tester.debugComponentTrees();
 
   }
 }

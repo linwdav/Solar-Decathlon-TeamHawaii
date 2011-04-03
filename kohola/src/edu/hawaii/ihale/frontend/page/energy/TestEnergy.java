@@ -75,7 +75,7 @@ public class TestEnergy {
     tester.assertComponent("CurrentGeneration", Label.class);
    
     // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
+    //tester.debugComponentTrees();
 
   }
 }

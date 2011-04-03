@@ -88,7 +88,7 @@ public class TestAquaPonics {
     assertNotNull("Check that Temp isn't null", "TempDiv:TempDiv2:TempDiv4:Temp");
 
     // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
+    //tester.debugComponentTrees();
 
   }
 }
