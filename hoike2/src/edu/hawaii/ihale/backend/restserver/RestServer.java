@@ -7,13 +7,11 @@ import org.restlet.data.Protocol;
 import org.restlet.routing.Router;
 import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsCommand;
 import edu.hawaii.ihale.backend.restserver.resource.aquaponics.AquaponicsState;
-import edu.hawaii.ihale.backend.restserver.resource.electrical.ElectricalCommand;
 import edu.hawaii.ihale.backend.restserver.resource.electrical.ElectricalState;
 import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacCommand;
 import edu.hawaii.ihale.backend.restserver.resource.hvac.HvacState;
 import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingCommand;
 import edu.hawaii.ihale.backend.restserver.resource.lighting.LightingState;
-import edu.hawaii.ihale.backend.restserver.resource.photovoltaics.PhotovoltaicsCommand;
 import edu.hawaii.ihale.backend.restserver.resource.photovoltaics.PhotovoltaicsState;
 
 /**
@@ -70,12 +68,12 @@ public class RestServer extends Application {
     router.attach("/HVAC/command/{command}", HvacCommand.class);
 
     router.attach("/ELECTRICITY/state", ElectricalState.class);
-    router.attach("/ELECTRICITY/command/{command}", ElectricalCommand.class);
 
     router.attach("/PHOTOVOLTAICS/state", PhotovoltaicsState.class);
-    router.attach("/PHOTOVOLTAICS/command/{command}", PhotovoltaicsCommand.class);
+    
     router.attach("/LIGHTING/state", LightingState.class);
     router.attach("/LIGHTING/command/{command}", LightingCommand.class);
+    
     // Return the root router
     return router;
   }
