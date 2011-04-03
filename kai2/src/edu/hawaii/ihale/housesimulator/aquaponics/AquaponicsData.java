@@ -106,7 +106,7 @@ public class AquaponicsData {
    * Simulates changes due to desired values, relationship models, and a small degree of randomness.
    */
   public static void modifySystemState() {
-    printConditions();
+    //printConditions();
     changeCirculation();
     changeDeadFish();
     changeEC();
@@ -149,8 +149,8 @@ public class AquaponicsData {
       dead_fish += fishDeath;
       alive_fish -= fishDeath;
       if (fishDeath > 0) {
-        // Each dead fish increases EC by 0.1
-        ec += (0.1 * fishDeath);
+        // Each dead fish increases EC by 0.5
+        ec += (0.5 * fishDeath);
       }
     }
   }
@@ -497,4 +497,75 @@ public class AquaponicsData {
     return doc;
   }
 
+  /**
+   * Gets number of alive fish.
+   * @return number of alive fish
+   */
+  public int getAliveFish() {
+    return alive_fish;
+  }
+
+  /**
+   * Gets number of dead fish.
+   * @return number of dead fish
+   */
+  public int getDeadFish() {
+    return dead_fish;
+  }
+
+  /**
+   * Gets the amount of water circulation.
+   * @return amount of water circulation
+   */
+  public double getCirc() {
+    return roundSingleDecimal(circulation);
+  }
+
+  /**
+   * Gets the electrical conductivity.
+   * @return electrical conductivity
+   */
+  public double getEC() {
+    return roundSingleDecimal(ec);
+  }
+
+  /**
+   * Gets the water temperature.
+   * @return water temperature
+   */
+  public int getTemp() {
+    return temperature;
+  }
+
+  /**
+   * Gets the water turbidity.
+   * @return water turbidity
+   */
+  public double getTurb() {
+    return roundSingleDecimal(turbidity);
+  }
+
+  /**
+   * Gets the water level.
+   * @return water level
+   */
+  public int getWaterLevel() {
+    return water_level;
+  }
+
+  /**
+   * Gets the PH level.
+   * @return PH level
+   */
+  public double getPH() {
+    return roundSingleDecimal(ph);
+  }
+
+  /**
+   * Gets the amount of oxygen in water.
+   * @return amount of oxygen in water
+   */
+  public double getOxygen() {
+    return roundSingleDecimal(oxygen);
+  }
 }

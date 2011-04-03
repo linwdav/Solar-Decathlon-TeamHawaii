@@ -39,10 +39,36 @@ public class SimulationTimer {
 
     new Timer().scheduleAtFixedRate(new TimerTask() {
       public void run() {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd EEE HH:mm:ss", Locale.US);
         Date date = new Date();
-        System.out.println("**********************");
         System.out.println(dateFormat.format(date));
+        System.out.println("======================================================================"
+            + "==================");
+        System.out
+            .format("%-25s%-25s%-25s%-25s\n", "Aquaponics", "HVAC", "PV", "Electrical");
+        System.out.println("======================================================================"
+            + "==================");
+        AquaponicsData aqua = new AquaponicsData();
+        HVACData hvac = new HVACData();
+        PhotovoltaicsData pv = new PhotovoltaicsData();
+        ElectricalData elec = new ElectricalData();
+        System.out.format("%-25s%-25s%-25s%-25s\n", "Alive fish: " + aqua.getAliveFish(),
+            "Inside Temp: " + hvac.getCurrentHomeTemp(),
+            "Energy: " + pv.getEnergy(),
+            "Energy: " + elec.getEnergy());
+        System.out.format("%-25s%-25s%-25s%-25s\n", "Dead fish: " + aqua.getDeadFish(),
+            "Outside Temp: " + hvac.currentOutsideTemp(),
+            "Power: " + pv.getPower(),
+            "Power: " + elec.getPower());
+        // Couldn't use %-25 to format because of PMD pickiness...
+        System.out.format("Circulation: " + aqua.getCirc() + "\n");
+        System.out.format("EC: " + aqua.getEC() + "\n");
+        System.out.format("Temperature: " + aqua.getTemp() + "\n");
+        System.out.format("Turbidity: " + aqua.getTurb() + "\n");
+        System.out.format("Water level: " + aqua.getWaterLevel() + "\n");
+        System.out.format("PH: " + aqua.getPH() + "\n");
+        System.out.format("Oxygen: " + aqua.getOxygen() + "\n");
+        
         AquaponicsData.modifySystemState();
         HVACData.modifySystemState();
         LightingData.modifySystemState();

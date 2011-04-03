@@ -405,4 +405,20 @@ public class ElectricalData {
       }
     }
   }
+  
+  /**
+   * Get energy.
+   * @return  energy
+   */
+  public long getEnergy() {
+    return energy;
+  }
+  
+  /**
+   * Get power.
+   * @return power
+   */
+  public long getPower() {
+    return power;
+  }
 }

@@ -2,10 +2,6 @@ package edu.hawaii.ihale.housesimulator.aquaponics;
 
 import static org.junit.Assert.assertEquals;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -54,10 +50,6 @@ public class TestAquaponics {
 
     // Speed up time simulation to see if our value falls within the desired range.
     for (int i = 0; i < 50; i++) {
-      DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
-      Date date = new Date();
-      System.out.println("**********************");
-      System.out.println(dateFormat.format(date));
       AquaponicsData.modifySystemState();
       //HVACData.modifySystemState();
       //LightingData.modifySystemState();
