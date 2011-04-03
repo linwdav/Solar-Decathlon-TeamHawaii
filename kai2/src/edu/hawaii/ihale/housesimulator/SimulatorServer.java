@@ -1,14 +1,17 @@
 package edu.hawaii.ihale.housesimulator;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.logging.LogManager;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -43,7 +46,7 @@ import edu.hawaii.ihale.housesimulator.simulationtimer.SimulationTimer;
  * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class SimulatorServer extends Application {
-
+  
   /**
    * This main method starts up a web application.
    * 
@@ -74,6 +77,26 @@ public class SimulatorServer extends Application {
    * @throws Exception If problems occur starting up this server.
    */
   public static void runServer() throws Exception {
+    
+    LogManager logManager = LogManager.getLogManager();
+    // Path to the logging.properties file
+    String currentDirectory = System.getProperty("user.dir");
+    String configurationFilename = "logging.properties";
+    String configFilePath = currentDirectory + "\\" + configurationFilename;
+    
+    // Load up a custom properties file that will configure logging specifications.
+    try {
+      InputStream configurationFile = new FileInputStream(configFilePath);
+      logManager.readConfiguration(configurationFile);
+    }
+    catch (IOException e) {
+      // CheckStyle was complaining about use of tabs when there wasn't so this long string is
+      // placed into a String variable to comply with the warning.
+      String message = "logging.properties file not found. Log messages will not be appended" +
+          "to a file, but instead to the console.";
+      System.out.println(message);
+    }
+    
     // Create a component and open several ports.
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, 7001);

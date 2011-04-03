@@ -327,16 +327,6 @@ public class PhotovoltaicsData {
   }
 
   /**
-   * Returns the average energy consumption in watts per hour. Used primarily for testing.
-   * 
-   * @param hour The hour to get the hourly consumption for.
-   * @return The average for selected hour.
-   */
-  public static long getHourlyAverage(int hour) {
-    return hourlyAverage[hour];
-  }
-  
-  /**
    * Returns random output for non-critical fields.
    * 
    * @return A random value from 0 to 10.
@@ -354,7 +344,7 @@ public class PhotovoltaicsData {
     Random random = new Random();
     int randP = random.nextInt(10);
     int randE = random.nextInt(10);
-    long changeValue = (long) (random.nextInt((int) hourlyAverage[hour] / 10));
+    long changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
     if (hourlyAverage[hour] == 1) {
       energy = 1;
     }
@@ -365,7 +355,7 @@ public class PhotovoltaicsData {
       energy = hourlyAverage[hour] + changeValue;
     }
 
-    changeValue = (long) (random.nextInt((int) hourlyAverage[hour] / 10));
+    changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
 
     if (hour < 6 || hour > 17) {
       power = 0;

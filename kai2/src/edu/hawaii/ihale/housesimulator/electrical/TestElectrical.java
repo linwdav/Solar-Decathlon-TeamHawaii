@@ -30,7 +30,7 @@ public class TestElectrical {
   }
 
   /**
-   * Tests that we can GET a value from the system and verify if value is valid.
+   * Tests that we can GET a value from the system.
    * @throws Exception If GET fails
    */
   @Test
