@@ -30,14 +30,16 @@ public class PhotovoltaicsData extends SystemData {
   public static Representation toXml() throws IOException, ParserConfigurationException {
         
     TimestampIntegerPair energy = repository.getPhotovoltaicEnergy();
-    TimestampIntegerPair power = repository.getPhotovoltaicPower();
+    // There is no state data for Photovolatic Power (omit this)
+    // TimestampIntegerPair power = repository.getPhotovoltaicPower();
 
     Document doc = createDocument();
     
     Node rootNode = appendStateDataNode(doc, doc, IHaleSystem.PHOTOVOLTAIC, energy.getTimestamp());
     
     appendStateNode(doc, rootNode, IHaleState.ENERGY, energy.getValue());
-    appendStateNode(doc, rootNode, IHaleState.POWER, power.getValue());
+    // There is no state data for Photovolatic Power (omit this)
+    // appendStateNode(doc, rootNode, IHaleState.POWER, power.getValue());
     
     DomRepresentation result = new DomRepresentation();
     result.setDocument(doc);
@@ -61,12 +63,15 @@ public class PhotovoltaicsData extends SystemData {
     }
 
     List<TimestampIntegerPair> energyList = repository.getPhotovoltaicEnergySince(timestamp);
-    List<TimestampIntegerPair> powerList = repository.getPhotovoltaicPowerSince(timestamp);
+    // There is no state data for Photovolatic Power (omit this)
+    // List<TimestampIntegerPair> powerList = repository.getPhotovoltaicPowerSince(timestamp);
     
     Document doc = createDocument();
 
     // Creates the state-history root node.
-    Node rootNode = appendStateHistoryNode(doc);
+    Node rootNode = 
+      appendStateDataNode(doc, doc, IHaleSystem.PHOTOVOLTAIC, timestamp);
+
 
     Node stateDataNode;
 
@@ -75,11 +80,13 @@ public class PhotovoltaicsData extends SystemData {
     for (int i = 0; i < size; i++) {
       long time = energyList.get(i).getTimestamp();
       int energy = energyList.get(i).getValue();
-      int power = powerList.get(i).getValue();
+      // There is no state data for Photovolatic Power (omit this)
+      // int power = powerList.get(i).getValue();
       stateDataNode = 
           appendStateDataNode(doc, rootNode, IHaleSystem.PHOTOVOLTAIC, time);
       appendStateNode(doc, stateDataNode, IHaleState.ENERGY, energy);
-      appendStateNode(doc, stateDataNode, IHaleState.POWER, power);
+      // There is no state data for Photovolatic Power (omit this)
+      // appendStateNode(doc, stateDataNode, IHaleState.POWER, power);
     }
     
     // Convert Document to DomRepresentation.

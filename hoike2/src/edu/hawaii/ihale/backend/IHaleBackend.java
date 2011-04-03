@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.backend;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Date;
@@ -7,9 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Logger;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
+
 import org.restlet.resource.ClientResource;
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
@@ -56,7 +62,7 @@ public class IHaleBackend implements IHaleCommand {
   /**
    * String reference to the historical data.
    */
-  public static String systemHistoricalDataRef;
+  public static String initialDataPath;
 
   /**
    * Defines all the URIs read by the URL property file.
@@ -67,7 +73,11 @@ public class IHaleBackend implements IHaleCommand {
    * Object that polls data from HSIM.
    */
   private static Dispatcher dispatch;
-
+  
+  /**
+   * Thread for polling.
+   */
+  private static Thread pollingThread;
   /**
    * The repository that can store all the data for the iHale system.
    */
@@ -75,7 +85,7 @@ public class IHaleBackend implements IHaleCommand {
 
   /** The singleton instance of the Backend.*/
   private static IHaleBackend instance = new IHaleBackend();
-  
+
   /** Returns the singleton instance.
    * @return The singleton instance.
    */
@@ -103,6 +113,9 @@ public class IHaleBackend implements IHaleCommand {
     String configurationFile = "device-urls.properties";
     deviceConfigRef = System.getProperty("user.home") + "/" + folder + "/" + configurationFile;
 
+    String initialDataFile = "initial-data.xml";
+      initialDataPath = System.getProperty("user.home") + "/" + folder + "/" + initialDataFile;
+    
     // instantiate the uris map.
     try {
       uriMap = parseURIPropertyFile(deviceConfigRef);
@@ -112,9 +125,18 @@ public class IHaleBackend implements IHaleCommand {
     }
 
     // Parse the historical data file to populate the repository.
-    String initialDataFile = "initial-data.xml";
-    systemHistoricalDataRef =
-        System.getProperty("user.home") + "/" + folder + "/" + initialDataFile;
+    try {
+      getHistory();
+    }
+    catch (XPathExpressionException e1) {
+      e1.printStackTrace();
+    }
+    catch (ParserConfigurationException e1) {
+      e1.printStackTrace();
+    }
+    catch (IOException e1) {
+      e1.printStackTrace();
+    }
 
     // Initialize Dispatcher
     dispatch = null;
@@ -122,6 +144,8 @@ public class IHaleBackend implements IHaleCommand {
     
     try {
       dispatch = new Dispatcher(uriMap, interval);
+      pollingThread = new Thread(dispatch);
+      pollingThread.start();
     }
     catch (InterruptedException e) {
       e.printStackTrace();
@@ -129,6 +153,33 @@ public class IHaleBackend implements IHaleCommand {
     
     log.info("Running dispatcher at an interval of " + interval + " milliseconds."); 
     log.info("Initiating repository.");
+  }
+  
+/**
+ * Reads in initial-data.xml, and stores entries into the repository.
+ * 
+ * @throws ParserConfigurationException - Probelm parsing XML file.
+ * @throws XPathExpressionException - Problem evaluating XPath expression.
+ * @throws IOException - Problem reading in file.
+ */
+   public static void getHistory() throws 
+   ParserConfigurationException, XPathExpressionException, IOException {
+ 
+     XmlHandler parser = new XmlHandler();
+     File file = null;
+     Document doc = null;
+     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+     DocumentBuilder db = dbf.newDocumentBuilder();
+
+     try {
+       file = new File(initialDataPath);
+       doc = db.parse(file);
+     }
+     catch (Exception e) {
+       System.err.println("Failed to convert to doc.");
+     }
+ 
+     parser.xml2StateEntry(doc);
   }
 
   /**

@@ -51,7 +51,7 @@ public class TestIHaleBackend {
   public void testParseURIPropertyFile() throws IOException {
     Map<String, String> uri = IHaleBackend.parseURIPropertyFile(IHaleBackend.deviceConfigRef);
 
-    assertEquals("Electrical state", "http://localhost:7002/", uri.get("electrical-state"));
+    assertEquals("Electrical state", "http://localhost:7002/", uri.get("electric-state"));
   }
 
   /**
