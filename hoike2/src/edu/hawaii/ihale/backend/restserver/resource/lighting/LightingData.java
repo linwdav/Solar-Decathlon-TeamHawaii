@@ -14,7 +14,6 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.TimestampBooleanPair;
 import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.api.repository.TimestampStringPair;
-import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
 /**
@@ -26,7 +25,6 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  */
 public class LightingData extends SystemData {
-  private static Repository repository = new Repository();
 
   /**
    * Returns the data as an XML Document instance.

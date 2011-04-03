@@ -11,7 +11,6 @@ import org.w3c.dom.Node;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
-import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
 /**
@@ -23,7 +22,6 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  */
 public class HvacData extends SystemData {
-  private static Repository repository = new Repository();
 
   /**
    * Returns the data as an XML Document instance.
