@@ -479,7 +479,7 @@ public class Lighting extends Header {
     form.add(intensityFeedback);
     add(form);
 
-    Form<String> testForm = new Form<String>("testForm");
+    Form<String> roomForm = new Form<String>("roomForm");
     roomChoices =
         new DropDownChoice<String>("room", new PropertyModel<String>(this, "currentRoom"), rooms);
 
@@ -515,8 +515,8 @@ public class Lighting extends Header {
         setResponsePage(Lighting.class);
       }
     });
-    testForm.add(roomChoices.setRequired(true));
-    add(testForm);
+    roomForm.add(roomChoices.setRequired(true));
+    add(roomForm);
     add(onButton);
     add(offButton);
     // add(form);

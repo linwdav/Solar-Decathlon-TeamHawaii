@@ -88,24 +88,16 @@ function toggleOnOff(x) {
     <div class="box">
       <h2>General Settings</h2>     
       <div class="clear"></div>
-      <div class="column-three">
-      	<h5 class="dark-purple">Room</h5>
+      <div class="column-two" style="width:40%">
+      	<h5 class="dark-purple" style="margin-bottom:0px;">Room</h5>
        <div class="clear"></div>
-        <form wicket:id="testForm">
+        <form wicket:id="roomForm">
            <select wicket:id="room">               
            </select>
            </form>
             </div>
-      <div class="column-three">
-                <h5 class="dark-purple">Lights</h5>
-        <div class="clear"></div>
-
-              <a wicket:id="OnButton"  class="green-button" >On</a>&nbsp;
-
-              <a wicket:id="OffButton"  class="gray-button" >Off</a>
-         </div>
-      <div class="column-three">
-        <h5 class="dark-purple">Brightness</h5>
+		<div class="column-two" style="width:60%">
+		  <h5 class="dark-purple" style="margin-bottom:0px;">Brightness</h5>
 
         <div class="clear"></div>
         <form wicket:id="form">
@@ -122,8 +114,8 @@ function toggleOnOff(x) {
           	<td colspan="1" align="center">
               <input wicket:id="SubmitIntensity" class="gray-button" type="submit" value="Change" style="color: #333333;"/>
             </td>
-          	<td colspan="1" align="left">
-              <div style="width:42px;margin-top:3px;border: 3px #DDD solid;" align="center"><span wicket:id="intensityfeedback"></span></div>
+          	<td colspan="1" width="40%">
+              <div style="width:100%;margin-top:3px;border: 3px #DDD solid;" align="center"><span wicket:id="intensityfeedback"></span></div>
             </td>
           </tr>          
         </table>
@@ -131,7 +123,14 @@ function toggleOnOff(x) {
         </form>
       </div>
       <div class="clear"></div>
-      <h5 class="dark-purple" style="margin-top:20px;">Color</h5>
+      <div class="column-two">
+ 	     <h5 class="dark-purple" style="margin-bottom:1px;">Lights</h5>
+ 	     <div class="clear"></div>
+ 	     <a wicket:id="OnButton"  class="green-button" >On</a>&nbsp;
+ 	     <a wicket:id="OffButton"  class="gray-button" >Off</a>
+ 	  </div>
+ 	  <div class="clear"></div>
+ 	  <h5 class="dark-purple" style="margin-top:20px; margin-bottom:-5px;">Color</h5>
       <div id="icolor" class="icolorC">
       	<input wicket:id="colorchange" type="hidden"/>    
       </div>

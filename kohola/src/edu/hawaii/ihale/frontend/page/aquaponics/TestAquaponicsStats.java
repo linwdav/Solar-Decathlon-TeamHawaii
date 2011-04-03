@@ -6,7 +6,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Test;
-import com.codecommit.wicket.Chart;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.page.SelectModalWindow;
 
@@ -69,9 +68,9 @@ public class TestAquaponicsStats {
     tester.assertComponent("dayChartType", Label.class);
     tester.assertComponent("weekChartType", Label.class);
     tester.assertComponent("monthChartType", Label.class);
-    tester.assertComponent("dayGraphImage", Chart.class);
-    tester.assertComponent("weekGraphImage", Chart.class);
-    tester.assertComponent("monthGraphImage", Chart.class);
+    tester.assertComponent("dayGraphImage", WebMarkupContainer.class);
+    tester.assertComponent("weekGraphImage", WebMarkupContainer.class);
+    tester.assertComponent("monthGraphImage", WebMarkupContainer.class);
 
     // The following line is useful for seeing what's on the page.
     // tester.debugComponentTrees();
