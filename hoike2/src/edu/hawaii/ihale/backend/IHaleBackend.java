@@ -315,7 +315,6 @@ public class IHaleBackend implements IHaleCommand {
       throw new RuntimeException("Failed to create Dom Representation.", e);
     }
     catch (Exception e) {
-      e.printStackTrace();
       throw new RuntimeException("Failed to create command XML.", e);
     }
     finally {
