@@ -5,10 +5,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.apache.wicket.AttributeModifier;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
+import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
@@ -20,6 +22,7 @@ import org.apache.wicket.util.time.Duration;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.ihale.frontend.page.Header;
+import edu.hawaii.ihale.frontend.page.help.Help;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
 /**
@@ -88,6 +91,21 @@ public class Energy extends Header {
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("EnergySystemLogContainer");
     systemLog.setOutputMarkupId(true);
+    
+    // Help button link
+    Link<String> helpLink = new Link<String>("helpLink") {
+      private static final long serialVersionUID = 1L;
+
+      public void onClick() {
+        ((SolarDecathlonSession)getSession()).getHelpSession().setCurrentTab(2);
+        setResponsePage(Help.class);
+      }
+     };
+    
+     // Help Image
+     helpLink.add(new Image("helpEnergy", new ResourceReference(Header.class, "images/icons/help.png")));
+
+     add(helpLink);
     
     // Create Listview
     PageableListView<SystemStatusMessage> listView =

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.TimeZone;
 import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
+import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
 import org.apache.wicket.ajax.AjaxSelfUpdatingTimerBehavior;
 import org.apache.wicket.ajax.markup.html.navigation.paging.AjaxPagingNavigator;
@@ -20,6 +21,7 @@ import org.apache.wicket.markup.html.WebMarkupContainerWithAssociatedMarkup;
 import org.apache.wicket.markup.html.basic.Label;
 import org.apache.wicket.markup.html.form.DropDownChoice;
 import org.apache.wicket.markup.html.image.Image;
+import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.Model;
@@ -27,6 +29,7 @@ import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
 import edu.hawaii.ihale.frontend.page.Header;
+import edu.hawaii.ihale.frontend.page.help.Help;
 import edu.hawaii.ihale.frontend.weatherparser.WeatherForecast;
 import edu.hawaii.ihale.frontend.SolarDecathlonApplication;
 import edu.hawaii.ihale.frontend.SolarDecathlonSession;
@@ -111,6 +114,22 @@ public class Dashboard extends Header {
     WebMarkupContainer systemLog = new WebMarkupContainer("SystemLogContainer");
     systemLog.setOutputMarkupId(true);
 
+
+    // Help button link
+    Link<String> helpLink = new Link<String>("helpLink") {
+      private static final long serialVersionUID = 1L;
+
+      public void onClick() {
+        ((SolarDecathlonSession)getSession()).getHelpSession().setCurrentTab(1);
+        setResponsePage(Help.class);
+      }
+     };
+    
+     // Help Image
+     helpLink.add(new Image("helpDash", new ResourceReference(Header.class, "images/icons/help.png")));
+
+     add(helpLink);
+    
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("StatusMessages", msgs, 10) {
