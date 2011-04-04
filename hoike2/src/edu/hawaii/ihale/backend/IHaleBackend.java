@@ -27,6 +27,7 @@ import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
 import edu.hawaii.ihale.api.command.IHaleCommand;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.xml.PutCommand;
 import edu.hawaii.ihale.backend.xml.InvalidTypeException;
 
@@ -79,10 +80,16 @@ public class IHaleBackend implements IHaleCommand {
    * Thread for polling.
    */
   private static Thread pollingThread;
+
   /**
    * The repository that can store all the data for the iHale system.
    */
   private static Repository repository = new Repository();
+  
+  /**
+   * The restlet server to handle external device requests.
+   */
+  private static RestServer restServer = new RestServer();
 
   /** The singleton instance of the Backend.*/
   private static IHaleBackend instance = new IHaleBackend();
@@ -154,6 +161,14 @@ public class IHaleBackend implements IHaleCommand {
     
     log.info("Running dispatcher at an interval of " + interval + " milliseconds."); 
     log.info("Initiating repository.");
+    
+    // Start restlet server
+    try {
+      restServer.runServer(8111);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
   }
   
 /**

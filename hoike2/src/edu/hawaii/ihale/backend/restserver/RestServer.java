@@ -31,7 +31,7 @@ public class RestServer extends Application {
    * @param port The port on which this server should run.
    * @throws Exception if problems occur starting up this server.
    */
-  public static boolean runServer(int port) throws Exception {
+  public boolean runServer(int port) throws Exception {
     
     if (component.isStarted()) {
       return false;

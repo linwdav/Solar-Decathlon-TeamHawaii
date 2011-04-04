@@ -66,7 +66,8 @@ public class TestIHaleBackend {
   }
 
   /**
-   * Tests the HVAC doCommand for a successful PUT. Only passes with a simulator running, remove @Ignore
+   * Tests the HVAC doCommand for a successful PUT.
+   * Only passes with a simulator running, remove @Ignore
    * tag when simulator is present.
    * 
    */
@@ -134,7 +135,8 @@ public class TestIHaleBackend {
   }
 
   /**
-   * Tests the Lighting doCommand for a successful PUT. Only passes with a simulator running, remove @Ignore
+   * Tests the Lighting doCommand for a successful PUT.
+   * Only passes with a simulator running, remove @Ignore
    * tag when simulator is present.
    * 
    */
