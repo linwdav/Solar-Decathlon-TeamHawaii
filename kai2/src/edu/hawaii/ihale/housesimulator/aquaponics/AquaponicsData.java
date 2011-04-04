@@ -105,7 +105,7 @@ public class AquaponicsData {
    * Simulates changes due to desired values, relationship models, and a small degree of randomness.
    */
   public static void modifySystemState() {
-    printConditions();
+    //printConditions();
     changeCirculation();
     changeDeadFish();
     changeEC();
