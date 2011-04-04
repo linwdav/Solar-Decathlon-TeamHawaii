@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.util.Map;
-import org.junit.Ignore;
 import org.junit.Test;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
@@ -67,11 +66,10 @@ public class TestIHaleBackend {
   }
 
   /**
-   * Tests the HVAC doCommand for a successful PUT.
-   * Only passes with a simulator running, remove @Ignore tag when simulator is present.
+   * Tests the HVAC doCommand for a successful PUT. Only passes with a simulator running, remove @Ignore
+   * tag when simulator is present.
    * 
    */
-  @Ignore
   @Test
   public void doCommandHvacSystemVaild() {
 
@@ -105,7 +103,6 @@ public class TestIHaleBackend {
    * remove @Ignore tag when simulator is present.
    * 
    */
-  @Ignore
   @Test
   public void doCommandAquaponicsSystemValid() {
 
@@ -137,11 +134,10 @@ public class TestIHaleBackend {
   }
 
   /**
-   * Tests the Lighting doCommand for a successful PUT.
-   * Only passes with a simulator running, remove @Ignore tag when simulator is present.
+   * Tests the Lighting doCommand for a successful PUT. Only passes with a simulator running, remove @Ignore
+   * tag when simulator is present.
    * 
    */
-  @Ignore
   @Test
   public void doCommandLightingSystemValid() {
 
