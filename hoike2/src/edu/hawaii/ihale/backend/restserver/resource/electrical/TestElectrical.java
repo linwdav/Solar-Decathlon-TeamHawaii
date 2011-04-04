@@ -10,8 +10,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
+import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the eletrical data to ensure that the XML representation is correct.
@@ -19,7 +19,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestElectrical {
+public class TestElectrical extends SystemDataTest {
 
   /**
    * Test toXML method.
@@ -114,8 +114,6 @@ public class TestElectrical {
   @Test
   public void testGet() throws Exception {
 
-    RestServer.runServer(8111);
-
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/ELECTRIC/state";
     ClientResource client = new ClientResource(uri);
@@ -141,7 +139,5 @@ public class TestElectrical {
 
     assertEquals("Checking that this is XML for the current state.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
-
-    RestServer.stopServer();
   }
 }

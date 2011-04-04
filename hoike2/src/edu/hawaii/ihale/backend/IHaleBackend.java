@@ -93,20 +93,6 @@ public class IHaleBackend implements IHaleCommand {
 
   /** The singleton instance of the Backend.*/
   private static IHaleBackend instance = new IHaleBackend();
-
-  /** Returns the singleton instance.
-   * @return The singleton instance.
-   */
-  public static IHaleBackend getInstance() {
-    return instance;
-  }
-  
-  /**
-   * Private constructor.
-   */
-  private IHaleBackend() {
-    init();
-  }
   
   /**
    * Initializes the singleton.
@@ -251,7 +237,51 @@ public class IHaleBackend implements IHaleCommand {
 
     return uris;
   }
- 
+
+
+  /**
+   * Returns the singleton instance.
+   * @return The singleton instance.
+   */
+  public static IHaleBackend getInstance() {
+    return instance;
+  }
+
+  /**
+   * Gets this backend's dispatcher.
+   * 
+   * @return Dispatcher
+   */
+  public static Dispatcher getDispatcher() {
+    return dispatch;
+  }
+
+  /**
+   * Gets this backend's URI mapping for each iHale system.
+   * 
+   * @return Map<String, String>
+   */
+  public static Map<String, String> getURImap() {
+    return uriMap;
+  }
+  
+  /**
+   * Gets this REST server reference.
+   * 
+   * @return RestServer
+   */
+  public static RestServer getServer() {
+    return restServer;
+  }
+  
+  /**
+   * Gets this repository reference.
+   * 
+   * @return Repository
+   */
+  public static Repository getRepository() {
+    return repository;
+  }
 
   /**
    * A sample main program.
@@ -266,6 +296,13 @@ public class IHaleBackend implements IHaleCommand {
       ParserConfigurationException, SAXException, IOException {
     IHaleBackend backend = new IHaleBackend();
     backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7);
+  }
+    
+  /**
+   * Private constructor.
+   */
+  private IHaleBackend() {
+    init();
   }
 
   /**
@@ -511,25 +548,5 @@ public class IHaleBackend implements IHaleCommand {
     cmd.setURI(uri.toString());
 
     return cmd;
-  }
-
-  /**
-   * Gets this backend's dispatcher.
-   * 
-   * @return Dispatcher
-   */
-  public static Dispatcher getDispatcher() {
-    return dispatch;
-  }
-
-  /**
-   * Gets this backend's URI mapping for each iHale system.
-   * 
-   * @return Map<String, String>
-   */
-  public static Map<String, String> getURImap() {
-    return uriMap;
-  }
-
- 
+  } 
 }

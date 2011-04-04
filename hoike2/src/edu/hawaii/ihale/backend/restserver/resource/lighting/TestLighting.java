@@ -11,9 +11,8 @@ import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.impl.Repository;
-import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
+import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -21,7 +20,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestLighting {
+public class TestLighting extends SystemDataTest {
 
   /**
    * Test toXML method.
@@ -137,12 +136,6 @@ public class TestLighting {
    */
   @Test
   public void testPut() throws Exception {
-
-    // Start the REST server.
-    RestServer.runServer(8111);
-
-    Repository repository = new Repository();
-
     // Send PUT command to server.
     String uri = "http://localhost:8111/LIGHTING/command/SET_LIGHTING_LEVEL?arg=50&room=LIVING";
     ClientResource client = new ClientResource(uri);
@@ -150,9 +143,6 @@ public class TestLighting {
 
     assertEquals("Checking sent argument", Integer.valueOf(50),
         repository.getLightingLevelCommand(IHaleRoom.LIVING).getValue());
-
-    // Shut down the REST server.
-    RestServer.stopServer();
   }
 
   /**
@@ -162,10 +152,6 @@ public class TestLighting {
    */
   @Test
   public void testGet() throws Exception {
-
-    // Start the REST server.
-    RestServer.runServer(8111);
-
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/LIGHTING/state?room=LIVING";
     ClientResource client = new ClientResource(uri);
@@ -193,8 +179,5 @@ public class TestLighting {
     // the rest should be there if testToXmlSince method passes.
     assertEquals("Checking that this is XML for the state history.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
-
-    // Shut down the REST server.
-    RestServer.stopServer();
   }
 }

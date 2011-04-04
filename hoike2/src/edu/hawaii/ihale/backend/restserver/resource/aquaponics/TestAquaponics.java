@@ -10,9 +10,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.impl.Repository;
-import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
+import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -20,7 +19,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestAquaponics {
+public class TestAquaponics extends SystemDataTest {
 
   /**
    * Test toXML method.
@@ -125,11 +124,6 @@ public class TestAquaponics {
   @Test
   public void testPut() throws Exception {
 
-    Repository repository = new Repository();
-
-    // Run the REST server.
-    RestServer.runServer(8111);
-
     // Send PUT command to server.
     String uri = "http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
@@ -137,8 +131,6 @@ public class TestAquaponics {
 
     assertEquals("Checking sent argument", Integer.valueOf(25), repository
         .getAquaponicsTemperatureCommand().getValue());
-
-    RestServer.stopServer();
   }
 
   /**
@@ -148,8 +140,6 @@ public class TestAquaponics {
    */
   @Test
   public void testGet() throws Exception {
-
-    RestServer.runServer(8111);
 
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/AQUAPONICS/state";
@@ -178,7 +168,5 @@ public class TestAquaponics {
     // the rest should be there if testToXmlSince method passes.
     assertEquals("Checking that this is XML for the state history.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
-
-    RestServer.stopServer();
   }
 }
