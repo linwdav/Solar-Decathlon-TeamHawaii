@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.frontend.page.aquaponics;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -274,7 +275,7 @@ public class AquaPonics extends Header {
     // put the temp model in temp label
     Label tempStatusLabel = new Label("tempStatus", tempStatusModel);
 
-    // the model for the actual temp value
+    /** Actual value of Temperature */
     Model<String> temp = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -315,7 +316,7 @@ public class AquaPonics extends Header {
     // put the ph model in ph label
     Label phStatusLabel = new Label("PhStatus", pHStatusModel);
 
-    // model for the actual ph value
+    /** Actual value of PH */
     Model<String> ph = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -353,14 +354,16 @@ public class AquaPonics extends Header {
     // put oxygen model in oxygen label
     Label oxygenStatusLabel = new Label("OxygenStatus", oxygenStatusModel);
 
-    // the model for the actual oxygen value
+    /** Actual value of OXYGEN */
     Model<String> oxygen = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
 
       @Override
       public String getObject() {
-        return String.valueOf(SolarDecathlonApplication.getAquaponics().getOxygen());
+        return String
+                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
+                   .getAquaponics().getOxygen()));
       }
     };
 
@@ -394,14 +397,16 @@ public class AquaPonics extends Header {
     // put the ec model in ec label
     Label ecStatusLabel = new Label("EcStatus", eCStatusModel);
 
-    // model for the actual ec value
+    /** Actual value of EC */
     Model<String> ec = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
 
       @Override
       public String getObject() {
-        return String.valueOf(SolarDecathlonApplication.getAquaponics().getConductivity());
+        return String
+                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
+                   .getAquaponics().getConductivity()));
       }
     };
 
@@ -432,7 +437,7 @@ public class AquaPonics extends Header {
     // put oxygen model in oxygen label
     Label levelStatusLabel = new Label("LevelStatus", levelStatusModel);
 
-    // the model for the actual oxygen value
+    /** Actual value for Water Level */
     Model<String> level = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -471,14 +476,16 @@ public class AquaPonics extends Header {
     // put circulation model in circulation label
     Label circulationStatusLabel = new Label("CirculationStatus", circulationStatusModel);
 
-    // the model for the actual circulation value
+    /** Actual value for Water Circulation */
     Model<String> circulation = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
 
       @Override
       public String getObject() {
-        return String.valueOf(SolarDecathlonApplication.getAquaponics().getCirculation());
+        return String
+                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
+                   .getAquaponics().getCirculation()));
       }
     };
 
@@ -510,14 +517,16 @@ public class AquaPonics extends Header {
     // put turbidity model in turbidity label
     Label turbidityStatusLabel = new Label("TurbidityStatus", turbidityStatusModel);
 
-    // the model for the actual turbidity value
+    /** Actual value for Turbidity */
     Model<String> turbidity = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
 
       @Override
       public String getObject() {
-        return String.valueOf(SolarDecathlonApplication.getAquaponics().getTurbidity());
+        return String
+                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
+                   .getAquaponics().getTurbidity()));
       }
     };
 
@@ -1342,6 +1351,16 @@ public class AquaPonics extends Header {
    */
   public String getSelectedFishNum() {
     return selectedFishNum;
+  }
+  
+  /**
+   * 
+   * @param d The number to convert.
+   * @return double in two deciimal places.
+   */
+  public double roundTwoDecimals(double d) {
+    DecimalFormat twoDForm = new DecimalFormat("#.##");
+    return Double.valueOf(twoDForm.format(d));
   }
 
 }
