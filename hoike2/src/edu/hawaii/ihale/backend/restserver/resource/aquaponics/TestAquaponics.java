@@ -2,8 +2,6 @@ package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import java.io.IOException;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -34,7 +32,7 @@ public class TestAquaponics {
 
     NodeList nl = null;
 
-    DomRepresentation dom = AquaponicsData.toXml();
+    DomRepresentation dom = (DomRepresentation) AquaponicsData.toXml();
     Document doc = dom.getDocument();
 
     Element rootEl = doc.getDocumentElement();
@@ -66,12 +64,64 @@ public class TestAquaponics {
   }
 
   /**
-   * Tests PUT command with aquaponics. Command: SET_TEMPERATURE; Arg: 25. Won't work until we test
-   * with a simulator.
+   * Test toXML method.
+   * 
+   * @throws Exception Thrown when JUnit test fails.
+   */
+  @Test
+  public void testToXmlSince() throws Exception {
+
+    DomRepresentation dom = (DomRepresentation) AquaponicsData.toXmlSince(1L);
+    Document doc = dom.getDocument();
+
+    Element rootEl = doc.getDocumentElement();
+
+    assertEquals("Root element", SystemData.XML_TAG_STATE_HISTORY, rootEl.getTagName());
+
+    // Check all state attributes
+    NodeList stateDataNl = rootEl.getChildNodes();
+    Element stateDataNode = (Element) stateDataNl.item(0);
+
+    assertEquals("Root element", SystemData.XML_TAG_STATE_DATA, stateDataNode.getTagName());
+    assertEquals("Aquaponics System", IHaleSystem.AQUAPONICS.toString(),
+        stateDataNode.getAttribute(SystemData.XML_ATTRIBUTE_SYSTEM));
+    assertNotNull("Timestamp", stateDataNode.getAttribute(SystemData.XML_ATTRIBUTE_TIMESTAMP));
+
+    NodeList stateNl = stateDataNode.getChildNodes();
+    for (int i = 0; i < stateNl.getLength(); i++) {
+      Element el = (Element) stateNl.item(i);
+      String keyAttr = el.getAttribute(SystemData.XML_ATTRIBUTE_KEY);
+      if (IHaleState.CIRCULATION.toString().equals(keyAttr)
+          || IHaleState.DEAD_FISH.toString().equals(keyAttr)
+          || IHaleState.ELECTRICAL_CONDUCTIVITY.toString().equals(keyAttr)
+          || IHaleState.TEMPERATURE.toString().equals(keyAttr)
+          || IHaleState.TURBIDITY.toString().equals(keyAttr)
+          || IHaleState.WATER_LEVEL.toString().equals(keyAttr)
+          || IHaleState.PH.toString().equals(keyAttr)
+          || IHaleState.OXYGEN.toString().equals(keyAttr)) {
+        assertNotNull("State value", el.getAttribute(SystemData.XML_ATTRIBUTE_VALUE));
+      }
+      else {
+        throw new Exception("State key is not recognized: " + keyAttr);
+      }
+    }
+  }
+
+  /**
+   * Test toXML method.
+   * 
+   * @throws Exception Thrown when JUnit test fails.
+   */
+  @Test(expected = RuntimeException.class)
+  public void testToXmlSinceNull() throws Exception {
+    AquaponicsData.toXmlSince(null);
+  }
+
+  /**
+   * Tests PUT command with aquaponics. Command: SET_TEMPERATURE; Arg: 25.
    * 
    * @throws Exception Thrown if server fails to run.
    */
-  @Ignore
   @Test
   public void testPut() throws Exception {
 
@@ -87,16 +137,19 @@ public class TestAquaponics {
 
     assertEquals("Checking sent argument", Integer.valueOf(25), repository
         .getAquaponicsTemperatureCommand().getValue());
+
+    RestServer.stopServer();
   }
 
   /**
    * Tests GET command with aquaponics. Won't work until we test with a simulator.
    * 
-   * @throws IOException Thrown if Document creation fails.
+   * @throws Exception Thrown when server initialization fails or XMl doucment creation fails.
    */
-  @Ignore
   @Test
-  public void testGet() throws IOException {
+  public void testGet() throws Exception {
+
+    RestServer.runServer(8111);
 
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/AQUAPONICS/state";
@@ -108,7 +161,8 @@ public class TestAquaponics {
     // Retrieve system name from XML.
     String rootNodeName = stateDocument.getFirstChild().getNodeName();
 
-    assertEquals("Checking that this is XML for the current state.", "state-data", rootNodeName);
+    assertEquals("Checking that this is XML for the current state.", SystemData.XML_TAG_STATE_DATA,
+        rootNodeName);
 
     // Send GET command to server to retrieve XML of the state history.
     uri = "http://localhost:8111/AQUAPONICS/state?since=1";
@@ -120,7 +174,11 @@ public class TestAquaponics {
     // Retrieve system name from XML.
     rootNodeName = stateDocument.getFirstChild().getNodeName();
 
-    assertEquals("Checking that this is XML for the state history.", "state-history", rootNodeName);
+    // Just need to check whether state-history is there
+    // the rest should be there if testToXmlSince method passes.
+    assertEquals("Checking that this is XML for the state history.",
+        SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
 
+    RestServer.stopServer();
   }
 }

@@ -32,7 +32,7 @@ public class LightingState extends ServerResource {
     Long timestamp;
     IHaleRoom room = IHaleRoom.valueOf(queryMap.get("room"));
 
-    if (IHaleRoom.valueOf(room.toString()) != null) {
+    if (room != null) {
 
       if (queryMap.containsKey("since")) {
         timestamp = Long.valueOf(queryMap.get("since"));

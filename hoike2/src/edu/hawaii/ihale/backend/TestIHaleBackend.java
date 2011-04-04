@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.util.Map;
 import org.junit.Ignore;
@@ -38,7 +39,7 @@ public class TestIHaleBackend {
   public void testParseURIPropertyFileValid() throws IOException {
     Map<String, String> uri = IHaleBackend.parseURIPropertyFile(IHaleBackend.deviceConfigRef);
 
-    assertEquals("Electric state", "http://localhost:7002/", uri.get("electric-state"));
+    assertNotNull("Electric state", uri.get("aquaponics-state"));
   }
 
   /**

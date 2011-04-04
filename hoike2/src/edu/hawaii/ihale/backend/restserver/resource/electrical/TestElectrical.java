@@ -2,7 +2,6 @@ package edu.hawaii.ihale.backend.restserver.resource.electrical;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -15,7 +14,7 @@ import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 
 /**
- * Tests the electrical data to ensure that the XML representation is correct.
+ * Tests the eletrical data to ensure that the XML representation is correct.
  * 
  * @author Bret K. Ikehara
  * @author Michael Cera
@@ -38,7 +37,7 @@ public class TestElectrical {
     Element rootEl = doc.getDocumentElement();
 
     assertEquals("Root element", SystemData.XML_TAG_STATE_DATA, rootEl.getTagName());
-    assertEquals("Electric System", IHaleSystem.ELECTRIC.toString(),
+    assertEquals("Photovoltaic System", IHaleSystem.ELECTRIC.toString(),
         rootEl.getAttribute(SystemData.XML_ATTRIBUTE_SYSTEM));
     assertNotNull("Timestamp", rootEl.getAttribute(SystemData.XML_ATTRIBUTE_TIMESTAMP));
 
@@ -47,7 +46,8 @@ public class TestElectrical {
     for (int i = 0; i < nl.getLength(); i++) {
       Element el = (Element) nl.item(i);
       String keyAttr = el.getAttribute(SystemData.XML_ATTRIBUTE_KEY);
-      if (IHaleState.POWER.toString().equals(keyAttr)) {
+      if (IHaleState.ENERGY.toString().equals(keyAttr)
+          || IHaleState.POWER.toString().equals(keyAttr)) {
         assertNotNull("State value", el.getAttribute(SystemData.XML_ATTRIBUTE_VALUE));
       }
       else {
@@ -64,7 +64,7 @@ public class TestElectrical {
   @Test
   public void testToXmlSince() throws Exception {
 
-    DomRepresentation dom = (DomRepresentation) ElectricalData.toXmlSince(Long.valueOf(1));
+    DomRepresentation dom = (DomRepresentation) ElectricalData.toXmlSince(1L);
     Document doc = dom.getDocument();
 
     Element rootEl = doc.getDocumentElement();
@@ -73,10 +73,11 @@ public class TestElectrical {
 
     // Check all state attributes
     NodeList stateDataNl = rootEl.getChildNodes();
+
     Element stateDataNode = (Element) stateDataNl.item(0);
 
     assertEquals("Root element", SystemData.XML_TAG_STATE_DATA, stateDataNode.getTagName());
-    assertEquals("Electrical System", IHaleSystem.ELECTRIC.toString(),
+    assertEquals("ELECTRIC System", IHaleSystem.ELECTRIC.toString(),
         stateDataNode.getAttribute(SystemData.XML_ATTRIBUTE_SYSTEM));
     assertNotNull("Timestamp", stateDataNode.getAttribute(SystemData.XML_ATTRIBUTE_TIMESTAMP));
 
@@ -84,7 +85,8 @@ public class TestElectrical {
     for (int i = 0; i < stateNl.getLength(); i++) {
       Element el = (Element) stateNl.item(i);
       String keyAttr = el.getAttribute(SystemData.XML_ATTRIBUTE_KEY);
-      if (IHaleState.POWER.toString().equals(keyAttr)) {
+      if (IHaleState.ENERGY.toString().equals(keyAttr)
+          || IHaleState.POWER.toString().equals(keyAttr)) {
         assertNotNull("State value", el.getAttribute(SystemData.XML_ATTRIBUTE_VALUE));
       }
       else {
@@ -94,15 +96,24 @@ public class TestElectrical {
   }
 
   /**
-   * Tests GET command with electric. Won't work until we test with a simulator.
+   * Test toXML method.
    * 
-   * @throws Exception Thrown when document creation or server fails.
+   * @throws Exception Thrown when JUnit test fails.
    */
-  @Ignore
+  @Test(expected = RuntimeException.class)
+  public void testToXmlSinceNull() throws Exception {
+    ElectricalData.toXmlSince(null);
+  }
+
+  /**
+   * Tests GET command with aquaponics. Won't work until we test with a simulator.
+   * 
+   * @throws Exception Thrown when server initialization fails or XMl doucment creation fails.
+   * 
+   */
   @Test
   public void testGet() throws Exception {
 
-    // Start the REST server.
     RestServer.runServer(8111);
 
     // Send GET command to server to retrieve XML of the current state.
@@ -115,9 +126,10 @@ public class TestElectrical {
     // Retrieve system name from XML.
     String rootNodeName = stateDocument.getFirstChild().getNodeName();
 
-    assertEquals("Checking that this is XML for the current state.", "state-data", rootNodeName);
+    assertEquals("Checking that this is XML for the current state.", SystemData.XML_TAG_STATE_DATA,
+        rootNodeName);
 
-    // Send GET command to server to retrieve XML of the state history.
+    // Test the since parameter
     uri = "http://localhost:8111/ELECTRIC/state?since=1";
     client = new ClientResource(uri);
 
@@ -127,9 +139,9 @@ public class TestElectrical {
     // Retrieve system name from XML.
     rootNodeName = stateDocument.getFirstChild().getNodeName();
 
-    assertEquals("Checking that this is XML for the state history.", "state-history", rootNodeName);
+    assertEquals("Checking that this is XML for the current state.",
+        SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
 
-    // Shut down the REST server.
     RestServer.stopServer();
   }
 }

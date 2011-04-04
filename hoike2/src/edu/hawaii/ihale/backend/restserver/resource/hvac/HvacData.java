@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import org.restlet.ext.xml.DomRepresentation;
-import org.restlet.representation.EmptyRepresentation;
 import org.restlet.representation.Representation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -60,9 +59,9 @@ public class HvacData extends SystemData {
    */
   public static Representation toXmlSince(Long timestamp) throws ParserConfigurationException,
       IOException {
-    
+
     if (timestamp == null) {
-      return new EmptyRepresentation();
+      throw new RuntimeException("Aquaponics timestamp is invalid.");
     }
 
     List<TimestampIntegerPair> temperature = repository.getHvacTemperatureSince(timestamp);

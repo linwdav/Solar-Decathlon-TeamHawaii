@@ -63,10 +63,9 @@ public class TestPhotovoltaics {
    * @throws Exception Thrown when JUnit test fails.
    */
   @Test
-  public void testToXmlSince() throws Exception {    
+  public void testToXmlSince() throws Exception {
 
-    DomRepresentation dom =
-        (DomRepresentation) PhotovoltaicsData.toXmlSince(Long.valueOf(1));
+    DomRepresentation dom = (DomRepresentation) PhotovoltaicsData.toXmlSince(1L);
     Document doc = dom.getDocument();
 
     Element rootEl = doc.getDocumentElement();
@@ -97,6 +96,16 @@ public class TestPhotovoltaics {
   }
 
   /**
+   * Test toXML method.
+   * 
+   * @throws Exception Thrown when JUnit test fails.
+   */
+  @Test(expected = RuntimeException.class)
+  public void testToXmlSinceNullTimestamp() throws Exception {
+    PhotovoltaicsData.toXmlSince(null);
+  }
+
+  /**
    * Tests GET command with photovoltaics. Won't work until we test with a simulator.
    * 
    * @throws Exception Thrown when document creation or server fails.
@@ -107,7 +116,7 @@ public class TestPhotovoltaics {
 
     // Start the REST server.
     RestServer.runServer(8111);
-    
+
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/PHOTOVOLTAIC/state";
     ClientResource client = new ClientResource(uri);
@@ -118,7 +127,8 @@ public class TestPhotovoltaics {
     // Retrieve system name from XML.
     String rootNodeName = stateDocument.getFirstChild().getNodeName();
 
-    assertEquals("Checking that this is XML for the current state.", "state-data", rootNodeName);
+    assertEquals("Checking that this is XML for the current state.", SystemData.XML_TAG_STATE_DATA,
+        rootNodeName);
 
     // Send GET command to server to retrieve XML of the state history.
     uri = "http://localhost:8111/PHOTOVOLTAIC/state?since=1";
@@ -130,7 +140,8 @@ public class TestPhotovoltaics {
     // Retrieve system name from XML.
     rootNodeName = stateDocument.getFirstChild().getNodeName();
 
-    assertEquals("Checking that this is XML for the state history.", "state-history", rootNodeName);
+    assertEquals("Checking that this is XML for the state history.",
+        SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
 
     // Shut down the REST server.
     RestServer.stopServer();

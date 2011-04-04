@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.List;
 import javax.xml.parsers.ParserConfigurationException;
 import org.restlet.ext.xml.DomRepresentation;
+import org.restlet.representation.Representation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
@@ -21,7 +22,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  */
 public class AquaponicsData extends SystemData {
-  
+
   /**
    * Returns the data as an XML Document instance.
    * 
@@ -29,7 +30,7 @@ public class AquaponicsData extends SystemData {
    * @throws ParserConfigurationException Thrown when a problem occurs when creating the XML.
    * @throws IOException Thrown when a problem occurs creating the DomRepresentation object.
    */
-  public static DomRepresentation toXml() throws ParserConfigurationException, IOException {
+  public static Representation toXml() throws ParserConfigurationException, IOException {
 
     TimestampDoublePair circulation = repository.getAquaponicsCirculation();
     TimestampDoublePair ec = repository.getAquaponicsElectricalConductivity();
@@ -72,24 +73,22 @@ public class AquaponicsData extends SystemData {
    * @throws ParserConfigurationException Thrown when a problem occurs when creating the XML.
    * @throws IOException Thrown when a problem occurs creating the DomRepresentation object.
    */
-  public static DomRepresentation toXmlSince(Long timestamp) throws ParserConfigurationException,
+  public static Representation toXmlSince(Long timestamp) throws ParserConfigurationException,
       IOException {
 
-    List<TimestampDoublePair> circulation =
-        repository.getAquaponicsCirculationSince(timestamp);
-    List<TimestampDoublePair> ec =
-        repository.getAquaponicsElectricalConductivitySince(timestamp);
-    List<TimestampIntegerPair> deadFish =
-        repository.getAquaponicsDeadFishSince(timestamp);
-    List<TimestampIntegerPair> temp =
-        repository.getAquaponicsTemperatureSince(timestamp);
-    List<TimestampDoublePair> turbidity =
-        repository.getAquaponicsTurbiditySince(timestamp);
-    List<TimestampIntegerPair> waterLevel =
-        repository.getAquaponicsWaterLevelSince(timestamp);
+    if (timestamp == null) {
+      throw new RuntimeException("Aquaponics timestamp is invalid.");
+    }
+
+    List<TimestampDoublePair> circulation = repository.getAquaponicsCirculationSince(timestamp);
+    List<TimestampDoublePair> ec = repository.getAquaponicsElectricalConductivitySince(timestamp);
+    List<TimestampIntegerPair> deadFish = repository.getAquaponicsDeadFishSince(timestamp);
+    List<TimestampIntegerPair> temp = repository.getAquaponicsTemperatureSince(timestamp);
+    List<TimestampDoublePair> turbidity = repository.getAquaponicsTurbiditySince(timestamp);
+    List<TimestampIntegerPair> waterLevel = repository.getAquaponicsWaterLevelSince(timestamp);
     List<TimestampDoublePair> ph = repository.getAquaponicsPhSince(timestamp);
     List<TimestampDoublePair> oxygen = repository.getAquaponicsOxygenSince(timestamp);
-    
+
     Document doc = createDocument();
 
     // Creates the state-history root node.
@@ -112,7 +111,7 @@ public class AquaponicsData extends SystemData {
       appendStateNode(doc, stateDataNode, IHaleState.PH, ph.get(i).getValue());
       appendStateNode(doc, stateDataNode, IHaleState.OXYGEN, oxygen.get(i).getValue());
     }
-    
+
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();
     result.setDocument(doc);
