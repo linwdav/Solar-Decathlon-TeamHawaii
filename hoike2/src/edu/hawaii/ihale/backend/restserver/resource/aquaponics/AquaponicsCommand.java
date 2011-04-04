@@ -47,12 +47,21 @@ public class AquaponicsCommand extends ServerResource {
       // decided how to parse argument
       switch (command) {
       case SET_TEMPERATURE:
+        commandArg = Integer.parseInt(arg);
+        break;
       case HARVEST_FISH:
         commandArg = Integer.parseInt(arg);
         break;
       case FEED_FISH:
+        commandArg = Double.parseDouble(arg);
+        break;
       case SET_NUTRIENTS:
+        commandArg = Double.parseDouble(arg);
+        break;
       case SET_PH:
+        commandArg = Double.parseDouble(arg);
+        break;
+      case SET_WATER_LEVEL:
         commandArg = Double.parseDouble(arg);
         break;
       default:
