@@ -310,7 +310,7 @@ public class PhotovoltaicsData {
       temp.setAttribute(system, pvString);
       temp.setAttribute(tStamp, "" + tempTime);
       Element tempElectric = doc.createElement(stateKey);
-      tempElectric.setAttribute(keyString, pvString);
+      tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
       temp.appendChild(tempElectric);
       Element tempPower = doc.createElement(stateKey);

@@ -257,7 +257,7 @@ public class ElectricalData {
       temp.setAttribute(system, electricString);
       temp.setAttribute(tStamp, "" + tempTime);
       Element tempElectric = doc.createElement(stateKey);
-      tempElectric.setAttribute(keyString, electricString);
+      tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
       temp.appendChild(tempElectric);
       Element tempPower = doc.createElement(stateKey);
@@ -311,7 +311,7 @@ public class ElectricalData {
       temp.setAttribute(system, electricString);
       temp.setAttribute(tStamp, "" + tempTime);
       Element tempElectric = doc.createElement(stateKey);
-      tempElectric.setAttribute(keyString, electricString);
+      tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
       temp.appendChild(tempElectric);
       Element tempPower = doc.createElement(stateKey);

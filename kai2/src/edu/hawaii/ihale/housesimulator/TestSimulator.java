@@ -86,7 +86,7 @@ public class TestSimulator {
     // at 1 day intervals for each of the 4 systems to initialize the initial-data.xml file.
     Double count = (12.0 + 24.0 + 31.0) * 4;
     assertEquals("Checking for proper amount of state-data records.", count, stateDataRecordCount);
-    
+    System.out.println("Count is: " + count);
     XPathExpression hasAquaponicsDataExpr = xpath.compile(
         "count(//state-data[@system='AQUAPONICS']) > 0");
     Object hasAquaponicsData = hasAquaponicsDataExpr.evaluate(doc, XPathConstants.BOOLEAN);
