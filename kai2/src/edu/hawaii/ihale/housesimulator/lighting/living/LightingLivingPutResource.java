@@ -29,6 +29,7 @@ public class LightingLivingPutResource extends ServerResource {
    */
   @Put
   public Representation putValue(Representation representation) throws Exception {
+        
     // Get the XML representation of the data.
     DomRepresentation domRep = new DomRepresentation(representation);
     Document domDoc = domRep.getDocument();
@@ -42,7 +43,7 @@ public class LightingLivingPutResource extends ServerResource {
     String arg = ((Element) argList.item(0)).getAttribute("value");
 
     String putCommand = (String) this.getRequestAttributes().get("putcommand");
-
+    
     //allows user to set the level
     String setLevel = "level";
     
@@ -60,14 +61,15 @@ public class LightingLivingPutResource extends ServerResource {
           "lights to " + arg + "% intensity.");
     }
     // Call lighting mutator corresponding to room.
-    else if (setColor.equalsIgnoreCase(command) && "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
+    else if (setColor.equalsIgnoreCase(putCommand) && 
+        "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
       
       LightingData.setLivingColor(arg);
       System.out.println(new Date() + " --> Lighting system was instructed to set the living room "
           + "light color to " + arg + ".");
     }    
     // Call enable mutator corresponding to room.
-    else if (setEnable.equalsIgnoreCase(command) &&
+    else if (setEnable.equalsIgnoreCase(putCommand) &&
         "SET_LIGHTING_ENABLED".equalsIgnoreCase(command) ) {
       
       boolean enableLights = Boolean.parseBoolean(arg);

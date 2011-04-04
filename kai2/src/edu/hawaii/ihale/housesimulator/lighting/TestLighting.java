@@ -12,6 +12,7 @@ import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
+import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.housesimulator.SimulatorServer;
 
@@ -42,11 +43,25 @@ public class TestLighting {
   
   @Test
   public void testGetAndPut() throws Exception {
+    
+    String levelString = "level";
     // Put the values to our system.
-    putValue(7103, "70");
-    putValue(7104, "80");
-    putValue(7105, "90");
-    putValue(7106, "100");
+    putValue(7103, levelString, "70");
+    putValue(7104, levelString, "80");
+    putValue(7105, levelString, "90");
+    putValue(7106, levelString, "100");
+    
+    String colorString = "color";
+    putValue(7103, colorString, "#FF0000");
+    putValue(7104, colorString, "#00FFFF");
+    putValue(7105, colorString, "#0000FF");
+    putValue(7106, colorString, "#0000A0");
+
+    String enabledString = "enabled";
+    putValue(7103, enabledString, "true");
+    putValue(7104, enabledString, "false");
+    putValue(7105, enabledString, "true");
+    putValue(7106, enabledString, "false");
 
     // Check that the returned GET value matches out PUT value.
     assertEquals("Checking that living room level is 70", getValue(7103), "70");
@@ -88,30 +103,43 @@ public class TestLighting {
   /**
    * Helper function that PUTs a value to the system.
    * 
-   * @param port the port of the room that we are doing a PUT to
-   * @param value The value we want the to be set
+   * @param port The port of the lighting device associated with the room that we are performing a 
+   *             PUT request to.
+   * @param command The property of the Lighting system we want to affect, i.e., level, color, etc.
+   * @param value The value we want the lighting property to be set to.
    * @throws ParserConfigurationException If there is a problem with the parser
    * @throws IOException If there is a problem building the document
    */
-  public static void putValue(int port, String value) throws ParserConfigurationException,
-      IOException {
-    String putUrl = "http://localhost:" + port + "/lighting/level";
+  public static void putValue(int port, String command, String value) 
+    throws ParserConfigurationException, IOException {
+    
+    String putUrl = "http://localhost:" + port + "/lighting/" + command;
     ClientResource putClient = new ClientResource(putUrl);
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
     Document doc = docBuilder.newDocument();
-
-    // Create root tag
+    
     Element rootElement = doc.createElement("command");
-    rootElement.setAttribute("name", "SET_LIGHTING_LEVEL");
+    String name = "name";
+    
+    if ("level".equals(command)) {
+      rootElement.setAttribute(name, IHaleCommandType.SET_LIGHTING_LEVEL.toString());
+    }
+    else if ("color".equals(command)) {
+      rootElement.setAttribute(name, IHaleCommandType.SET_LIGHTING_COLOR.toString());
+    }
+    else if ("enabled".equals(command)) {
+      rootElement.setAttribute(name, IHaleCommandType.SET_LIGHTING_ENABLED.toString());
+    }
+
     doc.appendChild(rootElement);
 
     // Create state tag.
-    Element temperatureElement = doc.createElement("arg");
-    temperatureElement.setAttribute("value", value);
-    rootElement.appendChild(temperatureElement);
+    Element argElement = doc.createElement("arg");
+    argElement.setAttribute("value", value);
+    rootElement.appendChild(argElement);
 
     // Convert Document to DomRepresentation.
     DomRepresentation result = new DomRepresentation();

@@ -61,14 +61,15 @@ public class LightingBathroomPutResource extends ServerResource {
           "lights to " + arg + "% intensity.");
     }
     // Call lighting mutator corresponding to room.
-    else if (setColor.equalsIgnoreCase(command) && "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
-      LightingData.setBathroomColor(arg);
+    else if (setColor.equalsIgnoreCase(putCommand) && 
+        "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
       
+      LightingData.setBathroomColor(arg);
       System.out.println(new Date() + " --> Lighting system was instructed to set the bathroom " +
           "light color to " + arg + ".");
     }    
     // Call enable mutator corresponding to room.
-    else if (setEnable.equalsIgnoreCase(command) && 
+    else if (setEnable.equalsIgnoreCase(putCommand) && 
         "SET_LIGHTING_ENABLED".equalsIgnoreCase(command) ) {
       
       boolean enableLights = Boolean.parseBoolean(arg);
