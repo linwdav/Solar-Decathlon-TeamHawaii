@@ -28,6 +28,9 @@ public class SimulationTimer {
    */
   public static void main(String[] args) throws Exception {
     // startTimer(10);
+    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.US);
+    Date date = new Date();
+    System.out.println(dateFormat.format(date));
   }
 
   /**

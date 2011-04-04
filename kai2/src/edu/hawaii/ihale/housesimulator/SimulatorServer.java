@@ -4,14 +4,17 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Scanner;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.LogManager;
+import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,7 +49,7 @@ import edu.hawaii.ihale.housesimulator.simulationtimer.SimulationTimer;
  * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class SimulatorServer extends Application {
-  
+
   /**
    * This main method starts up a web application.
    * 
@@ -77,26 +80,34 @@ public class SimulatorServer extends Application {
    * @throws Exception If problems occur starting up this server.
    */
   public static void runServer() throws Exception {
-    
-    LogManager logManager = LogManager.getLogManager();
-    // Path to the logging.properties file
-    String currentDirectory = System.getProperty("user.dir");
-    String configurationFilename = "logging.properties";
-    String configFilePath = currentDirectory + "\\" + configurationFilename;
-    
-    // Load up a custom properties file that will configure logging specifications.
-    try {
-      InputStream configurationFile = new FileInputStream(configFilePath);
-      logManager.readConfiguration(configurationFile);
-    }
-    catch (IOException e) {
-      // CheckStyle was complaining about use of tabs when there wasn't so this long string is
-      // placed into a String variable to comply with the warning.
-      String message = "logging.properties file not found. Log messages will not be appended" +
-          "to a file, but instead to the console.";
-      System.out.println(message);
-    }
-    
+
+//    LogManager logManager = LogManager.getLogManager();
+//    // Path to the logging.properties file
+//    String currentDirectory = System.getProperty("user.dir");
+//    String configurationFilename = "logging.properties";
+//    String configFilePath = currentDirectory + "\\" + configurationFilename;
+//
+//    // Load up a custom properties file that will configure logging specifications.
+//    try {
+//      InputStream configurationFile = new FileInputStream(configFilePath);
+//      logManager.readConfiguration(configurationFile);
+//    }
+//    catch (IOException e) {
+//      // CheckStyle was complaining about use of tabs when there wasn't so this long string is
+//      // placed into a String variable to comply with the warning.
+//      String message =
+//          "logging.properties file not found. Log messages will not be appended"
+//              + "to a file, but instead to the console.";
+//      System.out.println(message);
+//    }
+
+    // Log actions into a text file
+    FileInputStream config = new FileInputStream("logging.properties");
+    LogManager.getLogManager().readConfiguration(config);
+    Handler fh = new FileHandler("log.txt");
+    Logger.getLogger("").addHandler(fh);
+    Logger.getLogger("log.txt").setLevel(Level.ALL);
+
     // Create a component and open several ports.
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, 7001);
@@ -112,13 +123,13 @@ public class SimulatorServer extends Application {
     // ranges 7101+.
     VirtualHost host = new VirtualHost(component.getContext());
     host.setHostPort("7001");
-    //host.attach("/photovoltaic", new PhotovoltaicsSystem());
+    // host.attach("/photovoltaic", new PhotovoltaicsSystem());
     host.attach("/cgi-bin/egauge", new PhotovoltaicsSystem());
     component.getHosts().add(host);
 
     host = new VirtualHost(component.getContext());
     host.setHostPort("7002");
-    //host.attach("/electric", new ElectricalSystem());
+    // host.attach("/electric", new ElectricalSystem());
     host.attach("/cgi-bin/egauge", new ElectricalSystem());
     component.getHosts().add(host);
 
@@ -241,8 +252,8 @@ public class SimulatorServer extends Application {
     else {
 
       System.out.println("Creating properties file: " + propFile.getAbsolutePath());
-      
-      // Create the Directory if doesn't exist.      
+
+      // Create the Directory if doesn't exist.
       if (!theDir.exists() && !theDir.mkdir()) {
         System.out.println("Could not create the directory, exiting.");
         System.exit(1);
@@ -277,7 +288,7 @@ public class SimulatorServer extends Application {
    * transforming the Document object.
    */
   private static void createInitialDataXml(String dir, String filename) throws Exception {
-     long timestamp = new Date().getTime();
+    long timestamp = new Date().getTime();
     // Get the users home directory and "dir" sub-directory
     File theDir = new File(System.getProperty("user.home"), dir);
     File xmlFile = new File(theDir, filename);
@@ -302,30 +313,30 @@ public class SimulatorServer extends Application {
 
           try {
 
-          DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-          DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-          Document doc = docBuilder.newDocument();
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document doc = docBuilder.newDocument();
 
-          /** Process of appending the initial system device state information occurs here. */
+            /** Process of appending the initial system device state information occurs here. */
 
-          doc = appendStateDataToXml(doc, timestamp);
-          
-          /** End of appending the initial system device state information. **/
-          
-          // Transform the document object to a XML file stored within the user-defined directory.
-          TransformerFactory transformerFactory = TransformerFactory.newInstance();
-          javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
-          DOMSource source = new DOMSource(doc);
-          StreamResult result = new StreamResult(xmlFile);
-          transformer.transform(source, result);
+            doc = appendStateDataToXml(doc, timestamp);
 
-           }
-           catch (ParserConfigurationException pce) {
-           pce.printStackTrace();
-           }
-           catch (TransformerException tfe) {
-           tfe.printStackTrace();
-           }
+            /** End of appending the initial system device state information. **/
+
+            // Transform the document object to a XML file stored within the user-defined directory.
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            javax.xml.transform.Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(xmlFile);
+            transformer.transform(source, result);
+
+          }
+          catch (ParserConfigurationException pce) {
+            pce.printStackTrace();
+          }
+          catch (TransformerException tfe) {
+            tfe.printStackTrace();
+          }
         }
         // Leave existing file alone.
         else if ("n".equalsIgnoreCase(input)) {
@@ -337,12 +348,12 @@ public class SimulatorServer extends Application {
     // The XML file does not exist.
     else {
 
-      // Create the Directory if doesn't exist.      
+      // Create the Directory if doesn't exist.
       if (!theDir.exists() && !theDir.mkdir()) {
         System.out.println("Could not create the directory, exiting.");
         System.exit(1);
       }
-      
+
       System.out.println("Creating properties file: " + xmlFile.getAbsolutePath());
 
       try {
@@ -352,9 +363,9 @@ public class SimulatorServer extends Application {
         Document doc = docBuilder.newDocument();
 
         /** Process of appending the initial system device state information occurs here. */
-        
+
         doc = appendStateDataToXml(doc, timestamp);
-        
+
         /** End of appending the initial system device state information. **/
 
         // Transform the document object to a XML file stored within the user-defined directory.
@@ -372,60 +383,60 @@ public class SimulatorServer extends Application {
       }
     }
   }
-  
+
   /**
    * Appends system state information to the passed-in Document object.
-   *
+   * 
    * @param doc Document object to append house system state data as child nodes.
    * @param timestamp The timestamp of when the appending process started at. Influences the
-   *                  snap-shots of state data of each house system.
+   * snap-shots of state data of each house system.
    * @return Document object with appended house system state data.
    */
   public static Document appendStateDataToXml(Document doc, long timestamp) {
-    
+
     Document returnDoc = doc;
     Element rootElement = returnDoc.createElement("state-history");
     returnDoc.appendChild(rootElement);
-    
+
     // Decrement a timestamp by 5 minutes.
     long timestampDecrement = 1000 * 60 * 5;
     // timestampPast is a timestamp value that gets decremented on to reflect
     // past timestamp values.
     long timestampPast = timestamp;
-    
-    // Append 12 state points of 5 minute intervals to represent 1 hour of past state data 
+
+    // Append 12 state points of 5 minute intervals to represent 1 hour of past state data
     // for all house system but Lighting.
     for (int i = 0; i < 12; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);   
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
       timestampPast -= timestampDecrement;
     }
-    
+
     // Decrement a timestamp by 60 minutes or 1 hour.
     timestampDecrement = 1000 * 60 * 60;
     timestampPast = timestamp;
-    
+
     // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
     // all house system but Lighting.
     for (int i = 0; i < 24; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);          
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
       timestampPast -= timestampDecrement;
     }
-    
+
     // Decrement a timestamp by 1 day.
     timestampDecrement = 1000 * 60 * 60 * 24;
     timestampPast = timestamp;
-    
-    // Append 31 state points of 1 day intervals to represent both at least 1 week of past 
-    // state data and for a total of 1 month of state data for all house systems but 
+
+    // Append 31 state points of 1 day intervals to represent both at least 1 week of past
+    // state data and for a total of 1 month of state data for all house systems but
     // Lighting.
     for (int i = 0; i < 31; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);      
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
       timestampPast -= timestampDecrement;
     }
-              
+
     Map<String, Integer> baseTime = new HashMap<String, Integer>();
     baseTime.put("year", Calendar.YEAR);
     baseTime.put("month", Calendar.MONTH);
