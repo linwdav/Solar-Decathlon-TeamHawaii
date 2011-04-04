@@ -42,6 +42,12 @@ public class SimulationTimer {
 
     new Timer().scheduleAtFixedRate(new TimerTask() {
       public void run() {
+        AquaponicsData.modifySystemState();
+        HVACData.modifySystemState();
+        LightingData.modifySystemState();
+        PhotovoltaicsData.modifySystemState();
+        ElectricalData.modifySystemState();
+        
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd EEE HH:mm:ss", Locale.US);
         Date date = new Date();
         System.out.println();
@@ -75,12 +81,6 @@ public class SimulationTimer {
         System.out.format("Water level: " + aqua.getWaterLevel() + "\n");
         System.out.format("PH: " + aqua.getPH() + "\n");
         System.out.format("Oxygen: " + aqua.getOxygen() + "\n");
-
-        AquaponicsData.modifySystemState();
-        HVACData.modifySystemState();
-        LightingData.modifySystemState();
-        PhotovoltaicsData.modifySystemState();
-        ElectricalData.modifySystemState();
       }
     }, 0, stepValue * 1000);
   }
