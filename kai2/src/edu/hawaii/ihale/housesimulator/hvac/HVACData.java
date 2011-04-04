@@ -206,18 +206,23 @@ public class HVACData {
       // Arbitrarily determined the difference in temperature between the outside temperature
       // and the temperature within the home. We don't know the insulation value of the home,
       // its ability to retain heat gain/loss influenced by the temperature outside.
-      int insulationValue = 5;
+      // Ratio between F to C is 1 to 1.8.
+      int insulationValue = (int) (5 / 1.8);
       
       // The home maintains a cooler temperature than the outside temperature when its hot.
       // This process should occur only once per PUT command issued to change the temperature.
-      if (currentOutsideTemp >= 50 && !initialRoomTemperatureSet && currentHomeTemp == -1000) {
+      if (currentOutsideTemp >= fahrenToCelsius(50) && !initialRoomTemperatureSet && 
+          currentHomeTemp == -1000) {
+        
         baseHomeTemp = currentOutsideTemp - insulationValue;
         currentHomeTemp = baseHomeTemp;
         initialRoomTemperatureSet = true;
       }
       // The home maintains a warmer temperature than the outside temperature when its cold.
       // This process should occur only once per PUT command issued to change the temperature.
-      else if (currentOutsideTemp < 50 && !initialRoomTemperatureSet && currentHomeTemp == -1000) {
+      else if (currentOutsideTemp < fahrenToCelsius(50) && !initialRoomTemperatureSet && 
+          currentHomeTemp == -1000) {
+        
         baseHomeTemp = currentOutsideTemp + insulationValue;
         currentHomeTemp = baseHomeTemp;
         initialRoomTemperatureSet = true;
@@ -272,23 +277,27 @@ public class HVACData {
         
         // Most HVAC systems can't keep a difference in outside and inside temperature of greater
         // than ~15-20 degrees F when high temperatures exceed 95 degrees F.
-        if (currentOutsideTemp > 95) {
-          currentHomeTemp = currentOutsideTemp - 18;
+        if (currentOutsideTemp > fahrenToCelsius(95)) {
+          currentHomeTemp = (int) (currentOutsideTemp - (18 / 1.8));
         }
         // Some HVAC sites suggest 78 degrees F is ideal to maintain the home at for energy 
         // efficiency when the outside weather is hot.
-        else if (currentOutsideTemp >= 78 && currentOutsideTemp <= 95) { 
+        else if (currentOutsideTemp >= fahrenToCelsius(78) && 
+            currentOutsideTemp <= fahrenToCelsius(95)) { 
+          
           currentHomeTemp = summerEfficientTempWhenOccupantHome;
         }
         // This is the ideal home temperature ranges for the solar decathlon contest. No need to
         // run the HVAC strongly and instead allow the outside and inside home temperatures to
         // converge to equilibrium temperature state.
-        else if (currentOutsideTemp < 78 && currentOutsideTemp >= 72) {
+        else if (currentOutsideTemp < fahrenToCelsius(78) && 
+            currentOutsideTemp >= fahrenToCelsius(72)) {
+          
           currentHomeTemp = currentOutsideTemp;
         }
         // Some HVAC sites suggest 68 degrees F is ideal to maintain the home at for energy
         // energy efficiency when the outside weather is cold.
-        else if (currentOutsideTemp < 72) {
+        else if (currentOutsideTemp < fahrenToCelsius(72)) {
           currentHomeTemp = winterEfficientTempWhenOccupantHome;
           
           // If the outside temperature is really cold, and the occupants are sleeping, their 
@@ -298,7 +307,7 @@ public class HVACData {
           boolean occupantsSleeping = isOccupantsSleeping(currentTime);
           if (occupantsHome && occupantsSleeping) {
             // Decide arbitrarily that the home can be 10F colder when occupants are asleep. 
-            currentHomeTemp = winterEfficientTempWhenOccupantHome - Math.abs(fahrenToCelsius(10));
+            currentHomeTemp = (int) (winterEfficientTempWhenOccupantHome - (10 / 1.8));
 
           }
         }

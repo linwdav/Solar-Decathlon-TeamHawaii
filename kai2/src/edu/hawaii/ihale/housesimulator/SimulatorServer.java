@@ -81,33 +81,27 @@ public class SimulatorServer extends Application {
    */
   public static void runServer() throws Exception {
 
-//    LogManager logManager = LogManager.getLogManager();
-//    // Path to the logging.properties file
-//    String currentDirectory = System.getProperty("user.dir");
-//    String configurationFilename = "logging.properties";
-//    String configFilePath = currentDirectory + "\\" + configurationFilename;
-//
-//    // Load up a custom properties file that will configure logging specifications.
-//    try {
-//      InputStream configurationFile = new FileInputStream(configFilePath);
-//      logManager.readConfiguration(configurationFile);
-//    }
-//    catch (IOException e) {
-//      // CheckStyle was complaining about use of tabs when there wasn't so this long string is
-//      // placed into a String variable to comply with the warning.
-//      String message =
-//          "logging.properties file not found. Log messages will not be appended"
-//              + "to a file, but instead to the console.";
-//      System.out.println(message);
-//    }
-
     // Log actions into a text file
-    FileInputStream config = new FileInputStream("logging.properties");
-    LogManager.getLogManager().readConfiguration(config);
-    Handler fh = new FileHandler("log.txt");
-    Logger.getLogger("").addHandler(fh);
-    Logger.getLogger("log.txt").setLevel(Level.ALL);
-
+    String currentDirectory = System.getProperty("user.dir");
+    String configurationFilename = "logging.properties";
+    String configFilePath = currentDirectory + "\\" + configurationFilename;
+    try {
+      FileInputStream config = new FileInputStream(configFilePath);
+      LogManager.getLogManager().readConfiguration(config);
+      String logFilename = System.getProperty("user.home") + "\\.ihale\\log.txt";
+      // Allow appending to the logging file.
+      Handler fh = new FileHandler(logFilename, true);
+      Logger.getLogger("").addHandler(fh);
+      Logger.getLogger("").setLevel(Level.ALL);
+    }
+    catch (IOException ioe) {
+      // CheckStyle was complaining about use of tabs when there wasn't so this long string is
+      // placed into a String variable to comply with the warning.
+      String message = "logging.properties file not found. Log messages will not be appended" +
+        "to a file, but instead to the console.";
+      System.out.println(message);
+    }
+      
     // Create a component and open several ports.
     Component component = new Component();
     component.getServers().add(Protocol.HTTP, 7001);
