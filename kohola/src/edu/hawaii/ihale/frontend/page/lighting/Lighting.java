@@ -571,7 +571,7 @@ public class Lighting extends Header {
   private void handleRoomState(String roomName, boolean enabled) {
 
     IHaleBackend backend;
-    backend = new IHaleBackend();
+    backend = IHaleBackend.getInstance();
 
     if (LIVING_ROOM.equals(roomName)) {
       livingState = enabled;

@@ -56,7 +56,7 @@ public class SolarDecathlonApplication extends WebApplication {
 
   static {
 
-    backend = new IHaleBackend();
+    backend = IHaleBackend.getInstance();
 
     aquaponicsListener = new AquaponicsListener();
     hvacListener = new HvacListener();

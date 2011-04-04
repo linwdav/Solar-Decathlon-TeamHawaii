@@ -107,7 +107,7 @@ public class TestHvac {
         feedback.getDefaultModelObjectAsString());
     
     // trigger the Hvac listener
-    IHaleBackend backend = new IHaleBackend();
+    IHaleBackend backend = IHaleBackend.getInstance();
     Repository repository = new Repository();
     long timestamp = new Date().getTime();
     backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, 70);
