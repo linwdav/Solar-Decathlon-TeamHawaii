@@ -315,22 +315,23 @@ public class HVACData {
       
       // Situation 2b:
       // If occupants aren't home, then the HVAC system can be energy efficient by setting the
-      // home temperature higher (in the summer) or lower (in the dinner).
+      // home temperature higher (in the summer) or lower (in the winter).
       else {
        
-        if (currentOutsideTemp > 95) {
-          currentHomeTemp = currentOutsideTemp - 18;
+        if (currentOutsideTemp > fahrenToCelsius(95)) {
+          currentHomeTemp = (int) (currentOutsideTemp - (18 / 1.8));
         }
         // Since the occupants are not home, the home temperature can be hotter than the ideal
         // home temperature to conserve energy. It is suggested to be 10 degrees F higher than
         // normal.
-        else if (currentOutsideTemp >= 88 && currentOutsideTemp <= 95) {
+        else if (currentOutsideTemp >= fahrenToCelsius(88) && 
+            currentOutsideTemp <= fahrenToCelsius(95)) {
           currentHomeTemp = summerEfficientTempWhenOccupantNotHome;
         }
         // Since the occupants are not home, the home temperature can be colder than the ideal
         // home temperature to conserve energy, but not too cold so that instruments are damaged.
         // It is suggested to be 10 degrees F lower than normal.
-        else if (currentOutsideTemp <= 68) {
+        else if (currentOutsideTemp <= fahrenToCelsius(68)) {
           currentHomeTemp = winterEfficientTempWhenOccupantNotHome;
         }
         else {
