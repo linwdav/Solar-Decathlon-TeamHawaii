@@ -1,0 +1,43 @@
+<html>
+<wicket:extend>
+<div class="top-links">  
+  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
+  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
+  <div class="clear"></div>
+</div>
+
+<h1 class="left">Help and Support</h1>
+<div class="clear"></div>            
+<div class="column-button">
+  <div class="inner">
+  	<table class="bare" style="width:100%;">
+    	<tr>
+      	<td style="padding-right:40px;">
+          <div class="column-button">
+          	<a wicket:id="overviewButton" class="gray-button" href="#" style="width:120px;">Overview</a>
+          	<a wicket:id="dashboardButton" class="gray-button" href="#" style="width:120px;">Dashboard</a>
+            <a wicket:id="energyButton" class="gray-button" href="#" style="width:120px;">Energy</a>
+            <a wicket:id="aquaponicsButton" class="gray-button" href="#" style="width:120px;">Aquaponics</a>
+            <a wicket:id="lightingButton" class="gray-button" href="#" style="width:120px;">Lighting</a>
+            <a wicket:id="hvacButton" class="gray-button" href="#" style="width:120px;">Hvac</a>
+            
+            </div>
+ 				</td>
+        <td style="width:100%;">
+          <div class="box">
+            <h2 wicket:id="titleHelp">[Title Here]</h2>
+            <div class="box" style="overflow:auto; height: 350px; margin-bottom:0;">
+              <p style="line-height:20px;"><font size="3"><div wicket:id="infoHelp">[Text Goes Here]</div></font></p>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </td>
+      </tr>
+    </table>
+	</div>
+</div>
+  
+</wicket:extend>
+</html>
+

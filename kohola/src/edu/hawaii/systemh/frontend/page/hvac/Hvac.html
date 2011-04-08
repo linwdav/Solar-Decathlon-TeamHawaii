@@ -1,0 +1,231 @@
+<html>
+<wicket:extend>
+	<script>
+	function toggleHVAC(x) {
+
+		if (x == 1) {
+			document.getElementById("hvac").setAttribute("class",
+					"red-button right");
+			document.getElementById("hvac").setAttribute("onclick",
+					"toggleHVAC(0)");
+			document.getElementById("hvac").innerHTML = "Deactivate HVAC";
+			document.getElementById("onoroff2").innerHTML = "ON";
+			document.getElementById("onoroff2").style.color = "green";
+		} else {
+			document.getElementById("hvac").setAttribute("class",
+					"green-button right");
+			document.getElementById("hvac").setAttribute("onclick",
+					"toggleHVAC(1)");
+			document.getElementById("hvac").innerHTML = "Activate HVAC";
+			document.getElementById("onoroff2").innerHTML = "OFF";
+			document.getElementById("onoroff2").style.color = "red";
+		}
+
+	}
+
+	$(function() {
+
+		// Slider for Air
+		$('#sliderAir').slider({
+			orientation : "horizontal",
+			range : "min",
+			min : 45,
+			max : 95,
+			value: parseInt($( "#airTemperature").val(), 10),
+			change: function( event, ui ) {
+				$( "#airTemperature" ).val( ui.value );
+				$( "#airTemperature" ).change();
+			}
+		});
+		
+		// Slider for Water
+		$('#sliderWater').slider({
+			orientation : "vertical",
+			range : "min",
+			min : 45,
+			max : 85,
+			value : 60,
+			slide : function(event, ui) {
+				$("#amountWater").html(ui.value + "&deg;F");
+			}
+		});
+		$("#amountWater").html($("#sliderWater").slider("value") + "&deg;F");
+
+	});
+</script>
+	<div class="top-links">
+  <a class="icon-right" wicket:id="helpLink"><img wicket:id="helpHvac" /></a>
+ <a class="icon-right" href="#"
+		onClick="window.location.reload();return false;"><img
+		wicket:id="refresh" /></a> <a class="icon-right" href="#"
+		onClick="window.print();return false;"><img wicket:id="printer" /></a>
+	<div class="clear"></div>
+	</div>
+
+	<h1>Temperature</h1>
+
+	<div class="column-two">
+	<div class="inner">
+	<div class="box">
+	<h2>Temperature Settings</h2>
+	<div
+		style="border-bottom: 1px solid #ccc; margin-bottom: 20px; padding-bottom: 20px;">
+	<div class="column-two"><a wicket:id="button"
+		class="green-button right"
+		style="width: 185px; margin-right: 10px; cursor: pointer;"><span
+		wicket:id="buttonLabel"></span></a></div>
+	<div class="column-two"><span class="medium black left"
+		style="margin-left: 10px; line-height: 28px;">The HVAC is
+	currently <span wicket:id="hvacState" style="color: #FF0000;">OFF</span></span>
+	</div>
+	<div class="clear"></div>
+	</div>
+
+	<div class="column-two">
+	<div class="inner" style="margin-left: 0;">
+	<h4 class="dark-purple" style="text-align: center;">Current
+	Conditions</h4>
+	<div class="clear"></div>
+	<div class="box">
+	<div class="column-two" style="line-height: 30px;font-size: 15px;">Inside:<br />
+	<br />
+	Outside:<br />
+	<br />
+	
+	</div>
+	<div class="column-two" style="line-height: 30px; font-size: 20px;">
+	<span wicket:id="InsideTemperature"></span><br />
+	<br />
+	<span wicket:id="OutsideTemperature"></span><br />
+	<br />
+	
+	</div>
+	<div class="clear"></div>
+	</div>
+	<div class="clear"></div>
+	</div>
+	</div>
+
+	<div class="column-two">
+
+	<h4 class="dark-purple" style="text-align: center;">Temperature
+	Control</h4>
+	<div class="clear"></div>
+	<!-- Air TEMP -->
+	<div style="background: #fff; border: 1px solid #ccc; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; clear: both; margin-bottom: -60px; padding: 40px; padding-bottom: 16px;">
+
+	<center>
+	<form wicket:id="form">
+	<p style="margin-top: -20px;"><font size="3">Set House Temperature: </font></p>
+	<div style="margin:auto; margin-top: -10px;" id="sliderAir"></div>
+	<div class="clear"></div>
+
+	<table class="bare" border="0" style="margin-top:10px;" width="100%">
+	<tr>
+	<td align="right" width="50%">
+	<input wicket:id="airTemperature" size="2" style="direction:rtl;" type="text" />
+	</td>
+	<td align="left" width="50%">&deg;F
+	</td>
+	</tr>
+	<tr><td><p></p></td></tr>
+	<tr>
+	<td align="center">
+	<input wicket:id="SubmitTemp" class="gray-button" type="submit" value="Change" style="color: #333333;"/>
+	</td>
+	<td align="center">
+	<div style="margin-top:3px;border: 3px #DDD solid;"><span wicket:id="Feedback"></span></div>
+	</td>	
+	</tr>
+	</table>
+
+	</form>
+	</center>
+
+	</div>
+
+	</div>
+	<div class="clear"></div>
+	</div>
+	</div>	
+	</div>
+
+	<div class="column-two">
+	<div class="inner">
+	<div class="tab-wrapper" id="tabset-1">
+	<ul class="tabs">
+		<li class="tab-1"><a href="#">Day</a></li>
+		<li class="tab-2"><a href="#">Week</a></li>
+		<li class="tab-3"><a href="#">Month</a></li>
+	</ul>
+	<ul class="tab-content">
+		<li class="content-1">
+		<h5 class="left">Statistics (Day)</h5>	
+		<center><img wicket:id="tempD" /></center>
+		</li>
+		<li class="content-2">
+		<h5 class="left">Statistics (Week)</h5>
+		<center><img wicket:id="tempW" /></center>
+		</li>
+		<li class="content-3">
+		<h5 class="left">Statistics (Month)</h5>
+		<center><img wicket:id="tempM" /></center>
+		</li>
+	</ul>
+	<div class="clear"></div>
+	</div>
+	</div>
+	</div>
+<div class="inner">
+	<div class="box">
+    <h2>HVAC Log</h2>
+    <form action="#" class="table-wrapper" method="get" name="tableform">	
+    <!--p class="show-count">		
+	        Show&nbsp;		
+	        <select>		
+	          <option>10</option>		
+	          <option>20</option>		
+	          <option>30</option>		
+	          <option>40</option>		
+	        </select>		
+	        &nbsp;Entries		
+     </p-->		
+          <div wicket:id="HVACSystemLogContainer">
+          
+			<script type="text/javascript">
+			$(document).ready(function(){
+			   $("#HVACSystemLogTable").tablesorter();
+			 });
+			</script>
+			
+	      <table id="HVACSystemLogTable" cellpadding="0" cellspacing="0" class="tablesorter log" width="100%">		
+	        <thead>		
+	          <tr>		
+	            <th>Type</th>	
+	            <th>Time</th>
+	            <th>Message</th>		
+	          </tr>		
+	        </thead>		
+		
+	        <tbody>		
+	          <tr wicket:id="HVACStatusMessages">
+	    		<td wicket:id="HVACMessageType">Message Type Goes Here</td>
+	    		<td wicket:id="HVACTimestamp">Time Goes Here</td>
+	    		<td wicket:id="HVACMessageContent">Message Content Goes Here</td>
+	    	</tr>	
+	        </tbody>	
+	        <tfoot>
+	          <tr>
+	            <td wicket:id="paginatorHVAC"></td>
+	          </tr>
+	        </tfoot>	
+	      </table>		
+      	  </div>
+	      <div class="clear"></div>		
+	    </form>
+  </div>
+</div>
+<!-- End Status Messages -->    
+</wicket:extend>
+</html>
+

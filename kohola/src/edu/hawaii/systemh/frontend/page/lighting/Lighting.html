@@ -1,0 +1,207 @@
+<html>
+<wicket:extend>
+
+<script>
+$(function(){
+	
+    $("#icolor").icolor({
+    	flat:true,
+    	onSelect:function(c){
+    		this.$tb.css("background-color",c);
+    		$("#colorchange").val(c);
+    		$("#colorchange").change();
+    	},
+    	showInput:true,
+    	title:false
+    });
+  
+	// Slider for brightness
+	$('#sliderBright').slider({
+		orientation: "horizontal",
+		range: "min",
+		min: 1,
+		max: 100,
+		value: parseInt($( "#amountBright").val(), 10),
+		change: function( event, ui ) {
+			$( "#amountBright" ).val( ui.value + "%" );
+			$( "#amountBright" ).change();
+		}
+	});
+	$( "#amountBright" ).html( $( "#sliderBright" ).slider( "value" ) );
+	
+});
+
+function toggleMode(y) {
+	if(y == 0) {
+		  document.getElementById("manual").setAttribute("class", "green-button");
+		  document.getElementById("follow").setAttribute("class", "gray-button");	
+	 	  document.getElementById("visual").setAttribute("class", "gray-button");	  
+	  	  document.getElementById("strobe").setAttribute("class", "gray-button");
+		  document.getElementById("room").removeAttribute("disabled"); 	  	    	  	  	  	    
+	}
+	else if(y == 1) {
+		  document.getElementById("manual").setAttribute("class", "gray-button");
+		  document.getElementById("follow").setAttribute("class", "green-button");	
+		  document.getElementById("visual").setAttribute("class", "gray-button");	  
+		  document.getElementById("strobe").setAttribute("class", "gray-button");	
+		  document.getElementById("room").setAttribute("disabled", "true");  	  	    
+	}
+	else if(y == 2) {
+		  document.getElementById("manual").setAttribute("class", "gray-button");
+		  document.getElementById("follow").setAttribute("class", "gray-button");	
+		  document.getElementById("visual").setAttribute("class", "green-button");	  
+		  document.getElementById("strobe").setAttribute("class", "gray-button");
+		  document.getElementById("room").removeAttribute("disabled"); 	  	  	    
+	}
+	else if(y == 3) {
+		  document.getElementById("manual").setAttribute("class", "gray-button");
+		  document.getElementById("follow").setAttribute("class", "gray-button");	
+		  document.getElementById("visual").setAttribute("class", "gray-button");	  
+		  document.getElementById("strobe").setAttribute("class", "green-button");
+		  document.getElementById("room").removeAttribute("disabled"); 		  	  	    		  	    
+	}		
+}
+
+function toggleOnOff(x) {
+	if(x == 1) {
+	  document.getElementById("on").setAttribute("class", "green-button");
+	  document.getElementById("off").setAttribute("class", "gray-button");	  
+	}
+	else if(x == 0) {
+	  document.getElementById("on").setAttribute("class", "gray-button");
+	  document.getElementById("off").setAttribute("class", "green-button");	  
+	}
+}
+</script>
+
+<div class="top-links">
+  <a class="icon-right" wicket:id="helpLink"><img wicket:id="helpLighting" /></a>
+  <a class="icon-right" href="#" ><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" ><img wicket:id="printer" /></a>
+  <div class="clear"></div>
+</div>
+
+<h1>Lighting</h1>
+
+<div class="column-three">
+  <div class="inner">
+    <div class="box">
+      <h2>General Settings</h2>     
+      <div class="clear"></div>
+      <div class="column-two" style="width:40%">
+      	<h5 class="dark-purple" style="margin-bottom:0px;">Room</h5>
+       <div class="clear"></div>
+        <form wicket:id="roomForm">
+           <select wicket:id="room">               
+           </select>
+           </form>
+            </div>
+		<div class="column-two" style="width:60%">
+		  <h5 class="dark-purple" style="margin-bottom:0px;">Brightness</h5>
+
+        <div class="clear"></div>
+        <form wicket:id="form">
+        <table class="bare" style="width:100%;">
+          <tr>
+          	<td style="width:100%;" colspan="2"><div id="sliderBright"></div></td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">
+              <input wicket:id="amountBright" size="4" type="text" />
+          	</td>
+          </tr>
+          <tr>
+          	<td colspan="1" align="center">
+              <input wicket:id="SubmitIntensity" class="gray-button" type="submit" value="Change" style="color: #333333;"/>
+            </td>
+          	<td colspan="1" width="40%">
+              <div style="width:100%;margin-top:3px;border: 3px #DDD solid;" align="center"><span wicket:id="intensityfeedback"></span></div>
+            </td>
+          </tr>          
+        </table>
+
+        </form>
+      </div>
+      <div class="clear"></div>
+      <div class="column-two">
+ 	     <h5 class="dark-purple" style="margin-bottom:1px;">Lights</h5>
+ 	     <div class="clear"></div>
+ 	     <a wicket:id="OnButton"  class="green-button" >On</a>&nbsp;
+ 	     <a wicket:id="OffButton"  class="gray-button" >Off</a>
+ 	  </div>
+ 	  <div class="clear"></div>
+ 	  <h5 class="dark-purple" style="margin-top:20px; margin-bottom:-5px;">Color</h5>
+      <div id="icolor" class="icolorC">
+      	<input wicket:id="colorchange" type="hidden"/>    
+      </div>
+      <div class="clear"></div>
+
+    </div>
+  </div>
+</div>
+
+<div class="column-three-two">
+<div class="inner">
+	<div class="box">
+    <h2>Lighting Log</h2>
+    <form action="#" class="table-wrapper" method="get" name="tableform">	
+    <!--p class="show-count">		
+	        Show&nbsp;		
+	        <select>		
+	          <option>10</option>		
+	          <option>20</option>		
+	          <option>30</option>		
+	          <option>40</option>		
+	        </select>		
+	        &nbsp;Entries		
+     </p-->		
+          <div wicket:id="LightingSystemLogContainer">
+          
+			<script type="text/javascript">
+			$(document).ready(function(){
+			   $("#LightingSystemLogTable").tablesorter();
+			 });
+			</script>
+			
+	      <table id="LightingSystemLogTable" cellpadding="0" cellspacing="0" class="tablesorter log" width="100%">		
+	        <thead>		
+	          <tr>		
+	            <th>Type</th>	
+	            <th>Time</th>
+	            <th>Message</th>		
+	          </tr>		
+	        </thead>		
+		
+	        <tbody>		
+	          <tr wicket:id="LightingStatusMessages">
+	    		<td wicket:id="LightingMessageType">Message Type Goes Here</td>
+	    		<td wicket:id="LightingTimestamp">Time Goes Here</td>
+	    		<td wicket:id="LightingMessageContent">Message Content Goes Here</td>
+	    	</tr>	
+	        </tbody>	
+	        <tfoot>
+	          <tr>
+	            <td wicket:id="paginatorLighting"></td>
+	          </tr>
+	        </tfoot>	
+	      </table>		
+      	  </div>
+	      <div class="clear"></div>		
+	    </form>
+  </div>
+</div>
+</div>
+<!-- End Status Messages -->        
+
+
+
+<script>
+// Use default settings
+for(i=1; i<15; i++) {
+		$("#time"+i).timePicker(); 
+}
+</script>
+  
+</wicket:extend>
+</html>
+

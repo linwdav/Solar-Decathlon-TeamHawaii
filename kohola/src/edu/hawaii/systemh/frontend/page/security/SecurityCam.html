@@ -1,0 +1,115 @@
+<html>
+<wicket:extend>
+
+<div class="top-links">
+
+  <a class="gray-button" href="#" wicket:id="SecurityPageLink">Security Main</a>
+  <a class="green-button" href="#" wicket:id="SecurityCamPageLink">Camera Feed</a>
+  <a class="gray-button" href="#"  wicket:id="SecurityRecPageLink">View Recordings</a>
+
+  <a class="icon-right" href="#" onClick="helpPopUp();return false;"><img wicket:id="help" /></a>
+  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
+  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
+  <div class="clear"></div>
+</div>
+
+<h1>Security Camera Feed</h1>
+
+<form>
+<div class="column-two">
+  <div class="inner">
+    <div class="box">
+      <h2>Camera One</h2>
+      <div class="right move-to-box-header">
+        <select id="cam1" onChange="changeVid(this.value);" style="margin-top:10px;height:20px;">
+          <option value="1" selected="selected">Front Door</option>
+          <option value="2">Back Yard</option>
+          <option value="3">Side</option>
+          <option value="4">Common Room</option>
+        </select>  
+      </div>
+      <div class="clear"></div>
+      <center>
+        <div style="width:450px; height:310px; overflow:hidden!important; text-align:center;">
+        <object width="480" height="385">
+          <param id="c11" name="movie" value="http://www.youtube.com/v/GLlO9RVfQQU?fs=1&amp;hl=en_US&autoplay=1"></param>
+          <param name="allowFullScreen" value="true"></param>
+          <param name="allowscriptaccess" value="always"></param>
+          <embed id="c12" src="http://www.youtube.com/v/GLlO9RVfQQU?fs=1&amp;hl=en_US&autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed>
+        </object> 
+        </div>
+      </center>  
+    </div>
+  </div>
+  
+  <div class="clear"></div>
+  
+  <div class="inner">
+    <div class="box">
+      <h2>Camera Three</h2>
+      <div class="right move-to-box-header">
+        <select id="cam3" onChange="changeVid(this.value);" style="margin-top:10px;height:20px;">
+          <option value="1">Front Door</option>
+          <option value="2" selected="selected">Back Yard</option>
+          <option value="3">Side</option>
+          <option value="4">Common Room</option>
+        </select>  
+      </div>
+      <div class="clear"></div>
+      <center>
+        <div style="width:450px; height:310px; overflow:hidden!important; text-align:center;">
+          <object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/eGtBx7aj9lE?fs=1&amp;hl=en_US&autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/eGtBx7aj9lE?fs=1&amp;hl=en_US&autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+        </div>
+      </center>
+		</div>
+  </div>  
+</div>
+
+<div class="column-two">
+  <div class="inner">
+    <div class="box">
+      <h2>Camera Two</h2>
+      <div class="right move-to-box-header">
+        <select id="cam2" onChange="changeVid(this.value);" style="margin-top:10px;height:20px;">
+          <option value="1">Front Door</option>
+          <option value="2">Back Yard</option>
+          <option value="3" selected="selected">Side</option>
+          <option value="4">Common Room</option>
+        </select>  
+      </div>
+      <div class="clear"></div>
+      <center>
+        <div style="width:450px; height:310px; overflow:hidden!important; text-align:center;">
+    		<object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/Cf_UGGBTWcY?fs=1&amp;hl=en_US&autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/Cf_UGGBTWcY?fs=1&amp;hl=en_US&autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>
+        </div>
+      </center>  
+    </div>
+  </div>
+  
+  <div class="clear"></div>
+  
+  <div class="inner">
+    <div class="box">
+    	<h2>Camera Four</h2>
+	    <div class="right move-to-box-header">
+      	<select id="cam4" onChange="changeVid(this.value);" style="margin-top:10px;height:20px;">
+          <option value="1">Front Door</option>
+          <option value="2">Back Yard</option>
+          <option value="3">Side</option>
+          <option value="4" selected="selected">Common Room</option>
+        </select>  
+			</div>
+      <div class="clear"></div>
+	  	<center>
+        <div style="width:450px; height:310px; overflow:hidden!important; text-align:center;">
+        <object width="480" height="385"><param name="movie" value="http://www.youtube.com/v/H1p0TM-GfNg?fs=1&amp;hl=en_US&autoplay=1"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="http://www.youtube.com/v/H1p0TM-GfNg?fs=1&amp;hl=en_US&autoplay=1" type="application/x-shockwave-flash" allowscriptaccess="always" allowfullscreen="true" width="480" height="385"></embed></object>		
+        </div>
+      </center>    
+		</div>
+  </div>  
+</div>
+</form>
+
+</wicket:extend>
+</html>
+
