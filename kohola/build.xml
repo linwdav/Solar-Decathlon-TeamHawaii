@@ -53,8 +53,8 @@
 	</path>
 
 	<!-- Basic properties for this system. -->
-	<property name="system.name" value="ihale-frontend" />
-	<property name="system.main.class" value="edu.hawaii.ihale.frontend.Jetty" />
+	<property name="system.name" value="systemh-frontend" />
+	<property name="system.main.class" value="edu.hawaii.systemh.frontend.Jetty" />
 	<property name="majorVersionNumber" value="2" />
 	<property name="minorVersionNumber" value="0" />
 	<tstamp>
