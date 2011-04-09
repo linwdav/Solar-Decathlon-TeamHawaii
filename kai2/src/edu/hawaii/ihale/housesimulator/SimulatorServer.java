@@ -71,6 +71,7 @@ public class SimulatorServer extends Application {
       System.out.println("New sensor data will be updated every N seconds.");
       System.exit(0);
     }
+    //runServer();
   }
 
   /**
@@ -84,11 +85,11 @@ public class SimulatorServer extends Application {
     // Log actions into a text file
     String currentDirectory = System.getProperty("user.dir");
     String configurationFilename = "logging.properties";
-    String configFilePath = currentDirectory + "\\" + configurationFilename;
+    String configFilePath = currentDirectory + "/" + configurationFilename;
     try {
       FileInputStream config = new FileInputStream(configFilePath);
       LogManager.getLogManager().readConfiguration(config);
-      String logFilename = System.getProperty("user.home") + "\\.ihale\\log.txt";
+      String logFilename = System.getProperty("user.home") + "/.ihale/log.txt";
       // Allow appending to the logging file.
       Handler fh = new FileHandler(logFilename, true);
       Logger.getLogger("").addHandler(fh);
@@ -101,6 +102,7 @@ public class SimulatorServer extends Application {
         "to a file, but instead to the console.";
       System.out.println(message);
     }
+    System.out.println(configFilePath);
       
     // Create a component and open several ports.
     Component component = new Component();
