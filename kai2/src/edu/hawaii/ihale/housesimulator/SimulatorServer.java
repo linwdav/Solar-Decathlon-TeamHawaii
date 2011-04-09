@@ -98,11 +98,9 @@ public class SimulatorServer extends Application {
     catch (IOException ioe) {
       // CheckStyle was complaining about use of tabs when there wasn't so this long string is
       // placed into a String variable to comply with the warning.
-      String message = "logging.properties file not found. Log messages will not be appended" +
-        "to a file, but instead to the console.";
-      System.out.println(message);
+      System.out.println("Error, logging properties file not found at " + configFilePath);
+      System.out.println("Log messages will be appended to the console");
     }
-    System.out.println(configFilePath);
       
     // Create a component and open several ports.
     Component component = new Component();

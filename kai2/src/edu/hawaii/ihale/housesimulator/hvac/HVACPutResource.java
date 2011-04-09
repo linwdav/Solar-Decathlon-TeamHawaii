@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.housesimulator.hvac;
 
-import java.util.Date;
 import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
@@ -32,7 +31,6 @@ public class HVACPutResource extends ServerResource {
   @Put
   public Representation putValue(Representation representation) throws Exception {
     
-    HVACData hvac = new HVACData();
     DomRepresentation domRep = new DomRepresentation(representation);
     Document domDoc = domRep.getDocument();
 
@@ -54,10 +52,6 @@ public class HVACPutResource extends ServerResource {
     else {
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
     }
-    
-    System.out.println(new Date(hvac.getWhenDesiredTempCommandIssued()) + 
-        " --> HVAC system was instructed to set to maintain the home temperature to " + 
-        arg + "C.");
     
     return null;
   }

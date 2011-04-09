@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.housesimulator.lighting.bathroom;
 
-import java.util.Date;
 import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
@@ -54,19 +53,11 @@ public class LightingBathroomPutResource extends ServerResource {
     // Call mutator corresponding to room.
     if (setLevel.equalsIgnoreCase(putCommand) && "SET_LIGHTING_LEVEL".equalsIgnoreCase(command)) {
       LightingData.setBathroomLevel(Long.parseLong(arg));
-      
-      //String string = new Date() + " --> Lighting system was instructed to set the bathroom " +
-      //"lights to " + arg + "% intensity.";
-      System.out.println(new Date() + " --> Lighting system was instructed to set the bathroom " +
-          "lights to " + arg + "% intensity.");
     }
     // Call lighting mutator corresponding to room.
     else if (setColor.equalsIgnoreCase(putCommand) && 
         "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
-      
       LightingData.setBathroomColor(arg);
-      System.out.println(new Date() + " --> Lighting system was instructed to set the bathroom " +
-          "light color to " + arg + ".");
     }    
     // Call enable mutator corresponding to room.
     else if (setEnable.equalsIgnoreCase(putCommand) && 
@@ -74,14 +65,6 @@ public class LightingBathroomPutResource extends ServerResource {
       
       boolean enableLights = Boolean.parseBoolean(arg);
       LightingData.setBathroomEnabled(enableLights);
-      if (enableLights) {
-        System.out.println(new Date() + " --> Lighting system was instructed to turn on the " +
-            "bathroom lights.");
-      }
-      else {
-        System.out.println(new Date() + " --> Lighting system was instructed to turn off the " +
-            "bathroom lights.");
-      }
     }
     else { 
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);

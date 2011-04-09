@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.housesimulator.lighting.dining;
 
-import java.util.Date;
 import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.representation.Representation;
@@ -55,30 +54,16 @@ public class LightingDiningPutResource extends ServerResource {
     
     if (setLevel.equalsIgnoreCase(putCommand) && "SET_LIGHTING_LEVEL".equalsIgnoreCase(command)) {
       LightingData.setDiningLevel(Long.parseLong(arg));
-      
-      System.out.println(new Date() + " --> Lighting system was instructed to the dining room " +
-          "lights to " + arg + "% intensity.");
     }
     else if (setColor.equalsIgnoreCase(putCommand) && 
         "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
-      
       LightingData.setDiningColor(arg);
-      System.out.println(new Date() + " --> Lighting system was instructed to set the dining room " 
-          + "light color to " + arg + ".");
     }    
     else if (setEnable.equalsIgnoreCase(putCommand) && 
         "SET_LIGHTING_ENABLED".equalsIgnoreCase(command) ) {
       
       boolean enableLights = Boolean.parseBoolean(arg);
       LightingData.setBathroomEnabled(enableLights);
-      if (enableLights) {
-        System.out.println(new Date() + " --> Lighting system was instructed to turn on the " +
-            "diining room lights.");
-      }
-      else {
-        System.out.println(new Date() + " --> Lighting system was instructed to turn off the " +
-            "dining room lights.");
-      }
     }
     else { 
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);

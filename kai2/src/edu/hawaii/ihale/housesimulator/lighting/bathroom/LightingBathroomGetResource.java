@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.housesimulator.lighting.bathroom;
 
-import java.util.Date;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
@@ -22,9 +21,6 @@ public class LightingBathroomGetResource extends ServerResource {
    */
   @Get
   public Representation getState() throws Exception {
-    
-    System.out.println(new Date() + " --> Bathroom lighting state information was requested.");
-    
     return LightingData.toXml("bathroom");
   }
 }

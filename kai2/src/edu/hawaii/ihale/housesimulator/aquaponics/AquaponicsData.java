@@ -29,7 +29,7 @@ public class AquaponicsData {
 
   // Safe condition ranges for fish to live.
   /** Number of fish alive in tank. */
-  private static int alive_fish = 20;
+  private static int aliveFish = 20;
   /** Minimum electrical conductivity in us/cm. */
   private static double minEC = 10.0;
   /** Maximum electrical conductivity in us/cm. */
@@ -63,15 +63,15 @@ public class AquaponicsData {
   /** The current water circulation. */
   private static double circulation = (randomGen.nextDouble() * (maxCirc - minCirc)) + minCirc;
   /** The current number of dead fish. */
-  private static int dead_fish = 0;
+  private static int deadFish = 0;
   /** The current electrical conductivity. */
   private static double ec = (randomGen.nextDouble() * (maxEC - minEC)) + minEC;
   /** The current temperature. */
   private static int temperature = randomGen.nextInt(maxTemp - minTemp + 1) + minTemp;
   /** The current turbidity. */
-  private static double turbidity = (ec * 2) + alive_fish + (dead_fish * 5) - (circulation * 0.1);
+  private static double turbidity = (ec * 2) + aliveFish + (deadFish * 5) - (circulation * 0.1);
   /** The current water level. */
-  private static int water_level = (randomGen.nextInt(maxWater - minWater + 1)) + minWater;
+  private static int waterLevel = (randomGen.nextInt(maxWater - minWater + 1)) + minWater;
   /** The current pH. */
   private static double ph = (randomGen.nextDouble() * (maxPH - minPH)) + minPH;
   /** The current dissolved oxygen. Correlates with amount of water circulation. */
@@ -140,16 +140,16 @@ public class AquaponicsData {
    */
   public static void changeDeadFish() {
     if (((ec < minEC) || (ec > maxEC) || (temperature < minTemp) || (temperature > maxTemp)
-        || (water_level < minWater) || (water_level > maxWater) || (ph < minPH) || (ph > maxPH)
+        || (waterLevel < minWater) || (waterLevel > maxWater) || (ph < minPH) || (ph > maxPH)
         || (oxygen < minOxygen) || (oxygen > maxOxygen))
-        && (alive_fish > 0)) {
+        && (aliveFish > 0)) {
       // 50% chance of 1 fish dying.
       int fishDeath = randomGen.nextInt(2);
-      dead_fish += fishDeath;
-      alive_fish -= fishDeath;
+      deadFish += fishDeath;
+      aliveFish -= fishDeath;
       if (fishDeath > 0) {
-        // Each dead fish increases EC by 0.1
-        ec += 0.1;
+        // Each dead fish increases EC by 0.3
+        ec += 0.3;
       }
     }
   }
@@ -198,17 +198,17 @@ public class AquaponicsData {
    * Change water level.
    */
   public static void changeWaterLevel() {
-    if (water_level < desiredWaterLevel) {
+    if (waterLevel < desiredWaterLevel) {
       // 50% chance to increment water_level by 0 to 2 units.
-      water_level += randomGen.nextInt(2) + randomGen.nextInt(2);
+      waterLevel += randomGen.nextInt(2) + randomGen.nextInt(2);
     }
-    else if (water_level > desiredWaterLevel) {
+    else if (waterLevel > desiredWaterLevel) {
       // 50% chance to decrement water_level by 0 to 2 units.
-      water_level -= randomGen.nextInt(2) + randomGen.nextInt(2);
+      waterLevel -= randomGen.nextInt(2) + randomGen.nextInt(2);
     }
     else {
       // 50% chance of Increment or decrement water by 0 to 1 unit to reflect randomness.
-      water_level += randomGen.nextInt(2) * (randomGen.nextInt(2) - randomGen.nextInt(2));
+      waterLevel += randomGen.nextInt(2) * (randomGen.nextInt(2) - randomGen.nextInt(2));
     }
   }
 
@@ -233,7 +233,7 @@ public class AquaponicsData {
   }
 
   /**
-   * Change water oxygen.
+   * Change water oxygen.  It is correlates linearly with amount of water circulation.
    */
   public static void changeOxygen() {
     oxygen =
@@ -244,7 +244,7 @@ public class AquaponicsData {
    * Change water turbidity.
    */
   public static void changeTurbidity() {
-    turbidity = (ec * 2) + alive_fish + (dead_fish * 5) - (circulation * 0.1);
+    turbidity = (ec * 2) + aliveFish + (deadFish * 5) - (circulation * 0.1);
   }
 
   /**
@@ -255,8 +255,8 @@ public class AquaponicsData {
     final String required = " (Required: "; // PMD pickiness
     System.out.println("----------------------");
     System.out.println("System: Aquaponics");
-    System.out.println("Alive fish: " + alive_fish);
-    System.out.println("Dead fish: " + dead_fish);
+    System.out.println("Alive fish: " + aliveFish);
+    System.out.println("Dead fish: " + deadFish);
     System.out.println("Circulation: " + roundSingleDecimal(circulation) + required + minCirc
         + "-" + maxCirc + ")");
     System.out.println("Electrical conductivity: " + roundSingleDecimal(ec) + desired
@@ -265,7 +265,7 @@ public class AquaponicsData {
         + required + minTemp + "-" + maxTemp + ")");
     System.out.println("Turbidity: " + roundSingleDecimal(turbidity) + required + "0" + "-"
         + maxTurb + ")");
-    System.out.println("Water level: " + water_level + desired + desiredWaterLevel + ")"
+    System.out.println("Water level: " + waterLevel + desired + desiredWaterLevel + ")"
         + required + minWater + "-" + maxWater + ")");
     System.out.println("pH: " + roundSingleDecimal(ph) + desired + roundSingleDecimal(desiredPh)
         + ")" + required + minPH + "-" + maxPH + ")");
@@ -297,7 +297,7 @@ public class AquaponicsData {
    * @param numFish the amount of fish to harvest.
    */
   public static void harvestFish(int numFish) {
-    alive_fish -= numFish;
+    aliveFish -= numFish;
   }
 
   /**
@@ -370,7 +370,7 @@ public class AquaponicsData {
     // Create dead fish state tag.
     Element deadFishElement = doc.createElement(state);
     deadFishElement.setAttribute(key, "DEAD_FISH");
-    deadFishElement.setAttribute(value, String.valueOf(dead_fish));
+    deadFishElement.setAttribute(value, String.valueOf(deadFish));
     rootElement.appendChild(deadFishElement);
 
     // Create electrical conductivity state tag.
@@ -394,7 +394,7 @@ public class AquaponicsData {
     // Create water state tag.
     Element waterLevelElement = doc.createElement(state);
     waterLevelElement.setAttribute(key, "WATER_LEVEL");
-    waterLevelElement.setAttribute(value, String.valueOf(water_level));
+    waterLevelElement.setAttribute(value, String.valueOf(waterLevel));
     rootElement.appendChild(waterLevelElement);
 
     // Create PH state tag.
@@ -453,7 +453,7 @@ public class AquaponicsData {
     // Create dead fish state tag.
     Element deadFishElement = doc.createElement(state);
     deadFishElement.setAttribute(key, "DEAD_FISH");
-    deadFishElement.setAttribute(value, String.valueOf(dead_fish));
+    deadFishElement.setAttribute(value, String.valueOf(deadFish));
     stateElement.appendChild(deadFishElement);
 
     // Create electrical conductivity state tag.
@@ -477,7 +477,7 @@ public class AquaponicsData {
     // Create water state tag.
     Element waterLevelElement = doc.createElement(state);
     waterLevelElement.setAttribute(key, "WATER_LEVEL");
-    waterLevelElement.setAttribute(value, String.valueOf(water_level));
+    waterLevelElement.setAttribute(value, String.valueOf(waterLevel));
     stateElement.appendChild(waterLevelElement);
 
     // Create PH state tag.
@@ -501,7 +501,7 @@ public class AquaponicsData {
    * @return number of alive fish
    */
   public int getAliveFish() {
-    return alive_fish;
+    return aliveFish;
   }
 
   /**
@@ -509,7 +509,7 @@ public class AquaponicsData {
    * @return number of dead fish
    */
   public int getDeadFish() {
-    return dead_fish;
+    return deadFish;
   }
 
   /**
@@ -549,7 +549,7 @@ public class AquaponicsData {
    * @return water level
    */
   public int getWaterLevel() {
-    return water_level;
+    return waterLevel;
   }
 
   /**

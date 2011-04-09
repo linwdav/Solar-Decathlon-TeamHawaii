@@ -1,6 +1,5 @@
 package edu.hawaii.ihale.housesimulator.lighting.dining;
 
-import java.util.Date;
 import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
@@ -22,9 +21,6 @@ public class LightingDiningGetResource extends ServerResource {
    */
   @Get
   public Representation getState() throws Exception {
-    
-    System.out.println(new Date() + " --> Dining room lighting state information was requested.");
-    
     return LightingData.toXml("dining");
   }
 }
