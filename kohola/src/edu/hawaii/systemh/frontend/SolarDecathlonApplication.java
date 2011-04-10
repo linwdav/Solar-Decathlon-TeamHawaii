@@ -7,6 +7,7 @@ import org.apache.wicket.Response;
 import org.apache.wicket.Session;
 import org.apache.wicket.protocol.http.WebApplication;
 //import edu.hawaii.ihale.api.SystemStateEntryDB;
+import edu.hawaii.ihale.api.command.IHaleCommand;
 import edu.hawaii.ihale.api.repository.IHaleRepository;
 import edu.hawaii.ihale.api.repository.impl.Repository;
 //import edu.hawaii.ihale.backend.DataGatheringThread;
@@ -52,7 +53,7 @@ public class SolarDecathlonApplication extends WebApplication {
   // private static SystemStateEntryDB db;
   // private static IHaleRepository repository;
   private static Repository repository;
-  private static IHaleBackend backend;
+  private static IHaleCommand backend;
 
   static {
 
@@ -239,8 +240,17 @@ public class SolarDecathlonApplication extends WebApplication {
    * 
    * @return The backend.
    */
-  public static IHaleBackend getBackend() {
+  public static IHaleCommand getBackend() {
     return backend;
+  }
+  
+  /**
+   * Allows us to change the backend for testing purposes.
+   * 
+   * @param newBackend The new backend to change to.
+   */
+  public static void setBackend(IHaleCommand newBackend) {
+	  backend = newBackend;
   }
 
   /**
