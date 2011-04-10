@@ -12,7 +12,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
@@ -126,26 +125,6 @@ public class TestAquaponics extends SystemDataTest {
     }
     
     assertEquals("Invalid call",expectedThrown,true);
-  }
-
-  /**
-   * Tests PUT command with aquaponics. Command: SET_TEMPERATURE; Arg: 25.
-   * 
-   * @throws Exception Thrown if server fails to run.
-   */
-  @Test
-  public void testPut() throws Exception {
-
-    Repository repository = new Repository();
-
-    // Send PUT command to server.
-    String uri = "http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25";
-    ClientResource client = new ClientResource(uri);
-    client.getLogger().setLevel(Level.OFF);
-    client.put(uri);
-
-    assertEquals("Checking sent argument", Integer.valueOf(25), repository
-        .getAquaponicsTemperatureCommand().getValue());
   }
 
   /**

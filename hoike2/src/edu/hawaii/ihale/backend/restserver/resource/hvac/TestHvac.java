@@ -114,24 +114,6 @@ public class TestHvac extends SystemDataTest {
   }
 
   /**
-   * Tests PUT command with HVAC. Command: SET_TEMPERATURE; Arg: 25. Won't work until we test with a
-   * simulator.
-   * 
-   * @throws Exception Thrown if server fails to run.
-   */
-  @Test
-  public void testPut() throws Exception {
-    // Send PUT command to server.
-    String uri = "http://localhost:8111/HVAC/command/SET_TEMPERATURE?arg=25";
-    ClientResource client = new ClientResource(uri);
-    client.getLogger().setLevel(Level.OFF);
-    client.put(uri);
-
-    assertEquals("Checking sent argument", Integer.valueOf(25), repository
-        .getHvacTemperatureCommand().getValue());
-  }
-
-  /**
    * Tests GET command with HVAC. Won't work until we test with a simulator.
    * 
    * @throws Exception Thrown if document creation fails or failure with server.

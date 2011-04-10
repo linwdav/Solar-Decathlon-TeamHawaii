@@ -88,7 +88,6 @@ public class TestLighting extends SystemDataTest {
 
     DomRepresentation dom = (DomRepresentation) LightingData.toXmlSince(IHaleRoom.BATHROOM, 1L);
     Document doc = dom.getDocument();
-
     Element rootEl = doc.getDocumentElement();
 
     assertEquals("Root element", SystemData.XML_TAG_STATE_HISTORY, rootEl.getTagName());
@@ -153,24 +152,6 @@ public class TestLighting extends SystemDataTest {
     }
     
     assertEquals("Caught the error",expectedThrown,true);
-  }
-
-  /**
-   * Tests PUT command with lighting. Command: SET_LIGHTING_LEVEL; Arg: 50; Room: LIVING. Won't work
-   * until we test with a simulator.
-   * 
-   * @throws Exception Thrown if server fails to run.
-   */
-  @Test
-  public void testPut() throws Exception {
-    // Send PUT command to server.
-    String uri = "http://localhost:8111/LIGHTING/command/SET_LIGHTING_LEVEL?arg=50&room=LIVING";
-    ClientResource client = new ClientResource(uri);
-    client.getLogger().setLevel(Level.OFF);
-    client.put(uri);
-
-    assertEquals("Checking sent argument", Integer.valueOf(50),
-        repository.getLightingLevelCommand(IHaleRoom.LIVING).getValue());
   }
 
   /**
