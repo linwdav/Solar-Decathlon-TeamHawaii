@@ -27,9 +27,9 @@ import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
 import edu.hawaii.ihale.api.command.IHaleCommand;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.command.PutCommand;
+import edu.hawaii.ihale.backend.exception.InvalidTypeException;
 import edu.hawaii.ihale.backend.restserver.RestServer;
-import edu.hawaii.ihale.backend.xml.PutCommand;
-import edu.hawaii.ihale.backend.xml.InvalidTypeException;
 
 /**
  * Provides a sample illustration of IHale backend functionality as it relates to the iHale API
@@ -47,7 +47,10 @@ import edu.hawaii.ihale.backend.xml.InvalidTypeException;
  * Frontend could display in the interface by attaching a listener.
  * 
  * @author Philip Johnson
- * @author Backend Team
+ * @author Bret K. Ikehara
+ * @author Tony Gaskell
+ * @author Gregory Burgess
+ * @author Michael Cera 
  */
 public class IHaleBackend implements IHaleCommand {
 

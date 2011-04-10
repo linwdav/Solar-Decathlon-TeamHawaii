@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.xml;
+package edu.hawaii.ihale.backend.command;
 
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;

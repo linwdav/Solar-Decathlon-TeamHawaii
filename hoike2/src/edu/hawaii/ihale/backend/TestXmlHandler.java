@@ -27,6 +27,9 @@ public class TestXmlHandler {
 
     String xmlDirectory =
         System.getProperty("user.dir") + "/src/edu/hawaii/ihale/backend/xml/test/";
+    
+    System.out.println(xmlDirectory);
+    
     String eGaugeXml = xmlDirectory + "test-egauge.xml";
     String historyXml = xmlDirectory + "test-history.xml";
 

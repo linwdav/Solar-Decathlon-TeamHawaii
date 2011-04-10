@@ -1,26 +1,30 @@
 package edu.hawaii.ihale.backend;
 
-import java.util.Map; 
+import java.util.Map;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 
-/** A Class that controls the timed polling, parsing and storing of data
- * from the house simulator.  One instance of this class should be created 
- * by IHaleBackend.java.
- * @author Backend Team
- *
+/**
+ * This class controls the timed polling, parsing, and storing of data from the IHale system devices.
+ * One instance of this class should be created by IHaleBackend.java.
+ * 
+ * @author Tony Gaskell
+ * @author Gregory Burgess
  */
 public class Dispatcher extends Thread {
-  /** The interval to wait between polling.*/
+  
+  /** The interval to wait between polling. */
   private long interval;
   /** The map containing all URI values for each system. */
   private Map<String, String> uriMap;
   /** The PollingDevices. */
-  private PollDevice[] pollDevices; 
-  
-  /** Initializes the dispatcher and starts it.
+  private PollDevice[] pollDevices;
+
+  /**
+   * Initializes the dispatcher and starts it.
+   * 
    * @param map the parsed properties file
    * @param interval the time in milliseconds to wait between polling.
-   * @throws InterruptedException 
+   * @throws InterruptedException
    */
   public Dispatcher(Map<String, String> map, long interval) throws InterruptedException {
     this.interval = interval;
@@ -29,10 +33,11 @@ public class Dispatcher extends Thread {
   }
 
   /**
-   * Initializes polling threads.
+   * Initializes the polling threads.
    */
-  private final void init () {
+  private final void init() {
     pollDevices = new PollDevice[8];
+    
     try {
       pollDevices[0] = new PollDevice(IHaleSystem.AQUAPONICS, uriMap.get("aquaponics-state"));
       pollDevices[1] = new PollDevice(IHaleSystem.HVAC, uriMap.get("hvac-state"));
@@ -47,34 +52,31 @@ public class Dispatcher extends Thread {
       System.err.println("An error occured initializing polling threads!");
       e.printStackTrace();
     }
-
   }
 
-  /** Polls data continuously from the simulator in set intervals.
+  /**
+   * Polls data continuously from the simulator in set intervals.
    */
   @Override
   public final void run() {
-    while (true) { 
+    while (true) {
+      
+      // Poll each IHale system device.
       for (int i = 0; i < pollDevices.length; i++) {
-//        pollDevices[i].run();
         pollDevices[i].poll();
       }
-/*      for (int j = 0; j < pollDevices.length; j++) {
-        try {
-          pollDevices[j].join();
-        }
-        catch (InterruptedException e) {
-          System.err.println("Error occured while polling devices.");
-          e.printStackTrace();
-        }
-      } */
+      
+      /*
+       * for (int j = 0; j < pollDevices.length; j++) { try { pollDevices[j].join(); } catch
+       * (InterruptedException e) { System.err.println("Error occured while polling devices.");
+       * e.printStackTrace(); } }
+       */
       try {
         Thread.sleep(interval);
       }
       catch (InterruptedException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
       }
     }
-  } 
+  }
 }

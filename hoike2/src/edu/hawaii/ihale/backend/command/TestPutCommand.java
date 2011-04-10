@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.xml;
+package edu.hawaii.ihale.backend.command;
 
 import static org.junit.Assert.assertEquals;
 import java.io.IOException;

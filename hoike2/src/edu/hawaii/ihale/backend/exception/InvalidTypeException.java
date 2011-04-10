@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.backend.xml;
+package edu.hawaii.ihale.backend.exception;
 
 /**
  * Creates a custom exception to check for valid object types.
