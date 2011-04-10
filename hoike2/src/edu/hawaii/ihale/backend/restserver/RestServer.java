@@ -27,7 +27,7 @@ public class RestServer extends Application {
   /**
    * The REST server.
    */
-  private static Component server = new Component();
+  private static Component component = new Component();
 
   /**
    * Starts the REST server running on the specified port.
@@ -38,20 +38,20 @@ public class RestServer extends Application {
    */
   public static boolean runServer(int port) throws Exception {
     
-    server.getLogger().setLevel(Level.OFF);
+    component.getLogger().setLevel(Level.OFF);
     
-    if (server.isStarted()) {
-      throw new Exception("iHale REST server already running.");
+    if (component.isStarted()) {
+      return false;
     }
     
-    server.getServers().add(Protocol.HTTP, port);
-    server.getClients().add(Protocol.HTTP);
+    component.getServers().add(Protocol.HTTP, port);
+    component.getClients().add(Protocol.HTTP);
 
     Application application = new RestServer();
 
     String contextRoot = "";
-    server.getDefaultHost().attach(contextRoot, application);
-    server.start();
+    component.getDefaultHost().attach(contextRoot, application);
+    component.start();
     
     return true;
   }
@@ -63,8 +63,8 @@ public class RestServer extends Application {
    * @throws Exception Thrown when server fails to shut down.
    */
   public static boolean stopServer() throws Exception {
-    if (server.isStarted()) {
-      server.stop();
+    if (component.isStarted()) {
+      component.stop();
       return true;
     }
     return false;
