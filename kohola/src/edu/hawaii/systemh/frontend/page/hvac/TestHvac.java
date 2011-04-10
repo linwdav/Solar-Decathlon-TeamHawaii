@@ -8,7 +8,6 @@ import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.WicketTester;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import com.codecommit.wicket.Chart;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
@@ -21,12 +20,6 @@ import edu.hawaii.systemh.frontend.weatherparser.WeatherParser;
  * @author Anthony Kinsey
  */
 public class TestHvac {
-
-  @BeforeClass
-  public static void test() {
-    // IHaleBackend backend = new IHaleBackend();
-    // SolarDecathlonApplication.setBackend(backend);
-  }
 
   /**
    * Performs JUnit tests on the Hvac page.
