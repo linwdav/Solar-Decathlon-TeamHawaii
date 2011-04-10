@@ -2,6 +2,8 @@ package edu.hawaii.ihale.backend.restserver.resource.aquaponics;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -10,8 +12,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
-import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -19,7 +22,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestAquaponics extends SystemDataTest {
+public class TestAquaponics {
 
   /**
    * Test toXML method.
@@ -111,9 +114,18 @@ public class TestAquaponics extends SystemDataTest {
    * 
    * @throws Exception Thrown when JUnit test fails.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void testToXmlSinceNull() throws Exception {
-    AquaponicsData.toXmlSince(null);
+    boolean expectedThrown = false;
+    
+    try {
+      AquaponicsData.toXmlSince(null);
+    }
+    catch (RuntimeException e) {
+      expectedThrown = true;
+    }
+    
+    assertTrue(expectedThrown);
   }
 
   /**
@@ -124,6 +136,11 @@ public class TestAquaponics extends SystemDataTest {
   @Test
   public void testPut() throws Exception {
 
+    Repository repository = new Repository();
+
+    // Run the REST server.
+    RestServer.runServer(8111);
+
     // Send PUT command to server.
     String uri = "http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
@@ -131,6 +148,8 @@ public class TestAquaponics extends SystemDataTest {
 
     assertEquals("Checking sent argument", Integer.valueOf(25), repository
         .getAquaponicsTemperatureCommand().getValue());
+
+    RestServer.stopServer();
   }
 
   /**
@@ -141,8 +160,11 @@ public class TestAquaponics extends SystemDataTest {
   @Test
   public void testGet() throws Exception {
 
+    // Run the REST server.
+    RestServer.runServer(8112);
+    
     // Send GET command to server to retrieve XML of the current state.
-    String uri = "http://localhost:8111/AQUAPONICS/state";
+    String uri = "http://localhost:8112/AQUAPONICS/state";
     ClientResource client = new ClientResource(uri);
 
     DomRepresentation stateRepresentation = new DomRepresentation(client.get());
@@ -155,7 +177,7 @@ public class TestAquaponics extends SystemDataTest {
         rootNodeName);
 
     // Send GET command to server to retrieve XML of the state history.
-    uri = "http://localhost:8111/AQUAPONICS/state?since=1";
+    uri = "http://localhost:8112/AQUAPONICS/state?since=1";
     client = new ClientResource(uri);
 
     stateRepresentation = new DomRepresentation(client.get());
@@ -168,5 +190,7 @@ public class TestAquaponics extends SystemDataTest {
     // the rest should be there if testToXmlSince method passes.
     assertEquals("Checking that this is XML for the state history.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
+
+    RestServer.stopServer();
   }
 }

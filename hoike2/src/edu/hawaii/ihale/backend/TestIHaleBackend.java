@@ -2,6 +2,8 @@ package edu.hawaii.ihale.backend;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import java.io.IOException;
 import java.util.Map;
 import org.junit.Test;
@@ -84,19 +86,35 @@ public class TestIHaleBackend {
   /**
    * Tests the HVAC doCommand for a unsuccessful PUT.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandHvacSystemNull() {
+    boolean expectedThrown = false;
 
-    backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, nullObj);
+    try {
+      backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, nullObj);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 
   /**
    * Tests the HVAC doCommand for a unsuccessful PUT.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandHvacSystemInvalid() {
+    boolean expectedThrown = false;
 
-    backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, invalidObj);
+    try {
+      backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, invalidObj);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 
   /**
@@ -117,21 +135,37 @@ public class TestIHaleBackend {
   /**
    * Tests the Aquaponics doCommand for a unsuccessful PUT.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandAquaponicsSystemNull() {
+    boolean expectedThrown = false;
 
-    // Test valid input
-    backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE, nullObj);
+    try {
+      // Test valid input
+      backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE, nullObj);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 
   /**
    * Tests the Aquaponics doCommand for a unsuccessful PUT.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandAquaponicsSystemInvalid() {
+    boolean expectedThrown = false;
 
-    // Test valid input
-    backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE, invalidObj);
+    try {
+      // Test valid input
+      backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE, invalidObj);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 
   /**
@@ -155,47 +189,79 @@ public class TestIHaleBackend {
   /**
    * Tests the Lighting doCommand for a unsuccessful PUT.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandLightingSystemNull() {
+    boolean expectedThrown = false;
 
-    // Test valid input
-    backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
-        IHaleCommandType.SET_LIGHTING_LEVEL, nullObj);
+    try {
+      // Test valid input
+      backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
+          IHaleCommandType.SET_LIGHTING_LEVEL, nullObj);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 
   /**
    * Tests the Lighting doCommand for a unsuccessful PUT.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandLightingSystemInvalid() {
+    boolean expectedThrown = false;
 
-    // Test valid input
-    backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
-        IHaleCommandType.SET_LIGHTING_LEVEL, invalidObj);
+    try {
+      // Test valid input
+      backend.doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
+          IHaleCommandType.SET_LIGHTING_LEVEL, invalidObj);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 
   /**
    * Tests the Lighting doCommand for a unsuccessful PUT.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandLightingSystemInvalidRoom() {
 
     Object value = Integer.valueOf(45);
+    boolean expectedThrown = false;
 
-    // Test valid input
-    backend.doCommand(IHaleSystem.LIGHTING, null, IHaleCommandType.SET_LIGHTING_LEVEL, value);
+    try {
+      // Test valid input
+      backend.doCommand(IHaleSystem.LIGHTING, null, IHaleCommandType.SET_LIGHTING_LEVEL, value);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 
   /**
    * Tests the Invalid system doCommand for a unsuccessful PUT. Remove @Ignore tag when running with
    * a simulator.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void doCommandInvalidSystem() {
 
     Object value = Integer.valueOf(45);
+    boolean expectedThrown = false;
 
-    // Test valid input
-    backend.doCommand(null, null, IHaleCommandType.SET_LIGHTING_LEVEL, value);
+    try {
+      // Test valid input
+      backend.doCommand(null, null, IHaleCommandType.SET_LIGHTING_LEVEL, value);
+    }
+    catch (RuntimeException e) {
+        expectedThrown = true;
+    }
+
+    assertTrue(expectedThrown);
   }
 }

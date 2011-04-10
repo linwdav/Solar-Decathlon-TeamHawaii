@@ -2,6 +2,8 @@ package edu.hawaii.ihale.backend.restserver.resource.hvac;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -10,8 +12,9 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
-import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -19,7 +22,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestHvac extends SystemDataTest {
+public class TestHvac {
 
   /**
    * Test toXML method.
@@ -98,9 +101,18 @@ public class TestHvac extends SystemDataTest {
    * 
    * @throws Exception Thrown when JUnit test fails.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void testToXmlSinceNull() throws Exception {
-    HvacData.toXmlSince(null);
+    boolean expectedThrown = false;
+    
+    try {
+      HvacData.toXmlSince(null);
+    }
+    catch (RuntimeException e) {
+      expectedThrown = true;
+    }
+    
+    assertTrue(expectedThrown);
   }
 
   /**
@@ -112,6 +124,11 @@ public class TestHvac extends SystemDataTest {
   @Test
   public void testPut() throws Exception {
 
+    // Start the REST server.
+    RestServer.runServer(8111);
+
+    Repository repository = new Repository();
+
     // Send PUT command to server.
     String uri = "http://localhost:8111/HVAC/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
@@ -119,6 +136,9 @@ public class TestHvac extends SystemDataTest {
 
     assertEquals("Checking sent argument", Integer.valueOf(25), repository
         .getHvacTemperatureCommand().getValue());
+
+    // Shut down the REST server.
+    RestServer.stopServer();
   }
 
   /**
@@ -128,8 +148,12 @@ public class TestHvac extends SystemDataTest {
    */
   @Test
   public void testGet() throws Exception {
+
+    // Start the REST server.
+    RestServer.runServer(8112);
+
     // Send GET command to server to retrieve XML of the current state.
-    String uri = "http://localhost:8111/HVAC/state";
+    String uri = "http://localhost:8112/HVAC/state";
     ClientResource client = new ClientResource(uri);
 
     DomRepresentation stateRepresentation = new DomRepresentation(client.get());
@@ -142,7 +166,7 @@ public class TestHvac extends SystemDataTest {
         rootNodeName);
 
     // Send GET command to server to retrieve XML of the state history.
-    uri = "http://localhost:8111/HVAC/state?since=1";
+    uri = "http://localhost:8112/HVAC/state?since=1";
     client = new ClientResource(uri);
 
     stateRepresentation = new DomRepresentation(client.get());
@@ -153,5 +177,8 @@ public class TestHvac extends SystemDataTest {
 
     assertEquals("Checking that this is XML for the state history.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
+
+    // Shut down the REST server.
+    RestServer.stopServer();
   }
 }

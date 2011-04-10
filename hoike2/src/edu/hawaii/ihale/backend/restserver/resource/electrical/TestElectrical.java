@@ -2,6 +2,8 @@ package edu.hawaii.ihale.backend.restserver.resource.electrical;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -10,8 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
-import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the eletrical data to ensure that the XML representation is correct.
@@ -19,7 +21,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestElectrical extends SystemDataTest {
+public class TestElectrical {
 
   /**
    * Test toXML method.
@@ -100,9 +102,18 @@ public class TestElectrical extends SystemDataTest {
    * 
    * @throws Exception Thrown when JUnit test fails.
    */
-  @Test(expected = RuntimeException.class)
+  @Test
   public void testToXmlSinceNull() throws Exception {
-    ElectricalData.toXmlSince(null);
+    boolean expectedThrown = false;
+    
+    try {
+      ElectricalData.toXmlSince(null);
+    }
+    catch (RuntimeException e) {
+      expectedThrown = true;
+    }
+    
+    assertTrue(expectedThrown);
   }
 
   /**
@@ -113,6 +124,8 @@ public class TestElectrical extends SystemDataTest {
    */
   @Test
   public void testGet() throws Exception {
+
+    RestServer.runServer(8111);
 
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/ELECTRIC/state";
@@ -139,5 +152,7 @@ public class TestElectrical extends SystemDataTest {
 
     assertEquals("Checking that this is XML for the current state.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
+
+    RestServer.stopServer();
   }
 }
