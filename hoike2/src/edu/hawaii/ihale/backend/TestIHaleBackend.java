@@ -1,8 +1,7 @@
 package edu.hawaii.ihale.backend;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull; 
 
 import java.io.IOException;
 import java.util.Map;
@@ -11,6 +10,7 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.restserver.RestServer;
 
 /**
  * JUnit tests the IHaleBackend. The House Simulator or Actual House *must* be running so that the
@@ -20,17 +20,47 @@ import edu.hawaii.ihale.api.repository.impl.Repository;
  */
 public class TestIHaleBackend {
 
-  private static final IHaleBackend backend;
-  private static final Repository repo;
+  private static IHaleBackend backend;
+  private static Repository repo = new Repository();
 
+  private static Map<String,String> uri;
+  private static RestServer server;
   private static final Object invalidObj = "invalid";
   private static final Object nullObj = null;
+  private String invalid = "Command is invalid";
 
-  static {
-    backend = IHaleBackend.getInstance();
-    repo = new Repository();
+  
+  /**
+   * Initializes the test.  Called by testResource().
+   */
+   public static final void init() {
+     backend = IHaleBackend.getInstance();
+     uri = IHaleBackend.getURImap();
+     server = IHaleBackend.getServer();
+   }
+   
+  /**
+   * Ensures that major variables in the IHaleBackend class are
+   * initialized before being returned.
+   */
+  @Test
+  public void testResource() {
+    boolean uriCheck = false, serverCheck = false, backendCheck = false;
+    init();
+    if (uri != null) {
+      uriCheck = true;
+    }
+    if (backend != null) {
+      backendCheck = true;
+    }
+    if (server != null) {
+      serverCheck = true;
+    }
+    
+    assertEquals("Backend not null",backendCheck,true);
+    assertEquals("Server not null",serverCheck,true);
+    assertEquals("URI list not null",uriCheck,true);
   }
-
   /**
    * Checks the parsing the files.
    * 
@@ -48,11 +78,18 @@ public class TestIHaleBackend {
    * 
    * @throws IOException Thrown when parsing URL file fails.
    */
-  @Test(expected = IOException.class)
+  @Test 
   public void testParseURIPropertyFileNull() throws IOException {
-    Map<String, String> uri = IHaleBackend.parseURIPropertyFile(null);
-
-    assertEquals("Electrical state", "http://localhost:7002/", uri.get("electrical-state"));
+    boolean exceptionThrown = false;
+    Map<String, String> uri = null;
+    try {
+      uri = IHaleBackend.parseURIPropertyFile(null);
+    }
+    catch (Exception e) {
+      exceptionThrown = true;
+    }
+    assertEquals("Exception caught",exceptionThrown,true); 
+    assertEquals("Map is null",uri,null);
   }
 
   /**
@@ -60,11 +97,19 @@ public class TestIHaleBackend {
    * 
    * @throws IOException Thrown when parsing URL file fails.
    */
-  @Test(expected = IOException.class)
+  @Test
   public void testParseURIPropertyFileInvalid() throws IOException {
-    Map<String, String> uri = IHaleBackend.parseURIPropertyFile("invalid location");
-
-    assertEquals("Electrical state", "http://localhost:7002/", uri.get("electric-state"));
+    boolean errorCaught = false;
+    Map<String, String> uri = null;
+    try {
+      IHaleBackend.parseURIPropertyFile("invalid location");
+    }
+    catch (Exception e) {
+      errorCaught = true;
+    }
+    
+    assertEquals("Error caught",errorCaught,true);
+    assertEquals("Map is null", uri,null);
   }
 
   /**
@@ -97,7 +142,7 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 
   /**
@@ -114,7 +159,7 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 
   /**
@@ -147,7 +192,7 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 
   /**
@@ -165,7 +210,7 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 
   /**
@@ -202,7 +247,7 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 
   /**
@@ -221,7 +266,7 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 
   /**
@@ -241,7 +286,7 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 
   /**
@@ -262,6 +307,6 @@ public class TestIHaleBackend {
         expectedThrown = true;
     }
 
-    assertTrue(expectedThrown);
+    assertEquals(invalid,expectedThrown,true);
   }
 }

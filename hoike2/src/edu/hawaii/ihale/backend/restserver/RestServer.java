@@ -1,5 +1,6 @@
 package edu.hawaii.ihale.backend.restserver;
 
+import java.util.logging.Level;
 import org.restlet.Application;
 import org.restlet.Component;
 import org.restlet.Restlet;
@@ -31,8 +32,8 @@ public class RestServer extends Application {
    * @param port The port on which this server should run.
    * @throws Exception if problems occur starting up this server.
    */
-  public boolean runServer(int port) throws Exception {
-    
+  public static boolean runServer(int port) throws Exception {
+    component.getLogger().setLevel(Level.OFF);
     if (component.isStarted()) {
       return false;
     }

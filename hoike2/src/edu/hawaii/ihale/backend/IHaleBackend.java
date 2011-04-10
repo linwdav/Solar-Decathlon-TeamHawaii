@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -16,8 +17,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
 
 import org.restlet.resource.ClientResource;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
+import org.w3c.dom.Document; 
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
@@ -101,7 +101,7 @@ public class IHaleBackend implements IHaleCommand {
     // Interval in milliseconds between polling the system devices.
     long interval = 5000; 
     log = Logger.getLogger(IHaleBackend.class.toString());
-
+    Logger.getLogger(IHaleBackend.class.toString()).setLevel(Level.OFF);
     // Parse the URI configuration file.
     String folder = ".ihale";
     String configurationFile = "device-urls.properties";
@@ -150,7 +150,7 @@ public class IHaleBackend implements IHaleCommand {
     
     // Start restlet server
     try {
-      restServer.runServer(8111);
+      RestServer.runServer(8111);
     }
     catch (Exception e) {
       e.printStackTrace();
@@ -247,14 +247,7 @@ public class IHaleBackend implements IHaleCommand {
     return instance;
   }
 
-  /**
-   * Gets this backend's dispatcher.
-   * 
-   * @return Dispatcher
-   */
-  public static Dispatcher getDispatcher() {
-    return dispatch;
-  }
+  
 
   /**
    * Gets this backend's URI mapping for each iHale system.
@@ -273,35 +266,12 @@ public class IHaleBackend implements IHaleCommand {
   public static RestServer getServer() {
     return restServer;
   }
-  
-  /**
-   * Gets this repository reference.
-   * 
-   * @return Repository
-   */
-  public static Repository getRepository() {
-    return repository;
-  }
-
-  /**
-   * A sample main program.
-   * 
-   * @param args Ignored.
-   * @throws IOException Thrown when unable to close the FileInputStream.
-   * @throws SAXException Thrown when XML parsing fails.
-   * @throws ParserConfigurationException Thrown if error exists in parser configuration.
-   * @throws XPathExpressionException Thrown if error exists in XPath expression.
-   */
-  public static void main(String[] args) throws XPathExpressionException,
-      ParserConfigurationException, SAXException, IOException {
-    IHaleBackend backend = new IHaleBackend();
-    backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_PH, 7);
-  }
-    
+   
+ 
   /**
    * Private constructor.
    */
-  private IHaleBackend() {
+  private IHaleBackend() { 
     init();
   }
 
@@ -361,6 +331,7 @@ public class IHaleBackend implements IHaleCommand {
 
       // Send the xml representation to the device.
       client = new ClientResource(cmd.getURI());
+      client.getLogger().setLevel(Level.OFF);
       client.put(cmd.getDomRepresentation());
     }
     catch (IOException e) {

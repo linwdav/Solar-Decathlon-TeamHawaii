@@ -1,6 +1,6 @@
 package edu.hawaii.ihale.backend.restserver.resource;
 
-import org.junit.BeforeClass;
+import org.junit.BeforeClass; 
 import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.backend.restserver.RestServer;
@@ -21,11 +21,9 @@ public class SystemDataTest {
    */
   @BeforeClass
   public static void beforeClass() {
-    
-    server = IHaleBackend.getServer();
-    
-    repository = IHaleBackend.getRepository();
-    
     backend = IHaleBackend.getInstance();
-  }
+    server = IHaleBackend.getServer();
+    repository = new Repository();
+  } 
+  
 }

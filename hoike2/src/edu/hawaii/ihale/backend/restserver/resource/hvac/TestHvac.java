@@ -1,8 +1,8 @@
 package edu.hawaii.ihale.backend.restserver.resource.hvac;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull; 
+import java.util.logging.Level;
 
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -112,7 +112,7 @@ public class TestHvac {
       expectedThrown = true;
     }
     
-    assertTrue(expectedThrown);
+    assertEquals("Command is invalid",expectedThrown,true);
   }
 
   /**
@@ -132,6 +132,7 @@ public class TestHvac {
     // Send PUT command to server.
     String uri = "http://localhost:8111/HVAC/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
+    client.getLogger().setLevel(Level.OFF);
     client.put(uri);
 
     assertEquals("Checking sent argument", Integer.valueOf(25), repository
@@ -155,7 +156,7 @@ public class TestHvac {
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8112/HVAC/state";
     ClientResource client = new ClientResource(uri);
-
+    client.getLogger().setLevel(Level.OFF);
     DomRepresentation stateRepresentation = new DomRepresentation(client.get());
     Document stateDocument = stateRepresentation.getDocument();
 
@@ -168,7 +169,7 @@ public class TestHvac {
     // Send GET command to server to retrieve XML of the state history.
     uri = "http://localhost:8112/HVAC/state?since=1";
     client = new ClientResource(uri);
-
+    client.getLogger().setLevel(Level.OFF);
     stateRepresentation = new DomRepresentation(client.get());
     stateDocument = stateRepresentation.getDocument();
 

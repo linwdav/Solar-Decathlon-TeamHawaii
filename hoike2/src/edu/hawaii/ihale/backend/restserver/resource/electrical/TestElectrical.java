@@ -1,8 +1,8 @@
 package edu.hawaii.ihale.backend.restserver.resource.electrical;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull; 
+import java.util.logging.Level;
 
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
@@ -113,7 +113,7 @@ public class TestElectrical {
       expectedThrown = true;
     }
     
-    assertTrue(expectedThrown);
+    assertEquals("Command is invalid",expectedThrown,true);
   }
 
   /**
@@ -130,7 +130,7 @@ public class TestElectrical {
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/ELECTRIC/state";
     ClientResource client = new ClientResource(uri);
-
+    client.getLogger().setLevel(Level.OFF);
     DomRepresentation stateRepresentation = new DomRepresentation(client.get());
     Document stateDocument = stateRepresentation.getDocument();
 
@@ -143,7 +143,7 @@ public class TestElectrical {
     // Test the since parameter
     uri = "http://localhost:8111/ELECTRIC/state?since=1";
     client = new ClientResource(uri);
-
+    client.getLogger().setLevel(Level.OFF);
     stateRepresentation = new DomRepresentation(client.get());
     stateDocument = stateRepresentation.getDocument();
 
