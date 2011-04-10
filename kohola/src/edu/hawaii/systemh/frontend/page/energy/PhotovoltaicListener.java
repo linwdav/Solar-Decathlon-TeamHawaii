@@ -41,12 +41,10 @@ public class PhotovoltaicListener extends SystemStateListener {
     switch (state) {
     case ENERGY: 
       energy = (Integer) value;
-      System.out.println("Photovoltaics energy level is: " + energy);
       break;
     
     case POWER: 
       power = (Integer) value;
-      System.out.println("Photovoltaics power level is: " + power);
       break;
     
     default: 

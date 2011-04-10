@@ -41,7 +41,7 @@ public class TestHelp {
     tester.clickLink("hvacButton");
 
     // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
+    // tester.debugComponentTrees();
   }
   
   /**

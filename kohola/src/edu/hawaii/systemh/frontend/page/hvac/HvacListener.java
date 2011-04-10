@@ -37,11 +37,9 @@ public class HvacListener extends SystemStateListener {
     switch (state) {
     case TEMPERATURE :
       temp = (Integer) value;
-      System.out.println("New Hvac temperature is: " + temp);
       break;
     case SET_TEMPERATURE_COMMAND :
       temp = (Integer) value;
-      System.out.println("Hvac temperature set to: " + temp);
       break;
     default:
       System.out.println("Unhandled aquaponics state: " + state);

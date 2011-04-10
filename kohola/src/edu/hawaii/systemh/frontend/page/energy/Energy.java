@@ -25,6 +25,7 @@ import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.SolarDecathlonSession;
 import edu.hawaii.systemh.frontend.page.Header;
 import edu.hawaii.systemh.frontend.page.help.Help;
+
 /**
  * The energy page.
  * 
@@ -35,17 +36,19 @@ import edu.hawaii.systemh.frontend.page.help.Help;
  * @author Chuan Lun Hung
  */
 public class Energy extends Header {
+  
+  private boolean DEBUG = false;
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
-  //private static final String ELECTRICAL_CONSUMPTION = "electrical";
-  //private static final String EGAUGE_1 = "egauge-1";
-  //private static final String EGAUGE_2 = "egauge-2";
-  //private static final String PHOTOVOLTAICS = "photovoltaics";
-  //private static final String ENERGY = "energy";
+  // private static final String ELECTRICAL_CONSUMPTION = "electrical";
+  // private static final String EGAUGE_1 = "egauge-1";
+  // private static final String EGAUGE_2 = "egauge-2";
+  // private static final String PHOTOVOLTAICS = "photovoltaics";
+  // private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
   private static final String Y_AXIS = "100.0";
@@ -60,7 +63,7 @@ public class Energy extends Header {
   /**
    * Buttons for all graphs.
    */
-  //Link<String> dayConsumptionGraph;
+  // Link<String> dayConsumptionGraph;
 
   /**
    * Links to other pages.
@@ -78,36 +81,36 @@ public class Energy extends Header {
    * @throws Exception The exception.
    */
   public Energy() throws Exception {
-    
-    ((SolarDecathlonSession)getSession()).getHeaderSession().setActiveTab(1);
+
+    ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(1);
 
     // Messages
     // Add messages as a list view to each page
 
     // Get all messages applicable to this page
-    List<SystemStatusMessage> msgs = SolarDecathlonApplication.getMessages()
-    .getElectricalMessages();
-    
+    List<SystemStatusMessage> msgs =
+        SolarDecathlonApplication.getMessages().getElectricalMessages();
+
     // Create wrapper container for pageable list view
     WebMarkupContainer systemLog = new WebMarkupContainer("EnergySystemLogContainer");
     systemLog.setOutputMarkupId(true);
-    
+
     // Help button link
     Link<String> helpLink = new Link<String>("helpLink") {
       private static final long serialVersionUID = 1L;
 
       public void onClick() {
-        ((SolarDecathlonSession)getSession()).getHelpSession().setCurrentTab(2);
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(2);
         setResponsePage(Help.class);
       }
-     };
-    
-     // Help Image
-     helpLink.add(new Image("helpEnergy", new ResourceReference
-         (Header.class, "images/icons/help.png")));
+    };
 
-     add(helpLink);
-    
+    // Help Image
+    helpLink.add(new Image("helpEnergy", new ResourceReference(Header.class,
+        "images/icons/help.png")));
+
+    add(helpLink);
+
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("EnergyStatusMessages", msgs, 10) {
@@ -118,7 +121,7 @@ public class Energy extends Header {
           protected void populateItem(ListItem<SystemStatusMessage> item) {
 
             SystemStatusMessage msg = item.getModelObject();
-            
+
             // If only the empty message is in the list, then
             // display "No Messages"
             if (msg.getType() == null) {
@@ -136,7 +139,7 @@ public class Energy extends Header {
             }
           }
         };
-    
+
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginatorEnergy", listView));
     // Update log every 5 seconds.
@@ -147,23 +150,23 @@ public class Energy extends Header {
     add(systemLog);
 
     // End messages section
-    
+
     // Create button
     // Kept this button in case later on need other buttons
-//    dayConsumptionGraph = new Link<String>("dayConsumptionGraph") {
-//      private static final long serialVersionUID = 1L;
-//
-//      @Override
-//      public void onClick() {
-//        try {
-//          setResponsePage(new Energy());
-//        }
-//        catch (Exception e) {
-//          e.printStackTrace();
-//        }
-//      }
-//    };
-//    add(dayConsumptionGraph);
+    // dayConsumptionGraph = new Link<String>("dayConsumptionGraph") {
+    // private static final long serialVersionUID = 1L;
+    //
+    // @Override
+    // public void onClick() {
+    // try {
+    // setResponsePage(new Energy());
+    // }
+    // catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // }
+    // };
+    // add(dayConsumptionGraph);
     Model<String> day = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -284,7 +287,6 @@ public class Energy extends Header {
 
     add(currentConsumption);
     add(currentGeneration);
-
 
   } // End Constructor
 
@@ -439,8 +441,10 @@ public class Energy extends Header {
     gValues = gBuf.toString();
     printC = cPrintBuf.toString();
     printG = gPrintBuf.toString();
-    System.out
-        .println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: " + printG);
+    if (DEBUG) {
+      System.out.println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: "
+          + printG);
+    }
     String url =
         "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
@@ -554,8 +558,10 @@ public class Energy extends Header {
     gValues = gBuf.toString();
     printC = cPrintBuf.toString();
     printG = gPrintBuf.toString();
-    System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
-        + printG);
+    if (DEBUG) {
+      System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
+          + printG);
+    }
     String url =
         "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
@@ -608,8 +614,7 @@ public class Energy extends Header {
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
-        SolarDecathlonApplication.getRepository()
-            .getPhotovoltaicEnergySince(time - mMonth);
+        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mMonth);
 
     // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mSinceBeginning), time);
 
@@ -678,8 +683,10 @@ public class Energy extends Header {
     gValues = gBuf.toString();
     printC = cPrintBuf.toString();
     printG = gPrintBuf.toString();
+    if (DEBUG) {
     System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
         + printG);
+    }
     String url =
         "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"

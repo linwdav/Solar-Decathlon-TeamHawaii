@@ -40,11 +40,9 @@ public class ElectricalListener extends SystemStateListener {
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
     if (state.equals(IHaleState.ENERGY)) {
       energy = (Integer) value;
-      System.out.println("Electrical energy level is: " + energy);
     }
     else if (state.equals(IHaleState.POWER)) {
       power = (Integer) value;
-      System.out.println("Electrical power level is: " + power);
     }
     else {
       System.out.println("Unhandled Electrical state: " + state);

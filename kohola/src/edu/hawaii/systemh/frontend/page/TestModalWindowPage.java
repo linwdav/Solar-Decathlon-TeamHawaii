@@ -181,9 +181,6 @@ public class TestModalWindowPage {
     assertEquals("Check that the dropdown has correct amount of selections.", countryDropDownChoice
         .getChoices().size(), 2);
 
-    // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
-
   } // End testPage
   
   /**

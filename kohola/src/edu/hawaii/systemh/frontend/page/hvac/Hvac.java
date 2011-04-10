@@ -59,6 +59,8 @@ import edu.hawaii.systemh.frontend.page.help.Help;
  * @author Chuan Lun Hung
  */
 public class Hvac extends Header {
+  
+  private boolean DEBUG = false;
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
@@ -112,17 +114,17 @@ public class Hvac extends Header {
       private static final long serialVersionUID = 1L;
 
       public void onClick() {
-        ((SolarDecathlonSession)getSession()).getHelpSession().setCurrentTab(5);
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(5);
         setResponsePage(Help.class);
       }
-     };
-    
-     // Help Image
-     helpLink.add(new Image("helpHvac", new ResourceReference(Header.class, 
-         "images/icons/help.png")));
+    };
 
-     add(helpLink);     
-    
+    // Help Image
+    helpLink
+        .add(new Image("helpHvac", new ResourceReference(Header.class, "images/icons/help.png")));
+
+    add(helpLink);
+
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("HVACStatusMessages", msgs, 10) {
@@ -288,7 +290,9 @@ public class Hvac extends Header {
       @Override
       protected void onUpdate(AjaxRequestTarget target) {
         setTemp = Integer.valueOf(airTemp.getValue());
-        System.out.println("onUpdate setTemp: " + setTemp);
+        if (DEBUG) {
+          System.out.println("onUpdate setTemp: " + setTemp);
+        }
       }
     });
 
@@ -395,8 +399,7 @@ public class Hvac extends Header {
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
     axisY
-        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", 
-            "95" });
+        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
@@ -465,8 +468,7 @@ public class Hvac extends Header {
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
     axisY
-        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", 
-            "95" });
+        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
@@ -536,8 +538,7 @@ public class Hvac extends Header {
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
     axisY
-        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", 
-            "95" });
+        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
@@ -553,9 +554,9 @@ public class Hvac extends Header {
    * @return A string array.
    */
   private String[] generateXAxis(int type) {
-    //String[] axisDayLabels = new String[13];
-    //String[] axisWeekLabels = new String[7];
-    //String[] axisMonthLabels = new String[7];
+    // String[] axisDayLabels = new String[13];
+    // String[] axisWeekLabels = new String[7];
+    // String[] axisMonthLabels = new String[7];
     Calendar calendar = Calendar.getInstance();
 
     int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -624,7 +625,7 @@ public class Hvac extends Header {
   public String getButtonLabel() {
     return this.buttonLabel;
   }
-  
+
   /**
    * Set the button class attribute.
    * 
@@ -633,7 +634,7 @@ public class Hvac extends Header {
   public void setButtonClass(String newClass) {
     this.buttonClass = newClass;
   }
-  
+
   /**
    * Set the button background color.
    * 

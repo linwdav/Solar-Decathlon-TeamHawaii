@@ -52,6 +52,7 @@ public class Dashboard extends Header {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
+  private boolean DEBUG = false;
   /**
    * MarkupContainer for all graphs.
    */
@@ -114,23 +115,22 @@ public class Dashboard extends Header {
     WebMarkupContainer systemLog = new WebMarkupContainer("SystemLogContainer");
     systemLog.setOutputMarkupId(true);
 
-
     // Help button link
     Link<String> helpLink = new Link<String>("helpLink") {
       private static final long serialVersionUID = 1L;
 
       public void onClick() {
-        ((SolarDecathlonSession)getSession()).getHelpSession().setCurrentTab(1);
+        ((SolarDecathlonSession) getSession()).getHelpSession().setCurrentTab(1);
         setResponsePage(Help.class);
       }
-     };
-    
-     // Help Image
-     helpLink.add(new Image("helpDash", new ResourceReference(Header.class, 
-         "images/icons/help.png")));
+    };
 
-     add(helpLink);
-    
+    // Help Image
+    helpLink
+        .add(new Image("helpDash", new ResourceReference(Header.class, "images/icons/help.png")));
+
+    add(helpLink);
+
     // Create Listview
     PageableListView<SystemStatusMessage> listView =
         new PageableListView<SystemStatusMessage>("StatusMessages", msgs, 10) {
@@ -162,7 +162,7 @@ public class Dashboard extends Header {
 
     systemLog.add(listView);
     systemLog.add(new AjaxPagingNavigator("paginator", listView));
-    
+
     // Update log every 5 seconds.
     systemLog.add(new AjaxSelfUpdatingTimerBehavior(Duration.seconds(5)) {
       private static final long serialVersionUID = 1L;
@@ -609,8 +609,10 @@ public class Dashboard extends Header {
     dayUsage.setDefaultModelObject(usage + " kWh/day");
     dayUsage2.setDefaultModelObject(dayUsage.getDefaultModelObject());
     dayPriceConverter.setDefaultModelObject("$" + df.format(usage * conversion) + "/day");
-    System.out
-        .println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: " + printG);
+    if (DEBUG) {
+      System.out.println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: "
+          + printG);
+    }
     String url =
         "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
@@ -727,8 +729,10 @@ public class Dashboard extends Header {
     weekUsage.setDefaultModelObject(usage + " kWh/week");
     weekUsage2.setDefaultModelObject(weekUsage.getDefaultModelObject());
     weekPriceConverter.setDefaultModelObject("$" + df.format(usage * conversion) + "/week");
-    System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
-        + printG);
+    if (DEBUG) {
+      System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
+          + printG);
+    }
     String url =
         "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
@@ -781,8 +785,7 @@ public class Dashboard extends Header {
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
-        SolarDecathlonApplication.getRepository()
-            .getPhotovoltaicEnergySince(time - mMonth);
+        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mMonth);
 
     // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mSinceBeginning), time);
 
@@ -854,8 +857,10 @@ public class Dashboard extends Header {
     monthUsage.setDefaultModelObject(usage + " kWh/month");
     monthUsage2.setDefaultModelObject(monthUsage.getDefaultModelObject());
     monthPriceConverter.setDefaultModelObject("$" + df.format(usage * conversion) + "/month");
-    System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
-        + printG);
+    if (DEBUG) {
+      System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
+          + printG);
+    }
     String url =
         "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
             + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
