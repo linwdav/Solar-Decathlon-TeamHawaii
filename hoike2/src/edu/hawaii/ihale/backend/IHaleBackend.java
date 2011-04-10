@@ -10,14 +10,12 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPathExpressionException;
-
 import org.restlet.resource.ClientResource;
-import org.w3c.dom.Document; 
+import org.w3c.dom.Document;
 import edu.hawaii.ihale.api.ApiDictionary;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
@@ -50,7 +48,7 @@ import edu.hawaii.ihale.backend.restserver.RestServer;
  * @author Bret K. Ikehara
  * @author Tony Gaskell
  * @author Gregory Burgess
- * @author Michael Cera 
+ * @author Michael Cera
  */
 public class IHaleBackend implements IHaleCommand {
 
@@ -78,7 +76,7 @@ public class IHaleBackend implements IHaleCommand {
    * Object that polls data from HSIM.
    */
   private static Dispatcher dispatch;
-  
+
   /**
    * Thread for polling.
    */
@@ -88,21 +86,21 @@ public class IHaleBackend implements IHaleCommand {
    * The repository that can store all the data for the iHale system.
    */
   private static Repository repository = new Repository();
-  
+
   /**
    * The restlet server to handle external device requests.
    */
   private static RestServer restServer = new RestServer();
 
-  /** The singleton instance of the Backend.*/
+  /** The singleton instance of the Backend. */
   private static IHaleBackend instance = new IHaleBackend();
-  
+
   /**
    * Initializes the singleton.
    */
   private static final void init() {
     // Interval in milliseconds between polling the system devices.
-    long interval = 5000; 
+    long interval = 5000;
     log = Logger.getLogger(IHaleBackend.class.toString());
     Logger.getLogger(IHaleBackend.class.toString()).setLevel(Level.OFF);
     // Parse the URI configuration file.
@@ -111,8 +109,8 @@ public class IHaleBackend implements IHaleCommand {
     deviceConfigRef = System.getProperty("user.home") + "/" + folder + "/" + configurationFile;
 
     String initialDataFile = "initial-data.xml";
-      initialDataPath = System.getProperty("user.home") + "/" + folder + "/" + initialDataFile;
-    
+    initialDataPath = System.getProperty("user.home") + "/" + folder + "/" + initialDataFile;
+
     // instantiate the uris map.
     try {
       uriMap = parseURIPropertyFile(deviceConfigRef);
@@ -138,14 +136,14 @@ public class IHaleBackend implements IHaleCommand {
     // Initialize Dispatcher
     dispatch = null;
     log.info("Initiatiating Dispatcher.");
-    
+
     dispatch = new Dispatcher(uriMap, interval);
     pollingThread = new Thread(dispatch);
-    pollingThread.start(); 
-    
-    log.info("Running dispatcher at an interval of " + interval + " milliseconds."); 
+    pollingThread.start();
+
+    log.info("Running dispatcher at an interval of " + interval + " milliseconds.");
     log.info("Initiating repository.");
-    
+
     // Start restlet server
     try {
       RestServer.runServer(8111);
@@ -154,32 +152,32 @@ public class IHaleBackend implements IHaleCommand {
       e.printStackTrace();
     }
   }
-  
-/**
- * Reads in initial-data.xml, and stores entries into the repository.
- * 
- * @throws ParserConfigurationException - Probelm parsing XML file.
- * @throws XPathExpressionException - Problem evaluating XPath expression.
- * @throws IOException - Problem reading in file.
- */
-   public static void getHistory() throws 
-   ParserConfigurationException, XPathExpressionException, IOException {
- 
-     XmlHandler parser = new XmlHandler();
-     File file = null;
-     Document doc = null;
-     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-     DocumentBuilder db = dbf.newDocumentBuilder();
 
-     try {
-       file = new File(initialDataPath);
-       doc = db.parse(file);
-     }
-     catch (Exception e) {
-       System.err.println("Failed to convert to doc.");
-     }
- 
-     parser.parseIhaleXml2StateEntry(doc);
+  /**
+   * Reads in initial-data.xml, and stores entries into the repository.
+   * 
+   * @throws ParserConfigurationException - Probelm parsing XML file.
+   * @throws XPathExpressionException - Problem evaluating XPath expression.
+   * @throws IOException - Problem reading in file.
+   */
+  public static void getHistory() throws ParserConfigurationException, XPathExpressionException,
+      IOException {
+
+    XmlHandler parser = new XmlHandler();
+    File file = null;
+    Document doc = null;
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();
+
+    try {
+      file = new File(initialDataPath);
+      doc = db.parse(file);
+    }
+    catch (Exception e) {
+      System.err.println("Failed to convert to doc.");
+    }
+
+    parser.parseIhaleXml2StateEntry(doc);
   }
 
   /**
@@ -192,7 +190,7 @@ public class IHaleBackend implements IHaleCommand {
    */
   public static Map<String, String> parseURIPropertyFile(String file) throws IOException {
     Map<String, String> uris = new HashMap<String, String>();
-    
+
     if (file == null) {
       throw new FileNotFoundException("File cannot be null.");
     }
@@ -203,12 +201,12 @@ public class IHaleBackend implements IHaleCommand {
     Logger log = Logger.getLogger(IHaleBackend.class.toString());
 
     log.info("Reading file at: " + file);
-    
+
     // Check the file.
     if (!f.isFile()) {
       throw new IOException("File is invalid.");
     }
-    
+
     if (!f.canRead()) {
       throw new IOException("File read permissions is denied.");
     }
@@ -236,16 +234,14 @@ public class IHaleBackend implements IHaleCommand {
     return uris;
   }
 
-
   /**
    * Returns the singleton instance.
+   * 
    * @return The singleton instance.
    */
   public static IHaleBackend getInstance() {
     return instance;
   }
-
-  
 
   /**
    * Gets this backend's URI mapping for each iHale system.
@@ -255,7 +251,7 @@ public class IHaleBackend implements IHaleCommand {
   public static Map<String, String> getURImap() {
     return uriMap;
   }
-  
+
   /**
    * Gets this REST server reference.
    * 
@@ -264,12 +260,11 @@ public class IHaleBackend implements IHaleCommand {
   public static RestServer getServer() {
     return restServer;
   }
-   
- 
+
   /**
    * Private constructor.
    */
-  private IHaleBackend() { 
+  private IHaleBackend() {
     init();
   }
 
@@ -289,11 +284,11 @@ public class IHaleBackend implements IHaleCommand {
 
     ClientResource client = null;
     PutCommand cmd = null;
-    
+
     if (arg == null) {
       throw new RuntimeException("Argument cannot be null.");
     }
-    
+
     // All command invocations should be saved in the repository. Here's how you do it.
     Long timestamp = (new Date()).getTime();
     IHaleState state = ApiDictionary.iHaleCommandType2State(command);
@@ -517,5 +512,5 @@ public class IHaleBackend implements IHaleCommand {
     cmd.setURI(uri.toString());
 
     return cmd;
-  } 
+  }
 }

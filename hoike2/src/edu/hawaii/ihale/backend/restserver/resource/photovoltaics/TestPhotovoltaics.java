@@ -3,7 +3,6 @@ package edu.hawaii.ihale.backend.restserver.resource.photovoltaics;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull; 
 import java.util.logging.Level;
-
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -12,8 +11,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
+import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -21,7 +20,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestPhotovoltaics {
+public class TestPhotovoltaics extends SystemDataTest {
 
   /**
    * Test toXML method.
@@ -118,14 +117,11 @@ public class TestPhotovoltaics {
   /**
    * Tests GET command with photovoltaics. Won't work until we test with a simulator.
    * 
-   * @throws Exception Thrown when document creation or server fails.
+   * @throws Exception Thrown when server initialization fails or XMl document creation fails.
    */
   @Test
   public void testGet() throws Exception {
-
-    // Start the REST server.
-    RestServer.runServer(8111);
-
+    
     // Send GET command to server to retrieve XML of the current state.
     String uri = "http://localhost:8111/PHOTOVOLTAIC/state";
     ClientResource client = new ClientResource(uri);
@@ -143,17 +139,15 @@ public class TestPhotovoltaics {
     uri = "http://localhost:8111/PHOTOVOLTAIC/state?since=1";
     client = new ClientResource(uri);
     client.getLogger().setLevel(Level.OFF);
-    
     stateRepresentation = new DomRepresentation(client.get());
     stateDocument = stateRepresentation.getDocument();
 
     // Retrieve system name from XML.
     rootNodeName = stateDocument.getFirstChild().getNodeName();
 
+    // Just need to check whether state-history is there
+    // the rest should be there if testToXmlSince method passes.
     assertEquals("Checking that this is XML for the state history.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
-
-    // Shut down the REST server.
-    RestServer.stopServer();
   }
 }

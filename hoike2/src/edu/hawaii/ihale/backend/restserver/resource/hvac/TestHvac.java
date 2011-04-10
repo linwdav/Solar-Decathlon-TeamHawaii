@@ -3,7 +3,6 @@ package edu.hawaii.ihale.backend.restserver.resource.hvac;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull; 
 import java.util.logging.Level;
-
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -12,9 +11,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.impl.Repository;
-import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
+import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -22,7 +20,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestHvac {
+public class TestHvac extends SystemDataTest {
 
   /**
    * Test toXML method.
@@ -123,12 +121,6 @@ public class TestHvac {
    */
   @Test
   public void testPut() throws Exception {
-
-    // Start the REST server.
-    RestServer.runServer(8111);
-
-    Repository repository = new Repository();
-
     // Send PUT command to server.
     String uri = "http://localhost:8111/HVAC/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
@@ -137,9 +129,6 @@ public class TestHvac {
 
     assertEquals("Checking sent argument", Integer.valueOf(25), repository
         .getHvacTemperatureCommand().getValue());
-
-    // Shut down the REST server.
-    RestServer.stopServer();
   }
 
   /**
@@ -150,11 +139,8 @@ public class TestHvac {
   @Test
   public void testGet() throws Exception {
 
-    // Start the REST server.
-    RestServer.runServer(8112);
-
     // Send GET command to server to retrieve XML of the current state.
-    String uri = "http://localhost:8112/HVAC/state";
+    String uri = "http://localhost:8111/HVAC/state";
     ClientResource client = new ClientResource(uri);
     client.getLogger().setLevel(Level.OFF);
     DomRepresentation stateRepresentation = new DomRepresentation(client.get());
@@ -167,7 +153,7 @@ public class TestHvac {
         rootNodeName);
 
     // Send GET command to server to retrieve XML of the state history.
-    uri = "http://localhost:8112/HVAC/state?since=1";
+    uri = "http://localhost:8111/HVAC/state?since=1";
     client = new ClientResource(uri);
     client.getLogger().setLevel(Level.OFF);
     stateRepresentation = new DomRepresentation(client.get());
@@ -178,8 +164,5 @@ public class TestHvac {
 
     assertEquals("Checking that this is XML for the state history.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
-
-    // Shut down the REST server.
-    RestServer.stopServer();
   }
 }

@@ -13,8 +13,8 @@ import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.impl.Repository;
-import edu.hawaii.ihale.backend.restserver.RestServer;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
+import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -22,7 +22,7 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemData;
  * @author Bret K. Ikehara
  * @author Michael Cera
  */
-public class TestAquaponics {
+public class TestAquaponics extends SystemDataTest {
 
   /**
    * Test toXML method.
@@ -138,9 +138,6 @@ public class TestAquaponics {
 
     Repository repository = new Repository();
 
-    // Run the REST server.
-    RestServer.runServer(8111);
-
     // Send PUT command to server.
     String uri = "http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=25";
     ClientResource client = new ClientResource(uri);
@@ -149,23 +146,18 @@ public class TestAquaponics {
 
     assertEquals("Checking sent argument", Integer.valueOf(25), repository
         .getAquaponicsTemperatureCommand().getValue());
-
-    RestServer.stopServer();
   }
 
   /**
    * Tests GET command with aquaponics. Won't work until we test with a simulator.
    * 
-   * @throws Exception Thrown when server initialization fails or XMl doucment creation fails.
+   * @throws Exception Thrown when server initialization fails or XMl document creation fails.
    */
   @Test
   public void testGet() throws Exception {
-
-    // Run the REST server.
-    RestServer.runServer(8112);
     
     // Send GET command to server to retrieve XML of the current state.
-    String uri = "http://localhost:8112/AQUAPONICS/state";
+    String uri = "http://localhost:8111/AQUAPONICS/state";
     ClientResource client = new ClientResource(uri);
     client.getLogger().setLevel(Level.OFF);
     DomRepresentation stateRepresentation = new DomRepresentation(client.get());
@@ -178,7 +170,7 @@ public class TestAquaponics {
         rootNodeName);
 
     // Send GET command to server to retrieve XML of the state history.
-    uri = "http://localhost:8112/AQUAPONICS/state?since=1";
+    uri = "http://localhost:8111/AQUAPONICS/state?since=1";
     client = new ClientResource(uri);
     client.getLogger().setLevel(Level.OFF);
     stateRepresentation = new DomRepresentation(client.get());
@@ -191,7 +183,5 @@ public class TestAquaponics {
     // the rest should be there if testToXmlSince method passes.
     assertEquals("Checking that this is XML for the state history.",
         SystemData.XML_TAG_STATE_HISTORY, rootNodeName);
-
-    RestServer.stopServer();
   }
 }

@@ -2,7 +2,6 @@ package edu.hawaii.ihale.backend.restserver.resource;
 
 import org.junit.BeforeClass; 
 import edu.hawaii.ihale.api.repository.impl.Repository;
-import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.backend.restserver.RestServer;
 
 /**
@@ -12,18 +11,24 @@ import edu.hawaii.ihale.backend.restserver.RestServer;
  */
 public class SystemDataTest {
 
-  protected static RestServer server;
-  protected static IHaleBackend backend;
   protected static Repository repository;
 
   /**
    * Stores reference before tests start. This is important so that the REST server runs.
+   * @throws Exception 
    */
   @BeforeClass
-  public static void beforeClass() {
-    backend = IHaleBackend.getInstance();
-    server = IHaleBackend.getServer();
+  public static void beforeClass() throws Exception {
+    
+    RestServer.runServer(8111);
     repository = new Repository();
   } 
   
+  /**
+   * Closes the RestServer.
+   * @throws Exception 
+   */
+  public static void afterClass() throws Exception {
+    RestServer.stopServer();
+  }
 }

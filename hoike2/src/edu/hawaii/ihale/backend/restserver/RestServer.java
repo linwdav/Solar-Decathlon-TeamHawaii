@@ -37,25 +37,43 @@ public class RestServer extends Application {
    * @throws Exception if problems occur starting up this server.
    */
   public static boolean runServer(int port) throws Exception {
+
+    boolean status = component.isStopped();
     
-    component.getLogger().setLevel(Level.OFF);
-    
-    if (component.isStarted()) {
-      return false;
+    // When server has not been started before, initialize values.
+    if (status) {
+      component.getLogger().setLevel(Level.OFF);
+      
+      component.getServers().add(Protocol.HTTP, port);
+      component.getClients().add(Protocol.HTTP);
+  
+      Application application = new RestServer();
+  
+      String contextRoot = "";
+      component.getDefaultHost().attach(contextRoot, application);
+      component.start();
+    }
+
+    return status;
+  }
+
+  /**
+   * Shuts down this REST server.
+   * 
+   * @return Return true if server is was running and has been stopped.
+   * @throws Exception Thrown when server fails to shut down.
+   */
+  public static boolean startServer() throws Exception {
+
+    boolean status = component.isStopped();
+
+    if (status) {
+      component.start();
     }
     
-    component.getServers().add(Protocol.HTTP, port);
-    component.getClients().add(Protocol.HTTP);
-
-    Application application = new RestServer();
-
-    String contextRoot = "";
-    component.getDefaultHost().attach(contextRoot, application);
-    component.start();
-    
-    return true;
+    return status;
   }
-  
+
   /**
    * Shuts down this REST server.
    * 
@@ -63,11 +81,24 @@ public class RestServer extends Application {
    * @throws Exception Thrown when server fails to shut down.
    */
   public static boolean stopServer() throws Exception {
-    if (component.isStarted()) {
+
+    boolean status = component.isStarted();
+
+    if (status) {
       component.stop();
-      return true;
     }
-    return false;
+    
+    return status;
+  }
+
+  /**
+   * Runs this REST server on port 8111.
+   * 
+   * @param args Not Used.
+   * @throws Exception Thrown when server fails to initialize.
+   */
+  public static void main(String[] args) throws Exception {
+    System.out.println(runServer(8111));
   }
 
   /**
