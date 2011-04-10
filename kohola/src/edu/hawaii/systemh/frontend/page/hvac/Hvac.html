@@ -29,8 +29,8 @@
 		$('#sliderAir').slider({
 			orientation : "horizontal",
 			range : "min",
-			min : 45,
-			max : 95,
+			min : 8,
+			max : 35,
 			value: parseInt($( "#airTemperature").val(), 10),
 			change: function( event, ui ) {
 				$( "#airTemperature" ).val( ui.value );

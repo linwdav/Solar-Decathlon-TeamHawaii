@@ -14,12 +14,15 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.command.IHaleCommand;
 import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.systemh.frontend.BlankBackend;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.page.SelectModalWindow;
 
@@ -45,11 +48,23 @@ public class TestLighting {
   private String intensitySubmit = "Check that intensity was submitted.";
   private String initialColor = "Check that the initial color isn't null";
   private String onchangeInsertion = "Checking onChange's insertion into repository.";
-  private static final String UNCHECKED = "unchecked";
+
+  /**
+   * Initializes the application with a tester backend.
+   * @throws Exception - If there is something wrong with setting up the backend.
+   */
+  @BeforeClass
+  public static void setUpBeforeClass() throws Exception {
+
+    IHaleCommand testingBackend = new BlankBackend();
+    SolarDecathlonApplication.setBackend(testingBackend);
+
+  }
 
   /**
    * Performs JUnit tests on the Lighting page.
    */
+  @SuppressWarnings("unchecked")
   @Test
   public void testPage() {
     WicketTester tester = new WicketTester(new SolarDecathlonApplication());
@@ -105,7 +120,6 @@ public class TestLighting {
     long timestamp = new Date().getTime();
 
     // Initial room should be living room
-    @SuppressWarnings(UNCHECKED)
     DropDownChoice<String> roomDropDownChoice =
         (DropDownChoice<String>) tester.getComponentFromLastRenderedPage("roomForm:room");
     assertEquals("Checking size of drop down", roomDropDownChoice.getChoices().size(), 4);
@@ -121,12 +135,12 @@ public class TestLighting {
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
     assertEquals(formContents, sixty, formTester.getTextComponentValue(brightness));
-    assertEquals(feedbackContents,
-        "<font color=\"green\">Success: (60%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"green\">Success: (60%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
-    assertEquals(feedbackContents,
-        "<font color=\"#FF9900\">Same: (60%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"#FF9900\">Same: (60%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     testIntensity = repository.getLightingLevelCommand(IHaleRoom.LIVING).getValue();
     assertEquals(intensitySubmit, 60, testIntensity);
 
@@ -140,12 +154,12 @@ public class TestLighting {
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
     assertEquals(formContents, "70%", formTester.getTextComponentValue(brightness));
-    assertEquals(feedbackContents,
-        "<font color=\"green\">Success: (70%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"green\">Success: (70%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
-    assertEquals(feedbackContents,
-        "<font color=\"#FF9900\">Same: (70%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"#FF9900\">Same: (70%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     testIntensity = repository.getLightingLevelCommand(IHaleRoom.DINING).getValue();
     assertEquals(intensitySubmit, 70, testIntensity);
 
@@ -159,12 +173,12 @@ public class TestLighting {
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
     assertEquals(formContents, "90%", formTester.getTextComponentValue(brightness));
-    assertEquals(feedbackContents,
-        "<font color=\"green\">Success: (90%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"green\">Success: (90%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
-    assertEquals(feedbackContents,
-        "<font color=\"#FF9900\">Same: (90%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"#FF9900\">Same: (90%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     testIntensity = repository.getLightingLevelCommand(IHaleRoom.KITCHEN).getValue();
     assertEquals(intensitySubmit, 90, testIntensity);
 
@@ -178,12 +192,12 @@ public class TestLighting {
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
     assertEquals(formContents, sixty, formTester.getTextComponentValue(brightness));
-    assertEquals(feedbackContents,
-        "<font color=\"green\">Success: (60%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"green\">Success: (60%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     tester.executeAjaxEvent(formIntensity, onclick);
     iFeedback = (Label) tester.getComponentFromLastRenderedPage(formFeedback);
-    assertEquals(feedbackContents,
-        "<font color=\"#FF9900\">Same: (60%)</font>", iFeedback.getDefaultModelObjectAsString());
+    assertEquals(feedbackContents, "<font color=\"#FF9900\">Same: (60%)</font>",
+        iFeedback.getDefaultModelObjectAsString());
     testIntensity = repository.getLightingLevelCommand(IHaleRoom.BATHROOM).getValue();
     assertEquals(intensitySubmit, 60, testIntensity);
 
@@ -192,60 +206,52 @@ public class TestLighting {
     // Living room
     roomDropDownChoice.setDefaultModelObject(living);
     assertNotNull(initialColor, change);
-    @SuppressWarnings(UNCHECKED)
     HiddenField<String> color =
         (HiddenField<String>) tester.getComponentFromLastRenderedPage(change);
     tester.executeAjaxEvent(change, onchange);
     SolarDecathlonApplication.getBackend().doCommand(IHaleSystem.LIGHTING, IHaleRoom.LIVING,
         IHaleCommandType.SET_LIGHTING_COLOR, "#FFFFFF");
     color.setDefaultModelObject(repository.getLightingColorCommand(IHaleRoom.LIVING).getValue());
-    assertEquals(onchangeInsertion, "#FFFFFF",
-        color.getDefaultModelObjectAsString());
+    assertEquals(onchangeInsertion, "#FFFFFF", color.getDefaultModelObjectAsString());
 
     // Dining room
     roomDropDownChoice.setDefaultModelObject("Dining Room");
     assertNotNull(initialColor, change);
-    @SuppressWarnings(UNCHECKED)
     HiddenField<String> color2 =
         (HiddenField<String>) tester.getComponentFromLastRenderedPage(change);
     tester.executeAjaxEvent(change, onchange);
     SolarDecathlonApplication.getBackend().doCommand(IHaleSystem.LIGHTING, IHaleRoom.DINING,
         IHaleCommandType.SET_LIGHTING_COLOR, "#000000");
     color2.setDefaultModelObject(repository.getLightingColorCommand(IHaleRoom.DINING).getValue());
-    assertEquals(onchangeInsertion, "#000000",
-        color2.getDefaultModelObjectAsString());
+    assertEquals(onchangeInsertion, "#000000", color2.getDefaultModelObjectAsString());
 
     // Kitchen
     roomDropDownChoice.setDefaultModelObject("Kitchen");
     assertNotNull(initialColor, change);
-    @SuppressWarnings(UNCHECKED)
     HiddenField<String> color3 =
         (HiddenField<String>) tester.getComponentFromLastRenderedPage(change);
     tester.executeAjaxEvent(change, onchange);
     SolarDecathlonApplication.getBackend().doCommand(IHaleSystem.LIGHTING, IHaleRoom.KITCHEN,
         IHaleCommandType.SET_LIGHTING_COLOR, "#0000AA");
     color3.setDefaultModelObject(repository.getLightingColorCommand(IHaleRoom.KITCHEN).getValue());
-    assertEquals(onchangeInsertion, "#0000AA",
-        color3.getDefaultModelObjectAsString());
+    assertEquals(onchangeInsertion, "#0000AA", color3.getDefaultModelObjectAsString());
 
     // Bathroom
     roomDropDownChoice.setDefaultModelObject("Bathroom");
     assertNotNull(initialColor, change);
-    @SuppressWarnings(UNCHECKED)
     HiddenField<String> color4 =
         (HiddenField<String>) tester.getComponentFromLastRenderedPage(change);
     tester.executeAjaxEvent(change, onchange);
     SolarDecathlonApplication.getBackend().doCommand(IHaleSystem.LIGHTING, IHaleRoom.BATHROOM,
         IHaleCommandType.SET_LIGHTING_COLOR, "#00CC00");
     color4.setDefaultModelObject(repository.getLightingColorCommand(IHaleRoom.BATHROOM).getValue());
-    assertEquals(onchangeInsertion, "#00CC00",
-        color4.getDefaultModelObjectAsString());
+    assertEquals(onchangeInsertion, "#00CC00", color4.getDefaultModelObjectAsString());
 
     /** Testing drop down update. */
 
     // Living room
     roomDropDownChoice.setDefaultModelObject(living);
-    //FormTester test = tester.newFormTester("roomForm");
+    // FormTester test = tester.newFormTester("roomForm");
     tester.executeAjaxEvent("roomForm:room", onchange);
     assertEquals("Check that living room was set.",
         roomDropDownChoice.getDefaultModelObjectAsString(), living);
@@ -253,17 +259,17 @@ public class TestLighting {
     repository.store(IHaleRoom.DINING, IHaleState.LIGHTING_ENABLED, timestamp, true);
     assertEquals("Checking button state", true, repository.getLightingEnabled(IHaleRoom.DINING)
         .getValue());
-    
+
     /** Testing on/off buttons. */
     tester.clickLink("OnButton");
     assertEquals("Check that button is on.", true,
         repository.getLightingEnabledCommand(IHaleRoom.LIVING).getValue());
     
-    tester.clickLink("OffButton");
-    assertEquals("Check that button is off.", false,
-        repository.getLightingEnabledCommand(IHaleRoom.LIVING).getValue());
+     tester.clickLink("OffButton");
+     assertEquals("Check that button is off.", false,
+     repository.getLightingEnabledCommand(IHaleRoom.LIVING).getValue());
 
     // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
+    // tester.debugComponentTrees();
   }
 }

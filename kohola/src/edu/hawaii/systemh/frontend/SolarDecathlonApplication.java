@@ -39,7 +39,7 @@ import edu.hawaii.systemh.frontend.page.messages.MessagesListener;
  * @author Chuan Lun Hung
  */
 public class SolarDecathlonApplication extends WebApplication {
-
+  
   private static AquaponicsListener aquaponicsListener;
   private static HvacListener hvacListener;
   private static LightsListener lightsListener;
@@ -146,7 +146,7 @@ public class SolarDecathlonApplication extends WebApplication {
    */
   @Override
   public String getConfigurationType() {
-
+    
     // Allow non-unique wicket ids
     getDebugSettings().setComponentUseCheck(false);
 

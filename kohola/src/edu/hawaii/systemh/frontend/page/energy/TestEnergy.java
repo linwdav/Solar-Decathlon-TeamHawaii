@@ -26,7 +26,7 @@ public class TestEnergy {
   public void testPage() {
     
     // populate the repository
-    IHaleBackend backend = IHaleBackend.getInstance();
+    IHaleBackend backend = (IHaleBackend) SolarDecathlonApplication.getBackend();
     Repository repository = new Repository();
     RepositoryRefresher refresh = new RepositoryRefresher(backend, repository);
     refresh.start(500);

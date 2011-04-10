@@ -36,7 +36,7 @@ import edu.hawaii.systemh.frontend.page.help.Help;
  * @author Chuan Lun Hung
  */
 public class Energy extends Header {
-  
+
   private boolean DEBUG = false;
 
   /** Support serialization. */
@@ -684,8 +684,8 @@ public class Energy extends Header {
     printC = cPrintBuf.toString();
     printG = gPrintBuf.toString();
     if (DEBUG) {
-    System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
-        + printG);
+      System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
+          + printG);
     }
     String url =
         "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS

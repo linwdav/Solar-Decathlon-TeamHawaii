@@ -30,8 +30,8 @@ import org.apache.wicket.util.time.Duration;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.api.command.IHaleCommand;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
-import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.SolarDecathlonSession;
 import edu.hawaii.systemh.frontend.page.Header;
@@ -494,7 +494,9 @@ public class Lighting extends Header {
       protected void onUpdate(AjaxRequestTarget target) {
         String newSelection = roomChoices.getDefaultModelObjectAsString();
         currentRoom = newSelection;
-        System.out.println("new room selection: " + newSelection);
+        if (DEBUG) {
+          System.out.println("new room selection: " + newSelection);
+        }
         if (LIVING_ROOM.equals(newSelection)) {
           ((SolarDecathlonSession) getSession()).getLightingSession().setRoom(LIVING_ROOM);
         }
@@ -534,7 +536,9 @@ public class Lighting extends Header {
       private static final long serialVersionUID = 1L;
 
       public void onComponentTag(Component component, ComponentTag tag) {
-        System.out.println("state: " + enabled);
+        if (DEBUG) {
+          System.out.println("state: " + enabled);
+        }
 
         if (enabled) {
           tag.put(CLASS, buttonOn);
@@ -570,8 +574,8 @@ public class Lighting extends Header {
    */
   private void handleRoomState(String roomName, boolean enabled) {
 
-    IHaleBackend backend;
-    backend = IHaleBackend.getInstance();
+    IHaleCommand backend;
+    backend = SolarDecathlonApplication.getBackend();
 
     if (LIVING_ROOM.equals(roomName)) {
       livingState = enabled;
@@ -594,11 +598,13 @@ public class Lighting extends Header {
           IHaleCommandType.SET_LIGHTING_ENABLED, enabled);
     }
 
-    if (enabled) {
-      System.out.println("Command { ON } sent to " + roomName);
-    }
-    else {
-      System.out.println("Command {OFF} sent to " + roomName);
+    if (DEBUG) {
+      if (enabled) {
+        System.out.println("Command { ON } sent to " + roomName);
+      }
+      else {
+        System.out.println("Command {OFF} sent to " + roomName);
+      }
     }
     intensityFeedback.setDefaultModelObject("");
     setButtons(enabled);

@@ -59,7 +59,7 @@ import edu.hawaii.systemh.frontend.page.help.Help;
  * @author Chuan Lun Hung
  */
 public class Hvac extends Header {
-  
+
   private boolean DEBUG = false;
 
   /** Support serialization. */
@@ -376,7 +376,7 @@ public class Hvac extends Header {
             }
           }
           if (pointsFound > 0) {
-            data[12 - i] = ((totalValue / pointsFound) - 45) * 2;
+            data[12 - i] = ((totalValue / pointsFound) - 5) * 2.856;
           }
           else {
             data[12 - i] = 0;
@@ -392,15 +392,13 @@ public class Hvac extends Header {
 
     ChartProvider provider = new ChartProvider(new Dimension(650, 275), ChartType.LINE_XY, data);
     provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (&#176;F / Hour)");
+    provider.setTitle("Inside Temperature (&#176;C / Hour)");
     ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
     axisX.setLabels(generateXAxis(0));
 
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
-    axisY
-        .setLabels(new String[] 
-        { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
+    axisY.setLabels(new String[] { "5", "10", "15", "20", "25", "30", "35", "40" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
@@ -447,7 +445,7 @@ public class Hvac extends Header {
 
           }
           if (pointsFound > 0) {
-            data[6 - i] = ((totalValue / pointsFound) - 45) * 2;
+            data[6 - i] = ((totalValue / pointsFound) - 5) * 2.856;
           }
           else {
             data[6 - i] = 0;
@@ -463,14 +461,12 @@ public class Hvac extends Header {
 
     ChartProvider provider = new ChartProvider(new Dimension(650, 275), ChartType.LINE_XY, data);
     provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (&#176;F / Hour)");
+    provider.setTitle("Inside Temperature (&#176;C / Hour)");
     ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
     axisX.setLabels(generateXAxis(1));
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
-    axisY
-        .setLabels(new String[] 
-        { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
+    axisY.setLabels(new String[] { "5", "10", "15", "20", "25", "30", "35", "40" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
@@ -518,7 +514,7 @@ public class Hvac extends Header {
 
           }
           if (pointsFound > 0) {
-            data[6 - i] = ((totalValue / pointsFound) - 45) * 2;
+            data[6 - i] = ((totalValue / pointsFound) - 5) * 2.856;
           }
           else {
             data[6 - i] = 0;
@@ -534,14 +530,12 @@ public class Hvac extends Header {
 
     ChartProvider provider = new ChartProvider(new Dimension(650, 275), ChartType.LINE_XY, data);
     provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (&#176;F / Hour)");
+    provider.setTitle("Inside Temperature (&#176;C / Hour)");
     ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
     axisX.setLabels(generateXAxis(2));
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
-    axisY
-        .setLabels(new String[] 
-        { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
+    axisY.setLabels(new String[] { "5", "10", "15", "20", "25", "30", "35", "40" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
