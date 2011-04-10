@@ -30,7 +30,7 @@
 
   <!-- Basic properties for this system. -->
   <property name="system.name" value="systemh-housesim" />
-  <property name="system.main.class" value="edu.hawaii.ihale.housesimulator.SimulatorServer" />
+  <property name="system.main.class" value="edu.hawaii.systemh.housesimulator.SimulatorServer" />
   <property name="majorVersionNumber" value="2" />
   <property name="minorVersionNumber" value="0" />
   <tstamp>
