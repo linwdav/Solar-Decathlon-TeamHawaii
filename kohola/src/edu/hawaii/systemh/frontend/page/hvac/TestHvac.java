@@ -1,13 +1,5 @@
 package edu.hawaii.systemh.frontend.page.hvac;
 
-import static org.junit.Assert.assertEquals;
-import java.util.Date;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.impl.Repository;
-import edu.hawaii.ihale.backend.IHaleBackend;
-//import edu.hawaii.ihale.frontend.RepositoryRefresher;
 import org.apache.wicket.ajax.markup.html.form.AjaxButton;
 import org.apache.wicket.markup.html.WebMarkupContainer;
 import org.apache.wicket.markup.html.basic.Label;
@@ -15,13 +7,13 @@ import org.apache.wicket.markup.html.form.Form;
 import org.apache.wicket.markup.html.form.TextField;
 import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
-import org.apache.wicket.util.tester.FormTester;
 import org.apache.wicket.util.tester.WicketTester;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import com.codecommit.wicket.Chart;
-
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.page.SelectModalWindow;
+import edu.hawaii.systemh.frontend.weatherparser.WeatherParser;
 
 /**
  * JUnit testing for Hvac page.
@@ -29,6 +21,12 @@ import edu.hawaii.systemh.frontend.page.SelectModalWindow;
  * @author Anthony Kinsey
  */
 public class TestHvac {
+
+  @BeforeClass
+  public static void test() {
+    // IHaleBackend backend = new IHaleBackend();
+    // SolarDecathlonApplication.setBackend(backend);
+  }
 
   /**
    * Performs JUnit tests on the Hvac page.
@@ -89,35 +87,9 @@ public class TestHvac {
     tester.clickLink("button");
     tester.clickLink("button");
 
-    FormTester formTester = tester.newFormTester("form");
-    
-    // new temperature change
-    formTester.setValue("airTemperature", "60");
-    tester.executeAjaxEvent("form:airTemperature", "onchange");
-    tester.executeAjaxEvent("form:SubmitTemp", "onclick");    
-    assertEquals("Checking new form contents", "60",
-        formTester.getTextComponentValue("airTemperature"));    
-    Label feedback = (Label) tester.getComponentFromLastRenderedPage("form:Feedback");
-    assertEquals("Check feedback", "<font color=\"green\">Success: (60&deg;F)</font>",
-        feedback.getDefaultModelObjectAsString());
-    
-    // same temperature change 
-    tester.executeAjaxEvent("form:airTemperature", "onchange");
-    tester.executeAjaxEvent("form:SubmitTemp", "onclick");
-    assertEquals("Check feedback", "<font color=\"#FF9900\">Same: (60&deg;F)</font>",
-        feedback.getDefaultModelObjectAsString());
-    
-    // trigger the Hvac listener
-    IHaleBackend backend = IHaleBackend.getInstance();
-    Repository repository = new Repository();
-    long timestamp = new Date().getTime();
-    backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, 70);
-    repository.store(IHaleSystem.HVAC, IHaleState.TEMPERATURE, timestamp, 70);
-    backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, 50);
-    repository.store(IHaleSystem.HVAC, IHaleState.TEMPERATURE, timestamp, 50);
-        
-    // The following line is useful for seeing what's on the page.
-    tester.debugComponentTrees();
-
+    // check that the outside temperature value is correct.
+    WeatherParser parser = new WeatherParser("Honolulu");
+    int temp = parser.getCurrentWeather().getTempF();
+    tester.assertLabel("OutsideTemperature", String.valueOf(temp) + "&deg;F");    
   }
 }
