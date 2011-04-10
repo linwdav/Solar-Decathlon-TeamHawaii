@@ -250,7 +250,7 @@ public class SolarDecathlonApplication extends WebApplication {
    * @param newBackend The new backend to change to.
    */
   public static void setBackend(IHaleCommand newBackend) {
-	  backend = newBackend;
+    backend = newBackend;
   }
 
   /**

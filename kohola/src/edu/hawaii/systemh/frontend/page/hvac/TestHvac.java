@@ -83,6 +83,6 @@ public class TestHvac {
     // check that the outside temperature value is correct.
     WeatherParser parser = new WeatherParser("Honolulu");
     int temp = parser.getCurrentWeather().getTempF();
-    tester.assertLabel("OutsideTemperature", String.valueOf(temp) + "&deg;F");    
+    tester.assertLabel("OutsideTemperature", temp + "&deg;F");    
   }
 }

@@ -399,7 +399,8 @@ public class Hvac extends Header {
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
     axisY
-        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
+        .setLabels(new String[] 
+        { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
@@ -468,7 +469,8 @@ public class Hvac extends Header {
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
     axisY
-        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
+        .setLabels(new String[] 
+        { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
@@ -538,7 +540,8 @@ public class Hvac extends Header {
     provider.addAxis(axisX);
     ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
     axisY
-        .setLabels(new String[] { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
+        .setLabels(new String[] 
+        { "45", "50", "55", "60", "65", "70", "75", "80", "85", "90", "95" });
     provider.addAxis(axisY);
 
     provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));

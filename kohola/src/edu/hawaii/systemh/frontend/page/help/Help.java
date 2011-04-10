@@ -438,7 +438,7 @@ public class Help extends Header {
               + P_CLOSE_TAG
               + P_OPEN_TAG
               + "In chemistry, pH is a measure of the acidity or basicity of a solution."
-              + "Pure water is said to be neutral, with a pH close to 7.0 at 25°C (77°F)"
+              + "Pure water is said to be neutral, with a pH close to 7.0 at 25&deg;C (77&deg;F)"
               + ". Solutions with a pH less than 7 are said to be acidic and solutions with a"
               + " pH greater than 7 are said to be basic or alkaline."
               + P_CLOSE_TAG
