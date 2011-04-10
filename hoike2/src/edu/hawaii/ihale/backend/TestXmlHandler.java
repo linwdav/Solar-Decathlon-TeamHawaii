@@ -46,7 +46,7 @@ public class TestXmlHandler {
   @Test
   public void testXml2StateEntry() throws XPathExpressionException, IOException {
     boolean testPass = false;
-    testPass = handle.xml2StateEntry(historyRepresentation);
+    testPass = handle.parseIhaleXml2StateEntry(historyRepresentation);
     assertTrue("testXml2StateEntry failed", testPass);
   }
 
@@ -59,7 +59,7 @@ public class TestXmlHandler {
   @Test
   public void testEgauge2StateEntry() throws XPathExpressionException, IOException {
     boolean testPass = false;
-    testPass = handle.eGauge2StateEntry(eGaugeRepresentation);
+    testPass = handle.parseEGaugeXmlToStateEntry(eGaugeRepresentation);
     assertTrue("testEgauge2StateEntry failed", testPass);
   }
 }

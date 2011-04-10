@@ -38,7 +38,8 @@ public class XmlHandler {
    * @throws XPathExpressionException in the event of failed compilation.
    * @return true if successful, false otherwise.
    */
-  public Boolean xml2StateEntry(Document doc) throws IOException, XPathExpressionException {
+  public Boolean parseIhaleXml2StateEntry(Document doc) throws IOException,
+      XPathExpressionException {
 
     // This currently only works with getHistory() which may be all we need it to work with.
 
@@ -149,7 +150,8 @@ public class XmlHandler {
    * @throws IOException in case of parsing error.
    * @throws XPathExpressionException in the event of failed compilation.
    */
-  public Boolean xml2StateEntry(Representation rep) throws IOException, XPathExpressionException {
+  public Boolean parseIhaleXml2StateEntry(Representation rep) throws IOException,
+      XPathExpressionException {
 
     // This should handle all poll() requests
 
@@ -159,7 +161,7 @@ public class XmlHandler {
     // Convert Representation to Document so we can operate on it with XPath.
     DomRepresentation dom = new DomRepresentation(rep);
     Document doc = dom.getDocument();
-    return xml2StateEntry(doc);
+    return parseIhaleXml2StateEntry(doc);
   }
 
   /**
@@ -173,7 +175,8 @@ public class XmlHandler {
    * @throws IOException in case of parsing error.
    * @throws XPathExpressionException in the event of failed compilation.
    */
-  public Boolean eGauge2StateEntry(Document doc) throws IOException, XPathExpressionException {
+  public Boolean parseEGaugeXmlToStateEntry(Document doc) throws IOException,
+      XPathExpressionException {
 
     // This currently only works with getHistory() which may be all we need it to work with.
 
@@ -281,7 +284,8 @@ public class XmlHandler {
    * @throws IOException in case of parsing error.
    * @throws XPathExpressionException in the event of failed compilation.
    */
-  public Boolean eGauge2StateEntry(Representation rep) throws IOException, XPathExpressionException {
+  public Boolean parseEGaugeXmlToStateEntry(Representation rep) throws IOException,
+      XPathExpressionException {
 
     // This should handle all poll() requests
 
@@ -291,6 +295,6 @@ public class XmlHandler {
     // Convert Representation to Document so we can operate on it with XPath.
     DomRepresentation dom = new DomRepresentation(rep);
     Document doc = dom.getDocument();
-    return eGauge2StateEntry(doc);
+    return parseEGaugeXmlToStateEntry(doc);
   }
 }

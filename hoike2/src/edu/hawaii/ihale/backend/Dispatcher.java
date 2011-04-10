@@ -4,14 +4,14 @@ import java.util.Map;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 
 /**
- * This class controls the timed polling, parsing, and storing of data from the IHale system devices.
- * One instance of this class should be created by IHaleBackend.java.
+ * This class controls the timed polling, parsing, and storing of data from the IHale system
+ * devices. One instance of this class should be created by IHaleBackend.java.
  * 
  * @author Tony Gaskell
  * @author Gregory Burgess
  */
 public class Dispatcher extends Thread {
-  
+
   /** The interval to wait between polling. */
   private long interval;
   /** The map containing all URI values for each system. */
@@ -24,9 +24,8 @@ public class Dispatcher extends Thread {
    * 
    * @param map the parsed properties file
    * @param interval the time in milliseconds to wait between polling.
-   * @throws InterruptedException
    */
-  public Dispatcher(Map<String, String> map, long interval) throws InterruptedException {
+  public Dispatcher(Map<String, String> map, long interval) {
     this.interval = interval;
     this.uriMap = map;
     init();
@@ -37,7 +36,7 @@ public class Dispatcher extends Thread {
    */
   private final void init() {
     pollDevices = new PollDevice[8];
-    
+
     try {
       pollDevices[0] = new PollDevice(IHaleSystem.AQUAPONICS, uriMap.get("aquaponics-state"));
       pollDevices[1] = new PollDevice(IHaleSystem.HVAC, uriMap.get("hvac-state"));
@@ -60,12 +59,12 @@ public class Dispatcher extends Thread {
   @Override
   public final void run() {
     while (true) {
-      
+
       // Poll each IHale system device.
       for (int i = 0; i < pollDevices.length; i++) {
         pollDevices[i].poll();
       }
-      
+
       /*
        * for (int j = 0; j < pollDevices.length; j++) { try { pollDevices[j].join(); } catch
        * (InterruptedException e) { System.err.println("Error occured while polling devices.");

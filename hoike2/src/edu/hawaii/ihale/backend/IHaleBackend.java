@@ -139,14 +139,9 @@ public class IHaleBackend implements IHaleCommand {
     dispatch = null;
     log.info("Initiatiating Dispatcher.");
     
-    try {
-      dispatch = new Dispatcher(uriMap, interval);
-      pollingThread = new Thread(dispatch);
-      pollingThread.start();
-    }
-    catch (InterruptedException e) {
-      e.printStackTrace();
-    } 
+    dispatch = new Dispatcher(uriMap, interval);
+    pollingThread = new Thread(dispatch);
+    pollingThread.start(); 
     
     log.info("Running dispatcher at an interval of " + interval + " milliseconds."); 
     log.info("Initiating repository.");
@@ -184,7 +179,7 @@ public class IHaleBackend implements IHaleCommand {
        System.err.println("Failed to convert to doc.");
      }
  
-     parser.xml2StateEntry(doc);
+     parser.parseIhaleXml2StateEntry(doc);
   }
 
   /**

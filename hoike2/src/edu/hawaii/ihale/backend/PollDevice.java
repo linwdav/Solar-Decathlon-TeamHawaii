@@ -45,10 +45,10 @@ public class PollDevice {
     try {
       if (system.equals(IHaleSystem.AQUAPONICS) || system.equals(IHaleSystem.HVAC)
           || system.equals(IHaleSystem.LIGHTING)) {
-        handler.xml2StateEntry(resource.get());
+        handler.parseIhaleXml2StateEntry(resource.get());
       }
       else if (system.equals(IHaleSystem.ELECTRIC) || system.equals(IHaleSystem.PHOTOVOLTAIC)) {
-        handler.eGauge2StateEntry(resource.get());
+        handler.parseEGaugeXmlToStateEntry(resource.get());
       }
     }
     catch (XPathExpressionException e) {
