@@ -25,17 +25,16 @@ public class TestElectrical {
    */
   @BeforeClass
   public static void startServer() throws Exception {
-
     SimulatorServer.runServer();
   }
 
   /**
-   * Tests that we can GET a value from the system.
-   * @throws Exception If GET fails
+   * Tests that we can GET a value from the system and verify that it is within acceptable range 
+   * according to the specified time.
+   * @throws Exception If GET fails.
    */
   @Test
   public void testGet() throws Exception {
-
     // Hourly average is a static value, and can range from -50 to +50 of any average.
     long hourlyAverage = ElectricalData.getHourlyAverage(Calendar.HOUR_OF_DAY);
     long hourlyRange = 50;

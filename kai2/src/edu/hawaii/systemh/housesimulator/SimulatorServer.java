@@ -47,11 +47,15 @@ import edu.hawaii.systemh.housesimulator.simulationtimer.SimulationTimer;
  * 
  * @author Anthony Kinsey, Michael Cera
  * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
+ * 
+ * @version 2.0
  */
 public class SimulatorServer extends Application {
 
   /**
-   * This main method starts up a web application.
+   * User specifies the time between system data refresh. If a time interval has been specified
+   * correctly, a device properties file and an initial data file is generated before running the
+   * server.
    * 
    * @param args Requires the first argument to be "-stepinterval" followed by a positive integer to
    * denote the interval (in seconds) between each system device data refresh.
@@ -75,7 +79,7 @@ public class SimulatorServer extends Application {
   }
 
   /**
-   * Start servers running beginning on ports. Applications and their resources are specified in
+   * Start servers beginning from port 7000. Applications and their resources are specified in
    * their respective classes.
    * 
    * @throws Exception If problems occur starting up this server.

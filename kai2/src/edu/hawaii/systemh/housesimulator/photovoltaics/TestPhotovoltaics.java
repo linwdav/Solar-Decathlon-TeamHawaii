@@ -29,14 +29,12 @@ public class TestPhotovoltaics {
   }
   
   /**
-   * Tests that we can GET a value from the system.
+   * Tests that we can GET a value from the system and verify that it is within acceptable range.
    * @throws Exception if GET fails
    */
   @Test
   public void testGet() throws Exception {
-
-      PhotovoltaicsData.modifySystemState();
-
+    PhotovoltaicsData.modifySystemState();
     
     // Set up the GET client
     //String getUrl = "http://localhost:7001/photovoltaic/state";

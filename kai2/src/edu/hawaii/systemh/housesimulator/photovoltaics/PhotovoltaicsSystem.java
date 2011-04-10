@@ -5,7 +5,7 @@ import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
 /**
- * Provides access to the Lighting system.
+ * Provides access to the Photovoltaic system.
  * 
  * @author Anthony Kinsey, Michael Cera
  * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
