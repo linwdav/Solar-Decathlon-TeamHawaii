@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import javax.xml.xpath.XPathExpressionException;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
@@ -33,6 +34,7 @@ public class PollDevice {
     else if (system.equals(IHaleSystem.ELECTRIC) || system.equals(IHaleSystem.PHOTOVOLTAIC)) {
       this.resource = new ClientResource(domain + "cgi-bin/egauge?tot");
     }
+    resource.getLogger().setLevel(Level.OFF);
   }
 
   /**

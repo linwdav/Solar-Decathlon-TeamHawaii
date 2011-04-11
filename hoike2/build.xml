@@ -28,11 +28,11 @@
   </path>
 
   <!-- Basic properties for this system. -->
-  <property name="system.name" value="ihale-backend-hoike2" />
+  <property name="system.name" value="systemh-backend" />
   <property name="system.main.class" value="edu.hawaii.ihale.backend.IHaleBackend" />
 
   <property name="majorVersionNumber" value="2" />
-  <property name="minorVersionNumber" value="0" />
+  <property name="minorVersionNumber" value="1" />
   <tstamp>
     <format property="DAYSTAMP" pattern="Mdd" />
     <format property="TSTAMP" pattern="HH:mm:ss" />
