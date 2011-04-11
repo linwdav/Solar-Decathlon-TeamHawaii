@@ -32,7 +32,7 @@
   <property name="system.name" value="systemh-housesim" />
   <property name="system.main.class" value="edu.hawaii.systemh.housesimulator.SimulatorServer" />
   <property name="majorVersionNumber" value="2" />
-  <property name="minorVersionNumber" value="0" />
+  <property name="minorVersionNumber" value="1" />
   <tstamp>
     <format property="DAYSTAMP" pattern="Mdd" />
     <format property="TSTAMP" pattern="HH:mm:ss" />

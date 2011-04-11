@@ -58,8 +58,9 @@ public class AquaponicsData {
   private static double maxTurb = 100.0;
 
   // Conditions to be monitored in the system.
-  // DO NOT touch these formulas except for turbidity and oxygen!
-  // Initial values are set between the minimum and maximum safe ranges automatically.
+  // Try not to touch these formulas except for turbidity and oxygen!
+  // Initial values are set between the minimum and maximum safe ranges automatically according
+  //  to the conditions set above.
   /** The current water circulation. */
   private static double circulation = (randomGen.nextDouble() * (maxCirc - minCirc)) + minCirc;
   /** The current number of dead fish. */
@@ -79,8 +80,9 @@ public class AquaponicsData {
       * ((circulation - minCirc) / (maxCirc - minCirc)) + minOxygen;
 
   // Values that can be modified by PUT commands.
-  // DO NOT touch these formulas!
-  // Initial desired values are set between the minimum and maximum safe ranges automatically.
+  // Try not to touch these formulas!
+  // Initial desired values are set between the minimum and maximum safe ranges automatically
+  //  according to the conditions set above.
   /** The desired electrical conductivity. */
   private static double desiredEC = (randomGen.nextDouble() * (maxEC - minEC)) + minEC;
   /** The desired temperature. */
@@ -91,8 +93,8 @@ public class AquaponicsData {
   private static double desiredPh = (randomGen.nextDouble() * (maxPH - minPH)) + minPH;
 
   /**
-   * Resets the desired system state values randomly to within acceptable range. DO NOT touch these
-   * formulas!
+   * Resets the desired system state values randomly to within acceptable safe ranges automatically
+   * according to the conditions set above. Try not to touch these formulas!
    */
   public static void resetDesiredState() {
     desiredEC = (randomGen.nextDouble() * (maxEC - minEC)) + minEC;
@@ -112,7 +114,7 @@ public class AquaponicsData {
     changeTemp();
     changeWaterLevel();
     changePH();
-    // Must update oxygen and turbidity last because they have dependencies on the conditions above.
+    // Must update oxygen and turbidity last because they have dependencies like circulation, etc.
     changeOxygen();
     changeTurbidity();
   }
@@ -233,7 +235,9 @@ public class AquaponicsData {
   }
 
   /**
-   * Change water oxygen.  It is correlates linearly with amount of water circulation.
+   * Change water oxygen.  It correlates with min and max circulation that were set as safe ranges.
+   * For example, if circulation is 60 then oxygen is 5.5.  If circulation is 100, then oxygen
+   *  is 6.5.  If circulation is 80, then oxygen is 6.0.
    */
   public static void changeOxygen() {
     oxygen =
@@ -241,14 +245,14 @@ public class AquaponicsData {
   }
 
   /**
-   * Change water turbidity.
+   * Change water turbidity.  This equation will probably need tweaking later on.
    */
   public static void changeTurbidity() {
     turbidity = (ec * 2) + aliveFish + (deadFish * 5) - (circulation * 0.1);
   }
 
   /**
-   * Helper method to print current system conditions.
+   * Helper method to print current system conditions. Useful for debugging.
    */
   public static void printConditions() {
     final String desired = " (Desired: "; // PMD pickiness
