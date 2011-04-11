@@ -237,7 +237,7 @@ public class ElectricalData {
     String stateData = "state-data";
     String system = "system";
     String tStamp = "timestamp";
-    String stateKey = "state-key";
+    String stateKey = "state";
     String electricString = IHaleSystem.ELECTRIC.toString();
     String keyString = "key";
     String valueString = "value";

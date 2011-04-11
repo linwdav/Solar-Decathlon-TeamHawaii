@@ -576,7 +576,7 @@ public class HVACData {
     String timestampString = timestamp.toString();
     String temperatureString = IHaleState.TEMPERATURE.toString();
     int celsiusTemp = currentHomeTemp;
-    
+
     // Get the root element, in this case would be <state-history> element.
     Element rootElement = doc.getDocumentElement();
     

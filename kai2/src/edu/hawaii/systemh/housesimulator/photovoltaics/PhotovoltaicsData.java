@@ -233,7 +233,7 @@ public class PhotovoltaicsData {
     String stateData = "state-data";
     String system = "system";
     String tStamp = "timestamp";
-    String stateKey = "state-key";
+    String stateKey = "state";
     String pvString = IHaleSystem.PHOTOVOLTAIC.toString();
     String keyString = "key";
     String valueString = "value";
