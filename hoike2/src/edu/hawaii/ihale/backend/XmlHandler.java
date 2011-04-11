@@ -157,7 +157,12 @@ public class XmlHandler {
 
     // In theory this method should be all-or-nothing.
     // If something fails to load, they should ALL fail. Source: ICS 321.
-
+    
+    // Stop here if passed an empty representation.
+    if (!rep.isAvailable()) {
+      return false;
+    }
+    
     // Convert Representation to Document so we can operate on it with XPath.
     DomRepresentation dom = new DomRepresentation(rep);
     Document doc = dom.getDocument();
@@ -292,6 +297,10 @@ public class XmlHandler {
     // In theory this method should be all-or-nothing.
     // If something fails to load, they should ALL fail. Source: ICS 321.
 
+    // Stop here if passed an empty representation.
+    if (!rep.isAvailable()) {
+      return false;
+    }
     // Convert Representation to Document so we can operate on it with XPath.
     DomRepresentation dom = new DomRepresentation(rep);
     Document doc = dom.getDocument();

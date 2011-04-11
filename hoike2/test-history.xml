@@ -1,0 +1,1497 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<state-history>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302467734361">
+		<state key="CIRCULATION" value="85.8224459123664" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.177473528603393" />
+		<state key="TEMPERATURE" value="21" />
+		<state key="TURBIDITY" value="37.77270246597014" />
+		<state key="WATER_LEVEL" value="40" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.14556114780916" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302467734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302467434361">
+		<state key="CIRCULATION" value="85.73603950463021" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.177473528603393" />
+		<state key="TEMPERATURE" value="21" />
+		<state key="TURBIDITY" value="37.78134310674376" />
+		<state key="WATER_LEVEL" value="41" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.143400987615755" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302467434361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302467134361">
+		<state key="CIRCULATION" value="85.18217500352746" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.177473528603393" />
+		<state key="TEMPERATURE" value="21" />
+		<state key="TURBIDITY" value="37.83672955685404" />
+		<state key="WATER_LEVEL" value="41" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.129554375088187" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302467134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302466834361">
+		<state key="CIRCULATION" value="85.92368602609504" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.127473528603392" />
+		<state key="TEMPERATURE" value="21" />
+		<state key="TURBIDITY" value="37.66257845459728" />
+		<state key="WATER_LEVEL" value="40" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.148092150652376" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302466834361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302466534361">
+		<state key="CIRCULATION" value="85.8935174548008" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.127473528603392" />
+		<state key="TEMPERATURE" value="22" />
+		<state key="TURBIDITY" value="37.665595311726705" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.14733793637002" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302466534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302466234361">
+		<state key="CIRCULATION" value="85.99901520689615" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.127473528603392" />
+		<state key="TEMPERATURE" value="22" />
+		<state key="TURBIDITY" value="37.65504553651717" />
+		<state key="WATER_LEVEL" value="41" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.149975380172403" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302466234361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302465934361">
+		<state key="CIRCULATION" value="85.80134106000773" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.127473528603392" />
+		<state key="TEMPERATURE" value="22" />
+		<state key="TURBIDITY" value="37.67481295120601" />
+		<state key="WATER_LEVEL" value="39" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.145033526500193" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302465934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302465634361">
+		<state key="CIRCULATION" value="85.80925606603087" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.077473528603392" />
+		<state key="TEMPERATURE" value="22" />
+		<state key="TURBIDITY" value="37.574021450603695" />
+		<state key="WATER_LEVEL" value="39" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.145231401650772" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302465634361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302465334361">
+		<state key="CIRCULATION" value="85.78833151595303" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.077473528603392" />
+		<state key="TEMPERATURE" value="22" />
+		<state key="TURBIDITY" value="37.57611390561148" />
+		<state key="WATER_LEVEL" value="39" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.144708287898826" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302465334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302465034361">
+		<state key="CIRCULATION" value="86.59648134067088" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.027473528603391" />
+		<state key="TEMPERATURE" value="23" />
+		<state key="TURBIDITY" value="37.39529892313969" />
+		<state key="WATER_LEVEL" value="37" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.164912033516772" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302465034361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302464734361">
+		<state key="CIRCULATION" value="85.83671872172968" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.027473528603391" />
+		<state key="TEMPERATURE" value="23" />
+		<state key="TURBIDITY" value="37.47127518503381" />
+		<state key="WATER_LEVEL" value="39" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.145917968043242" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302464734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302464434361">
+		<state key="CIRCULATION" value="85.88113185565186" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.027473528603391" />
+		<state key="TEMPERATURE" value="23" />
+		<state key="TURBIDITY" value="37.4668338716416" />
+		<state key="WATER_LEVEL" value="40" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.147028296391296" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302464434361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302467734361">
+		<state key="CIRCULATION" value="85.96814010202672" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="13.027473528603391" />
+		<state key="TEMPERATURE" value="23" />
+		<state key="TURBIDITY" value="37.45813304700411" />
+		<state key="WATER_LEVEL" value="39" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.149203502550668" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302467734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302464134361">
+		<state key="CIRCULATION" value="86.13085495353162" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="23" />
+		<state key="TURBIDITY" value="37.34186156185362" />
+		<state key="WATER_LEVEL" value="39" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.15327137383829" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302464134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302460534361">
+		<state key="CIRCULATION" value="85.86106478052842" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="24" />
+		<state key="TURBIDITY" value="37.36884057915394" />
+		<state key="WATER_LEVEL" value="39" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.14652661951321" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302460534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302456934361">
+		<state key="CIRCULATION" value="85.96823524779414" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="24" />
+		<state key="TURBIDITY" value="37.35812353242736" />
+		<state key="WATER_LEVEL" value="40" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.149205881194853" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302456934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302453334361">
+		<state key="CIRCULATION" value="85.8733264036222" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="24" />
+		<state key="TURBIDITY" value="37.36761441684456" />
+		<state key="WATER_LEVEL" value="41" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.146833160090555" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302453334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302449734361">
+		<state key="CIRCULATION" value="86.03303854929592" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="25" />
+		<state key="TURBIDITY" value="37.35164320227719" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.150825963732398" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302449734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302446134361">
+		<state key="CIRCULATION" value="86.36168315945625" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="26" />
+		<state key="TURBIDITY" value="37.318778741261156" />
+		<state key="WATER_LEVEL" value="43" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.159042078986406" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302446134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302442534361">
+		<state key="CIRCULATION" value="86.18907922033726" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="26" />
+		<state key="TURBIDITY" value="37.33603913517305" />
+		<state key="WATER_LEVEL" value="43" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.154726980508432" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302442534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302438934361">
+		<state key="CIRCULATION" value="86.13811196475068" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="26" />
+		<state key="TURBIDITY" value="37.34113586073171" />
+		<state key="WATER_LEVEL" value="44" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.153452799118767" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302438934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302435334361">
+		<state key="CIRCULATION" value="85.97482894087287" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="26" />
+		<state key="TURBIDITY" value="37.357464163119495" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.149370723521821" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302435334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302431734361">
+		<state key="CIRCULATION" value="85.37535497647022" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="26" />
+		<state key="TURBIDITY" value="37.41741155955976" />
+		<state key="WATER_LEVEL" value="41" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.134383874411755" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302431734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302428134361">
+		<state key="CIRCULATION" value="84.92936513364472" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="27" />
+		<state key="TURBIDITY" value="37.3620105438423" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.123234128341118" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302428134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302424534361">
+		<state key="CIRCULATION" value="85.49584650632922" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.305362406573856" />
+		<state key="WATER_LEVEL" value="40" />
+		<state key="PH" value="7.7" />
+		<state key="OXYGEN" value="5.137396162658231" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302424534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302420934361">
+		<state key="CIRCULATION" value="86.19429011598493" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.97747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.33551804560829" />
+		<state key="WATER_LEVEL" value="41" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.154857252899623" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302420934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302417334361">
+		<state key="CIRCULATION" value="86.30677583544515" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.22426947366226" />
+		<state key="WATER_LEVEL" value="43" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.157669395886129" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302417334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302413734361">
+		<state key="CIRCULATION" value="86.39372395566453" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.215574661640325" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.1598430988916135" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302413734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302410134361">
+		<state key="CIRCULATION" value="85.9659367017049" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.25835338703629" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.149148417542623" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302410134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302406534361">
+		<state key="CIRCULATION" value="85.84544869027332" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.270402188179446" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.146136217256833" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302406534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302402934361">
+		<state key="CIRCULATION" value="86.10471983441725" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.24447507376505" />
+		<state key="WATER_LEVEL" value="44" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.152617995860432" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302402934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302399334361">
+		<state key="CIRCULATION" value="86.58676180569435" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.19627087663734" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.164669045142359" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302399334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302395734361">
+		<state key="CIRCULATION" value="86.52531202359224" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="27" />
+		<state key="TURBIDITY" value="37.20241585484756" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.163132800589806" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302395734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302392134361">
+		<state key="CIRCULATION" value="86.31613146721735" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="27" />
+		<state key="TURBIDITY" value="37.223333910485046" />
+		<state key="WATER_LEVEL" value="44" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.157903286680433" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302392134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302388534361">
+		<state key="CIRCULATION" value="85.95618198347442" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.92747352860339" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.259328858859334" />
+		<state key="WATER_LEVEL" value="43" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.14890454958686" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302388534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302384934361">
+		<state key="CIRCULATION" value="86.30955931647722" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.12399112555906" />
+		<state key="WATER_LEVEL" value="44" />
+		<state key="PH" value="7.7" />
+		<state key="OXYGEN" value="5.157738982911931" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302384934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302467734361">
+		<state key="CIRCULATION" value="86.15418147067842" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.139528910138935" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.7" />
+		<state key="OXYGEN" value="5.153854536766961" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302467734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302381334361">
+		<state key="CIRCULATION" value="86.6253101905591" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.092416038150866" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.7" />
+		<state key="OXYGEN" value="5.165632754763978" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302381334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302294934361">
+		<state key="CIRCULATION" value="87.5214124212286" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="37.00280581508392" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.7" />
+		<state key="OXYGEN" value="5.188035310530715" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302294934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302208534361">
+		<state key="CIRCULATION" value="87.94917461007157" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.96002959619962" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.198729365251789" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302208534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302122134361">
+		<state key="CIRCULATION" value="88.54465209172267" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.90048184803451" />
+		<state key="WATER_LEVEL" value="43" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.213616302293067" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302122134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1302035734361">
+		<state key="CIRCULATION" value="88.65704625449902" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.88924243175688" />
+		<state key="WATER_LEVEL" value="43" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.216426156362475" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1302035734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301949334361">
+		<state key="CIRCULATION" value="88.58182335107303" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.896764722099476" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.214545583776825" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301949334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301862934361">
+		<state key="CIRCULATION" value="88.2042030292214" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.93452675428463" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.205105075730535" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301862934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301776534361">
+		<state key="CIRCULATION" value="88.18863355273827" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.93608370193295" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.204715838818457" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301776534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301690134361">
+		<state key="CIRCULATION" value="87.75810795353361" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="30" />
+		<state key="TURBIDITY" value="36.97913626185341" />
+		<state key="WATER_LEVEL" value="41" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.19395269883834" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301690134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301603734361">
+		<state key="CIRCULATION" value="87.42599358014924" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="30" />
+		<state key="TURBIDITY" value="37.01234769919185" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.185649839503731" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301603734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301517334361">
+		<state key="CIRCULATION" value="88.11290415832326" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="30" />
+		<state key="TURBIDITY" value="36.84365664137445" />
+		<state key="WATER_LEVEL" value="44" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.202822603958081" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301517334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301430934361">
+		<state key="CIRCULATION" value="88.26180283036389" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="30" />
+		<state key="TURBIDITY" value="36.82876677417039" />
+		<state key="WATER_LEVEL" value="42" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.2065450707590974" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301430934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301344534361">
+		<state key="CIRCULATION" value="88.45351497944957" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.777473528603387" />
+		<state key="TEMPERATURE" value="30" />
+		<state key="TURBIDITY" value="36.709595559261814" />
+		<state key="WATER_LEVEL" value="43" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.211337874486239" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301344534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301258134361">
+		<state key="CIRCULATION" value="88.94964185285527" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.777473528603387" />
+		<state key="TEMPERATURE" value="30" />
+		<state key="TURBIDITY" value="36.659982871921244" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.6" />
+		<state key="OXYGEN" value="5.223741046321382" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301258134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301171734361">
+		<state key="CIRCULATION" value="88.87176767908703" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.777473528603387" />
+		<state key="TEMPERATURE" value="30" />
+		<state key="TURBIDITY" value="36.66777028929807" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.2217941919771755" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301171734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1301085334361">
+		<state key="CIRCULATION" value="88.89032692564908" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.777473528603387" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.665914364641864" />
+		<state key="WATER_LEVEL" value="47" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.222258173141227" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1301085334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300998934361">
+		<state key="CIRCULATION" value="88.73551534041991" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.777473528603387" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.68139552316478" />
+		<state key="WATER_LEVEL" value="47" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.2183878835104975" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300998934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300912534361">
+		<state key="CIRCULATION" value="88.57399689672535" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.79754736753424" />
+		<state key="WATER_LEVEL" value="47" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.214349922418133" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300912534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300826134361">
+		<state key="CIRCULATION" value="88.4111366076251" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.81383339644427" />
+		<state key="WATER_LEVEL" value="47" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.210278415190627" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300826134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300739734361">
+		<state key="CIRCULATION" value="88.18343102017094" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.83660395518968" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.204585775504274" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300739734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300653334361">
+		<state key="CIRCULATION" value="88.46699978019603" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.80824707918717" />
+		<state key="WATER_LEVEL" value="45" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.211674994504901" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300653334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300566934361">
+		<state key="CIRCULATION" value="88.15436624152434" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.83951043305434" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.203859156038108" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300566934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300480534361">
+		<state key="CIRCULATION" value="87.88051587895191" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.86689546931159" />
+		<state key="WATER_LEVEL" value="44" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.197012896973797" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300480534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300394134361">
+		<state key="CIRCULATION" value="87.89913860194942" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="27" />
+		<state key="TURBIDITY" value="36.86503319701183" />
+		<state key="WATER_LEVEL" value="44" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.197478465048736" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300394134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300307734361">
+		<state key="CIRCULATION" value="87.47883091798468" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.907063965408305" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.186970772949617" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300307734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300221334361">
+		<state key="CIRCULATION" value="86.84128914996501" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.97081814221028" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.171032228749125" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300221334361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300134934361">
+		<state key="CIRCULATION" value="87.37766962037549" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.91718009516923" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.184441740509387" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300134934361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1300048534361">
+		<state key="CIRCULATION" value="88.04545667119238" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.85040139008754" />
+		<state key="WATER_LEVEL" value="47" />
+		<state key="PH" value="7.4" />
+		<state key="OXYGEN" value="5.20113641677981" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1300048534361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1299962134361">
+		<state key="CIRCULATION" value="88.2047840758259" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.827473528603388" />
+		<state key="TEMPERATURE" value="28" />
+		<state key="TURBIDITY" value="36.834468649624185" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.205119601895648" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1299962134361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data device="arduino-1" system="AQUAPONICS"
+		timestamp="1299875734361">
+		<state key="CIRCULATION" value="88.65337384476408" />
+		<state key="DEAD_FISH" value="0" />
+		<state key="ELECTRICAL_CONDUCTIVITY" value="12.877473528603389" />
+		<state key="TEMPERATURE" value="29" />
+		<state key="TURBIDITY" value="36.88960967273037" />
+		<state key="WATER_LEVEL" value="46" />
+		<state key="PH" value="7.5" />
+		<state key="OXYGEN" value="5.216334346119102" />
+	</state-data>
+	<state-data device="arduino-3" system="HVAC" timestamp="1299875734361">
+		<state key="TEMPERATURE" value="14" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302467734">
+		<state key="ENERGY" value="1955" />
+		<state key="POWER" value="-25" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302467434">
+		<state key="ENERGY" value="1948" />
+		<state key="POWER" value="-9" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302467134">
+		<state key="ENERGY" value="1955" />
+		<state key="POWER" value="-8" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302466834">
+		<state key="ENERGY" value="1945" />
+		<state key="POWER" value="-6" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302466534">
+		<state key="ENERGY" value="1970" />
+		<state key="POWER" value="13" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302466234">
+		<state key="ENERGY" value="1935" />
+		<state key="POWER" value="14" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302465934">
+		<state key="ENERGY" value="2004" />
+		<state key="POWER" value="-12" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302465634">
+		<state key="ENERGY" value="1960" />
+		<state key="POWER" value="11" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302465334">
+		<state key="ENERGY" value="1938" />
+		<state key="POWER" value="-10" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302465034">
+		<state key="ENERGY" value="2020" />
+		<state key="POWER" value="-7" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302464734">
+		<state key="ENERGY" value="1998" />
+		<state key="POWER" value="23" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302464434">
+		<state key="ENERGY" value="1928" />
+		<state key="POWER" value="12" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302464134">
+		<state key="ENERGY" value="1923" />
+		<state key="POWER" value="-3" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302460534">
+		<state key="ENERGY" value="1914" />
+		<state key="POWER" value="5" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302456934">
+		<state key="ENERGY" value="2029" />
+		<state key="POWER" value="10" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302453334">
+		<state key="ENERGY" value="2106" />
+		<state key="POWER" value="-5" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302449734">
+		<state key="ENERGY" value="1939" />
+		<state key="POWER" value="4" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302446134">
+		<state key="ENERGY" value="1675" />
+		<state key="POWER" value="23" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302442534">
+		<state key="ENERGY" value="1567" />
+		<state key="POWER" value="19" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302438934">
+		<state key="ENERGY" value="1456" />
+		<state key="POWER" value="14" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302435334">
+		<state key="ENERGY" value="1500" />
+		<state key="POWER" value="14" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302431734">
+		<state key="ENERGY" value="1653" />
+		<state key="POWER" value="2" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302428134">
+		<state key="ENERGY" value="1663" />
+		<state key="POWER" value="14" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302424534">
+		<state key="ENERGY" value="1925" />
+		<state key="POWER" value="16" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302420934">
+		<state key="ENERGY" value="1969" />
+		<state key="POWER" value="8" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302417334">
+		<state key="ENERGY" value="2097" />
+		<state key="POWER" value="25" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302413734">
+		<state key="ENERGY" value="2099" />
+		<state key="POWER" value="6" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302410134">
+		<state key="ENERGY" value="2200" />
+		<state key="POWER" value="4" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302406534">
+		<state key="ENERGY" value="1920" />
+		<state key="POWER" value="12" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302402934">
+		<state key="ENERGY" value="1910" />
+		<state key="POWER" value="-19" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302399334">
+		<state key="ENERGY" value="1806" />
+		<state key="POWER" value="-19" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302395734">
+		<state key="ENERGY" value="1852" />
+		<state key="POWER" value="20" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302392134">
+		<state key="ENERGY" value="1884" />
+		<state key="POWER" value="-3" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302388534">
+		<state key="ENERGY" value="1947" />
+		<state key="POWER" value="23" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302384934">
+		<state key="ENERGY" value="1955" />
+		<state key="POWER" value="6" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302381334">
+		<state key="ENERGY" value="2000" />
+		<state key="POWER" value="15" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302467734">
+		<state key="ENERGY" value="1792" />
+		<state key="POWER" value="7" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302381334">
+		<state key="ENERGY" value="1841" />
+		<state key="POWER" value="69" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302294934">
+		<state key="ENERGY" value="1584" />
+		<state key="POWER" value="29" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302208534">
+		<state key="ENERGY" value="1804" />
+		<state key="POWER" value="86" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302122134">
+		<state key="ENERGY" value="1646" />
+		<state key="POWER" value="14" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1302035734">
+		<state key="ENERGY" value="1673" />
+		<state key="POWER" value="48" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301949334">
+		<state key="ENERGY" value="1589" />
+		<state key="POWER" value="16" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301862934">
+		<state key="ENERGY" value="1538" />
+		<state key="POWER" value="89" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301776534">
+		<state key="ENERGY" value="1689" />
+		<state key="POWER" value="19" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301690134">
+		<state key="ENERGY" value="1658" />
+		<state key="POWER" value="82" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301603734">
+		<state key="ENERGY" value="1831" />
+		<state key="POWER" value="68" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301517334">
+		<state key="ENERGY" value="1630" />
+		<state key="POWER" value="29" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301430934">
+		<state key="ENERGY" value="1636" />
+		<state key="POWER" value="114" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301344534">
+		<state key="ENERGY" value="1555" />
+		<state key="POWER" value="99" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301258134">
+		<state key="ENERGY" value="1565" />
+		<state key="POWER" value="39" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301171734">
+		<state key="ENERGY" value="1753" />
+		<state key="POWER" value="35" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1301085334">
+		<state key="ENERGY" value="1671" />
+		<state key="POWER" value="5" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300998934">
+		<state key="ENERGY" value="1698" />
+		<state key="POWER" value="17" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300912534">
+		<state key="ENERGY" value="1621" />
+		<state key="POWER" value="123" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300826134">
+		<state key="ENERGY" value="1820" />
+		<state key="POWER" value="107" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300739734">
+		<state key="ENERGY" value="1686" />
+		<state key="POWER" value="84" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300653334">
+		<state key="ENERGY" value="1637" />
+		<state key="POWER" value="82" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300566934">
+		<state key="ENERGY" value="1659" />
+		<state key="POWER" value="19" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300480534">
+		<state key="ENERGY" value="1653" />
+		<state key="POWER" value="84" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300394134">
+		<state key="ENERGY" value="1746" />
+		<state key="POWER" value="107" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300307734">
+		<state key="ENERGY" value="1785" />
+		<state key="POWER" value="53" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300221334">
+		<state key="ENERGY" value="1840" />
+		<state key="POWER" value="25" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300134934">
+		<state key="ENERGY" value="1644" />
+		<state key="POWER" value="15" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1300048534">
+		<state key="ENERGY" value="1786" />
+		<state key="POWER" value="111" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1299962134">
+		<state key="ENERGY" value="1651" />
+		<state key="POWER" value="63" />
+	</state-data>
+	<state-data system="ELECTRIC" timestamp="1299875734">
+		<state key="ENERGY" value="1618" />
+		<state key="POWER" value="47" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302467734">
+		<state key="ENERGY" value="223" />
+		<state key="POWER" value="135" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302467434">
+		<state key="ENERGY" value="2049" />
+		<state key="POWER" value="361" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302467134">
+		<state key="ENERGY" value="1483" />
+		<state key="POWER" value="309" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302466834">
+		<state key="ENERGY" value="81" />
+		<state key="POWER" value="292" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302466534">
+		<state key="ENERGY" value="815" />
+		<state key="POWER" value="29" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302466234">
+		<state key="ENERGY" value="1110" />
+		<state key="POWER" value="36" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302465934">
+		<state key="ENERGY" value="1289" />
+		<state key="POWER" value="107" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302465634">
+		<state key="ENERGY" value="494" />
+		<state key="POWER" value="89" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302465334">
+		<state key="ENERGY" value="721" />
+		<state key="POWER" value="444" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302465034">
+		<state key="ENERGY" value="754" />
+		<state key="POWER" value="180" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302464734">
+		<state key="ENERGY" value="648" />
+		<state key="POWER" value="157" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302464434">
+		<state key="ENERGY" value="165" />
+		<state key="POWER" value="65" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302467734">
+		<state key="ENERGY" value="1780" />
+		<state key="POWER" value="717" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302464134">
+		<state key="ENERGY" value="950" />
+		<state key="POWER" value="371" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302460534">
+		<state key="ENERGY" value="587" />
+		<state key="POWER" value="135" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302456934">
+		<state key="ENERGY" value="159" />
+		<state key="POWER" value="4" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302453334">
+		<state key="ENERGY" value="29" />
+		<state key="POWER" value="43" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302449734">
+		<state key="ENERGY" value="71" />
+		<state key="POWER" value="7" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302446134">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302442534">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302438934">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302435334">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302431734">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302428134">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302424534">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302420934">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302417334">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302413734">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302410134">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302406534">
+		<state key="ENERGY" value="1" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302402934">
+		<state key="ENERGY" value="19" />
+		<state key="POWER" value="29" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302399334">
+		<state key="ENERGY" value="162" />
+		<state key="POWER" value="18" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302395734">
+		<state key="ENERGY" value="135" />
+		<state key="POWER" value="26" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302392134">
+		<state key="ENERGY" value="537" />
+		<state key="POWER" value="168" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302388534">
+		<state key="ENERGY" value="632" />
+		<state key="POWER" value="242" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302384934">
+		<state key="ENERGY" value="337" />
+		<state key="POWER" value="190" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302467734">
+		<state key="ENERGY" value="269" />
+		<state key="POWER" value="15" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302381334">
+		<state key="ENERGY" value="259" />
+		<state key="POWER" value="2" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302294934">
+		<state key="ENERGY" value="266" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302208534">
+		<state key="ENERGY" value="246" />
+		<state key="POWER" value="1" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302122134">
+		<state key="ENERGY" value="258" />
+		<state key="POWER" value="4" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1302035734">
+		<state key="ENERGY" value="235" />
+		<state key="POWER" value="3" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301949334">
+		<state key="ENERGY" value="265" />
+		<state key="POWER" value="2" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301862934">
+		<state key="ENERGY" value="243" />
+		<state key="POWER" value="15" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301776534">
+		<state key="ENERGY" value="250" />
+		<state key="POWER" value="0" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301690134">
+		<state key="ENERGY" value="241" />
+		<state key="POWER" value="7" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301603734">
+		<state key="ENERGY" value="251" />
+		<state key="POWER" value="9" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301517334">
+		<state key="ENERGY" value="232" />
+		<state key="POWER" value="6" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301430934">
+		<state key="ENERGY" value="258" />
+		<state key="POWER" value="1" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301344534">
+		<state key="ENERGY" value="250" />
+		<state key="POWER" value="5" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301258134">
+		<state key="ENERGY" value="258" />
+		<state key="POWER" value="2" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301171734">
+		<state key="ENERGY" value="234" />
+		<state key="POWER" value="1" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1301085334">
+		<state key="ENERGY" value="237" />
+		<state key="POWER" value="3" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300998934">
+		<state key="ENERGY" value="261" />
+		<state key="POWER" value="2" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300912534">
+		<state key="ENERGY" value="229" />
+		<state key="POWER" value="3" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300826134">
+		<state key="ENERGY" value="239" />
+		<state key="POWER" value="6" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300739734">
+		<state key="ENERGY" value="262" />
+		<state key="POWER" value="3" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300653334">
+		<state key="ENERGY" value="234" />
+		<state key="POWER" value="9" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300566934">
+		<state key="ENERGY" value="236" />
+		<state key="POWER" value="5" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300480534">
+		<state key="ENERGY" value="227" />
+		<state key="POWER" value="4" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300394134">
+		<state key="ENERGY" value="264" />
+		<state key="POWER" value="10" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300307734">
+		<state key="ENERGY" value="227" />
+		<state key="POWER" value="18" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300221334">
+		<state key="ENERGY" value="268" />
+		<state key="POWER" value="13" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300134934">
+		<state key="ENERGY" value="274" />
+		<state key="POWER" value="7" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1300048534">
+		<state key="ENERGY" value="274" />
+		<state key="POWER" value="2" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1299962134">
+		<state key="ENERGY" value="248" />
+		<state key="POWER" value="1" />
+	</state-data>
+	<state-data system="PHOTOVOLTAIC" timestamp="1299875734">
+		<state key="ENERGY" value="247" />
+		<state key="POWER" value="1" />
+	</state-data>
+	<state-data system="LIGHTING" device="arduino-5" timestamp="1297446335">
+		<state key="LIGHTING_LEVEL" value="20" />
+		<state key="LIGHTING_ENABLED" value="true" />
+		<state key="LIGHTING_COLOR" value="#FF0000" />
+	</state-data>
+	<state-data system="LIGHTING" device="arduino-6" timestamp="1297446335">
+		<state key="LIGHTING_LEVEL" value="20" />
+		<state key="LIGHTING_ENABLED" value="true" />
+		<state key="LIGHTING_COLOR" value="#FF0000" />
+	</state-data>
+	<state-data system="LIGHTING" device="arduino-7" timestamp="1297446335">
+		<state key="LIGHTING_LEVEL" value="20" />
+		<state key="LIGHTING_ENABLED" value="true" />
+		<state key="LIGHTING_COLOR" value="#FF0000" />
+	</state-data>
+	<state-data system="LIGHTING" device="arduino-8" timestamp="1297446335">
+		<state key="LIGHTING_LEVEL" value="20" />
+		<state key="LIGHTING_ENABLED" value="true" />
+		<state key="LIGHTING_COLOR" value="#FF0000" />
+	</state-data>
+</state-history>

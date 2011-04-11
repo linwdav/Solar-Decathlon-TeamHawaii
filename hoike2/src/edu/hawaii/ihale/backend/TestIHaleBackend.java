@@ -1,15 +1,17 @@
 package edu.hawaii.ihale.backend;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull; 
-
+import static org.junit.Assert.assertNotNull;
 import java.io.IOException;
 import java.util.Map;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.impl.Repository;
+import edu.hawaii.ihale.backend.dummysimulator.DummySimulatorServer;
 import edu.hawaii.ihale.backend.restserver.RestServer;
 
 /**
@@ -23,30 +25,32 @@ public class TestIHaleBackend {
   private static IHaleBackend backend;
   private static Repository repo = new Repository();
 
-  private static Map<String,String> uri;
+  private static Map<String, String> uri;
   private static RestServer server;
   private static final Object invalidObj = "invalid";
   private static final Object nullObj = null;
   private String invalid = "Command is invalid";
 
-  
   /**
-   * Initializes the test.  Called by testResource().
+   * Called to initialize repository with values and start the DummySimulatorServer.
+   * 
+   * @throws Exception Thrown when DummySimulatorServer fails to run.
    */
-   public static final void init() {
-     backend = IHaleBackend.getInstance();
-     uri = IHaleBackend.getURImap();
-     server = IHaleBackend.getServer();
-   }
-   
+  @BeforeClass
+  public static void init() throws Exception {
+    DummySimulatorServer.main(null);
+    backend = IHaleBackend.getInstance();
+    uri = IHaleBackend.getURImap();
+    server = IHaleBackend.getServer();
+
+  }
+
   /**
-   * Ensures that major variables in the IHaleBackend class are
-   * initialized before being returned.
+   * Ensures that major variables in the IHaleBackend class are initialized before being returned.
    */
   @Test
   public void testResource() {
     boolean uriCheck = false, serverCheck = false, backendCheck = false;
-    init();
     if (uri != null) {
       uriCheck = true;
     }
@@ -56,11 +60,12 @@ public class TestIHaleBackend {
     if (server != null) {
       serverCheck = true;
     }
-    
-    assertEquals("Backend not null",backendCheck,true);
-    assertEquals("Server not null",serverCheck,true);
-    assertEquals("URI list not null",uriCheck,true);
+
+    assertEquals("Backend not null", backendCheck, true);
+    assertEquals("Server not null", serverCheck, true);
+    assertEquals("URI list not null", uriCheck, true);
   }
+
   /**
    * Checks the parsing the files.
    * 
@@ -78,7 +83,7 @@ public class TestIHaleBackend {
    * 
    * @throws IOException Thrown when parsing URL file fails.
    */
-  @Test 
+  @Test
   public void testParseURIPropertyFileNull() throws IOException {
     boolean exceptionThrown = false;
     Map<String, String> uri = null;
@@ -88,8 +93,8 @@ public class TestIHaleBackend {
     catch (Exception e) {
       exceptionThrown = true;
     }
-    assertEquals("Exception caught",exceptionThrown,true); 
-    assertEquals("Map is null",uri,null);
+    assertEquals("Exception caught", exceptionThrown, true);
+    assertEquals("Map is null", uri, null);
   }
 
   /**
@@ -107,16 +112,14 @@ public class TestIHaleBackend {
     catch (Exception e) {
       errorCaught = true;
     }
-    
-    assertEquals("Error caught",errorCaught,true);
-    assertEquals("Map is null", uri,null);
+
+    assertEquals("Error caught", errorCaught, true);
+    assertEquals("Map is null", uri, null);
   }
 
   /**
    * Tests the HVAC doCommand for a successful PUT.
-   * Only passes with a simulator running, remove @Ignore
-   * tag when simulator is present.
-   * 
+   * Only passes with a simulator running, remove @Ignore tag when simulator is present.
    */
   @Test
   public void doCommandHvacSystemVaild() {
@@ -139,10 +142,10 @@ public class TestIHaleBackend {
       backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, nullObj);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
   }
 
   /**
@@ -156,10 +159,10 @@ public class TestIHaleBackend {
       backend.doCommand(IHaleSystem.HVAC, null, IHaleCommandType.SET_TEMPERATURE, invalidObj);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
   }
 
   /**
@@ -189,10 +192,10 @@ public class TestIHaleBackend {
       backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE, nullObj);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
   }
 
   /**
@@ -207,15 +210,15 @@ public class TestIHaleBackend {
       backend.doCommand(IHaleSystem.AQUAPONICS, null, IHaleCommandType.SET_TEMPERATURE, invalidObj);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
   }
 
   /**
-   * Tests the Lighting doCommand for a successful PUT.
-   * Only passes with a simulator running, remove @Ignore
+   * Tests the Lighting doCommand for a successful PUT. Only passes with a simulator running,
+   * remove @Ignore
    * tag when simulator is present.
    * 
    */
@@ -244,10 +247,10 @@ public class TestIHaleBackend {
           IHaleCommandType.SET_LIGHTING_LEVEL, nullObj);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
   }
 
   /**
@@ -263,10 +266,10 @@ public class TestIHaleBackend {
           IHaleCommandType.SET_LIGHTING_LEVEL, invalidObj);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
   }
 
   /**
@@ -283,15 +286,15 @@ public class TestIHaleBackend {
       backend.doCommand(IHaleSystem.LIGHTING, null, IHaleCommandType.SET_LIGHTING_LEVEL, value);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
   }
 
   /**
-   * Tests the Invalid system doCommand for a unsuccessful PUT. Remove @Ignore tag when running with
-   * a simulator.
+   * Tests the Invalid system doCommand for a unsuccessful PUT.
+   * Remove @Ignore tag when running with a simulator.
    */
   @Test
   public void doCommandInvalidSystem() {
@@ -304,9 +307,19 @@ public class TestIHaleBackend {
       backend.doCommand(null, null, IHaleCommandType.SET_LIGHTING_LEVEL, value);
     }
     catch (RuntimeException e) {
-        expectedThrown = true;
+      expectedThrown = true;
     }
 
-    assertEquals(invalid,expectedThrown,true);
+    assertEquals(invalid, expectedThrown, true);
+  }
+
+  /**
+   * Close the DummySimulatorServer.
+   * 
+   * @throws Exception Thrown when DummySimulatorServer fails to close.
+   */
+  @AfterClass
+  public static void closeServer() throws Exception {
+    DummySimulatorServer.stopServer();
   }
 }

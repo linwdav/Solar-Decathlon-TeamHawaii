@@ -2,9 +2,12 @@ package edu.hawaii.ihale.backend.restserver.resource;
 
 import static org.junit.Assert.assertEquals;
 import java.util.logging.Level;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.resource.ClientResource;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
+import edu.hawaii.ihale.backend.dummysimulator.DummySimulatorServer;
 
 /**
  * Tests the aquaponics data to ensure that the XML representation is correct.
@@ -13,6 +16,16 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
  * @author Michael Cera
  */
 public class TestPutResource extends SystemDataTest {
+
+  /**
+   * Start the DummySimulatorServer.
+   * 
+   * @throws Exception Thrown when DummySimulatorServer fails to run.
+   */
+  @BeforeClass
+  public static void init() throws Exception {
+    DummySimulatorServer.main(null);
+  }
 
   /**
    * Tests PUT command with aquaponics. Command: SET_TEMPERATURE; Arg: 25.
@@ -68,4 +81,13 @@ public class TestPutResource extends SystemDataTest {
         repository.getLightingLevelCommand(IHaleRoom.LIVING).getValue());
   }
 
+  /**
+   * Close the DummySimulatorServer.
+   * 
+   * @throws Exception Thrown when DummySimulatorServer fails to close.
+   */
+  @AfterClass
+  public static void closeServer() throws Exception {
+    DummySimulatorServer.stopServer();
+  }
 }

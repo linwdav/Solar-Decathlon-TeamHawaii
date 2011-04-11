@@ -3,6 +3,7 @@ package edu.hawaii.ihale.backend.restserver.resource.photovoltaics;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull; 
 import java.util.logging.Level;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
@@ -11,6 +12,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.ihale.backend.IHaleBackend;
 import edu.hawaii.ihale.backend.restserver.resource.SystemData;
 import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
 
@@ -22,6 +24,14 @@ import edu.hawaii.ihale.backend.restserver.resource.SystemDataTest;
  */
 public class TestPhotovoltaics extends SystemDataTest {
 
+  /**
+   * Called to initialize repository with values.
+   */
+  @BeforeClass
+  public static void init() {
+    IHaleBackend.getInstance();
+  }
+  
   /**
    * Test toXML method.
    * 

@@ -25,11 +25,8 @@ public class TestXmlHandler {
   @BeforeClass
   public static void xmltoRepresentation() {
 
-    String xmlDirectory =
-        System.getProperty("user.dir") + "/src/edu/hawaii/ihale/backend/xml/test/";
-    
-    String eGaugeXml = xmlDirectory + "test-egauge.xml";
-    String historyXml = xmlDirectory + "test-history.xml";
+    String eGaugeXml = System.getProperty("user.dir") + "/test-egauge.xml";
+    String historyXml = System.getProperty("user.dir") + "/test-history.xml";
 
     historyRepresentation = new FileRepresentation(historyXml, MediaType.TEXT_XML);
     eGaugeRepresentation = new FileRepresentation(eGaugeXml, MediaType.TEXT_XML);
