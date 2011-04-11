@@ -514,11 +514,13 @@ public class IHaleBackend implements IHaleCommand {
     return cmd;
   }
   
-  /**
-   * Initiates the project.
-   */
+/**
+ * Initializes the project.
+ * 
+ * @param args Ignored.
+ */
   public static void main(String[] args) {
-    IHaleBackend backend = IHaleBackend.getInstance();
+    IHaleBackend.getInstance();
     System.out.println("Running...");
   }
 }
