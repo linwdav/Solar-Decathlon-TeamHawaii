@@ -203,7 +203,7 @@ public class AquaponicsStats extends Header {
       break;
     // Temperature
     case 1:
-      endRange = 100;
+      endRange = 40;
       break;
     // Conductivity
     case 2:
