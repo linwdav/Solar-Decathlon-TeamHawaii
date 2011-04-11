@@ -23,7 +23,7 @@ import edu.hawaii.ihale.api.repository.impl.Repository;
  */
 public class XmlHandler {
 
-  private static Repository repository = new Repository();
+  private Repository repository = new Repository();
   private static XPathFactory factory = XPathFactory.newInstance();
   private static XPath xpath = factory.newXPath();
 

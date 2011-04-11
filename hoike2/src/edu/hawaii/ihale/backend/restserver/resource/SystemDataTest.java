@@ -1,6 +1,7 @@
 package edu.hawaii.ihale.backend.restserver.resource;
 
-import org.junit.BeforeClass; 
+import org.junit.BeforeClass;
+import org.junit.AfterClass;
 import edu.hawaii.ihale.api.repository.impl.Repository;
 import edu.hawaii.ihale.backend.restserver.RestServer;
 
@@ -28,6 +29,7 @@ public class SystemDataTest {
    * Closes the RestServer.
    * @throws Exception 
    */
+  @AfterClass
   public static void afterClass() throws Exception {
     RestServer.stopServer();
   }

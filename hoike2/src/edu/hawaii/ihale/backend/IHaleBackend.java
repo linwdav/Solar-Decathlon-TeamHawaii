@@ -85,7 +85,7 @@ public class IHaleBackend implements IHaleCommand {
   /**
    * The repository that can store all the data for the iHale system.
    */
-  private static Repository repository = new Repository();
+  private Repository repository = new Repository();
 
   /**
    * The restlet server to handle external device requests.
