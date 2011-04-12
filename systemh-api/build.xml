@@ -22,7 +22,7 @@
   </target>
 
   <!-- Basic properties for this system. -->
-  <property name="system.name" value="ihale-api" />
+  <property name="system.name" value="systemh-api" />
   <!-- No main class for this system. The jar cannot be executed; it is just a library. -->
   <property name="system.main.class" value="" />
   <property name="majorVersionNumber" value="2" />
