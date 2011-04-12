@@ -51,7 +51,7 @@ public class Lighting extends Header {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
 
-  private boolean DEBUG = true;
+  private boolean DEBUG = false;
 
   // String literals for pmd
   private static final String brightID = "amountBright";
