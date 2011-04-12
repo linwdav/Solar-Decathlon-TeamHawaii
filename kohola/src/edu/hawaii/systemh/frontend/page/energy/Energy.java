@@ -51,7 +51,7 @@ public class Energy extends Header {
   // private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
-  private static final String Y_AXIS = "100.0";
+  private static final String Y_AXIS = "2500.0";
 
   /**
    * MarkupContainer for all graphs.
@@ -231,12 +231,12 @@ public class Energy extends Header {
         String fontCloseTag = "</font>";
         String labelValue;
 
-        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > SolarDecathlonApplication
-            .getElectrical().getEnergy()) {
+        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > Math
+            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
           fontOpenTag = "<font color=\"green\">";
         }
-        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < SolarDecathlonApplication
-            .getElectrical().getEnergy()) {
+        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < Math
+            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
           fontOpenTag = "<font color=\"red\">";
         }
         else {
@@ -244,7 +244,7 @@ public class Energy extends Header {
         }
 
         labelValue =
-            fontOpenTag + SolarDecathlonApplication.getElectrical().getEnergy() + " kWh"
+            fontOpenTag + Math.abs(SolarDecathlonApplication.getElectrical().getPower()) + " kWh"
                 + fontCloseTag;
         return labelValue;
       }
@@ -261,12 +261,12 @@ public class Energy extends Header {
         String fontCloseTag = "</font>";
         String labelValue;
 
-        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > SolarDecathlonApplication
-            .getElectrical().getEnergy()) {
+        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > Math
+            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
           fontOpenTag = "<font color=\"green\">";
         }
-        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < SolarDecathlonApplication
-            .getElectrical().getEnergy()) {
+        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < Math
+            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
           fontOpenTag = "<font color=\"red\">";
         }
         else {
@@ -339,7 +339,6 @@ public class Energy extends Header {
     // Google charts Y_AXIS is always from 0-100 even if y-axis is different
     // so have to create conversion for values determined later on.
     double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
-    long usage = 0;
     Calendar current = Calendar.getInstance();
     int currentHour = current.get(Calendar.HOUR_OF_DAY);
 
@@ -367,17 +366,18 @@ public class Energy extends Header {
     List<TimestampIntegerPair> generationList = null;
     // Gets all entries for photovoltaics and consumption in the last 24 hours.
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
+        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - lastTwentyFour);
 
     generationList =
         SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
-
+    
     // milliseconds since beginning of hour
     long mHourBegin =
         current.get(Calendar.MINUTE) * 60000 + current.get(Calendar.SECOND) * 1000
             + current.get(Calendar.MILLISECOND);
     long twoHours = 2 * 60 * 60 * 1000L;
-    long cValue = 0, gValue = 0;
+    long cValue = 0;
+    long gValue = 0;
     String cValues = "", gValues = "";
     String printC = "", printG = "";
     int cAverage = 0, gAverage = 0;
@@ -392,7 +392,7 @@ public class Energy extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mHourBegin) - (twoHours * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mHourBegin) - (twoHours * i)))) {
-          cValue += consumptionList.get(j).getValue();
+          cValue += Math.abs(consumptionList.get(j).getValue());
           cAverage++;
         }
 
@@ -407,7 +407,6 @@ public class Energy extends Header {
 
       }
       if (cAverage != 0) {
-        usage += cValue;
         cValue = (long) ((cValue / (double) cAverage) / divisor);
       }
       if (gAverage != 0) {
@@ -464,7 +463,6 @@ public class Energy extends Header {
   private String setWeekGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
     double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
-    long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
     int currentDay = current.get(Calendar.DAY_OF_WEEK);
@@ -489,7 +487,7 @@ public class Energy extends Header {
     List<TimestampIntegerPair> generationList = null;
 
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mWeek);
+        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - mWeek);
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek), time);
     generationList =
@@ -509,7 +507,7 @@ public class Energy extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mInADay * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mInADay * i)))) {
-          cValue += consumptionList.get(j).getValue();
+          cValue += Math.abs(consumptionList.get(j).getValue());
           cAverage++;
         }
 
@@ -524,7 +522,6 @@ public class Energy extends Header {
 
       }
       if (cAverage != 0) {
-        usage += cValue;
         cValue = (long) ((cValue / (double) cAverage) / divisor);
       }
       if (gAverage != 0) {
@@ -581,7 +578,6 @@ public class Energy extends Header {
   private String setMonthGraph() {
     DecimalFormat df = new DecimalFormat("#.##");
     double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
-    long usage = 0;
     long mInADay = 24 * 3600000;
     Calendar current = Calendar.getInstance();
     int currentDay = current.get(Calendar.DAY_OF_MONTH);
@@ -610,7 +606,7 @@ public class Energy extends Header {
             + current.get(Calendar.MILLISECOND);
 
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mMonth);
+        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - mMonth);
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
@@ -634,7 +630,7 @@ public class Energy extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mFive * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mFive * i)))) {
-          cValue += consumptionList.get(j).getValue();
+          cValue += Math.abs(consumptionList.get(j).getValue());
           cAverage++;
         }
 
@@ -649,7 +645,6 @@ public class Energy extends Header {
 
       }
       if (cAverage != 0) {
-        usage += cValue;
         cValue = (long) ((cValue / (double) cAverage) / divisor);
       }
       if (gAverage != 0) {

@@ -75,7 +75,7 @@ public class Dashboard extends Header {
   // private static final String ENERGY = "energy";
   private static final String C_VALUES = "cValues: ";
   private static final String G_VALUES = "gValues: ";
-  private static final String Y_AXIS = "100.0";
+  private static final String Y_AXIS = "2500.0";
   // private static final String negativeYAxis = "-500";
 
   private static final String classTagName = "class";
@@ -532,7 +532,7 @@ public class Dashboard extends Header {
     List<TimestampIntegerPair> generationList = null;
     // Gets all entries for photovoltaics and consumption in the last 24 hours.
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
+        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - lastTwentyFour);
 
     generationList =
         SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
@@ -557,7 +557,7 @@ public class Dashboard extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mHourBegin) - (twoHours * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mHourBegin) - (twoHours * i)))) {
-          cValue += consumptionList.get(j).getValue();
+          cValue += Math.abs(consumptionList.get(j).getValue());
           cAverage++;
         }
 
@@ -657,7 +657,7 @@ public class Dashboard extends Header {
     List<TimestampIntegerPair> generationList = null;
 
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mWeek);
+        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - mWeek);
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek), time);
     generationList =
@@ -677,7 +677,7 @@ public class Dashboard extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mInADay * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mInADay * i)))) {
-          cValue += consumptionList.get(j).getValue();
+          cValue += Math.abs(consumptionList.get(j).getValue());
           cAverage++;
         }
 
@@ -781,7 +781,7 @@ public class Dashboard extends Header {
             + current.get(Calendar.MILLISECOND);
 
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mMonth);
+        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - mMonth);
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
@@ -805,7 +805,7 @@ public class Dashboard extends Header {
 
         if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mFive * (i - 1))))
             && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mFive * i)))) {
-          cValue += consumptionList.get(j).getValue();
+          cValue += Math.abs(consumptionList.get(j).getValue());
           cAverage++;
         }
 

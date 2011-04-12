@@ -38,14 +38,18 @@ public class ElectricalListener extends SystemStateListener {
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
-    if (state.equals(IHaleState.ENERGY)) {
+    switch (state) {
+    case ENERGY: 
       energy = (Integer) value;
-    }
-    else if (state.equals(IHaleState.POWER)) {
+      break;
+    
+    case POWER: 
       power = (Integer) value;
-    }
-    else {
-      System.out.println("Unhandled Electrical state: " + state);
+      break;
+    
+    default: 
+      System.out.println("Unhandled Photovoltaics state: " + state);
+    
     }
   }
 
