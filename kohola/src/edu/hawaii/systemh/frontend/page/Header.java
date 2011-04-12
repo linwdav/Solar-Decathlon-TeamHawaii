@@ -140,7 +140,7 @@ public class Header extends WebPage {
        */
       @Override
       public String getObject() {
-        return String.valueOf(currentWeather.getTempF());
+        return String.valueOf(currentWeather.getTempC());
       }
     };
 

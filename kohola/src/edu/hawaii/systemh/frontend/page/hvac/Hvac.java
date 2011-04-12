@@ -66,8 +66,8 @@ public class Hvac extends Header {
   private static final long serialVersionUID = 1L;
 
   // desired room temperature range
-  private static final long TEMPERATURE_RANGE_START = 60L;
-  private static final long TEMPERATURE_RANGE_END = 80L;
+  private static final long TEMPERATURE_RANGE_START = 15L;
+  private static final long TEMPERATURE_RANGE_END = 27L;
 
   // for validating user's input for setTemp
   // don't want them perform duplicate doCommand with the same temperature.
@@ -175,7 +175,7 @@ public class Hvac extends Header {
       @Override
       public String getObject() {
         long value = SolarDecathlonApplication.getHvac().getTemp();
-        String original = value + "&deg;F";
+        String original = value + "&deg;C";
         String closeTag = "</font>";
         if (value > TEMPERATURE_RANGE_START && value < TEMPERATURE_RANGE_END) {
           original = "<font color=\"green\">" + original + closeTag;
@@ -201,7 +201,7 @@ public class Hvac extends Header {
 
       @Override
       public String getObject() {
-        return String.valueOf(currentWeather.getTempF() + "&deg;F");
+        return String.valueOf(currentWeather.getTempC() + "&deg;C");
       }
     };
     Label outsideTemperature = new Label("OutsideTemperature", outsideModel);
@@ -308,7 +308,7 @@ public class Hvac extends Header {
       protected void onSubmit(AjaxRequestTarget target, Form<?> form) {
         if (setTemp == desiredTemp) {
           feedback.setDefaultModelObject("<font color=\"#FF9900\">Same: " + "(" + desiredTemp
-              + "&deg;F)</font>");
+              + "&deg;C)</font>");
           // target.addComponent(textField);
           target.addComponent(feedback);
           return;
@@ -322,7 +322,7 @@ public class Hvac extends Header {
           SolarDecathlonApplication.getBackend().doCommand(system, null, command, newTemperature);
 
           feedback.setDefaultModelObject("<font color=\"green\">" + "Success: (" + desiredTemp
-              + "&deg;F)</font>");
+              + "&deg;C)</font>");
         }
         // target.addComponent(textField);
         target.addComponent(feedback);

@@ -455,7 +455,7 @@ public class Dashboard extends Header {
 
       @Override
       public String getObject() {
-        return String.valueOf(currentWeather.getTempF());
+        return String.valueOf(currentWeather.getTempC());
       }
     };
     Label outsideTemperature = new Label("OutsideTemperature", outsideModel);

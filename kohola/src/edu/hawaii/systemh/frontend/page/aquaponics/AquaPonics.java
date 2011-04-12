@@ -85,10 +85,10 @@ public class AquaPonics extends Header {
   private static final String NORM_BACKGROUND = "background-color:green;";
 
   // Range values for each system
-  private static final long TEMPERATURE_RANGE_START = 82;
-  private static final long TEMPERATURE_RANGE_END = 86;
-  private static final long TEMPERATURE_ALERT_RANGE_START = 68;
-  private static final long TEMPERATURE_ALERT_RANGE_END = 113;
+  private static final long TEMPERATURE_RANGE_START = 27;
+  private static final long TEMPERATURE_RANGE_END = 30;
+  private static final long TEMPERATURE_ALERT_RANGE_START = 20;
+  private static final long TEMPERATURE_ALERT_RANGE_END = 45;
   private static final double PH_RANGE_START = 6.8;
   private static final double PH_RANGE_END = 8.0;
   private static final double PH_ACCEPTED_DIFFERENCE = 1.0;
@@ -111,7 +111,7 @@ public class AquaPonics extends Header {
 
   // labels for recommended values
   private static final Label recommendedTempLabel = new Label("RecommendedTempLabel",
-      TEMPERATURE_RANGE_START + "&deg;F - " + TEMPERATURE_RANGE_END + "&deg;F");
+      TEMPERATURE_RANGE_START + "&deg;C - " + TEMPERATURE_RANGE_END + "&deg;C");
 
   private static final Label recommendedPHLabel = new Label("RecommendedPHLabel", PH_RANGE_START
       + dash + PH_RANGE_END);
