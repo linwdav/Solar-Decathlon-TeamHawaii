@@ -340,7 +340,11 @@ public class PhotovoltaicsData {
     Random random = new Random();
     int randP = random.nextInt(10);
     int randE = random.nextInt(10);
-    long changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
+    int range = (int) hourlyAverage[hour] / 10;
+    if(range <= 0) {
+      range = 1;
+    }
+    long changeValue = (long) (random.nextInt(range));
     if (hourlyAverage[hour] == 1) {
       energy = 1;
     }
@@ -351,7 +355,7 @@ public class PhotovoltaicsData {
       energy = hourlyAverage[hour] + changeValue;
     }
 
-    changeValue = (long) (random.nextInt((int) hourlyAverage[hour]));
+    changeValue = (long) (random.nextInt(range));
 
     if (hour < 6 || hour > 17) {
       power = 0;

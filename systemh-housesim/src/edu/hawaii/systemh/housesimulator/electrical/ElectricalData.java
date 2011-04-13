@@ -352,12 +352,6 @@ public class ElectricalData {
     int randE = random.nextInt(10);
 
     long changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 2;
-    if (changeValue < -50) {
-      changeValue = -50;
-    }
-    if (changeValue > 50) {
-      changeValue = 50;
-    }
     if (randP < 5) {
       energy = hourlyAverage[hour] - changeValue;
     }
@@ -366,12 +360,7 @@ public class ElectricalData {
     }
 
     changeValue = (long) (random.nextInt(10) + random.nextInt(100)) / 4;
-    if (changeValue < -25) {
-      changeValue = -25;
-    }
-    if (changeValue > 25) {
-      changeValue = 25;
-    }
+
     if (hour <= 6 || hour >= 18) {
       power = changeValue;
     }
