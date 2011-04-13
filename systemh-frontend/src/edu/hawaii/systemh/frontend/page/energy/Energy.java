@@ -366,7 +366,7 @@ public class Energy extends Header {
     List<TimestampIntegerPair> generationList = null;
     // Gets all entries for photovoltaics and consumption in the last 24 hours.
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - lastTwentyFour);
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
 
     generationList =
         SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
@@ -487,7 +487,7 @@ public class Energy extends Header {
     List<TimestampIntegerPair> generationList = null;
 
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - mWeek);
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mWeek);
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek), time);
     generationList =
@@ -606,7 +606,7 @@ public class Energy extends Header {
             + current.get(Calendar.MILLISECOND);
 
     consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalPowerSince(time - mMonth);
+        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mMonth);
 
     // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
     generationList =
