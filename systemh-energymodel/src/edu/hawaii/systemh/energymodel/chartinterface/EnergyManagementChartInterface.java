@@ -35,7 +35,7 @@ public interface EnergyManagementChartInterface {
 		SOLAR_THERMAL_CONTROLLER,
 		
 		// For all other minor/small devices
-		MISC
+		OTHER
 	} // End Enumerated Type
 	
 	/**
@@ -58,17 +58,6 @@ public interface EnergyManagementChartInterface {
 	
 	/**
 	 * Returns a list of data about energy consumption about a particular
-	 * device from a specified time up until now.
-	 * 
-	 * @param device The device to request data for.
-	 * @param startTime The time to start getting data.
-	 * @return A list of all data requested.
-	 */
-	public List<TimestampDoublePair> getDeviceLoadSince 
-						(EnergyConsumptionDevice device, Long startTime);
-	
-	/**
-	 * Returns a list of data about energy consumption about a particular
 	 * device for the specified time interval.
 	 * 
 	 * @param device The device to request data for.
@@ -81,17 +70,6 @@ public interface EnergyManagementChartInterface {
 	
 	/**
 	 * Returns a list of data about energy consumption about a particular
-	 * system from a specified time up until now.
-	 * 
-	 * @param system The system to request data for.
-	 * @param startTime The time to start getting data.
-	 * @return A list of all data requested.
-	 */
-	public List<TimestampDoublePair> getSystemLoadSince
-									(IHaleSystem system, Long startTime);
-	
-	/**
-	 * Returns a list of data about energy consumption about a particular
 	 * system for the specified time interval.
 	 * 
 	 * @param system The system to request data for.
@@ -101,6 +79,26 @@ public interface EnergyManagementChartInterface {
 	 */
 	public List<TimestampDoublePair> getSystemLoadDuringInterval
 						(IHaleSystem system, Long startTime, Long endTime);
+	
+	/**
+	 * Returns the amount of power consumed during a
+	 * specified interval.
+	 * 
+	 * @param startTime The time to start getting data.
+	 * @param endTime The time to end getting data.
+	 * @return The power consumed.
+	 */
+	public double powerConsumed(Long startTime, Long endTime);
+	
+	/**
+	 * Returns the amount of power generated during a
+	 * specified interval.
+	 * 
+	 * @param startTime
+	 * @param endTime
+	 * @return The power generated.
+	 */
+	public double powerGenerated(Long startTime, Long endTime);
 	
 	
 } // End Energy Management Interface interface
