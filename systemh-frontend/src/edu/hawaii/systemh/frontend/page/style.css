@@ -221,3 +221,18 @@ ul.tab-content li *:last-child { margin-bottom: 0px; }
 .move-to-box-header { margin-top:-62px; line-height: 40px; }
 
 .show-count select { float: none !important; min-width: 0; }
+
+.shield {
+        position: relative;
+}
+.commentscloud {
+        position: absolute;
+        text-align: center;
+        top: -6px;
+        left: 8px;
+        width: 16px;
+        height: 16px;
+        font-size: 11px;
+        font-weight: bold;
+        color: red;
+}

@@ -205,6 +205,9 @@ public class Header extends WebPage {
     // Print Image
     add(new Image("printer", new ResourceReference(Header.class, "images/icons/printer.png")));
 
+    // Alert Image
+    add(new Image("alert", new ResourceReference(Header.class, "images/icons/error.png")));    
+    
     // Help Image
     add(new Image("help", new ResourceReference(Header.class, "images/icons/help.png")));
 
