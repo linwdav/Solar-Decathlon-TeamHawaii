@@ -37,6 +37,9 @@ public class TestRepository {
    */
   @Test
   public void testRepository () {
+    
+    String testingMessage = "Testing number states";
+    
     Repository repository = new Repository();
     Long timestamp = (new Date()).getTime();
     // Add some sample data to the repository.
@@ -55,7 +58,18 @@ public class TestRepository {
 
     // Check that we can retrieve a list of values.
     List<TimestampDoublePair> states = repository.getAquaponicsPhSince(timestamp);
-    assertEquals("Testing number states", 1, states.size());
+    assertEquals(testingMessage, 1, states.size());
+    
+    // Check that we can retrieve a list of values for a given time interval.
+    states = repository.getAquaponicsPhDuringInterval(timestamp - 1, timestamp);   
+    assertEquals(testingMessage, 2, states.size());
+    states = repository.getAquaponicsPhDuringInterval(timestamp - 2, timestamp);
+    assertEquals(testingMessage, 3, states.size());
+    states = repository.getAquaponicsPhDuringInterval(timestamp, timestamp);
+    assertEquals(testingMessage, 1, states.size());
+    states = repository.getAquaponicsPhDuringInterval(timestamp + 1, timestamp + 1);
+    assertEquals(testingMessage, 0, states.size());
+    
   }
   
   /**
