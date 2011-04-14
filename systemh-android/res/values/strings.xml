@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SystemHTablet</string>
+    <string name="Menu">Menu</string>
+    <string name="Aquaponics">Aquaponics System Controls</string>
+    <string name="Lighting">Lighting System Controls</string>
+</resources>
