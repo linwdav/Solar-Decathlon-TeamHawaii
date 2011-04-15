@@ -4,6 +4,16 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     >
+    
+    <TextView  
+	android:id="@+id/Title"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content" 
+    android:text="@string/HouseName"
+    android:textSize="80sp"
+  	android:gravity="center_horizontal"
+    android:layout_marginTop="60sp" 
+    />
 
 	<Button android:text="@string/Aquaponics"
 			android:textSize="50sp"
@@ -11,7 +21,7 @@
 			android:layout_gravity="center" 
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
-			android:layout_marginTop="20dip"
+			android:layout_marginTop="100dip"
 			android:onClick="showAquaponicsPage">
 	</Button>
 	
@@ -24,4 +34,25 @@
 			android:layout_marginTop="20dip"
 			android:onClick="showLightingPage">
 	</Button>
+	
+	<Button android:text="@string/Hvac"
+			android:textSize="50sp"
+			android:id="@+id/lightingButton"
+			android:layout_gravity="center" 
+			android:layout_width="fill_parent"
+			android:layout_height="120dip" 
+			android:layout_marginTop="20dip"
+			android:onClick="showHvacPage">
+	</Button>
+	
+	<Button android:text="@string/Help"
+			android:textSize="50sp"
+			android:id="@+id/lightingButton"
+			android:layout_gravity="center" 
+			android:layout_width="fill_parent"
+			android:layout_height="120dip" 
+			android:layout_marginTop="20dip"
+			android:onClick="showHelpPage">
+	</Button>
+	
 </LinearLayout>

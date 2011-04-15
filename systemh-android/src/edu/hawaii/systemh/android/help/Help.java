@@ -1,4 +1,4 @@
-package edu.hawaii.systemh.android.lighting;
+package edu.hawaii.systemh.android.help;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -10,7 +10,13 @@ import android.view.WindowManager;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
 
-public class Lighting extends Activity {
+/**
+ * Help Page
+ * 
+ * @author Group H
+ *
+ */
+public class Help extends Activity {
 
   /** Called when the activity is first created. */
   @Override
@@ -24,9 +30,9 @@ public class Lighting extends Activity {
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-    setContentView(R.layout.lighting);
+    setContentView(R.layout.help);
   }
-  
+
   /**
    * Take the user to the menu.
    * @param view The view.
@@ -53,5 +59,5 @@ public class Lighting extends Activity {
   public void onConfigurationChanged(Configuration newConfig) {
     super.onConfigurationChanged(newConfig);
   }
-  
+
 }

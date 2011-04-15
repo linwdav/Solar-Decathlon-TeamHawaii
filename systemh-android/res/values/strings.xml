@@ -2,6 +2,10 @@
 <resources>
     <string name="app_name">SystemHTablet</string>
     <string name="Menu">Menu</string>
+    <string name="HouseName">Hale Pilihonua</string>
     <string name="Aquaponics">Aquaponics System Controls</string>
     <string name="Lighting">Lighting System Controls</string>
+    <string name="Hvac">Hvac System Controls</string>
+    <string name="Help">Help</string>
+    <string name="BackToMenu">Back To Menu</string>
 </resources>
