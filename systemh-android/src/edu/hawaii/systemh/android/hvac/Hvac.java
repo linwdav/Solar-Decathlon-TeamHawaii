@@ -55,14 +55,4 @@ public class Hvac extends Activity {
     super.onDestroy();
   }
 
-  /**
-   * Ignore screen orientation change.
-   * PMD is giving errors because this method only calls super.
-   * @param newConfig - The configuration of the app.
-   */
-  @Override
-  public void onConfigurationChanged(Configuration newConfig) { //NOPMD
-    super.onConfigurationChanged(newConfig);
-  }
-
 }
