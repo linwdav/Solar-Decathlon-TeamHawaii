@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Menu" xmlns:ivy="antlib:org.apache.ivy.ant">
+
+	<!-- Basic directory structure. -->
+	<property name="src.dir" location="${basedir}/src" />
+	<property name="lib.dir" location="${basedir}/lib" />
+	<property name="build.dir" location="${basedir}/build" />
+	<property name="build.classes.dir" location="${basedir}/build/classes" />
+
+	<!-- Make sure we're running a Java 6 or better. -->
+	<condition property="java.6.available">
+		<contains string="${java.version}" substring="1.6" />
+	</condition>
+	<fail message="This package requires Java 6." unless="java.6.available" />
+
+	<!-- Ivy download and configuration targets -->
+	<property name="ivy.jar.path" location="${user.home}/.ivy2/ivyjar/" />
+	<property name="ivy.version" value="2.1.0" />
+	<available file="${ivy.jar.path}/ivy.jar" type="file" property="ivy.available" />
+
+	<target name="install-ivy" depends="download-ivy-if-necessary" description="Makes Ivy tasks available, downloads Ivy first if necessary.">
+		<taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" classpath="${ivy.jar.path}/ivy.jar" />
+	</target>
+
+	<target name="download-ivy-if-necessary" unless="ivy.available" description="Only downloads Ivy if necessary.">
+		<mkdir dir="${ivy.jar.path}" />
+		<get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/${ivy.version}/ivy-${ivy.version}.jar" dest="${ivy.jar.path}/ivy.jar" usetimestamp="true" />
+	</target>
+
+	<!-- Where to look for configuration files (Checkstyle, PMD, FindBugs, etc.) -->
+	<!-- These are downloaded when the associated tool is first invoked. -->
+	<property name="configfiles.url" value="http://ics-software-engineering.googlecode.com/svn/trunk/configfiles/" />
+	<property name="configfiles.dir" location="${lib.dir}/configfiles" />
+	<mkdir dir="${configfiles.dir}" />
+
+	<!-- Miscellaneous housekeeping targets -->
+	<target name="clean" description="Delete build/ directory and top-level jar files.">
+		<delete dir="${build.dir}" />
+	</target>
+
+	<target name="reallyclean" depends="clean" description="Delete build/ directory, top-level jar files, and lib/ directory.">
+		<delete dir="${lib.dir}" />
+	</target>
+
+	<target name="convertLineEndings" description="Makes line endings compatible with host platform.">
+		<fixcrlf srcdir="${basedir}" includes="*.build.xml" />
+	</target>
+	<!-- The local.properties file is created and updated by the 'android'
+     tool.
+     It contains the path to the SDK. It should *NOT* be checked into
+     Version Control Systems. -->
+	<property file="local.properties" />
+
+	<!-- The build.properties file can be created by you and is never touched
+         by the 'android' tool. This is the place to change some of the
+         default property values used by the Ant rules.
+         Here are some properties you may want to change/update:
+
+         source.dir
+             The name of the source directory. Default is 'src'.
+         out.dir
+             The name of the output directory. Default is 'bin'.
+
+         Properties related to the SDK location or the project target should
+         be updated using the 'android' tool with the 'update' action.
+
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems.
+
+         -->
+	<property file="build.properties" />
+
+	<!-- The default.properties file is created and updated by the 'android'
+         tool, as well as ADT.
+         This file is an integral part of the build system for your
+         application and should be checked into Version Control Systems. -->
+	<property file="default.properties" />
+
+
+	<!-- Required pre-setup import -->
+	<import file="${sdk.dir}/tools/ant/pre_setup.xml" />
+
+
+	<!-- extension targets. Uncomment the ones where you want to do custom work
+     in between standard targets -->
+	<!--
+    <target name="-pre-build">
+    </target>
+    <target name="-pre-compile">
+    </target>
+
+    [This is typically used for code obfuscation.
+     Compiled code location: ${out.classes.absolute.dir}
+     If this is not done in place, override ${out.dex.input.absolute.dir}]
+    <target name="-post-compile">
+    </target>
+-->
+
+	<!-- Execute the Android Setup task that will setup some properties
+         specific to the target, and import the build rules files.
+
+         The rules file is imported from
+            <SDK>/tools/ant/
+         Depending on the project type it can be either:
+         - main_rules.xml
+         - lib_rules.xml
+         - test_rules.xml
+
+         To customize existing targets, there are two options:
+         - Customize only one target:
+             - copy/paste the target into this file, *before* the
+               <setup> task.
+             - customize it to your needs.
+         - Customize the whole script.
+             - copy/paste the content of the rules files (minus the top node)
+               into this file, *after* the <setup> task
+             - disable the import of the rules by changing the setup task
+               below to <setup import="false" />.
+             - customize to your needs.
+    -->
+	<setup />
+
+</project>

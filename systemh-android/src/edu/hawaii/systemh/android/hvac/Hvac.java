@@ -11,14 +11,17 @@ import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
 
 /**
- * Hvac Page
+ * The activity that starts the hvac page.
  * 
  * @author Group H
  *
  */
 public class Hvac extends Activity {
 
-  /** Called when the activity is first created. */
+  /** 
+   * Called when the activity is first created. 
+   * @param savedInstanceState - A mapping from String values to various Parcelable types. 
+   */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -54,9 +57,11 @@ public class Hvac extends Activity {
 
   /**
    * Ignore screen orientation change.
+   * PMD is giving errors because this method only calls super.
+   * @param newConfig - The configuration of the app.
    */
   @Override
-  public void onConfigurationChanged(Configuration newConfig) {
+  public void onConfigurationChanged(Configuration newConfig) { //NOPMD
     super.onConfigurationChanged(newConfig);
   }
 

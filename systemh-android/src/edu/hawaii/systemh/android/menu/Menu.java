@@ -13,9 +13,18 @@ import edu.hawaii.systemh.android.help.Help;
 import edu.hawaii.systemh.android.hvac.Hvac;
 import edu.hawaii.systemh.android.lighting.Lighting;
 
+/**
+ * The main activity of this application, called on startup.
+ * 
+ * @author Group H
+ * 
+ */
 public class Menu extends Activity {
 
-  /** Called when the activity is first created. */
+  /**
+   * Called when the activity is first created.
+   * @param savedInstanceState - A mapping from String values to various Parcelable types. 
+   */
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -29,9 +38,10 @@ public class Menu extends Activity {
 
     setContentView(R.layout.menu);
   }
-  
+
   /**
    * Take user to the aquaponics page.
+   * 
    * @param view The view
    */
   public void showAquaponicsPage(View view) {
@@ -39,9 +49,10 @@ public class Menu extends Activity {
     intent.setClassName(this, Aquaponics.class.getName());
     startActivity(intent);
   }
-  
+
   /**
    * Take user to the lighting page.
+   * 
    * @param view The view
    */
   public void showLightingPage(View view) {
@@ -49,9 +60,10 @@ public class Menu extends Activity {
     intent.setClassName(this, Lighting.class.getName());
     startActivity(intent);
   }
-  
+
   /**
    * Take user to the Hvac page.
+   * 
    * @param view The view
    */
   public void showHvacPage(View view) {
@@ -59,9 +71,10 @@ public class Menu extends Activity {
     intent.setClassName(this, Hvac.class.getName());
     startActivity(intent);
   }
-  
+
   /**
    * Take user to the Help page.
+   * 
    * @param view The view
    */
   public void showHelpPage(View view) {
@@ -69,22 +82,23 @@ public class Menu extends Activity {
     intent.setClassName(this, Help.class.getName());
     startActivity(intent);
   }
-  
-  
+
   /**
    * Destroys this activity when onStop is called.
    */
   @Override
   protected void onStop() {
     finish();
-    super.onDestroy();   
+    super.onDestroy();
   }
 
   /**
    * Ignore screen orientation change.
+   * PMD is giving errors because this method only calls super.
+   * @param newConfig - The configuration of the app.
    */
   @Override
-  public void onConfigurationChanged(Configuration newConfig) {
+  public void onConfigurationChanged(Configuration newConfig) { //NOPMD
     super.onConfigurationChanged(newConfig);
   }
 }
