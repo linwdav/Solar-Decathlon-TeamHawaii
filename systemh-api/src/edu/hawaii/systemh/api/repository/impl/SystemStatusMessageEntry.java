@@ -1,10 +1,10 @@
-package edu.hawaii.ihale.api.repository.impl;
+package edu.hawaii.systemh.api.repository.impl;
 
 import com.sleepycat.persist.model.Entity;
 import com.sleepycat.persist.model.PrimaryKey;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
-import edu.hawaii.ihale.api.repository.SystemStatusMessage;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemStatusMessageType;
+import edu.hawaii.systemh.api.repository.SystemStatusMessage;
 
 /**
  * The persistent version of the SystemStatusMessage. Annotated with BerkeleyDB stuff.
@@ -18,7 +18,7 @@ class SystemStatusMessageEntry {
   private Long timestamp;
   
   /** The system of interest. */
-  private IHaleSystem system;
+  private SystemHSystem system;
   
   /** The message type. */
   private SystemStatusMessageType type;
@@ -40,8 +40,8 @@ class SystemStatusMessageEntry {
    * @param type The type.
    * @param message The message. 
    */
-  public SystemStatusMessageEntry(Long timestamp, IHaleSystem system, SystemStatusMessageType type, 
-      String message) {
+  public SystemStatusMessageEntry(Long timestamp, SystemHSystem system, 
+      SystemStatusMessageType type, String message) {
     this.timestamp = timestamp;
     this.system = system;
     this.message = message;
@@ -70,7 +70,7 @@ class SystemStatusMessageEntry {
    * Returns the system.
    * @return The system.
    */
-  public IHaleSystem getSystem() {
+  public SystemHSystem getSystem() {
     return this.system;
   }
   

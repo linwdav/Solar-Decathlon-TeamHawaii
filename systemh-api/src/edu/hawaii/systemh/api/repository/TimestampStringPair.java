@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.api.repository;
+package edu.hawaii.systemh.api.repository;
 
 /**
  * Provides a pair of values: a timestamp and a String.

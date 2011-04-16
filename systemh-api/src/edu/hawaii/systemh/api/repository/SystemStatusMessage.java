@@ -1,7 +1,7 @@
-package edu.hawaii.ihale.api.repository;
+package edu.hawaii.systemh.api.repository;
 
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemStatusMessageType;
 
 /**
  * Indicates information about the running of the system, supports alerts and warnings and so forth.
@@ -13,7 +13,7 @@ public class SystemStatusMessage {
   private Long timestamp;
   
   /** The system of interest. */
-  private IHaleSystem system;
+  private SystemHSystem system;
   
   /** The message type. */
   private SystemStatusMessageType type;
@@ -28,7 +28,7 @@ public class SystemStatusMessage {
    * @param type The type.
    * @param message The message. 
    */
-  public SystemStatusMessage(Long timestamp, IHaleSystem system, SystemStatusMessageType type, 
+  public SystemStatusMessage(Long timestamp, SystemHSystem system, SystemStatusMessageType type, 
       String message) {
     this.timestamp = timestamp;
     this.system = system;
@@ -48,7 +48,7 @@ public class SystemStatusMessage {
    * Returns the system.
    * @return The system.
    */
-  public IHaleSystem getSystem() {
+  public SystemHSystem getSystem() {
     return this.system;
   }
   

@@ -1,21 +1,21 @@
-package edu.hawaii.ihale.api.repository;
+package edu.hawaii.systemh.api.repository;
 
 /**
- * Provides a pair of values: a timestamp and a Integer.
+ * Provides a pair of values: a timestamp and a Double.
  * @author Philip Johnson
  */
-public class TimestampIntegerPair {
+public class TimestampDoublePair {
   /** The timestamp. */
   private Long timestamp;
   /** The value associated with this timestamp. */
-  private Integer value;
+  private Double value;
 
   /**
    * Creates a new pair.
    * @param timestamp The timestamp.
    * @param value The value.
    */
-  public TimestampIntegerPair(Long timestamp, Integer value) {
+  public TimestampDoublePair(Long timestamp, Double value) {
     this.timestamp = timestamp;
     this.value = value;
   }
@@ -31,7 +31,7 @@ public class TimestampIntegerPair {
    * Returns the value. 
    * @return The value. 
    */
-  public Integer getValue() {
+  public Double getValue() {
     return this.value;
   }
 

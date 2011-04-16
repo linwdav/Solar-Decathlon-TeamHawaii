@@ -1,7 +1,7 @@
-package edu.hawaii.ihale.api.repository;
+package edu.hawaii.systemh.api.repository;
 
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemStatusMessageType;
 
 /**
  * Defines the structure of a SystemStatusMessageListener class.  
@@ -19,6 +19,6 @@ public abstract class SystemStatusMessageListener {
    * @param type The type of message (Info, Warning, etc.) 
    * @param message The actual message. 
    */
-  public abstract void messageAdded(Long timestamp, IHaleSystem system, 
+  public abstract void messageAdded(Long timestamp, SystemHSystem system, 
       SystemStatusMessageType type, String message);
 }

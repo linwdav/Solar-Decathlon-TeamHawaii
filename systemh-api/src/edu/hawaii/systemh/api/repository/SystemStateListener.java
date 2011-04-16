@@ -1,8 +1,8 @@
-package edu.hawaii.ihale.api.repository;
+package edu.hawaii.systemh.api.repository;
 
-import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHRoom;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
 
 /**
  * Defines the structure of a SystemStateListener class.  This class must implement an entryAdded
@@ -13,13 +13,13 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 public abstract class SystemStateListener {
   
   /** The system of interest. */
-  private IHaleSystem system;
+  private SystemHSystem system;
   
   /**
    * Creates a new listener which responds to additions of entries for the given system.
    * @param system The system.
    */
-  public SystemStateListener(IHaleSystem system) {
+  public SystemStateListener(SystemHSystem system) {
     this.system = system;
   }
   
@@ -27,7 +27,7 @@ public abstract class SystemStateListener {
    * Returns the system.
    * @return The system.
    */
-  public IHaleSystem getSystem() {
+  public SystemHSystem getSystem() {
     return this.system;
     
   }
@@ -38,5 +38,6 @@ public abstract class SystemStateListener {
    * @param timestamp The time associated with this state change.
    * @param value The value of the state (Boolean, String, Double, Long, Integer).
    */
-  public abstract void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value);
+  public abstract void entryAdded(SystemHState state, SystemHRoom room, 
+      Long timestamp, Object value);
 }

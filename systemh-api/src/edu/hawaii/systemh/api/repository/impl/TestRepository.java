@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.api.repository.impl;
+package edu.hawaii.systemh.api.repository.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -7,16 +7,16 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import java.util.Date;
 import java.util.List;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.ApiDictionary.SystemStatusMessageType;
-import edu.hawaii.ihale.api.repository.SystemStatusMessage;
-import edu.hawaii.ihale.api.repository.TimestampDoublePair;
-import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHRoom;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemStatusMessageType;
+import edu.hawaii.systemh.api.repository.SystemStatusMessage;
+import edu.hawaii.systemh.api.repository.TimestampDoublePair;
+import edu.hawaii.systemh.api.repository.TimestampIntegerPair;
 
 /**
- * Tests the reference implementation of the iHale repository API.
+ * Tests the reference implementation of the SystemH repository API.
  * @author Philip Johnson
  */
 public class TestRepository {
@@ -43,13 +43,13 @@ public class TestRepository {
     Repository repository = new Repository();
     Long timestamp = (new Date()).getTime();
     // Add some sample data to the repository.
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.DEAD_FISH, timestamp - 2, 0);
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.DEAD_FISH, timestamp - 1, 3);
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.DEAD_FISH, timestamp, 5);
+    repository.store(SystemHSystem.AQUAPONICS, SystemHState.DEAD_FISH, timestamp - 2, 0);
+    repository.store(SystemHSystem.AQUAPONICS, SystemHState.DEAD_FISH, timestamp - 1, 3);
+    repository.store(SystemHSystem.AQUAPONICS, SystemHState.DEAD_FISH, timestamp, 5);
 
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.PH, timestamp - 2, 0.0);
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.PH, timestamp - 1, 2.4);
-    repository.store(IHaleSystem.AQUAPONICS, IHaleState.PH, timestamp, 7.0);
+    repository.store(SystemHSystem.AQUAPONICS, SystemHState.PH, timestamp - 2, 0.0);
+    repository.store(SystemHSystem.AQUAPONICS, SystemHState.PH, timestamp - 1, 2.4);
+    repository.store(SystemHSystem.AQUAPONICS, SystemHState.PH, timestamp, 7.0);
 
     // Check that we can retrieve the latest values. 
     assertEquals("Testing latest dead fish", Integer.valueOf(5), 
@@ -84,73 +84,73 @@ public class TestRepository {
     // Here's examples of storing persistent data for all valid system and state combinations.
     
     // Store example Aquaponics state information (gathered from sensors).
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.CIRCULATION, timestamp, 0.34);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.DEAD_FISH, timestamp, 22);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.ELECTRICAL_CONDUCTIVITY, timestamp, 0.3);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.NUTRIENTS, timestamp, 22.5);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.OXYGEN, timestamp, 1456.23);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.PH, timestamp, 7.0);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.TEMPERATURE, timestamp, 31);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.TURBIDITY, timestamp, 14.1);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.WATER_LEVEL, timestamp, 48);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.CIRCULATION, timestamp, 0.34);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.DEAD_FISH, timestamp, 22);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.ELECTRICAL_CONDUCTIVITY, timestamp, 0.3);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.NUTRIENTS, timestamp, 22.5);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.OXYGEN, timestamp, 1456.23);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.PH, timestamp, 7.0);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.TEMPERATURE, timestamp, 31);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.TURBIDITY, timestamp, 14.1);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.WATER_LEVEL, timestamp, 48);
     
     // Store example Aquaponics commmands (supplied from user).
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.FEED_FISH_COMMAND, timestamp, 25.1);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.HARVEST_FISH_COMMAND, timestamp, 3);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.SET_NUTRIENTS_COMMAND, timestamp, 30.1);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.SET_PH_COMMAND, timestamp, 7.6);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.SET_TEMPERATURE_COMMAND, timestamp, 28);
-    repo.store(IHaleSystem.AQUAPONICS, IHaleState.SET_WATER_LEVEL_COMMAND, timestamp, 320);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.FEED_FISH_COMMAND, timestamp, 25.1);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.HARVEST_FISH_COMMAND, timestamp, 3);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.SET_NUTRIENTS_COMMAND, timestamp, 30.1);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.SET_PH_COMMAND, timestamp, 7.6);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.SET_TEMPERATURE_COMMAND, timestamp, 28);
+    repo.store(SystemHSystem.AQUAPONICS, SystemHState.SET_WATER_LEVEL_COMMAND, timestamp, 320);
 
     // Store example HVAC state (from sensors) and command (from user)
-    repo.store(IHaleSystem.HVAC, IHaleState.TEMPERATURE, timestamp, 27);
-    repo.store(IHaleSystem.HVAC, IHaleState.SET_TEMPERATURE_COMMAND, timestamp, 32);
+    repo.store(SystemHSystem.HVAC, SystemHState.TEMPERATURE, timestamp, 27);
+    repo.store(SystemHSystem.HVAC, SystemHState.SET_TEMPERATURE_COMMAND, timestamp, 32);
 
     // Store example Electric and PV state (no commands for these two systems).
-    repo.store(IHaleSystem.ELECTRIC, IHaleState.ENERGY, timestamp, 456);
-    repo.store(IHaleSystem.ELECTRIC, IHaleState.POWER, timestamp, 8763);
-    repo.store(IHaleSystem.PHOTOVOLTAIC, IHaleState.ENERGY, timestamp, 34);
-    repo.store(IHaleSystem.PHOTOVOLTAIC, IHaleState.POWER, timestamp, 7896);
+    repo.store(SystemHSystem.ELECTRIC, SystemHState.ENERGY, timestamp, 456);
+    repo.store(SystemHSystem.ELECTRIC, SystemHState.POWER, timestamp, 8763);
+    repo.store(SystemHSystem.PHOTOVOLTAIC, SystemHState.ENERGY, timestamp, 34);
+    repo.store(SystemHSystem.PHOTOVOLTAIC, SystemHState.POWER, timestamp, 7896);
 
     // Store example state for Lighting systems.
     // Note that for the "Lighting" system, you specify the Room and "Lighting" is implied.
     // We assume that user can mechanically alter lighting state via physical switches in
     // house, so lighting "commands" do not solely control lighting "state".
-    repo.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_LEVEL, timestamp, 50);
-    repo.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_COLOR, timestamp, "#FF9900");
-    repo.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_ENABLED, timestamp, true);
+    repo.store(SystemHRoom.BATHROOM, SystemHState.LIGHTING_LEVEL, timestamp, 50);
+    repo.store(SystemHRoom.BATHROOM, SystemHState.LIGHTING_COLOR, timestamp, "#FF9900");
+    repo.store(SystemHRoom.BATHROOM, SystemHState.LIGHTING_ENABLED, timestamp, true);
 
-    repo.store(IHaleRoom.LIVING, IHaleState.LIGHTING_LEVEL, timestamp, 100);
-    repo.store(IHaleRoom.LIVING, IHaleState.LIGHTING_COLOR, timestamp, "#FFFF00");
-    repo.store(IHaleRoom.LIVING, IHaleState.LIGHTING_ENABLED, timestamp, false);
+    repo.store(SystemHRoom.LIVING, SystemHState.LIGHTING_LEVEL, timestamp, 100);
+    repo.store(SystemHRoom.LIVING, SystemHState.LIGHTING_COLOR, timestamp, "#FFFF00");
+    repo.store(SystemHRoom.LIVING, SystemHState.LIGHTING_ENABLED, timestamp, false);
 
-    repo.store(IHaleRoom.DINING, IHaleState.LIGHTING_LEVEL, timestamp, 1);
-    repo.store(IHaleRoom.DINING, IHaleState.LIGHTING_COLOR, timestamp, "#779900");
-    repo.store(IHaleRoom.DINING, IHaleState.LIGHTING_ENABLED, timestamp, true);
+    repo.store(SystemHRoom.DINING, SystemHState.LIGHTING_LEVEL, timestamp, 1);
+    repo.store(SystemHRoom.DINING, SystemHState.LIGHTING_COLOR, timestamp, "#779900");
+    repo.store(SystemHRoom.DINING, SystemHState.LIGHTING_ENABLED, timestamp, true);
 
-    repo.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_LEVEL, timestamp, 50);
-    repo.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_COLOR, timestamp, "#66FF00");
-    repo.store(IHaleRoom.KITCHEN, IHaleState.LIGHTING_ENABLED, timestamp, false);
+    repo.store(SystemHRoom.KITCHEN, SystemHState.LIGHTING_LEVEL, timestamp, 50);
+    repo.store(SystemHRoom.KITCHEN, SystemHState.LIGHTING_COLOR, timestamp, "#66FF00");
+    repo.store(SystemHRoom.KITCHEN, SystemHState.LIGHTING_ENABLED, timestamp, false);
     
-    repo.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_LEVEL, timestamp, 50);
-    repo.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_COLOR, timestamp, "#FF9900");
-    repo.store(IHaleRoom.BATHROOM, IHaleState.LIGHTING_ENABLED, timestamp, true);
+    repo.store(SystemHRoom.BATHROOM, SystemHState.LIGHTING_LEVEL, timestamp, 50);
+    repo.store(SystemHRoom.BATHROOM, SystemHState.LIGHTING_COLOR, timestamp, "#FF9900");
+    repo.store(SystemHRoom.BATHROOM, SystemHState.LIGHTING_ENABLED, timestamp, true);
 
     // Store example commands to alter lighting state. 
-    repo.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
-    repo.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp, "#FFFF00");
-    repo.store(IHaleRoom.LIVING, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp, false);
+    repo.store(SystemHRoom.LIVING, SystemHState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 100);
+    repo.store(SystemHRoom.LIVING, SystemHState.SET_LIGHTING_COLOR_COMMAND, timestamp, "#FFFF00");
+    repo.store(SystemHRoom.LIVING, SystemHState.SET_LIGHTING_ENABLED_COMMAND, timestamp, false);
 
-    repo.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 1);
-    repo.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp, "#779900");
-    repo.store(IHaleRoom.DINING, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp, true);
+    repo.store(SystemHRoom.DINING, SystemHState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 1);
+    repo.store(SystemHRoom.DINING, SystemHState.SET_LIGHTING_COLOR_COMMAND, timestamp, "#779900");
+    repo.store(SystemHRoom.DINING, SystemHState.SET_LIGHTING_ENABLED_COMMAND, timestamp, true);
 
-    repo.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 50);
-    repo.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_COLOR_COMMAND, timestamp, "#66FF00");
-    repo.store(IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_ENABLED_COMMAND, timestamp, false);
+    repo.store(SystemHRoom.KITCHEN, SystemHState.SET_LIGHTING_LEVEL_COMMAND, timestamp, 50);
+    repo.store(SystemHRoom.KITCHEN, SystemHState.SET_LIGHTING_COLOR_COMMAND, timestamp, "#66FF00");
+    repo.store(SystemHRoom.KITCHEN, SystemHState.SET_LIGHTING_ENABLED_COMMAND, timestamp, false);
     
     // Here's examples of retrieving current state. 
-    // We do not show examples of retrieving all possible state. The IHaleRepository interface
+    // We do not show examples of retrieving all possible state. The SystemHRepository interface
     // documents all methods available for retrieving state. There is a method to retrieve the
     // state for all combinations of storing state shown above.
     
@@ -193,32 +193,32 @@ public class TestRepository {
     assertEquals("PV/Energy", Integer.valueOf(34), repo.getPhotovoltaicEnergy().getValue());
     
     assertEquals("Living/Level", Integer.valueOf(100), 
-        repo.getLightingLevel(IHaleRoom.LIVING).getValue());
+        repo.getLightingLevel(SystemHRoom.LIVING).getValue());
     assertEquals("Living/Color", "#FFFF00",
-        repo.getLightingColor(IHaleRoom.LIVING).getValue());
+        repo.getLightingColor(SystemHRoom.LIVING).getValue());
     assertEquals("Living/Power", false, 
-        repo.getLightingEnabled(IHaleRoom.LIVING).getValue());
+        repo.getLightingEnabled(SystemHRoom.LIVING).getValue());
 
     assertEquals("Bath/Level", Integer.valueOf(50), 
-        repo.getLightingLevel(IHaleRoom.BATHROOM).getValue());
+        repo.getLightingLevel(SystemHRoom.BATHROOM).getValue());
     assertEquals("Bath/Color", "#FF9900",
-        repo.getLightingColor(IHaleRoom.BATHROOM).getValue());
+        repo.getLightingColor(SystemHRoom.BATHROOM).getValue());
     assertEquals("Bath/Power", true, 
-        repo.getLightingEnabled(IHaleRoom.BATHROOM).getValue());
+        repo.getLightingEnabled(SystemHRoom.BATHROOM).getValue());
 
     assertEquals("Dining/Level", Integer.valueOf(1), 
-        repo.getLightingLevel(IHaleRoom.DINING).getValue());
+        repo.getLightingLevel(SystemHRoom.DINING).getValue());
     assertEquals("Dining/Color", "#779900",
-        repo.getLightingColor(IHaleRoom.DINING).getValue());
+        repo.getLightingColor(SystemHRoom.DINING).getValue());
     assertEquals("Dining/Power", true, 
-        repo.getLightingEnabled(IHaleRoom.DINING).getValue());
+        repo.getLightingEnabled(SystemHRoom.DINING).getValue());
     
     assertEquals("Kitchen/Level", Integer.valueOf(50), 
-        repo.getLightingLevel(IHaleRoom.KITCHEN).getValue());
+        repo.getLightingLevel(SystemHRoom.KITCHEN).getValue());
     assertEquals("Kitchen/Color", "#66FF00",
-        repo.getLightingColor(IHaleRoom.KITCHEN).getValue());
+        repo.getLightingColor(SystemHRoom.KITCHEN).getValue());
     assertEquals("Kitchen/Power", false, 
-        repo.getLightingEnabled(IHaleRoom.KITCHEN).getValue());
+        repo.getLightingEnabled(SystemHRoom.KITCHEN).getValue());
 
     // Finally, examples of how to retrieve historical state.
     // The current interface allows you to get a list of Timestamp-Value pairs from 
@@ -244,9 +244,9 @@ public class TestRepository {
     repo.getHvacTemperatureCommandSince(yesterday);
     
     // Examples of historical lighting data for one room. It works for all rooms, of course.
-    repo.getLightingColorSince(IHaleRoom.DINING, yesterday);
-    repo.getLightingLevelSince(IHaleRoom.DINING, yesterday);
-    repo.getLightingEnabledSince(IHaleRoom.DINING, yesterday);
+    repo.getLightingColorSince(SystemHRoom.DINING, yesterday);
+    repo.getLightingLevelSince(SystemHRoom.DINING, yesterday);
+    repo.getLightingEnabledSince(SystemHRoom.DINING, yesterday);
   }
   
   /**
@@ -259,7 +259,7 @@ public class TestRepository {
     
     // Create a system status message.
     Long timestamp = (new Date()).getTime();
-    IHaleSystem system = IHaleSystem.AQUAPONICS;
+    SystemHSystem system = SystemHSystem.AQUAPONICS;
     SystemStatusMessageType type = SystemStatusMessageType.ALERT;
     String message = "Oxygen has fallen below 12 ppm. All the fish will die.";
     SystemStatusMessage statusMessage = new SystemStatusMessage(timestamp, system, type, message);
@@ -277,20 +277,20 @@ public class TestRepository {
    */
   @Test
   public void testEnumeratedType() {
-    IHaleState stateVar = IHaleState.DEAD_FISH;
+    SystemHState stateVar = SystemHState.DEAD_FISH;
     assertEquals("Checking type var", Integer.class, stateVar.getType());
     
-    assertTrue("Checking isType 1", IHaleState.DEAD_FISH.isType("7"));
-    assertFalse("Checking isType 2", IHaleState.DEAD_FISH.isType("7.0"));
+    assertTrue("Checking isType 1", SystemHState.DEAD_FISH.isType("7"));
+    assertFalse("Checking isType 2", SystemHState.DEAD_FISH.isType("7.0"));
     
-    assertTrue("Checking isType 3", IHaleState.CIRCULATION.isType("7.0"));
-    assertTrue("Checking isType 4", IHaleState.CIRCULATION.isType("7"));
-    assertFalse("Checking isType 5", IHaleState.CIRCULATION.isType("true"));
+    assertTrue("Checking isType 3", SystemHState.CIRCULATION.isType("7.0"));
+    assertTrue("Checking isType 4", SystemHState.CIRCULATION.isType("7"));
+    assertFalse("Checking isType 5", SystemHState.CIRCULATION.isType("true"));
     
-    assertTrue("Checking isType 6", IHaleState.LIGHTING_ENABLED.isType("true"));
-    assertFalse("Checking isType 7", IHaleState.LIGHTING_ENABLED.isType("7.0"));
+    assertTrue("Checking isType 6", SystemHState.LIGHTING_ENABLED.isType("true"));
+    assertFalse("Checking isType 7", SystemHState.LIGHTING_ENABLED.isType("7.0"));
     
-    assertFalse("Checking isType 8", IHaleState.LIGHTING_COLOR.isType("7"));
-    assertTrue("Checking isType 9", IHaleState.LIGHTING_COLOR.isType("#FF0000"));
+    assertFalse("Checking isType 8", SystemHState.LIGHTING_COLOR.isType("7"));
+    assertTrue("Checking isType 9", SystemHState.LIGHTING_COLOR.isType("#FF0000"));
   }
 }

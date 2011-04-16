@@ -1,15 +1,15 @@
-package edu.hawaii.ihale.api.command;
+package edu.hawaii.systemh.api.command;
 
-import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHCommandType;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHRoom;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
 
 /** 
  * Specifies the interface that is used by the front-end to send a command to the house
  * via the back-end. 
  * @author Philip Johnson
  */
-public interface IHaleCommand {
+public interface SystemHCommand {
 
   /**
    * Emits a command to be sent to the specified system with the optional arguments. 
@@ -18,6 +18,7 @@ public interface IHaleCommand {
    * @param command The command to be sent to the system.
    * @param arg The argument associated with this command.
    */
-  public void doCommand(IHaleSystem system, IHaleRoom room, IHaleCommandType command, Object arg);
+  public void doCommand(SystemHSystem system, SystemHRoom room, 
+      SystemHCommandType command, Object arg);
 
 }

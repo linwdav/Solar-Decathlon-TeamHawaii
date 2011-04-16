@@ -1,14 +1,14 @@
-package edu.hawaii.ihale.api.repository;
+package edu.hawaii.systemh.api.repository;
 
 import java.util.List;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHRoom;
 
 /**
- * Specifies the interface used by the iHale front-end to get data from the back-end repository.
+ * Specifies the interface used by the SystemH front-end to get data from the back-end repository.
  * 
  * @author Philip Johnson
  */
-public interface IHaleRepository {
+public interface SystemHRepository {
 
   /**
    * Returns a (timestamp, double) pair indicating the most recently collected circulation data.
@@ -664,7 +664,7 @@ public interface IHaleRepository {
    * @return The most recent data on lighting level in a room, or null if there is no data or errors
    * occurred retrieving it.
    */
-  public TimestampIntegerPair getLightingLevel(IHaleRoom room);
+  public TimestampIntegerPair getLightingLevel(SystemHRoom room);
 
   /**
    * Returns a list of (timestamp, integer) pairs indicating lighting data from the passed timestamp
@@ -675,7 +675,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, integer) pairs with circulation data, or null if there is no data
    * or errors occurred retrieving it.
    */
-  public List<TimestampIntegerPair> getLightingLevelSince(IHaleRoom room, Long timestamp);
+  public List<TimestampIntegerPair> getLightingLevelSince(SystemHRoom room, Long timestamp);
 
   /**
    * Returns a list of (timestamp, integer) pairs indicating lighting data from start time to end
@@ -687,7 +687,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, integer) pairs with lighting data, or null if there is no data or
    * errors occurred retrieving it.
    */
-  public List<TimestampIntegerPair> getLightingLevelDuringInterval(IHaleRoom room, Long startTime,
+  public List<TimestampIntegerPair> getLightingLevelDuringInterval(SystemHRoom room, Long startTime,
       Long endTime);
 
   /**
@@ -698,7 +698,7 @@ public interface IHaleRepository {
    * @return The most recent data on the lighting color in the room, or null if there is no data or
    * errors occurred retrieving it.
    */
-  public TimestampStringPair getLightingColor(IHaleRoom room);
+  public TimestampStringPair getLightingColor(SystemHRoom room);
 
   /**
    * Returns a list of (timestamp, string) pairs indicating light color data from the passed
@@ -709,7 +709,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, string) pairs with light color data, or null if there is no data
    * or errors occurred retrieving it.
    */
-  public List<TimestampStringPair> getLightingColorSince(IHaleRoom room, Long timestamp);
+  public List<TimestampStringPair> getLightingColorSince(SystemHRoom room, Long timestamp);
 
   /**
    * Returns a list of (timestamp, string) pairs indicating light color data from start time to end
@@ -721,7 +721,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, string) pairs with light color data, or null if there is no data
    * or errors occurred retrieving it.
    */
-  public List<TimestampStringPair> getLightingColorDuringInterval(IHaleRoom room, Long startTime,
+  public List<TimestampStringPair> getLightingColorDuringInterval(SystemHRoom room, Long startTime,
       Long endTime);
 
   /**
@@ -732,7 +732,7 @@ public interface IHaleRepository {
    * @return The most recent data on whether the lights are on or off, or null if there is no data
    * or errors occurred retrieving it.
    */
-  public TimestampBooleanPair getLightingEnabled(IHaleRoom room);
+  public TimestampBooleanPair getLightingEnabled(SystemHRoom room);
 
   /**
    * Returns a list of (timestamp, boolean) pairs indicating lighting data from the passed timestamp
@@ -743,7 +743,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, boolean) pairs with lighting data, or null if there is no data or
    * errors occurred retrieving it.
    */
-  public List<TimestampBooleanPair> getLightingEnabledSince(IHaleRoom room, Long timestamp);
+  public List<TimestampBooleanPair> getLightingEnabledSince(SystemHRoom room, Long timestamp);
 
   /**
    * Returns a list of (timestamp, boolean) pairs indicating lighting data from start time to end
@@ -755,7 +755,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, boolean) pairs with lighting data, or null if there is no data or
    * errors occurred retrieving it.
    */
-  public List<TimestampBooleanPair> getLightingEnabledDuringInterval(IHaleRoom room,
+  public List<TimestampBooleanPair> getLightingEnabledDuringInterval(SystemHRoom room,
       Long startTime, Long endTime);
 
   /**
@@ -766,7 +766,7 @@ public interface IHaleRepository {
    * @return The most recent lighting level command, or null if there is no data or errors occurred
    * retrieving it.
    */
-  public TimestampIntegerPair getLightingLevelCommand(IHaleRoom room);
+  public TimestampIntegerPair getLightingLevelCommand(SystemHRoom room);
 
   /**
    * Returns a list of (timestamp, integer) pairs indicating lighting level command data from the
@@ -777,7 +777,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, integer) pairs with lighting level command data, or null if there
    * is no data or errors occurred retrieving it.
    */
-  public List<TimestampIntegerPair> getLightingLevelCommandSince(IHaleRoom room, Long timestamp);
+  public List<TimestampIntegerPair> getLightingLevelCommandSince(SystemHRoom room, Long timestamp);
 
   /**
    * Returns a list of (timestamp, integer) pairs indicating lighting level command data from start
@@ -789,7 +789,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, integer) pairs with lighting level command data, or null if there
    * is no data or errors occurred retrieving it.
    */
-  public List<TimestampIntegerPair> getLightingLevelCommandDuringInterval(IHaleRoom room,
+  public List<TimestampIntegerPair> getLightingLevelCommandDuringInterval(SystemHRoom room,
       Long startTime, Long endTime);
 
   /**
@@ -800,7 +800,7 @@ public interface IHaleRepository {
    * @return The most recent enable lighting command, or null if there is no data or errors occurred
    * retrieving it.
    */
-  public TimestampBooleanPair getLightingEnabledCommand(IHaleRoom room);
+  public TimestampBooleanPair getLightingEnabledCommand(SystemHRoom room);
 
   /**
    * Returns a list of (timestamp, boolean) pairs indicating lighting enabled command data from the
@@ -811,7 +811,8 @@ public interface IHaleRepository {
    * @return A list of (timestamp, boolean) pairs with lighting enabled command data, or null if
    * there is no data or errors occurred retrieving it.
    */
-  public List<TimestampBooleanPair> getLightingEnabledCommandSince(IHaleRoom room, Long timestamp);
+  public List<TimestampBooleanPair> getLightingEnabledCommandSince(SystemHRoom room, 
+      Long timestamp);
 
   /**
    * Returns a list of (timestamp, boolean) pairs indicating lighting enabled data from start time
@@ -823,7 +824,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, boolean) pairs with lighting enabled data, or null if there is no
    * data or errors occurred retrieving it.
    */
-  public List<TimestampBooleanPair> getLightingEnabledCommandDuringInterval(IHaleRoom room,
+  public List<TimestampBooleanPair> getLightingEnabledCommandDuringInterval(SystemHRoom room,
       Long startTime, Long endTime);
 
   /**
@@ -834,7 +835,7 @@ public interface IHaleRepository {
    * @return The most recent enable lighting command, or null if there is no data or errors occurred
    * retrieving it.
    */
-  public TimestampStringPair getLightingColorCommand(IHaleRoom room);
+  public TimestampStringPair getLightingColorCommand(SystemHRoom room);
 
   /**
    * Returns a list of (timestamp, string) pairs indicating lighting color command data from the
@@ -845,7 +846,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, string) pairs with lighting color command data, or null if there
    * is no data or errors occurred retrieving it.
    */
-  public List<TimestampStringPair> getLightingColorCommandSince(IHaleRoom room, Long timestamp);
+  public List<TimestampStringPair> getLightingColorCommandSince(SystemHRoom room, Long timestamp);
 
   /**
    * Returns a list of (timestamp, string) pairs indicating lighting color command data from start
@@ -857,7 +858,7 @@ public interface IHaleRepository {
    * @return A list of (timestamp, string) pairs with lighting color command data, or null if there
    * is no data or errors occurred retrieving it.
    */
-  public List<TimestampStringPair> getLightingColorCommandDuringInterval(IHaleRoom room,
+  public List<TimestampStringPair> getLightingColorCommandDuringInterval(SystemHRoom room,
       Long startTime, Long endTime);
 
   /**

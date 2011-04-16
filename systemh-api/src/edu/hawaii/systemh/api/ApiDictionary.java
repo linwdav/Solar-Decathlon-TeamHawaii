@@ -1,16 +1,16 @@
-package edu.hawaii.ihale.api;
+package edu.hawaii.systemh.api;
 
 import java.lang.reflect.Method;
 import java.util.Locale;
 
 /**
- * Defines the legal names to be used in the iHale API.
+ * Defines the legal names to be used in the SystemH API.
  * @author Philip Johnson
  */
 public class ApiDictionary {
 
-  /** The systems in the iHale house. */
-  public enum IHaleSystem {
+  /** The systems in the SystemH house. */
+  public enum SystemHSystem {
     /** The Aquaponics system. */
     AQUAPONICS, 
     /** The HVAC system. */
@@ -24,7 +24,7 @@ public class ApiDictionary {
     } 
 
   /** There is one lighting system for each of the following rooms. */
-  public enum IHaleRoom { 
+  public enum SystemHRoom { 
     /** The living room. */
     LIVING, 
     /** The dining room. */
@@ -36,7 +36,7 @@ public class ApiDictionary {
     }
 
   /** All state variables names. */
-  public enum IHaleState {
+  public enum SystemHState {
     /** Water circulation: Double. (for aquaponics). */
     CIRCULATION (Double.class),
     /** Number of dead fish: Integer. (for aquaponics). */
@@ -51,6 +51,24 @@ public class ApiDictionary {
     PH (Double.class), 
     /** Temperature: Integer (for aquaponics, hvac). */
     TEMPERATURE (Integer.class), 
+    
+    /** Whether hvac is on in a room: Boolean (for hvac). */
+    HVAC_ENABLED (Boolean.class) {
+      /** {@inheritDoc} */
+      @Override
+      public boolean isType(String stringValue) {
+        return isBooleanType(stringValue);
+      }
+    },
+
+    /** Requests for power setting: Boolean (on or off) (for hvac). */
+    SET_HVAC_ENABLED_COMMAND (Boolean.class) {
+      /** {@inheritDoc} */
+      @Override
+      public boolean isType(String stringValue) {
+        return isBooleanType(stringValue);
+      }
+    }, 
     /** Water turbidity: Double (for aquaponics). */
     TURBIDITY (Double.class), 
     /** Water level: Integer. (for aquaponics). */
@@ -115,7 +133,7 @@ public class ApiDictionary {
      * Create a new instance of this enumerated type.
      * @param type The type of this enumerated type.
      */
-    private IHaleState(Class<?> type) {
+    private SystemHState(Class<?> type) {
       this.type = type;
     }
     
@@ -169,7 +187,7 @@ public class ApiDictionary {
 
   
   /** All command names. */
-  public enum IHaleCommandType { 
+  public enum SystemHCommandType { 
     /** For aquaponics. */
     FEED_FISH,
     /** For aquaponics. */
@@ -178,8 +196,10 @@ public class ApiDictionary {
     SET_PH,
     /** For aquaponics. */
     SET_WATER_LEVEL,
-    /** For aquaponics, HVAC. */
+    /** For aquaponics, hvac. */
     SET_TEMPERATURE,
+    /** For Hvac. */
+    SET_HVAC_ENABLED,
     /** For aquaponics. */
     SET_NUTRIENTS,
     /** For lighting. */
@@ -203,12 +223,12 @@ public class ApiDictionary {
   }
   
   /**
-   * Accepts an IHaleCommand type, and returns the equivalent IHaleState type.
-   * Useful for the implementation of the IHaleCommand class. 
-   * @param command The IHaleCommand type.
-   * @return The corresponding IHaleState type. 
+   * Accepts an SystemHCommand type, and returns the equivalent SystemHState type.
+   * Useful for the implementation of the SystemHCommand class. 
+   * @param command The SystemHCommand type.
+   * @return The corresponding SystemHState type. 
    */
-  public static IHaleState iHaleCommandType2State(IHaleCommandType command) {
-    return IHaleState.valueOf(command.toString() + "_COMMAND");
+  public static SystemHState systemHCommandType2State(SystemHCommandType command) {
+    return SystemHState.valueOf(command.toString() + "_COMMAND");
   }
 }

@@ -1,4 +1,4 @@
-package edu.hawaii.ihale.api.repository.impl;
+package edu.hawaii.systemh.api.repository.impl;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,28 +13,28 @@ import com.sleepycat.persist.EntityCursor;
 import com.sleepycat.persist.EntityStore;
 import com.sleepycat.persist.PrimaryIndex;
 import com.sleepycat.persist.StoreConfig;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
-import edu.hawaii.ihale.api.repository.IHaleRepository;
-import edu.hawaii.ihale.api.repository.SystemStateListener;
-import edu.hawaii.ihale.api.repository.SystemStatusMessage;
-import edu.hawaii.ihale.api.repository.SystemStatusMessageListener;
-import edu.hawaii.ihale.api.repository.TimestampBooleanPair;
-import edu.hawaii.ihale.api.repository.TimestampDoublePair;
-import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
-import edu.hawaii.ihale.api.repository.TimestampStringPair;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHRoom;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
+import edu.hawaii.systemh.api.repository.SystemHRepository;
+import edu.hawaii.systemh.api.repository.SystemStateListener;
+import edu.hawaii.systemh.api.repository.SystemStatusMessage;
+import edu.hawaii.systemh.api.repository.SystemStatusMessageListener;
+import edu.hawaii.systemh.api.repository.TimestampBooleanPair;
+import edu.hawaii.systemh.api.repository.TimestampDoublePair;
+import edu.hawaii.systemh.api.repository.TimestampIntegerPair;
+import edu.hawaii.systemh.api.repository.TimestampStringPair;
 
 /**
- * An implementation of the iHale repository using the BerkeleyDB system. Repository instances are
+ * An implementation of the SystemH repository using the BerkeleyDB system. Repository instances are
  * thread safe. You can create as many of these as you want.
  * 
  * @author Philip Johnson
  */
-public class Repository implements IHaleRepository {
+public class Repository implements SystemHRepository {
 
   /** The System property that the user can set to override the default repo directory name. */
-  public static final String repositoryDirectoryPropertyKey = "iHale.RepositoryDirectoryName";
+  public static final String repositoryDirectoryPropertyKey = "SystemH.RepositoryDirectoryName";
 
   /** Maps System+State to its corresponding EntityStore. */
   private static Map<String, EntityStore> stores = new ConcurrentHashMap<String, EntityStore>();
@@ -48,8 +48,8 @@ public class Repository implements IHaleRepository {
   private static PrimaryIndex<Long, SystemStatusMessageEntry> messageStoreIndex;
 
   /** The thread safe data structures that store the listeners for this repository. */
-  private static Map<IHaleSystem, List<SystemStateListener>> stateListeners =
-      new ConcurrentHashMap<IHaleSystem, List<SystemStateListener>>();
+  private static Map<SystemHSystem, List<SystemStateListener>> stateListeners =
+      new ConcurrentHashMap<SystemHSystem, List<SystemStateListener>>();
   private static List<SystemStatusMessageListener> statusListeners =
       new CopyOnWriteArrayList<SystemStatusMessageListener>();
 
@@ -62,8 +62,8 @@ public class Repository implements IHaleRepository {
    * @param system The system.
    * @param state The state.
    */
-  private static void defineStore(Environment env, StoreConfig storeConfig, IHaleSystem system,
-      IHaleState state) {
+  private static void defineStore(Environment env, StoreConfig storeConfig, SystemHSystem system,
+      SystemHState state) {
     // Call the more generic defineStore passing null for room.
     defineStore(env, storeConfig, system, null, state);
   }
@@ -77,8 +77,8 @@ public class Repository implements IHaleRepository {
    * @param room The room. (Implies that the system is Lighting).
    * @param state The state.
    */
-  private static void defineStore(Environment env, StoreConfig storeConfig, IHaleRoom room,
-      IHaleState state) {
+  private static void defineStore(Environment env, StoreConfig storeConfig, SystemHRoom room,
+      SystemHState state) {
     // Call the more generic defineStore passing null for system.
     defineStore(env, storeConfig, null, room, state);
   }
@@ -93,8 +93,8 @@ public class Repository implements IHaleRepository {
    * @param room The room (optional, can be null, when used implies that system is Lighting).
    * @param state The state.
    */
-  private static void defineStore(Environment env, StoreConfig storeConfig, IHaleSystem system,
-      IHaleRoom room, IHaleState state) {
+  private static void defineStore(Environment env, StoreConfig storeConfig, SystemHSystem system,
+      SystemHRoom room, SystemHState state) {
     String storeName = makeStoreName(system, room, state);
     EntityStore store = new EntityStore(env, storeName, storeConfig);
     PrimaryIndex<Long, StateEntry> index = store.getPrimaryIndex(Long.class, StateEntry.class);
@@ -124,9 +124,9 @@ public class Repository implements IHaleRepository {
    * @param state The state.
    * @return A string representing the EntityStore name.
    */
-  private static String makeStoreName(IHaleSystem system, IHaleRoom room, IHaleState state) {
+  private static String makeStoreName(SystemHSystem system, SystemHRoom room, SystemHState state) {
     // return either <system>_<state> or Lighting_<room>_<state>
-    return (room == null) ? system.toString() + "_" + state.toString() : IHaleSystem.LIGHTING
+    return (room == null) ? system.toString() + "_" + state.toString() : SystemHSystem.LIGHTING
         .toString() + "_" + room.toString() + "_" + state.toString();
   }
 
@@ -135,11 +135,11 @@ public class Repository implements IHaleRepository {
     // Create the directory in which this store will live.
     String currDir = System.getProperty("user.dir");
     // Allow user to override repository name by setting this variable.
-    String repoDirName = System.getProperty(repositoryDirectoryPropertyKey, "IHaleRepository");
+    String repoDirName = System.getProperty(repositoryDirectoryPropertyKey, "SystemHRepository");
     File dir = new File(currDir, repoDirName);
     boolean success = dir.mkdirs();
     if (success) {
-      System.out.println("Created the iHale repository directory: " + dir);
+      System.out.println("Created the SystemH repository directory: " + dir);
     }
     EnvironmentConfig envConfig = new EnvironmentConfig();
     StoreConfig storeConfig = new StoreConfig();
@@ -149,62 +149,62 @@ public class Repository implements IHaleRepository {
     // Create a separate repository store for each (System, State) combination.
 
     // Aquaponics state variables.
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.CIRCULATION);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.DEAD_FISH);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.ELECTRICAL_CONDUCTIVITY);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.NUTRIENTS);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.OXYGEN);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.PH);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.TEMPERATURE);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.TURBIDITY);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.WATER_LEVEL);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.CIRCULATION);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.DEAD_FISH);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.ELECTRICAL_CONDUCTIVITY);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.NUTRIENTS);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.OXYGEN);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.PH);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.TEMPERATURE);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.TURBIDITY);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.WATER_LEVEL);
 
     // Aquaponics commands.
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.FEED_FISH_COMMAND);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.HARVEST_FISH_COMMAND);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.SET_NUTRIENTS_COMMAND);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.SET_PH_COMMAND);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.SET_TEMPERATURE_COMMAND);
-    defineStore(env, storeConfig, IHaleSystem.AQUAPONICS, IHaleState.SET_WATER_LEVEL_COMMAND);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.FEED_FISH_COMMAND);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.HARVEST_FISH_COMMAND);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.SET_NUTRIENTS_COMMAND);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.SET_PH_COMMAND);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.SET_TEMPERATURE_COMMAND);
+    defineStore(env, storeConfig, SystemHSystem.AQUAPONICS, SystemHState.SET_WATER_LEVEL_COMMAND);
 
     // HVAC state and commands.
-    defineStore(env, storeConfig, IHaleSystem.HVAC, IHaleState.TEMPERATURE);
-    defineStore(env, storeConfig, IHaleSystem.HVAC, IHaleState.SET_TEMPERATURE_COMMAND);
+    defineStore(env, storeConfig, SystemHSystem.HVAC, SystemHState.TEMPERATURE);
+    defineStore(env, storeConfig, SystemHSystem.HVAC, SystemHState.SET_TEMPERATURE_COMMAND);
 
     // PV and ELECTRIC state (no commands)
-    defineStore(env, storeConfig, IHaleSystem.PHOTOVOLTAIC, IHaleState.POWER);
-    defineStore(env, storeConfig, IHaleSystem.PHOTOVOLTAIC, IHaleState.ENERGY);
-    defineStore(env, storeConfig, IHaleSystem.ELECTRIC, IHaleState.POWER);
-    defineStore(env, storeConfig, IHaleSystem.ELECTRIC, IHaleState.ENERGY);
+    defineStore(env, storeConfig, SystemHSystem.PHOTOVOLTAIC, SystemHState.POWER);
+    defineStore(env, storeConfig, SystemHSystem.PHOTOVOLTAIC, SystemHState.ENERGY);
+    defineStore(env, storeConfig, SystemHSystem.ELECTRIC, SystemHState.POWER);
+    defineStore(env, storeConfig, SystemHSystem.ELECTRIC, SystemHState.ENERGY);
 
     // Lighting state and commands (by room)
-    defineStore(env, storeConfig, IHaleRoom.BATHROOM, IHaleState.LIGHTING_LEVEL);
-    defineStore(env, storeConfig, IHaleRoom.BATHROOM, IHaleState.LIGHTING_COLOR);
-    defineStore(env, storeConfig, IHaleRoom.BATHROOM, IHaleState.LIGHTING_ENABLED);
-    defineStore(env, storeConfig, IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_LEVEL_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_COLOR_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.BATHROOM, IHaleState.SET_LIGHTING_ENABLED_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.BATHROOM, SystemHState.LIGHTING_LEVEL);
+    defineStore(env, storeConfig, SystemHRoom.BATHROOM, SystemHState.LIGHTING_COLOR);
+    defineStore(env, storeConfig, SystemHRoom.BATHROOM, SystemHState.LIGHTING_ENABLED);
+    defineStore(env, storeConfig, SystemHRoom.BATHROOM, SystemHState.SET_LIGHTING_LEVEL_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.BATHROOM, SystemHState.SET_LIGHTING_COLOR_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.BATHROOM, SystemHState.SET_LIGHTING_ENABLED_COMMAND);
 
-    defineStore(env, storeConfig, IHaleRoom.LIVING, IHaleState.LIGHTING_LEVEL);
-    defineStore(env, storeConfig, IHaleRoom.LIVING, IHaleState.LIGHTING_COLOR);
-    defineStore(env, storeConfig, IHaleRoom.LIVING, IHaleState.LIGHTING_ENABLED);
-    defineStore(env, storeConfig, IHaleRoom.LIVING, IHaleState.SET_LIGHTING_LEVEL_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.LIVING, IHaleState.SET_LIGHTING_COLOR_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.LIVING, IHaleState.SET_LIGHTING_ENABLED_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.LIVING, SystemHState.LIGHTING_LEVEL);
+    defineStore(env, storeConfig, SystemHRoom.LIVING, SystemHState.LIGHTING_COLOR);
+    defineStore(env, storeConfig, SystemHRoom.LIVING, SystemHState.LIGHTING_ENABLED);
+    defineStore(env, storeConfig, SystemHRoom.LIVING, SystemHState.SET_LIGHTING_LEVEL_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.LIVING, SystemHState.SET_LIGHTING_COLOR_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.LIVING, SystemHState.SET_LIGHTING_ENABLED_COMMAND);
 
-    defineStore(env, storeConfig, IHaleRoom.DINING, IHaleState.LIGHTING_LEVEL);
-    defineStore(env, storeConfig, IHaleRoom.DINING, IHaleState.LIGHTING_COLOR);
-    defineStore(env, storeConfig, IHaleRoom.DINING, IHaleState.LIGHTING_ENABLED);
-    defineStore(env, storeConfig, IHaleRoom.DINING, IHaleState.SET_LIGHTING_LEVEL_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.DINING, IHaleState.SET_LIGHTING_COLOR_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.DINING, IHaleState.SET_LIGHTING_ENABLED_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.DINING, SystemHState.LIGHTING_LEVEL);
+    defineStore(env, storeConfig, SystemHRoom.DINING, SystemHState.LIGHTING_COLOR);
+    defineStore(env, storeConfig, SystemHRoom.DINING, SystemHState.LIGHTING_ENABLED);
+    defineStore(env, storeConfig, SystemHRoom.DINING, SystemHState.SET_LIGHTING_LEVEL_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.DINING, SystemHState.SET_LIGHTING_COLOR_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.DINING, SystemHState.SET_LIGHTING_ENABLED_COMMAND);
 
-    defineStore(env, storeConfig, IHaleRoom.KITCHEN, IHaleState.LIGHTING_LEVEL);
-    defineStore(env, storeConfig, IHaleRoom.KITCHEN, IHaleState.LIGHTING_COLOR);
-    defineStore(env, storeConfig, IHaleRoom.KITCHEN, IHaleState.LIGHTING_ENABLED);
-    defineStore(env, storeConfig, IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_LEVEL_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_COLOR_COMMAND);
-    defineStore(env, storeConfig, IHaleRoom.KITCHEN, IHaleState.SET_LIGHTING_ENABLED_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.KITCHEN, SystemHState.LIGHTING_LEVEL);
+    defineStore(env, storeConfig, SystemHRoom.KITCHEN, SystemHState.LIGHTING_COLOR);
+    defineStore(env, storeConfig, SystemHRoom.KITCHEN, SystemHState.LIGHTING_ENABLED);
+    defineStore(env, storeConfig, SystemHRoom.KITCHEN, SystemHState.SET_LIGHTING_LEVEL_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.KITCHEN, SystemHState.SET_LIGHTING_COLOR_COMMAND);
+    defineStore(env, storeConfig, SystemHRoom.KITCHEN, SystemHState.SET_LIGHTING_ENABLED_COMMAND);
 
     // Create the EntityStore and Index for the SystemStatusMessageStore.
     defineMessageStore(env, storeConfig);
@@ -214,7 +214,7 @@ public class Repository implements IHaleRepository {
     Runtime.getRuntime().addShutdownHook(shutdownHook);
 
     // Initialize System State Listeners with all possible keys for the listener map.
-    for (IHaleSystem system : IHaleSystem.values()) {
+    for (SystemHSystem system : SystemHSystem.values()) {
       stateListeners.put(system, new ArrayList<SystemStateListener>());
     }
   }
@@ -227,8 +227,8 @@ public class Repository implements IHaleRepository {
    * @param state The state.
    * @return The primary index for this (system, state) pair.
    */
-  private PrimaryIndex<Long, StateEntry> getIndex(IHaleSystem system, IHaleRoom room,
-      IHaleState state) {
+  private PrimaryIndex<Long, StateEntry> getIndex(SystemHSystem system, SystemHRoom room,
+      SystemHState state) {
     return indices.get(makeStoreName(system, room, state));
   }
 
@@ -240,8 +240,8 @@ public class Repository implements IHaleRepository {
    * @param state The state.
    * @return An EntityCursor for this (system, state) pair.
    */
-  private EntityCursor<StateEntry> makeCursor(IHaleSystem system, IHaleRoom room
-      , IHaleState state) {
+  private EntityCursor<StateEntry> makeCursor(SystemHSystem system, SystemHRoom room
+      , SystemHState state) {
     return getIndex(system, room, state).entities();
   }
 
@@ -255,8 +255,8 @@ public class Repository implements IHaleRepository {
    * @param startTime A long indicating the start for this cursor.
    * @return An EntityCursor for this (system, state, startTime) tuple.
    */
-  private EntityCursor<StateEntry> makeCursorSince(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime) {
+  private EntityCursor<StateEntry> makeCursorSince(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime) {
     Long currTime = (new Date()).getTime();
     return getIndex(system, room, state).entities(startTime, true, currTime, true);
   }
@@ -272,8 +272,8 @@ public class Repository implements IHaleRepository {
    * @param endTime A long indicating the end for this cursor.
    * @return An EntityCursor for this system, state, startTime, endTime) tuple.
    */
-  private EntityCursor<StateEntry> makeCursorDuringInterval(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime, Long endTime) {
+  private EntityCursor<StateEntry> makeCursorDuringInterval(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime, Long endTime) {
     return getIndex(system, room, state).entities(startTime, true, endTime, true);
   }
 
@@ -287,8 +287,8 @@ public class Repository implements IHaleRepository {
    * @return The (timestamp, double) pair or null if there is no stored data associated with these
    * parameters or if an error occurs retrieving the data.
    */
-  private TimestampDoublePair getDoubleStateValue(IHaleSystem system, IHaleRoom room,
-      IHaleState state) {
+  private TimestampDoublePair getDoubleStateValue(SystemHSystem system, SystemHRoom room,
+      SystemHState state) {
     EntityCursor<StateEntry> cursor = null;
     StateEntry entry;
     try {
@@ -317,8 +317,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if no data or if an
    * error occurs retrieving the data.
    */
-  private List<TimestampDoublePair> getDoubleStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime) {
+  private List<TimestampDoublePair> getDoubleStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime) {
     List<TimestampDoublePair> pairs = new ArrayList<TimestampDoublePair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -350,8 +350,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if no data or if an
    * error occurs retrieving the data.
    */
-  private List<TimestampDoublePair> getDoubleStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime, Long endTime) {
+  private List<TimestampDoublePair> getDoubleStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime, Long endTime) {
     List<TimestampDoublePair> pairs = new ArrayList<TimestampDoublePair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -381,8 +381,8 @@ public class Repository implements IHaleRepository {
    * @return The (timestamp, integer) pair or null if there is no stored data associated with these
    * parameters or if an error occurs retrieving the data.
    */
-  private TimestampIntegerPair getIntegerStateValue(IHaleSystem system, IHaleRoom room,
-      IHaleState state) {
+  private TimestampIntegerPair getIntegerStateValue(SystemHSystem system, SystemHRoom room,
+      SystemHState state) {
     EntityCursor<StateEntry> cursor = null;
     StateEntry entry;
     try {
@@ -411,8 +411,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if no data or if an
    * error occurs retrieving the data.
    */
-  private List<TimestampIntegerPair> getIntegerStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime) {
+  private List<TimestampIntegerPair> getIntegerStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime) {
     List<TimestampIntegerPair> pairs = new ArrayList<TimestampIntegerPair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -444,8 +444,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if no data or if an
    * error occurs retrieving the data.
    */
-  private List<TimestampIntegerPair> getIntegerStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime, Long endTime) {
+  private List<TimestampIntegerPair> getIntegerStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime, Long endTime) {
     List<TimestampIntegerPair> pairs = new ArrayList<TimestampIntegerPair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -475,8 +475,8 @@ public class Repository implements IHaleRepository {
    * @return The (timestamp, string) pair or null if there is no stored data associated with these
    * parameters or if an error occurs retrieving the data.
    */
-  private TimestampStringPair getStringStateValue(IHaleSystem system, IHaleRoom room,
-      IHaleState state) {
+  private TimestampStringPair getStringStateValue(SystemHSystem system, SystemHRoom room,
+      SystemHState state) {
     EntityCursor<StateEntry> cursor = null;
     StateEntry entry;
     try {
@@ -505,8 +505,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if there is not data or
    * if an error occurs retrieving the data.
    */
-  private List<TimestampStringPair> getStringStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime) {
+  private List<TimestampStringPair> getStringStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime) {
     List<TimestampStringPair> pairs = new ArrayList<TimestampStringPair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -538,8 +538,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if there is not data or
    * if an error occurs retrieving the data.
    */
-  private List<TimestampStringPair> getStringStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime, Long endTime) {
+  private List<TimestampStringPair> getStringStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime, Long endTime) {
     List<TimestampStringPair> pairs = new ArrayList<TimestampStringPair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -569,8 +569,8 @@ public class Repository implements IHaleRepository {
    * @return The (timestamp, boolean) pair or null if there is no stored data associated with these
    * parameters or if an error occurs retrieving the data.
    */
-  private TimestampBooleanPair getBooleanStateValue(IHaleSystem system, IHaleRoom room,
-      IHaleState state) {
+  private TimestampBooleanPair getBooleanStateValue(SystemHSystem system, SystemHRoom room,
+      SystemHState state) {
     EntityCursor<StateEntry> cursor = null;
     StateEntry entry;
     try {
@@ -599,8 +599,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if there is not data or
    * if an error occurs retrieving the data.
    */
-  private List<TimestampBooleanPair> getBooleanStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime) {
+  private List<TimestampBooleanPair> getBooleanStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime) {
     List<TimestampBooleanPair> pairs = new ArrayList<TimestampBooleanPair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -632,8 +632,8 @@ public class Repository implements IHaleRepository {
    * @return The list of data representing change in state over time or null if there is not data or
    * if an error occurs retrieving the data.
    */
-  private List<TimestampBooleanPair> getBooleanStateValues(IHaleSystem system, IHaleRoom room,
-      IHaleState state, Long startTime, Long endTime) {
+  private List<TimestampBooleanPair> getBooleanStateValues(SystemHSystem system, SystemHRoom room,
+      SystemHState state, Long startTime, Long endTime) {
     List<TimestampBooleanPair> pairs = new ArrayList<TimestampBooleanPair>();
     EntityCursor<StateEntry> cursor = null;
     try {
@@ -686,53 +686,56 @@ public class Repository implements IHaleRepository {
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsCirculation() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.CIRCULATION);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.CIRCULATION);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsCirculationSince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.CIRCULATION, startTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.CIRCULATION, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsCirculationDuringInterval(Long startTime,
       Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.CIRCULATION, startTime,
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.CIRCULATION, startTime,
         endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getAquaponicsDeadFish() {
-    return getIntegerStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.DEAD_FISH);
+    return getIntegerStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.DEAD_FISH);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsDeadFishSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.DEAD_FISH, startTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.DEAD_FISH, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsDeadFishDuringInterval(Long startTime
       , Long endTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.DEAD_FISH, startTime,
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.DEAD_FISH, startTime,
         endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsElectricalConductivity() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.ELECTRICAL_CONDUCTIVITY);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.ELECTRICAL_CONDUCTIVITY);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsElectricalConductivitySince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.ELECTRICAL_CONDUCTIVITY,
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.ELECTRICAL_CONDUCTIVITY,
         startTime);
   }
 
@@ -740,179 +743,188 @@ public class Repository implements IHaleRepository {
   @Override
   public List<TimestampDoublePair> getAquaponicsElectricalConductivityDuringInterval(
       Long startTime, Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.ELECTRICAL_CONDUCTIVITY,
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.ELECTRICAL_CONDUCTIVITY,
         startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsNutrients() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.NUTRIENTS);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.NUTRIENTS);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsNutrientsSince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.NUTRIENTS, startTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.NUTRIENTS, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsNutrientsDuringInterval(Long startTime
       , Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.NUTRIENTS, startTime,
-        endTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.NUTRIENTS, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsOxygen() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.OXYGEN);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.OXYGEN);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsOxygenSince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.OXYGEN, startTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.OXYGEN, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsOxygenDuringInterval(Long startTime
       , Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.OXYGEN
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.OXYGEN
         , startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsPh() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.PH);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.PH);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsPhSince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.PH, startTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.PH, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsPhDuringInterval(Long startTime, Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.PH, startTime, endTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.PH, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getAquaponicsTemperature() {
-    return getIntegerStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.TEMPERATURE);
+    return getIntegerStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.TEMPERATURE);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsTemperatureSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.TEMPERATURE, startTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.TEMPERATURE, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsTemperatureDuringInterval(Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.TEMPERATURE, startTime,
-        endTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.TEMPERATURE, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getAquaponicsTemperatureCommand() {
-    return getIntegerStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.SET_TEMPERATURE_COMMAND);
+    return getIntegerStateValue(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_TEMPERATURE_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsTemperatureCommandSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_TEMPERATURE_COMMAND,
-        startTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_TEMPERATURE_COMMAND, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsTemperatureCommandDuringInterval(Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_TEMPERATURE_COMMAND,
-        startTime, endTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_TEMPERATURE_COMMAND, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsTurbidity() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.TURBIDITY);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.TURBIDITY);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsTurbiditySince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.TURBIDITY, startTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.TURBIDITY, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsTurbidityDuringInterval(Long startTime
       , Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.TURBIDITY, startTime,
-        endTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.TURBIDITY, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getAquaponicsWaterLevel() {
-    return getIntegerStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.WATER_LEVEL);
+    return getIntegerStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.WATER_LEVEL);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsWaterLevelSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.WATER_LEVEL, startTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.WATER_LEVEL, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsWaterLevelDuringInterval(Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.WATER_LEVEL, startTime,
-        endTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.WATER_LEVEL, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getHvacTemperature() {
-    return getIntegerStateValue(IHaleSystem.HVAC, null, IHaleState.TEMPERATURE);
+    return getIntegerStateValue(SystemHSystem.HVAC, null, SystemHState.TEMPERATURE);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getHvacTemperatureSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.HVAC, null, IHaleState.TEMPERATURE, startTime);
+    return getIntegerStateValues(SystemHSystem.HVAC, null, 
+        SystemHState.TEMPERATURE, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getHvacTemperatureDuringInterval(Long startTime
       , Long endTime) {
-    return getIntegerStateValues(IHaleSystem.HVAC, null, IHaleState.TEMPERATURE, startTime
-        , endTime);
+    return getIntegerStateValues(SystemHSystem.HVAC, null, 
+        SystemHState.TEMPERATURE, startTime , endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getHvacTemperatureCommand() {
-    return getIntegerStateValue(IHaleSystem.HVAC, null, IHaleState.SET_TEMPERATURE_COMMAND);
+    return getIntegerStateValue(SystemHSystem.HVAC, null, SystemHState.SET_TEMPERATURE_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getHvacTemperatureCommandSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.HVAC, null, IHaleState.SET_TEMPERATURE_COMMAND,
+    return getIntegerStateValues(SystemHSystem.HVAC, null, SystemHState.SET_TEMPERATURE_COMMAND,
         startTime);
   }
 
@@ -920,161 +932,163 @@ public class Repository implements IHaleRepository {
   @Override
   public List<TimestampIntegerPair> getHvacTemperatureCommandDuringInterval(Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.HVAC, null, IHaleState.SET_TEMPERATURE_COMMAND,
+    return getIntegerStateValues(SystemHSystem.HVAC, null, SystemHState.SET_TEMPERATURE_COMMAND,
         startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getElectricalEnergy() {
-    return getIntegerStateValue(IHaleSystem.ELECTRIC, null, IHaleState.ENERGY);
+    return getIntegerStateValue(SystemHSystem.ELECTRIC, null, SystemHState.ENERGY);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getElectricalEnergySince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.ELECTRIC, null, IHaleState.ENERGY, startTime);
+    return getIntegerStateValues(SystemHSystem.ELECTRIC, null, SystemHState.ENERGY, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getElectricalEnergyDuringInterval(Long startTime
       , Long endTime) {
-    return getIntegerStateValues(IHaleSystem.ELECTRIC, null, IHaleState.ENERGY, startTime
+    return getIntegerStateValues(SystemHSystem.ELECTRIC, null, SystemHState.ENERGY, startTime
         , endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getElectricalPower() {
-    return getIntegerStateValue(IHaleSystem.ELECTRIC, null, IHaleState.POWER);
+    return getIntegerStateValue(SystemHSystem.ELECTRIC, null, SystemHState.POWER);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getElectricalPowerSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.ELECTRIC, null, IHaleState.POWER, startTime);
+    return getIntegerStateValues(SystemHSystem.ELECTRIC, null, SystemHState.POWER, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getElectricalPowerDuringInterval(Long startTime
       , Long endTime) {
-    return getIntegerStateValues(IHaleSystem.ELECTRIC, null, IHaleState.POWER, startTime
+    return getIntegerStateValues(SystemHSystem.ELECTRIC, null, SystemHState.POWER, startTime
         , endTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public TimestampStringPair getLightingColor(IHaleRoom room) {
-    return getStringStateValue(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_COLOR);
+  public TimestampStringPair getLightingColor(SystemHRoom room) {
+    return getStringStateValue(SystemHSystem.LIGHTING, room, SystemHState.LIGHTING_COLOR);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampStringPair> getLightingColorSince(IHaleRoom room, Long startTime) {
-    return getStringStateValues(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_COLOR, startTime);
+  public List<TimestampStringPair> getLightingColorSince(SystemHRoom room, Long startTime) {
+    return getStringStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.LIGHTING_COLOR, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampStringPair> getLightingColorDuringInterval(IHaleRoom room, Long startTime,
+  public List<TimestampStringPair> getLightingColorDuringInterval(SystemHRoom room, Long startTime,
       Long endTime) {
-    return getStringStateValues(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_COLOR, startTime,
-        endTime);
+    return getStringStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.LIGHTING_COLOR, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public TimestampIntegerPair getLightingLevel(IHaleRoom room) {
-    return getIntegerStateValue(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_LEVEL);
+  public TimestampIntegerPair getLightingLevel(SystemHRoom room) {
+    return getIntegerStateValue(SystemHSystem.LIGHTING, room, SystemHState.LIGHTING_LEVEL);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampIntegerPair> getLightingLevelSince(IHaleRoom room, Long startTime) {
-    return getIntegerStateValues(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_LEVEL, startTime);
+  public List<TimestampIntegerPair> getLightingLevelSince(SystemHRoom room, Long startTime) {
+    return getIntegerStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.LIGHTING_LEVEL, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampIntegerPair> getLightingLevelDuringInterval(IHaleRoom room, Long startTime,
+  public List<TimestampIntegerPair> getLightingLevelDuringInterval(SystemHRoom room, Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_LEVEL, startTime,
-        endTime);
+    return getIntegerStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.LIGHTING_LEVEL, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public TimestampBooleanPair getLightingEnabled(IHaleRoom room) {
-    return getBooleanStateValue(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_ENABLED);
+  public TimestampBooleanPair getLightingEnabled(SystemHRoom room) {
+    return getBooleanStateValue(SystemHSystem.LIGHTING, room, SystemHState.LIGHTING_ENABLED);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampBooleanPair> getLightingEnabledSince(IHaleRoom room, Long startTime) {
-    return getBooleanStateValues(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_ENABLED
+  public List<TimestampBooleanPair> getLightingEnabledSince(SystemHRoom room, Long startTime) {
+    return getBooleanStateValues(SystemHSystem.LIGHTING, room, SystemHState.LIGHTING_ENABLED
         , startTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampBooleanPair> getLightingEnabledDuringInterval(IHaleRoom room,
+  public List<TimestampBooleanPair> getLightingEnabledDuringInterval(SystemHRoom room,
       Long startTime, Long endTime) {
-    return getBooleanStateValues(IHaleSystem.LIGHTING, room, IHaleState.LIGHTING_ENABLED,
+    return getBooleanStateValues(SystemHSystem.LIGHTING, room, SystemHState.LIGHTING_ENABLED,
         startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getPhotovoltaicEnergy() {
-    return getIntegerStateValue(IHaleSystem.PHOTOVOLTAIC, null, IHaleState.ENERGY);
+    return getIntegerStateValue(SystemHSystem.PHOTOVOLTAIC, null, SystemHState.ENERGY);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getPhotovoltaicEnergySince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.PHOTOVOLTAIC, null, IHaleState.ENERGY, startTime);
+    return getIntegerStateValues(SystemHSystem.PHOTOVOLTAIC, null, SystemHState.ENERGY, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getPhotovoltaicEnergyDuringInterval(Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.PHOTOVOLTAIC, null, IHaleState.ENERGY, startTime,
+    return getIntegerStateValues(SystemHSystem.PHOTOVOLTAIC, null, SystemHState.ENERGY, startTime,
         endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getPhotovoltaicPower() {
-    return getIntegerStateValue(IHaleSystem.PHOTOVOLTAIC, null, IHaleState.POWER);
+    return getIntegerStateValue(SystemHSystem.PHOTOVOLTAIC, null, SystemHState.POWER);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getPhotovoltaicPowerSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.PHOTOVOLTAIC, null, IHaleState.POWER, startTime);
+    return getIntegerStateValues(SystemHSystem.PHOTOVOLTAIC, null, SystemHState.POWER, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getPhotovoltaicPowerDuringInterval(Long startTime, 
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.PHOTOVOLTAIC, null, IHaleState.POWER, startTime,
+    return getIntegerStateValues(SystemHSystem.PHOTOVOLTAIC, null, SystemHState.POWER, startTime,
         endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsFeedFishCommand() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.FEED_FISH_COMMAND);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.FEED_FISH_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsFeedFishCommandSince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.FEED_FISH_COMMAND,
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.FEED_FISH_COMMAND,
         startTime);
   }
 
@@ -1082,20 +1096,20 @@ public class Repository implements IHaleRepository {
   @Override
   public List<TimestampDoublePair> getAquaponicsFeedFishCommandDuringInterval(Long startTime,
       Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.FEED_FISH_COMMAND,
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.FEED_FISH_COMMAND,
         startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getAquaponicsHarvestFishCommand() {
-    return getIntegerStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.FEED_FISH_COMMAND);
+    return getIntegerStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.FEED_FISH_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsHarvestFishCommandSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.FEED_FISH_COMMAND,
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.FEED_FISH_COMMAND,
         startTime);
   }
 
@@ -1103,20 +1117,20 @@ public class Repository implements IHaleRepository {
   @Override
   public List<TimestampIntegerPair> getAquaponicsHarvestFishCommandDuringInterval(Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.FEED_FISH_COMMAND,
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.FEED_FISH_COMMAND,
         startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsNutrientsCommand() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.SET_NUTRIENTS_COMMAND);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.SET_NUTRIENTS_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsNutrientCommandSince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_NUTRIENTS_COMMAND,
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.SET_NUTRIENTS_COMMAND,
         startTime);
   }
 
@@ -1124,114 +1138,118 @@ public class Repository implements IHaleRepository {
   @Override
   public List<TimestampDoublePair> getAquaponicsNutrientCommandDuringInterval(Long startTime,
       Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_NUTRIENTS_COMMAND,
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, SystemHState.SET_NUTRIENTS_COMMAND,
         startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampDoublePair getAquaponicsPhCommand() {
-    return getDoubleStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.SET_PH_COMMAND);
+    return getDoubleStateValue(SystemHSystem.AQUAPONICS, null, SystemHState.SET_PH_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsPhCommandSince(Long startTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_PH_COMMAND,
-        startTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_PH_COMMAND, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampDoublePair> getAquaponicsPhCommandDuringInterval(Long startTime, 
       Long endTime) {
-    return getDoubleStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_PH_COMMAND, startTime,
-        endTime);
+    return getDoubleStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_PH_COMMAND, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public TimestampIntegerPair getAquaponicsWaterLevelCommand() {
-    return getIntegerStateValue(IHaleSystem.AQUAPONICS, null, IHaleState.SET_WATER_LEVEL_COMMAND);
+    return getIntegerStateValue(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_WATER_LEVEL_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsWaterLevelCommandSince(Long startTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_WATER_LEVEL_COMMAND,
-        startTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_WATER_LEVEL_COMMAND, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
   public List<TimestampIntegerPair> getAquaponicsWaterLevelCommandDuringInterval(Long startTime,
       Long endTime) {
-    return getIntegerStateValues(IHaleSystem.AQUAPONICS, null, IHaleState.SET_WATER_LEVEL_COMMAND,
-        startTime, endTime);
+    return getIntegerStateValues(SystemHSystem.AQUAPONICS, null, 
+        SystemHState.SET_WATER_LEVEL_COMMAND, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public TimestampIntegerPair getLightingLevelCommand(IHaleRoom room) {
-    return getIntegerStateValue(IHaleSystem.LIGHTING, room, IHaleState.SET_LIGHTING_LEVEL_COMMAND);
+  public TimestampIntegerPair getLightingLevelCommand(SystemHRoom room) {
+    return getIntegerStateValue(SystemHSystem.LIGHTING, room, 
+        SystemHState.SET_LIGHTING_LEVEL_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampIntegerPair> getLightingLevelCommandSince(IHaleRoom room, Long startTime) {
-    return getIntegerStateValues(IHaleSystem.LIGHTING, room, IHaleState.SET_LIGHTING_LEVEL_COMMAND,
-        startTime);
+  public List<TimestampIntegerPair> getLightingLevelCommandSince(SystemHRoom room, Long startTime) {
+    return getIntegerStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.SET_LIGHTING_LEVEL_COMMAND, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampIntegerPair> getLightingLevelCommandDuringInterval(IHaleRoom room,
+  public List<TimestampIntegerPair> getLightingLevelCommandDuringInterval(SystemHRoom room,
       Long startTime, Long endTime) {
-    return getIntegerStateValues(IHaleSystem.LIGHTING, room, IHaleState.SET_LIGHTING_LEVEL_COMMAND,
-        startTime, endTime);
+    return getIntegerStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.SET_LIGHTING_LEVEL_COMMAND, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public TimestampBooleanPair getLightingEnabledCommand(IHaleRoom room) {
-    return getBooleanStateValue(IHaleSystem.LIGHTING, room,
-        IHaleState.SET_LIGHTING_ENABLED_COMMAND);
+  public TimestampBooleanPair getLightingEnabledCommand(SystemHRoom room) {
+    return getBooleanStateValue(SystemHSystem.LIGHTING, room,
+        SystemHState.SET_LIGHTING_ENABLED_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampBooleanPair> getLightingEnabledCommandSince(IHaleRoom room, Long startTime) {
-    return getBooleanStateValues(IHaleSystem.LIGHTING, room,
-        IHaleState.SET_LIGHTING_ENABLED_COMMAND, startTime);
+  public List<TimestampBooleanPair> getLightingEnabledCommandSince
+  (SystemHRoom room, Long startTime) {
+    return getBooleanStateValues(SystemHSystem.LIGHTING, room,
+        SystemHState.SET_LIGHTING_ENABLED_COMMAND, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampBooleanPair> getLightingEnabledCommandDuringInterval(IHaleRoom room,
+  public List<TimestampBooleanPair> getLightingEnabledCommandDuringInterval(SystemHRoom room,
       Long startTime, Long endTime) {
-    return getBooleanStateValues(IHaleSystem.LIGHTING, room,
-        IHaleState.SET_LIGHTING_ENABLED_COMMAND, startTime, endTime);
+    return getBooleanStateValues(SystemHSystem.LIGHTING, room,
+        SystemHState.SET_LIGHTING_ENABLED_COMMAND, startTime, endTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public TimestampStringPair getLightingColorCommand(IHaleRoom room) {
-    return getStringStateValue(IHaleSystem.LIGHTING, room, IHaleState.SET_LIGHTING_COLOR_COMMAND);
+  public TimestampStringPair getLightingColorCommand(SystemHRoom room) {
+    return getStringStateValue(SystemHSystem.LIGHTING, room, 
+        SystemHState.SET_LIGHTING_COLOR_COMMAND);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampStringPair> getLightingColorCommandSince(IHaleRoom room, Long startTime) {
-    return getStringStateValues(IHaleSystem.LIGHTING, room, IHaleState.SET_LIGHTING_COLOR_COMMAND,
-        startTime);
+  public List<TimestampStringPair> getLightingColorCommandSince(SystemHRoom room, Long startTime) {
+    return getStringStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.SET_LIGHTING_COLOR_COMMAND, startTime);
   }
 
   /** {@inheritDoc} */
   @Override
-  public List<TimestampStringPair> getLightingColorCommandDuringInterval(IHaleRoom room,
+  public List<TimestampStringPair> getLightingColorCommandDuringInterval(SystemHRoom room,
       Long startTime, Long endTime) {
-    return getStringStateValues(IHaleSystem.LIGHTING, room, IHaleState.SET_LIGHTING_COLOR_COMMAND,
-        startTime, endTime);
+    return getStringStateValues(SystemHSystem.LIGHTING, room, 
+        SystemHState.SET_LIGHTING_COLOR_COMMAND, startTime, endTime);
   }
 
   /**
@@ -1245,7 +1263,7 @@ public class Repository implements IHaleRepository {
    * @param stateValue The value of the state associated with this system, state, and timestamp.
    * @throws RuntimeException If stateValue is not a Double, Long, Integer, Boolean, or String.
    */
-  public void store(IHaleSystem system, IHaleState state, Long timestamp, Object stateValue) {
+  public void store(SystemHSystem system, SystemHState state, Long timestamp, Object stateValue) {
     StateEntry entry;
     if (stateValue instanceof Double) {
       entry = new StateEntry(timestamp, (Double) stateValue);
@@ -1284,7 +1302,7 @@ public class Repository implements IHaleRepository {
    * @param stateValue The value of the state associated with this system, state, and timestamp.
    * @throws RuntimeException If stateValue is not a Double, Long, Integer, Boolean, or String.
    */
-  public void store(IHaleRoom room, IHaleState state, Long timestamp, Object stateValue) {
+  public void store(SystemHRoom room, SystemHState state, Long timestamp, Object stateValue) {
     StateEntry entry;
     if (stateValue instanceof Double) {
       entry = new StateEntry(timestamp, (Double) stateValue);
@@ -1304,10 +1322,10 @@ public class Repository implements IHaleRepository {
     else {
       throw new RuntimeException("addState passed an unsupported state value type.");
     }
-    getIndex(IHaleSystem.LIGHTING, room, state).put(entry);
+    getIndex(SystemHSystem.LIGHTING, room, state).put(entry);
 
     // Run any listeners interested in this system's state change.
-    for (SystemStateListener listener : stateListeners.get(IHaleSystem.LIGHTING)) {
+    for (SystemStateListener listener : stateListeners.get(SystemHSystem.LIGHTING)) {
       listener.entryAdded(state, room, timestamp, stateValue);
     }
   }
@@ -1324,7 +1342,7 @@ public class Repository implements IHaleRepository {
    * @param stateValue The value of the state associated with this system, state, and timestamp.
    * @throws RuntimeException If stateValue is not a Double, Long, Integer, Boolean, or String.
    */
-  public void store(IHaleSystem system, IHaleRoom room, IHaleState state, Long timestamp,
+  public void store(SystemHSystem system, SystemHRoom room, SystemHState state, Long timestamp,
       Object stateValue) {
     StateEntry entry;
     if (stateValue instanceof Double) {
@@ -1369,7 +1387,7 @@ public class Repository implements IHaleRepository {
   /** {@inheritDoc} */
   @Override
   public void addSystemStateListener(SystemStateListener listener) {
-    IHaleSystem system = listener.getSystem();
+    SystemHSystem system = listener.getSystem();
     List<SystemStateListener> systemListeners = stateListeners.get(system);
     systemListeners.add(listener);
   }
