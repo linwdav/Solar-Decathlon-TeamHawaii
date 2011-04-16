@@ -14,6 +14,7 @@
     <mkdir dir="${junit.build.dir}" />
     <!-- Run the tests, which are all classes whose name starts with 'Test'. -->
     <junit maxmemory="512M" printsummary="withOutAndErr" haltonfailure="${junit.haltonfailure}" fork="yes">
+      <sysproperty key="java.awt.headless" value="true"/>
       <classpath>
         <pathelement location="${build.dir}/classes" />
         <path refid="compile.classpath"/>
