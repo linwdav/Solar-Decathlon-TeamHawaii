@@ -55,6 +55,7 @@ public class WeatherReport {
     conditionMap.put("Partly Sunny", (double) 50);
     conditionMap.put("Mostly Sunny", (double) 75);
     conditionMap.put("Partly Cloudy", (double) 75);
+    conditionMap.put("Scattered Clouds", (double) 85);
   }
 
   /**
