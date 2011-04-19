@@ -251,7 +251,7 @@ public class ElectricalData {
     for (int i = 0; i < 12; i++) {
       Element temp = doc.createElement(stateData);
       temp.setAttribute(system, electricString);
-      temp.setAttribute(tStamp, "" + tempTime);
+      temp.setAttribute(tStamp, "" + tempTime * 1000);
       Element tempElectric = doc.createElement(stateKey);
       tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
@@ -279,7 +279,7 @@ public class ElectricalData {
     for (int i = 0; i < 24; i++) {
       Element temp = doc.createElement(stateData);
       temp.setAttribute(system, electricString);
-      temp.setAttribute(tStamp, "" + tempTime);
+      temp.setAttribute(tStamp, "" + tempTime * 1000);
       Element tempElectric = doc.createElement(stateKey);
       tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
@@ -305,7 +305,7 @@ public class ElectricalData {
     for (int i = 0; i < 31; i++) {
       Element temp = doc.createElement(stateData);
       temp.setAttribute(system, electricString);
-      temp.setAttribute(tStamp, "" + tempTime);
+      temp.setAttribute(tStamp, "" + tempTime * 1000);
       Element tempElectric = doc.createElement(stateKey);
       tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);

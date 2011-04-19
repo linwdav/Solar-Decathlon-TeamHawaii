@@ -247,7 +247,7 @@ public class PhotovoltaicsData {
     for (int i = 0; i < 12; i++) {
       Element temp = doc.createElement(stateData);
       temp.setAttribute(system, pvString);
-      temp.setAttribute(tStamp, "" + tempTime);
+      temp.setAttribute(tStamp, "" + tempTime * 1000);
       Element tempElectric = doc.createElement(stateKey);
       tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
@@ -278,7 +278,7 @@ public class PhotovoltaicsData {
     for (int i = 0; i < 24; i++) {
       Element temp = doc.createElement(stateData);
       temp.setAttribute(system, pvString);
-      temp.setAttribute(tStamp, "" + tempTime);
+      temp.setAttribute(tStamp, "" + tempTime * 1000);
       Element tempElectric = doc.createElement(stateKey);
       tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
@@ -304,7 +304,7 @@ public class PhotovoltaicsData {
     for (int i = 0; i < 31; i++) {
       Element temp = doc.createElement(stateData);
       temp.setAttribute(system, pvString);
-      temp.setAttribute(tStamp, "" + tempTime);
+      temp.setAttribute(tStamp, "" + tempTime * 1000);
       Element tempElectric = doc.createElement(stateKey);
       tempElectric.setAttribute(keyString, energyString);
       tempElectric.setAttribute(valueString, "" + energy);
@@ -341,7 +341,7 @@ public class PhotovoltaicsData {
     int randP = random.nextInt(10);
     int randE = random.nextInt(10);
     int range = (int) hourlyAverage[hour] / 10;
-    if(range <= 0) {
+    if (range <= 0) {
       range = 1;
     }
     long changeValue = (long) (random.nextInt(range));
