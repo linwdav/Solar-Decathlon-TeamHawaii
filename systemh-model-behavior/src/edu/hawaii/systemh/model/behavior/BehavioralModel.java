@@ -17,13 +17,20 @@ package edu.hawaii.systemh.model.behavior;
  * @author Kurt Teichman
  */
 public class BehavioralModel {
-
+  private static final String location = "Washington, District of Columbia";
+  
   /**
    * Sets up the REST server to communicate with the IHaleBackend object.
    * 
    * @param args (ignored)
+   * @throws Exception 
    */
-  public static void main(String[] args) {
+  public static void main(String[] args) throws Exception {
     System.err.println("Behavioral model of the house.");
+    WeatherReport weather = new WeatherReport(location);
+    
+    System.out.println(weather.cloudCover);
+    System.out.println(weather.fTemp);
+    System.out.println(weather.timestamp);
   }
 }
