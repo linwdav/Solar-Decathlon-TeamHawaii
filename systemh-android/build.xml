@@ -1,0 +1,40 @@
+<project name="build" xmlns:ivy="antlib:org.apache.ivy.ant">
+	<description>
+  The basic build file for this system.
+  </description>
+
+	<import file="common.build.xml" />
+
+	<!-- Library versions >
+	<property name="restlet.version" value="2.0.4" />
+
+	<target name="install-libraries" description="Install libraries needed for compilation">
+		<ivy:retrieve organisation="org.restlet" module="restlet" revision="${restlet.version}" pattern="${lib.dir}/restlet/[artifact].[ext]" sync="true" inline="true" conf="default,xml" log="download-only" transitive="true" type="jar,javadoc" />
+	    <path id="restlet.path">
+	      <fileset dir="${lib.dir}/restlet">
+	        <include name="*.jar" />
+	      </fileset>
+	    </path>
+	</target-->
+
+	<!-- Basic properties for this system. -->
+	<property name="system.name" value="systemh-android" />
+	<property name="majorVersionNumber" value="1" />
+	<property name="minorVersionNumber" value="0" />
+	<tstamp>
+		<format property="DAYSTAMP" pattern="Mdd" />
+		<format property="TSTAMP" pattern="HH:mm:ss" />
+	</tstamp>
+	<property name="version" value="${majorVersionNumber}.${minorVersionNumber}.${DAYSTAMP}" />
+
+	<!-- The compile classpath is useful to many tools. >
+	<path id="compile.classpath">
+		<path refid="restlet.path" />
+	</path-->
+
+</project>
+
+
+
+
+
