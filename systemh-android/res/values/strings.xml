@@ -8,4 +8,9 @@
     <string name="Hvac">Hvac System Controls</string>
     <string name="Help">Help</string>
     <string name="BackToMenu">Back To Menu</string>
+    <string name="Confirm">Confirm</string>
+    <string name="Close">Close</string>
+    <string name="ColorPicker">Pick a Color</string>
+    <string name="ChangeColor">Change Color</string>
+    <string name="color">#000000</string>
 </resources>

@@ -12,7 +12,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -71,8 +70,8 @@ public class Hvac extends Activity implements OnClickListener {
     /*
     if (id == R.id.ButtonHvacTest) {
       numOfClicks++;
-      testTextView.setText("CHANGE OCCUR: The number of times the TestButton has been clicked is: " + 
-         numOfClicks);
+      testTextView.setText("CHANGE OCCUR: The number of times the TestButton has been clicked is:
+       " + numOfClicks);
       return;
     }
     */

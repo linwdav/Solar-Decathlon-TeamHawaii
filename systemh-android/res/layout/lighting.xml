@@ -27,5 +27,27 @@
  	android:layout_below="@id/BackToMenu"
  	android:layout_centerHorizontal="true"
  	/>
+ 	
+<Button android:text="@string/ChangeColor"
+	android:textSize="50sp"
+	android:id="@+id/changeColorButton"
+	android:layout_gravity="center" 
+	android:layout_width="fill_parent"
+	android:layout_height="wrap_content" 
+	android:layout_below="@id/Title"
+	android:layout_marginTop="40dip"
+	android:onClick="changeColor"
+	/>
+
+ <TextView
+ 	android:id="@+id/color"
+ 	android:layout_width="wrap_content"
+ 	android:layout_height="wrap_content"
+ 	android:text="@string/color"
+ 	android:textSize="50sp"
+ 	android:layout_marginTop="40sp" 
+ 	android:layout_below="@id/changeColorButton"
+ 	android:layout_centerHorizontal="true"
+ 	/>
 
 </RelativeLayout>
