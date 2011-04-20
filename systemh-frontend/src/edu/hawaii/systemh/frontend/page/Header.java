@@ -214,6 +214,11 @@ public class Header extends WebPage {
     // Refresh Image
     add(new Image("refresh", new ResourceReference(Header.class,
         "images/icons/arrow_rotate_clockwise.png")));
+    
+    // Status Orb Images
+    add(new Image("greenOrb", new ResourceReference(Header.class, "images/icons/orb_green.png")));
+    add(new Image("yellowOrb", new ResourceReference(Header.class, "images/icons/orb_yellow.png")));
+    add(new Image("redOrb", new ResourceReference(Header.class, "images/icons/orb_red.png")));
 
     // Other images used throughout system
     add(new Image("TableViewImage", new ResourceReference(Header.class,

@@ -7,11 +7,11 @@
 var open = 1;
 function showstatus() {
 	if(open == 1) {
-		$(".systemstateopen").slideDown("slow");
+		$(".system-state-open").slideDown("slow");
 		open = 0;
 	}	
 	else {
-		$(".systemstateopen").slideUp("slow");
+		$(".system-state-open").slideUp("slow");
 		open = 1;
 	}
 }
@@ -57,8 +57,20 @@ C inside</strong></p>
 	wicket:id="LightingPageLink" href="#">Lighting</a> | <a
 	wicket:id="HvacPageLink" href="#">Hvac</a> | <a
 	wicket:id="HelpPageLink" href="#">Help</a></p>
-</div>states
-<div class="systemstateopen">Test<br />Test<br />Test<br />Test<br />Test<br />Test<br />Test</div>
-<div class="systemstateclose" onClick="showstatus();">Systems' Status</div> 
+</div>
+<div class="system-state-open">
+	<a wicket:id="EnergyPageLink" href="#">Energy</a>
+	<a class="icon-right" href="#"><img wicket:id="greenOrb" alt="Good" /></a><br />
+	<a wicket:id="AquaponicsPageLink" href="#">Aquaponics</a>
+	<a class="icon-right" href="#"><img wicket:id="redOrb" alt="Alert!" /></a><br />
+	<a wicket:id="LightingPageLink" href="#">Lighting</a>
+	<a class="icon-right" href="#"><img wicket:id="greenOrb" alt="Good" /></a><br />
+	<a wicket:id="HvacPageLink" href="#">HVAC</a>
+	<a class="icon-right" href="#"><img wicket:id="yellowOrb" alt="Warning!" /></a><br />
+</div>
+<div class="system-state-close" onClick="showstatus();">
+	Systems' Status
+	<a class="icon-right" href="#"><img wicket:id="redOrb" alt="Alert!" /></a>
+</div> 
 </body>
 </html>
