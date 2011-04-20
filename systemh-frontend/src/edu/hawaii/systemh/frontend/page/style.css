@@ -236,3 +236,33 @@ ul.tab-content li *:last-child { margin-bottom: 0px; }
         font-weight: bold;
         color: red;
 }
+
+.systemstateclose {
+	 position:fixed; 
+	 right:5px; 
+	 bottom:0; 
+	 font-size: 11pt;
+	 font-weight: bold;
+	 background-color: #DDD; 
+	 border:1px solid #444; 
+	 border-bottom:0px; 
+	 width:200px; 
+	 height:20px;
+	 padding-top: 5px;
+	 text-align: center;
+}
+
+.systemstateopen {
+	 display: none;
+	 position:fixed; 
+	 right:5px; 
+	 bottom:25px; 
+	 font-size: 11pt;
+	 background-color: #DDD; 
+	 border:1px solid #444; 
+	 border-bottom:0px; 
+	 width:170px; 
+	 height:245px;
+	 padding: 15px;
+	 text-align: left;
+}	
