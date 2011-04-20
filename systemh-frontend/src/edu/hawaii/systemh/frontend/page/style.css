@@ -245,8 +245,10 @@ ul.tab-content li *:last-child { margin-bottom: 0px; }
 	 font-weight: bold;
 	 background-color: #EEE; 
 	 border:1px solid #444; 
-	 border-radius: 5px;
-	 -moz-border-radius: 5px;
+	 border-top-left-radius: 5px;
+	 -moz-border-radius-topleft: 5px;
+	 border-top-right-radius: 5px;
+	 -moz-border-radius-topright: 5px;
 	 border-bottom:0px; 
 	 width:185px; 
 	 height:20px;
