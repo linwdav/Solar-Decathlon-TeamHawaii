@@ -1,0 +1,54 @@
+<project name="jar" default="jar">
+	<description>
+  Provides the target for building a jar file of the example.
+  </description>
+
+	<import file="build.xml" />
+	<property name="tmp.dir" location="${basedir}/tmp" />
+	<property name="tmp.lib.dir" location="${basedir}/tmp-lib" />
+
+	<target name="jar" depends="compile" description="Create jar file ">
+		<!-- Define the directories and distribution name -->
+		<delete dir="${tmp.dir}" quiet="yes" />
+		<mkdir dir="${tmp.dir}" />
+
+		<!-- Copy the class files over. -->
+		<copy todir="${tmp.dir}">
+			<fileset dir="${basedir}/build/classes" />			
+		</copy>
+
+		<!-- Copy over all of the required libraries. -->
+
+		<unjar dest="${tmp.dir}">
+			<fileset dir="${basedir}/systemh-api">
+				<include name="systemh-api.jar" />
+				<include name="wicket-googlecharts-api.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/wicket">
+				<include name="wicket.jar" />
+				<include name="wicket-datetime.jar" />
+				<include name="wicket-extensions.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/jetty">
+				<include name="jetty.jar" />
+				<include name="jetty-util.jar" />
+				<include name="servlet-api-2.5.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/slf4j">
+				<include name="slf4j-api.jar" />
+				<include name="slf4j-simple.jar" />
+			</fileset>
+			<fileset dir="${lib.dir}/restlet">
+				<include name="*.jar" />
+			</fileset>
+		</unjar>
+
+		<jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${system.main.class}" />
+			</manifest>
+		</jar>
+		<delete dir="${tmp.dir}" />
+	</target>
+</project>
+
