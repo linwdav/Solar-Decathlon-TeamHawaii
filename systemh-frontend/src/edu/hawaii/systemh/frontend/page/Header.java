@@ -18,7 +18,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
-
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.SolarDecathlonSession;
 import edu.hawaii.systemh.frontend.page.aquaponics.AquaPonics;
@@ -93,9 +92,9 @@ public class Header extends WebPage {
     // WebMarkupContainer reportsItem;
     // WebMarkupContainer administratorItem;
     WebMarkupContainer helpItem;
-    
+
     weatherParser = new WeatherParser(cityName);
-    currentWeather = weatherParser.getCurrentWeather();    
+    currentWeather = weatherParser.getCurrentWeather();
 
     // model for current weather label
     Model<String> currentWeatherModel = new Model<String>() {
@@ -206,19 +205,22 @@ public class Header extends WebPage {
     add(new Image("printer", new ResourceReference(Header.class, "images/icons/printer.png")));
 
     // Alert Image
-    add(new Image("alert", new ResourceReference(Header.class, "images/icons/error.png")));    
-    
+    add(new Image("alert", new ResourceReference(Header.class, "images/icons/error.png")));
+
     // Help Image
     add(new Image("help", new ResourceReference(Header.class, "images/icons/help.png")));
 
     // Refresh Image
     add(new Image("refresh", new ResourceReference(Header.class,
         "images/icons/arrow_rotate_clockwise.png")));
-    
+
     // Status Orb Images
-    add(new Image("greenOrb", new ResourceReference(Header.class, "images/icons/orb_green.png")));
-    add(new Image("yellowOrb", new ResourceReference(Header.class, "images/icons/orb_yellow.png")));
-    add(new Image("redOrb", new ResourceReference(Header.class, "images/icons/orb_red.png")));
+    add(new Image("greenOrb", new ResourceReference(Header.class, 
+        "images/icons/ball_green.png")));
+    add(new Image("yellowOrb", new ResourceReference(Header.class, 
+        "images/icons/ball_yellow.png")));
+    add(new Image("redOrb", new ResourceReference(Header.class, 
+        "images/icons/ball_red.png")));
 
     // Other images used throughout system
     add(new Image("TableViewImage", new ResourceReference(Header.class,

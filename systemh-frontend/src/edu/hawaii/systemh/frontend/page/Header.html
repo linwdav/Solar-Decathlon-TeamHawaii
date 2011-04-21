@@ -59,18 +59,28 @@ C inside</strong></p>
 	wicket:id="HelpPageLink" href="#">Help</a></p>
 </div>
 <div class="system-state-open">
-	<a wicket:id="EnergyPageLink" href="#">Energy</a>
-	<a class="icon-right" href="#"><img wicket:id="greenOrb" alt="Good" /></a><br />
-	<a wicket:id="AquaponicsPageLink" href="#">Aquaponics</a>
-	<a class="icon-right" href="#"><img wicket:id="redOrb" alt="Alert!" /></a><br />
-	<a wicket:id="LightingPageLink" href="#">Lighting</a>
-	<a class="icon-right" href="#"><img wicket:id="greenOrb" alt="Good" /></a><br />
-	<a wicket:id="HvacPageLink" href="#">HVAC</a>
-	<a class="icon-right" href="#"><img wicket:id="yellowOrb" alt="Warning!" /></a><br />
+	<table class="plain" border="0">
+	<tr>
+	<td><a wicket:id="EnergyPageLink" href="#">Energy</a></td>
+    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="greenOrb" alt="Good" /></td>
+    </tr>
+    <tr>
+	<td><a wicket:id="AquaponicsPageLink" href="#">Aquaponics</a></td>
+    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="redOrb" alt="Alert!" /></td>
+    </tr>
+    <tr>
+	<td><a wicket:id="LightingPageLink" href="#">Lighting</a></td>
+    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="greenOrb" alt="Good" /></td>
+    </tr>
+    <tr>
+	<td><a wicket:id="HvacPageLink" href="#">HVAC</a></td>
+    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="yellowOrb" alt="Warning!" /></td>
+    </tr>
+	</table>
 </div>
 <div class="system-state-close" onClick="showstatus();">
-	Systems' Status
-	<a class="icon-right" href="#"><img wicket:id="redOrb" alt="Alert!" /></a>
+	<div style="vertical-align:top; padding-top:4px; padding-right:4px; display:inline;">Systems' Status</div>
+	<div style="display:inline;"><img height="18" width="18" wicket:id="redOrb" alt="Alert!" /><br /></div>
 </div> 
 </body>
 </html>

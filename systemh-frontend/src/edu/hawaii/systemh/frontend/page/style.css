@@ -124,6 +124,8 @@ table.no-hover tbody tr:hover td { background: inherit !important; }
 .no-sort { background: url(images/no-sort.png) center no-repeat; }
 table.bare td, table.bare th { padding: 0 !important; background: none !important; border: none !important; }
 table.bare tr:hover td { background: none !important; }
+table.plain td, table.plain th { padding: 0; background: none !important; border: none !important; }
+table.plain tr:hover td { background: none !important; }
 table.log { background: none !important; padding: 0 !important; margin: 0 !important;}
 table.log th { background: #4c4c4c; color: #fff; vertical-align: middle;  font-size: 11pt; padding: 10px; height: 20px; }
 
@@ -238,21 +240,21 @@ ul.tab-content li *:last-child { margin-bottom: 0px; }
 }
 
 .system-state-close {
+	 background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#FFFFFF), to(#CCCCCC));
 	 position:fixed; 
 	 right:5px; 
 	 bottom:0; 
 	 font-size: 11pt;
 	 font-weight: bold;
-	 background-color: #EEE; 
 	 border:1px solid #444; 
 	 border-top-left-radius: 5px;
 	 -moz-border-radius-topleft: 5px;
 	 border-top-right-radius: 5px;
 	 -moz-border-radius-topright: 5px;
 	 border-bottom:0px; 
-	 width:185px; 
+	 width:190px; 
 	 height:20px;
-	 padding: 5px 15px 0px 0px;
+	 padding: 5px 5px 0px 5px;
 	 text-align: center;
 }
 
@@ -260,9 +262,9 @@ ul.tab-content li *:last-child { margin-bottom: 0px; }
 	 display: none;
 	 position:fixed; 
 	 right:5px; 
-	 bottom:25px; 
+	 bottom:23px; 
 	 font-size: 11pt;
-	 background-color: #EEE; 
+	 background-color: #FFF; 
 	 border:1px solid #444;
 	 border-top-left-radius: 5px;
 	 -moz-border-radius-topleft: 5px;
@@ -270,7 +272,7 @@ ul.tab-content li *:last-child { margin-bottom: 0px; }
 	 -moz-border-radius-topright: 5px;
 	 border-bottom:0px; 
 	 width:170px; 
-	 height:150px;
+	 height:152px;
 	 padding: 5px 15px;
 	 text-align: left;
 	 line-height: 235%;
