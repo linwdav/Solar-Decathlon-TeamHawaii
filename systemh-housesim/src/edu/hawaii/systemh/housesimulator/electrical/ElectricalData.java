@@ -31,8 +31,8 @@ public class ElectricalData {
    * data point represents the average consumption for the entire day.
    */
   private static long[] hourlyAverage = { // in watts per hour
-      1640, 1620, 1550, 1500, 1580, 1640, 1890, 2120, 1990, 1910, 1970, 1980, 1910, 1900, 1890,
-          1880, 1850, 1860, 1910, 2230, 2080, 2070, 1980, 1880, 40880 / 24 };
+      1340, 1220, 1250, 1300, 1480, 1640, 1890, 2120, 1990, 1910, 1970, 1980, 1910, 1900, 1890,
+          1880, 1850, 1860, 1910, 2230, 2080, 1870, 1680, 1480, 38980 / 24 };
 
   /** The current energy. */
   private static long energy = hourlyAverage[0];// randomGenerator.nextInt(1001) + 1000;
