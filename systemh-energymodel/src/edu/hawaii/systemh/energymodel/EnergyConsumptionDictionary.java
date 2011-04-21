@@ -46,4 +46,35 @@ public class EnergyConsumptionDictionary {
     OTHER
   } // End Enumerated Type
   
+  /** 
+   * Represents the different types of chart displays.
+   * E.g., Current load, Consumption, etc.
+   * 
+   * @author Kylan Hughes, Kevin Leong, Emerson Tabucol
+   *
+   */
+  public enum ChartDisplayType {
+    /** The power generated vs consumed over a week. **/
+    CONSUMPTION_WEEK,
+    
+    /** The power generated vs consumed over a day. **/
+    CONSUMPTION_DAY,
+    
+    /** The power generated vs consumed over a month. **/
+    CONSUMPTION_MONTH,
+    
+    /** The breakout of the current electrical load. **/
+    CURRENT_LOAD,
+    
+    /** The breakout of the electrical load over a week. **/
+    LOAD_WEEK,
+    
+    /** The breakout of the electrical load over a day. **/
+    LOAD_DAY,
+    
+    /** The breakout of the electrical load over a month. **/
+    LOAD_MONTH
+    
+  } // End CharDisplayType
+  
 } // End Energy Consumption Dictionary

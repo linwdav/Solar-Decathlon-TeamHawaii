@@ -1,8 +1,8 @@
 package edu.hawaii.systemh.energymodel.chartinterface;
 
 import java.util.List;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
-import edu.hawaii.ihale.api.repository.TimestampDoublePair;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
+import edu.hawaii.systemh.api.repository.TimestampDoublePair;
 import edu.hawaii.systemh.energymodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
 
 /**
@@ -29,7 +29,7 @@ public interface EnergyManagementChartInterface {
    * @param system The system to query for.
    * @return The current load of the system.
    */
-  public double getSystemCurrentLoad(IHaleSystem system);
+  public double getSystemCurrentLoad(SystemHSystem system);
 
   /**
    * Returns a list of data about energy consumption about a particular device for the specified
@@ -52,7 +52,7 @@ public interface EnergyManagementChartInterface {
    * @param endTime The time to end getting data.
    * @return A list of all data requested.
    */
-  public List<TimestampDoublePair> getSystemLoadDuringInterval(IHaleSystem system, Long startTime,
+  public List<TimestampDoublePair> getSystemLoadDuringInterval(SystemHSystem system, Long startTime,
       Long endTime);
 
   /**
