@@ -2,7 +2,6 @@ package edu.hawaii.systemh.energymodel.chartgenerator;
 
 import java.text.DecimalFormat;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -19,8 +18,8 @@ import edu.hawaii.systemh.energymodel.chartinterface.EnergyManagementChartInterf
  * 
  */
 public class EnergyChartData {
-  
-//Time Durations in Milliseconds
+
+  // Time Durations in Milliseconds
   static final long oneWeekInMillis = 1000L * 60L * 60L * 24L * 7L;
   static final long oneDayInMillis = 1000L * 60L * 60L * 24L;
   static final long oneMonthInMillis = 1000L * 60L * 60L * 24L * 28L;
@@ -87,7 +86,7 @@ public class EnergyChartData {
   void populateChartDataMap(ChartDisplayType type) {
     // Get the time now
     Long now = System.currentTimeMillis();
-    
+
     // Create temporary hash map
     Map<String, Double> tempDataMap = new HashMap<String, Double>();
 
@@ -106,39 +105,49 @@ public class EnergyChartData {
       for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
         total += chartInterface.getDeviceCurrentLoad(device);
       }
-      
+
       // Iterate through devices to get percentage for each.
       for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
         // Calculate percentage of load for this device
         percentage = chartInterface.getDeviceCurrentLoad(device) / total;
-        
+
         // Format raw percentage for display on chart
         percentage = formatPercentage(percentage);
-        
+
         // Add to hashmap.
         tempDataMap.put(device.toString(), percentage);
       }
       break;
-      
+
     case SYSTEM_LOAD_WEEK:
-        // Get the time one week before now
-        Long weekBeforeNow = now - oneWeekInMillis;
-        
-        // Create a list of lists to hold all systems' energy data.
-        List<List<TimestampDoublePair>> listOfLists = new LinkedList<List<TimestampDoublePair>>();
-        
-        // Get data for all systems
-        for (SystemHSystem system : SystemHSystem.values()) {
-          List<TimestampDoublePair> list = chartInterface.getSystemLoadDuringInterval
-            (system, weekBeforeNow, now);
-          listOfLists.add(list);
+      // Get the time one week before now
+      Long weekBeforeNow = now - oneWeekInMillis;
+
+      for (SystemHSystem system : SystemHSystem.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getSystemLoadDuringInterval(system, weekBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          total += value.getValue();
+        }
+      }
+
+      for (SystemHSystem system : SystemHSystem.values()) {
+        Double systemTotal = 0.0;
+        List<TimestampDoublePair> list =
+            chartInterface.getSystemLoadDuringInterval(system, weekBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          systemTotal += value.getValue();
         }
         
-        // TO DO
-        // Calculate percentage by adding up each list of timestamp double pairs.
+        percentage = systemTotal / total;
+        
+        percentage = formatPercentage(percentage);
+        
+        tempDataMap.put(system.toString(), percentage);
+      }
       break;
-      // TO DO
-      // Rest of display types
+    // TO DO
+    // Rest of display types
     default:
       break;
     } // End switch
@@ -148,20 +157,20 @@ public class EnergyChartData {
   } // End populate map method
 
   /**
-   * Formats percentage from raw value (0.17777777) to 17.7 for
-   * display on chart.  One digit after the decimal place.
+   * Formats percentage from raw value (0.17777777) to 17.7 for display on chart. One digit after
+   * the decimal place.
    * 
-   * @param percentage The raw percentage.  E.g., 0.177777
-   * @return The formatted percentage.  E.g., 17.7
+   * @param percentage The raw percentage. E.g., 0.177777
+   * @return The formatted percentage. E.g., 17.7
    */
   double formatPercentage(double percentage) {
     // Allow one digit after the decimal
     DecimalFormat df = new DecimalFormat("#.#");
-    
+
     // Multiply by 100 and leave one digit after decimal place
     return Double.valueOf(df.format(percentage * 100));
   } // End format percentage
-  
+
   /**
    * Accessor method for the chart data array.
    * 
