@@ -1,0 +1,29 @@
+div.system-panel div.system-button,
+div.system-panel div.system-content {
+	background: white;
+  border:1px solid #444;
+  border-bottom:0px;
+  font-size: 11pt;
+  position:fixed;
+  right:5px;
+  width:185px; 
+}
+
+div.system-panel div.system-button {
+  bottom : 0px;
+	cursor: pointer;
+  height:20px;
+  font-weight: bold;
+  padding: 5px 15px 0px 0px;
+  text-align: center;
+}
+
+div.system-panel div.system-content {
+  display: none;
+  bottom:25px;
+  line-height: 235%;
+  padding: 5px 15px;
+  text-align: left;
+  height:150px; 
+  width:170px;
+}

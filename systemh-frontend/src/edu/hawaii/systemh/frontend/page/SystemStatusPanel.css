@@ -1,0 +1,11 @@
+div#system-status.system-panel div.system-content {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+}
+
+div#system-status.system-panel div.system-button {
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), to(#DADADA));
+  background: -moz-linear-gradient(top, #CCCCCC, #DADADA);
+}

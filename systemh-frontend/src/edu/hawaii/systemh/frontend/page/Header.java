@@ -76,8 +76,11 @@ public class Header extends WebPage {
    * The header page. This is a parent class to all pages.
    */
   public Header() {
+    
+    add(new SystemStatusPanel("system-status", new Model<String>("test")));
 
     activeTab = ((SolarDecathlonSession) getSession()).getHeaderSession().getActiveTab();
+    
 
     // System.out.println("\n\nUSER IS VIEWING PAGE" + activeTab + "\n\n");
 
@@ -213,14 +216,6 @@ public class Header extends WebPage {
     // Refresh Image
     add(new Image("refresh", new ResourceReference(Header.class,
         "images/icons/arrow_rotate_clockwise.png")));
-
-    // Status Orb Images
-    add(new Image("greenOrb", new ResourceReference(Header.class, 
-        "images/icons/ball_green.png")));
-    add(new Image("yellowOrb", new ResourceReference(Header.class, 
-        "images/icons/ball_yellow.png")));
-    add(new Image("redOrb", new ResourceReference(Header.class, 
-        "images/icons/ball_red.png")));
 
     // Other images used throughout system
     add(new Image("TableViewImage", new ResourceReference(Header.class,

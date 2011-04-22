@@ -3,19 +3,6 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Team Hawai'i - Home Management System</title>
-<script type="text/javascript">
-var open = 1;
-function showstatus() {
-	if(open == 1) {
-		$(".system-state-open").slideDown("slow");
-		open = 0;
-	}	
-	else {
-		$(".system-state-open").slideUp("slow");
-		open = 1;
-	}
-}
-</script>
 </head>
 <body>
 <div class="header">
@@ -58,29 +45,6 @@ C inside</strong></p>
 	wicket:id="HvacPageLink" href="#">Hvac</a> | <a
 	wicket:id="HelpPageLink" href="#">Help</a></p>
 </div>
-<div class="system-state-open">
-	<table class="plain" border="0">
-	<tr>
-	<td><a wicket:id="EnergyPageLink" href="#">Energy</a></td>
-    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="greenOrb" alt="Good" /></td>
-    </tr>
-    <tr>
-	<td><a wicket:id="AquaponicsPageLink" href="#">Aquaponics</a></td>
-    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="redOrb" alt="Alert!" /></td>
-    </tr>
-    <tr>
-	<td><a wicket:id="LightingPageLink" href="#">Lighting</a></td>
-    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="greenOrb" alt="Good" /></td>
-    </tr>
-    <tr>
-	<td><a wicket:id="HvacPageLink" href="#">HVAC</a></td>
-    <td><img style="height:18px;width:18px;vertical-align:middle;" wicket:id="yellowOrb" alt="Warning!" /></td>
-    </tr>
-	</table>
-</div>
-<div class="system-state-close" onClick="showstatus();">
-	<div style="vertical-align:top; padding-top:4px; padding-right:4px; display:inline;">Systems' Status</div>
-	<div style="display:inline;"><img height="18" width="18" wicket:id="redOrb" alt="Alert!" /><br /></div>
-</div> 
+<wicket:container wicket:id="system-status" />
 </body>
 </html>
