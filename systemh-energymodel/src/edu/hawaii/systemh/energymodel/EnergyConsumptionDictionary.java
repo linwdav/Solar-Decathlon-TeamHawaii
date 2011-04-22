@@ -63,17 +63,29 @@ public class EnergyConsumptionDictionary {
     /** The power generated vs consumed over a month. **/
     CONSUMPTION_MONTH,
     
-    /** The breakout of the current electrical load. **/
-    CURRENT_LOAD,
+    /** The breakout of the current electrical load (by Device). **/
+    DEVICES_CURRENT_LOAD,
     
-    /** The breakout of the electrical load over a week. **/
-    LOAD_WEEK,
+    /** The breakout of the current electrical load (by System). **/
+    SYSTEM_CURRENT_LOAD,
     
-    /** The breakout of the electrical load over a day. **/
-    LOAD_DAY,
+    /** The breakout of the electrical load over a week (by Device). **/
+    DEVICES_LOAD_WEEK,
     
-    /** The breakout of the electrical load over a month. **/
-    LOAD_MONTH
+    /** The breakout of the electrical load over a day (by Device). **/
+    DEVICES_LOAD_DAY,
+    
+    /** The breakout of the electrical load over a month (by Device). **/
+    DEVICES_LOAD_MONTH,
+    
+    /** The breakout of the electrical load over a week (by System). **/
+    SYSTEM_LOAD_WEEK,
+    
+    /** The breakout of the electrical load over a day (by System). **/
+    SYSTEM_LOAD_DAY,
+    
+    /** The breakout of the electrical load over a month (by System). **/
+    SYSTEM_LOAD_MONTH
     
   } // End CharDisplayType
   

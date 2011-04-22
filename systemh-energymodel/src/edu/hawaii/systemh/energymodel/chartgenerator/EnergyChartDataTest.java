@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
-import edu.hawaii.systemh.api.repository.impl.Repository;
 import edu.hawaii.systemh.energymodel.EnergyConsumptionDictionary.ChartDisplayType;
 import edu.hawaii.systemh.energymodel.chartinterface.EnergyManagementChartInterface;
 import edu.hawaii.systemh.energymodel.chartinterface.SampleChartInterface;
@@ -26,9 +25,8 @@ public class EnergyChartDataTest {
    */
   @Before
   public void setUp() throws Exception {
-    // Setup chart data instance with repository and chart interface
-    Repository repository = new Repository();
-    EnergyManagementChartInterface chartInterface = new SampleChartInterface(repository);
+    // Setup chart data instance with chart interface
+    EnergyManagementChartInterface chartInterface = new SampleChartInterface();
     chartData = new EnergyChartData(chartInterface);
   }
 
@@ -39,15 +37,17 @@ public class EnergyChartDataTest {
   public void testPopulateFromDataMap() {
     
     // Populate data map and arrays
-    chartData.populateChartDataMap(ChartDisplayType.CURRENT_LOAD);
+    chartData.populateChartDataMap(ChartDisplayType.DEVICES_CURRENT_LOAD);
     chartData.populateFromDataMap();
     
     assertEquals("Check labels", Arrays.toString(chartData.getLabelString()), 
         "[SOLAR THERMAL CONTROLLER, REFRIDGERATOR, OTHER, VENTILATION FAN, " +
         "TELEVISION, WASHER DRYER, DISHWASHER, STEREO SYSTEM, FREEZER]");
+    System.out.println("LABELS: " + Arrays.toString(chartData.getLabelString()));
+    System.out.println("DATA: " + Arrays.deepToString(chartData.getDataArray()));
     
     assertEquals("Check labels", Arrays.deepToString(chartData.getDataArray()), 
-        "[[8.0, 1.0, 9.0, 7.0, 6.0, 4.0, 3.0, 5.0, 2.0]]");
+        "[[17.8, 2.2, 20.0, 15.6, 13.3, 8.9, 6.7, 11.1, 4.4]]");
   }
 
   /*
