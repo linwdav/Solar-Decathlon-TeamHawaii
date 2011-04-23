@@ -82,7 +82,7 @@ public class SampleChartInterface implements EnergyManagementChartInterface {
       list.add(new TimestampDoublePair(endTime - differenceInterval, 2.0));
       list.add(new TimestampDoublePair(endTime - 2 * differenceInterval, 0.4));
       list.add(new TimestampDoublePair(endTime - 3 * differenceInterval, 1.6));
-      list.add(new TimestampDoublePair(endTime - 4 * differenceInterval, 1.0));
+      list.add(new TimestampDoublePair(endTime - 4 * differenceInterval, 0.0));
       break;
     case FREEZER:
       list.add(new TimestampDoublePair(endTime, 2.0));

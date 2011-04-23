@@ -19,6 +19,9 @@ import edu.hawaii.systemh.energymodel.chartinterface.EnergyManagementChartInterf
  */
 public class EnergyChartData {
 
+  // PMD strings
+  private static final String covered = "Consumption Covered";
+
   // Time Durations in Milliseconds
   static final long oneWeekInMillis = 1000L * 60L * 60L * 24L * 7L;
   static final long oneDayInMillis = 1000L * 60L * 60L * 24L;
@@ -98,64 +101,21 @@ public class EnergyChartData {
 
     // Total sum of energy
     Double total = 0.0;
-    Double generation = 0.0;
-    Double consumption = 0.0;
+
 
     // Populate the map depending on display type specified
     switch (type) {
 
     case CONSUMPTION_DAY:
-      consumption = chartInterface.powerConsumed(now - dayBeforeNow, now);
-      generation = chartInterface.powerGenerated(now - dayBeforeNow, now);
-
-      percentage = generation / consumption;
-      // The amount generated covers what was consumed.
-      if (percentage >= 1.0) {
-        tempDataMap.put("Consumption Covered", 100.0);
-      }
-      else {
-        percentage = formatPercentage(percentage);
-        // amount covered by generation of solar panels.
-        tempDataMap.put("Consumption Covered", percentage);
-        // amount that consumption goes over generation.
-        tempDataMap.put("Consumption", 100.0 - percentage);
-      }
+      tempDataMap = consumption(tempDataMap, dayBeforeNow, now);
       break;
 
     case CONSUMPTION_WEEK:
-      consumption = chartInterface.powerConsumed(now - weekBeforeNow, now);
-      generation = chartInterface.powerGenerated(now - weekBeforeNow, now);
-
-      percentage = generation / consumption;
-      // The amount generated covers what was consumed.
-      if (percentage >= 1.0) {
-        tempDataMap.put("Consumption Covered", 100.0);
-      }
-      else {
-        percentage = formatPercentage(percentage);
-        // amount covered by generation of solar panels.
-        tempDataMap.put("Consumption Covered", percentage);
-        // amount that consumption goes over generation.
-        tempDataMap.put("Consumption", 100.0 - percentage);
-      }
+      tempDataMap = consumption(tempDataMap, weekBeforeNow, now);
       break;
 
     case CONSUMPTION_MONTH:
-      consumption = chartInterface.powerConsumed(now - monthBeforeNow, now);
-      generation = chartInterface.powerGenerated(now - monthBeforeNow, now);
-
-      percentage = generation / consumption;
-      // The amount generated covers what was consumed.
-      if (percentage >= 1.0) {
-        tempDataMap.put("Consumption Covered", 100.0);
-      }
-      else {
-        percentage = formatPercentage(percentage);
-        // amount covered by generation of solar panels.
-        tempDataMap.put("Consumption Covered", percentage);
-        // amount that consumption goes over generation.
-        tempDataMap.put("Consumption", 100.0 - percentage);
-      }
+      tempDataMap = consumption(tempDataMap, monthBeforeNow, now);
       break;
 
     // Populate with the current load of all devices/appliances.
@@ -179,78 +139,15 @@ public class EnergyChartData {
       break;
 
     case DEVICES_LOAD_DAY:
-      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getDeviceLoadDuringInterval(device, dayBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          total += value.getValue();
-        }
-      }
-
-      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getDeviceLoadDuringInterval(device, dayBeforeNow, now);
-        Double deviceTotal = 0.0;
-        for (TimestampDoublePair value : list) {
-          deviceTotal += value.getValue();
-        }
-
-        percentage = deviceTotal / total;
-
-        percentage = formatPercentage(percentage);
-
-        tempDataMap.put(device.toString(), percentage);
-      }
+      tempDataMap = deviceLoad(tempDataMap, dayBeforeNow, now);
       break;
 
     case DEVICES_LOAD_WEEK:
-      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getDeviceLoadDuringInterval(device, weekBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          total += value.getValue();
-        }
-      }
-
-      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getDeviceLoadDuringInterval(device, weekBeforeNow, now);
-        Double deviceTotal = 0.0;
-        for (TimestampDoublePair value : list) {
-          deviceTotal += value.getValue();
-        }
-
-        percentage = deviceTotal / total;
-
-        percentage = formatPercentage(percentage);
-
-        tempDataMap.put(device.toString(), percentage);
-      }
+      tempDataMap = deviceLoad(tempDataMap, weekBeforeNow, now);
       break;
 
     case DEVICES_LOAD_MONTH:
-      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getDeviceLoadDuringInterval(device, monthBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          total += value.getValue();
-        }
-      }
-
-      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getDeviceLoadDuringInterval(device, monthBeforeNow, now);
-        Double deviceTotal = 0.0;
-        for (TimestampDoublePair value : list) {
-          deviceTotal += value.getValue();
-        }
-
-        percentage = deviceTotal / total;
-
-        percentage = formatPercentage(percentage);
-
-        tempDataMap.put(device.toString(), percentage);
-      }
+      tempDataMap = deviceLoad(tempDataMap, monthBeforeNow, now);
       break;
 
     case SYSTEM_CURRENT_LOAD:
@@ -271,78 +168,15 @@ public class EnergyChartData {
       break;
 
     case SYSTEM_LOAD_DAY:
-      for (SystemHSystem system : SystemHSystem.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getSystemLoadDuringInterval(system, dayBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          total += value.getValue();
-        }
-      }
-
-      for (SystemHSystem system : SystemHSystem.values()) {
-        Double systemTotal = 0.0;
-        List<TimestampDoublePair> list =
-            chartInterface.getSystemLoadDuringInterval(system, dayBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          systemTotal += value.getValue();
-        }
-
-        percentage = systemTotal / total;
-
-        percentage = formatPercentage(percentage);
-
-        tempDataMap.put(system.toString(), percentage);
-      }
+      tempDataMap = systemLoad(tempDataMap, dayBeforeNow, now);
       break;
 
     case SYSTEM_LOAD_WEEK:
-      for (SystemHSystem system : SystemHSystem.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getSystemLoadDuringInterval(system, weekBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          total += value.getValue();
-        }
-      }
-
-      for (SystemHSystem system : SystemHSystem.values()) {
-        Double systemTotal = 0.0;
-        List<TimestampDoublePair> list =
-            chartInterface.getSystemLoadDuringInterval(system, weekBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          systemTotal += value.getValue();
-        }
-
-        percentage = systemTotal / total;
-
-        percentage = formatPercentage(percentage);
-
-        tempDataMap.put(system.toString(), percentage);
-      }
+      tempDataMap = systemLoad(tempDataMap, weekBeforeNow, now);
       break;
 
     case SYSTEM_LOAD_MONTH:
-      for (SystemHSystem system : SystemHSystem.values()) {
-        List<TimestampDoublePair> list =
-            chartInterface.getSystemLoadDuringInterval(system, monthBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          total += value.getValue();
-        }
-      }
-
-      for (SystemHSystem system : SystemHSystem.values()) {
-        Double systemTotal = 0.0;
-        List<TimestampDoublePair> list =
-            chartInterface.getSystemLoadDuringInterval(system, monthBeforeNow, now);
-        for (TimestampDoublePair value : list) {
-          systemTotal += value.getValue();
-        }
-
-        percentage = systemTotal / total;
-
-        percentage = formatPercentage(percentage);
-
-        tempDataMap.put(system.toString(), percentage);
-      }
+      tempDataMap = systemLoad(tempDataMap, monthBeforeNow, now);
       break;
 
     // Rest of display types
@@ -387,4 +221,106 @@ public class EnergyChartData {
     return chartLabelArray;
   }
 
+  /**
+   * Calculates device load for a given time interval.
+   * 
+   * @param dataMap - the map to put the loads.
+   * @param startTime - start time
+   * @param endTime - end time
+   * @return - The device loads for the time interval.
+   */
+  private Map<String, Double> deviceLoad(Map<String, Double> dataMap, 
+      long startTime, long endTime) {
+    double total = 0.0;
+    double percentage = 0.0;
+    for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+      List<TimestampDoublePair> list =
+          chartInterface.getDeviceLoadDuringInterval(device, startTime, endTime);
+      for (TimestampDoublePair value : list) {
+        total += value.getValue();
+      }
+    }
+
+    for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+      List<TimestampDoublePair> list =
+          chartInterface.getDeviceLoadDuringInterval(device, startTime, endTime);
+      Double deviceTotal = 0.0;
+      for (TimestampDoublePair value : list) {
+        deviceTotal += value.getValue();
+      }
+
+      percentage = deviceTotal / total;
+
+      percentage = formatPercentage(percentage);
+
+      dataMap.put(device.toString(), percentage);
+    }
+    return dataMap;
+  }
+
+  /**
+   * Calculates system loads for a given time interval.
+   * 
+   * @param dataMap - The system loads.
+   * @param startTime - start time
+   * @param endTime - end time
+   * @return - The system loads for the time interval.
+   */
+  private Map<String, Double> systemLoad(Map<String, Double> dataMap, 
+      long startTime, long endTime) {
+    double total = 0.0;
+    double percentage = 0.0;
+    for (SystemHSystem system : SystemHSystem.values()) {
+      List<TimestampDoublePair> list =
+          chartInterface.getSystemLoadDuringInterval(system, startTime, endTime);
+      for (TimestampDoublePair value : list) {
+        total += value.getValue();
+      }
+    }
+
+    for (SystemHSystem system : SystemHSystem.values()) {
+      Double systemTotal = 0.0;
+      List<TimestampDoublePair> list =
+          chartInterface.getSystemLoadDuringInterval(system, startTime, endTime);
+      for (TimestampDoublePair value : list) {
+        systemTotal += value.getValue();
+      }
+
+      percentage = systemTotal / total;
+
+      percentage = formatPercentage(percentage);
+
+      dataMap.put(system.toString(), percentage);
+    }
+    return dataMap;
+  }
+  
+  /**
+   * Calculates how much was generated vs consumed over a time interval.
+   * @param dataMap - Holds the percentages of generation vs consumption.
+   * @param startTime - start time
+   * @param endTime - end time
+   * @return - The percentages of generation vs consumption.
+   */
+  private Map<String, Double> consumption(Map<String, Double> dataMap, 
+      long startTime, long endTime) {
+    double consumption = chartInterface.powerConsumed(startTime, endTime);
+    double generation = chartInterface.powerGenerated(startTime, endTime);
+    double percentage = 0.0;
+    percentage = generation / consumption;
+    // The amount generated covers what was consumed.
+    if (percentage >= 1.0) {
+      dataMap.put(covered, 100.0);
+      // Add this so unit testing will always have 2 labels for consumption.
+      dataMap.put("Consumption", 0.0);
+    }
+    else {
+      percentage = formatPercentage(percentage);
+      // amount covered by generation of solar panels.
+      dataMap.put(covered, percentage);
+      // amount that consumption goes over generation.
+      dataMap.put("Consumption", 100.0 - percentage);
+    }
+    return dataMap;
+  }
 } // End Class
