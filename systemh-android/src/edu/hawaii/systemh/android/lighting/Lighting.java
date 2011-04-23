@@ -7,6 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
@@ -20,6 +24,7 @@ import edu.hawaii.systemh.android.menu.Menu;
 public class Lighting extends Activity implements ColorPickerDialog.OnColorChangedListener {
 
   private TextView color;
+  private Spinner spinner;
 
   /**
    * Called when the activity is first created.
@@ -40,6 +45,13 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
     setContentView(R.layout.lighting);
 
     color = (TextView) findViewById(R.id.color);
+
+    spinner = (Spinner) findViewById(R.id.spinner);
+    ArrayAdapter<CharSequence> adapter =
+        ArrayAdapter.createFromResource(this, R.array.rooms, R.layout.spinner);
+    adapter.setDropDownViewResource(R.layout.spinner_dropdown);
+    spinner.setAdapter(adapter);
+    spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
   }
 
   /**
@@ -54,8 +66,7 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
   }
 
   /**
-   * Called when the user clicks 'Change color'. The program will show color picker
-   * dialog.
+   * Called when the user clicks 'Change color'. The program will show color picker dialog.
    * 
    * @param view The view.
    */
@@ -86,10 +97,32 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
     int green = Color.green(color);
     int blue = Color.blue(color);
 
-    this.color.setText("#" + Integer.toHexString(red) + Integer.toHexString(green)
-        + Integer.toHexString(blue));
+    this.color.setText((String)spinner.getSelectedItem() + ": #" + Integer.toHexString(red)
+        + Integer.toHexString(green) + Integer.toHexString(blue));
     this.color.setTextColor(color);
-    
+
+  }
+
+  /**
+   * The listener for the room choices.
+   * 
+   * @author Group H
+   * 
+   */
+  public class MyOnItemSelectedListener implements OnItemSelectedListener {
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+      // need to read the current color for the selected room.
+      // right now just using a default color.
+      color.setText(spinner.getSelectedItem() + ": #FFFFFF");
+      color.setTextColor(Color.WHITE);
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+      // Do nothing.
+    }
   }
 
 }

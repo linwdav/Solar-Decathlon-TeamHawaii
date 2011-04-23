@@ -12,5 +12,12 @@
     <string name="Close">Close</string>
     <string name="ColorPicker">Pick a Color</string>
     <string name="ChangeColor">Change Color</string>
-    <string name="color">#000000</string>
+    <string name="color">Living Room: #FFFFFF</string>
+    <string name="roomPrompt">Choose a room:</string>
+    <string-array name="rooms">
+    	<item>Living Room</item>
+    	<item>Dining Room</item>
+    	<item>Kitchen</item>
+    	<item>Bathroom</item>
+    </string-array>
 </resources>
