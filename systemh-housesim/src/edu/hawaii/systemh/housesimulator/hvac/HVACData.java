@@ -387,7 +387,7 @@ public class HVACData {
     
     // Occupants are assumed to be sleeping from 11:00 PM to 7:00 AM for AM/PM system 
     // or 2300 to 700 hour system.
-    if (currentHour >= 23 && currentHour <= 7) {
+    if (currentHour >= 23 || currentHour <= 7) {
       occupantsSleeping = false;
     }
     else {
