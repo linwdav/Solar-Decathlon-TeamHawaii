@@ -86,6 +86,9 @@ public class EnergyChartData {
   void populateChartDataMap(ChartDisplayType type) {
     // Get the time now
     Long now = System.currentTimeMillis();
+    Long dayBeforeNow = now - oneDayInMillis;
+    Long weekBeforeNow = now - oneWeekInMillis;
+    Long monthBeforeNow = now - oneMonthInMillis;
 
     // Create temporary hash map
     Map<String, Double> tempDataMap = new HashMap<String, Double>();
@@ -119,10 +122,124 @@ public class EnergyChartData {
       }
       break;
 
-    case SYSTEM_LOAD_WEEK:
-      // Get the time one week before now
-      Long weekBeforeNow = now - oneWeekInMillis;
+    case DEVICES_LOAD_DAY:
+      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getDeviceLoadDuringInterval(device, dayBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          total += value.getValue();
+        }
+      }
 
+      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getDeviceLoadDuringInterval(device, dayBeforeNow, now);
+        Double deviceTotal = 0.0;
+        for (TimestampDoublePair value : list) {
+          deviceTotal += value.getValue();
+        }
+
+        percentage = deviceTotal / total;
+
+        percentage = formatPercentage(percentage);
+
+        tempDataMap.put(device.toString(), percentage);
+      }
+      break;
+
+    case DEVICES_LOAD_WEEK:
+      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getDeviceLoadDuringInterval(device, weekBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          total += value.getValue();
+        }
+      }
+
+      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getDeviceLoadDuringInterval(device, weekBeforeNow, now);
+        Double deviceTotal = 0.0;
+        for (TimestampDoublePair value : list) {
+          deviceTotal += value.getValue();
+        }
+
+        percentage = deviceTotal / total;
+
+        percentage = formatPercentage(percentage);
+
+        tempDataMap.put(device.toString(), percentage);
+      }
+      break;
+
+    case DEVICES_LOAD_MONTH:
+      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getDeviceLoadDuringInterval(device, monthBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          total += value.getValue();
+        }
+      }
+
+      for (EnergyConsumptionDevice device : EnergyConsumptionDevice.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getDeviceLoadDuringInterval(device, monthBeforeNow, now);
+        Double deviceTotal = 0.0;
+        for (TimestampDoublePair value : list) {
+          deviceTotal += value.getValue();
+        }
+
+        percentage = deviceTotal / total;
+
+        percentage = formatPercentage(percentage);
+
+        tempDataMap.put(device.toString(), percentage);
+      }
+      break;
+
+    case SYSTEM_CURRENT_LOAD:
+      for (SystemHSystem system : SystemHSystem.values()) {
+        total += chartInterface.getSystemCurrentLoad(system);
+      }
+      
+      for (SystemHSystem system : SystemHSystem.values()) {
+        // Calculate percentage of load for this device
+        percentage = chartInterface.getSystemCurrentLoad(system) / total;
+
+        // Format raw percentage for display on chart
+        percentage = formatPercentage(percentage);
+
+        // Add to hashmap.
+        tempDataMap.put(system.toString(), percentage);
+      }
+      break;
+      
+    case SYSTEM_LOAD_DAY:
+      for (SystemHSystem system : SystemHSystem.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getSystemLoadDuringInterval(system, dayBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          total += value.getValue();
+        }
+      }
+
+      for (SystemHSystem system : SystemHSystem.values()) {
+        Double systemTotal = 0.0;
+        List<TimestampDoublePair> list =
+            chartInterface.getSystemLoadDuringInterval(system, dayBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          systemTotal += value.getValue();
+        }
+
+        percentage = systemTotal / total;
+
+        percentage = formatPercentage(percentage);
+
+        tempDataMap.put(system.toString(), percentage);
+      }
+      break;
+      
+    case SYSTEM_LOAD_WEEK:
       for (SystemHSystem system : SystemHSystem.values()) {
         List<TimestampDoublePair> list =
             chartInterface.getSystemLoadDuringInterval(system, weekBeforeNow, now);
@@ -138,15 +255,40 @@ public class EnergyChartData {
         for (TimestampDoublePair value : list) {
           systemTotal += value.getValue();
         }
-        
+
         percentage = systemTotal / total;
-        
+
         percentage = formatPercentage(percentage);
-        
+
         tempDataMap.put(system.toString(), percentage);
       }
       break;
-    // TO DO
+    
+    case SYSTEM_LOAD_MONTH:
+      for (SystemHSystem system : SystemHSystem.values()) {
+        List<TimestampDoublePair> list =
+            chartInterface.getSystemLoadDuringInterval(system, monthBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          total += value.getValue();
+        }
+      }
+
+      for (SystemHSystem system : SystemHSystem.values()) {
+        Double systemTotal = 0.0;
+        List<TimestampDoublePair> list =
+            chartInterface.getSystemLoadDuringInterval(system, monthBeforeNow, now);
+        for (TimestampDoublePair value : list) {
+          systemTotal += value.getValue();
+        }
+
+        percentage = systemTotal / total;
+
+        percentage = formatPercentage(percentage);
+
+        tempDataMap.put(system.toString(), percentage);
+      }
+      break;
+      
     // Rest of display types
     default:
       break;
