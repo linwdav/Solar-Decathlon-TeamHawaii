@@ -7,8 +7,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
 import edu.hawaii.systemh.api.repository.TimestampDoublePair;
-import edu.hawaii.systemh.api.repository.TimestampIntegerPair;
-import edu.hawaii.systemh.api.repository.impl.Repository;
 import edu.hawaii.systemh.energymodel.EnergyConsumptionDictionary.ChartDisplayType;
 import edu.hawaii.systemh.energymodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
 import edu.hawaii.systemh.energymodel.chartinterface.EnergyManagementChartInterface;
@@ -113,13 +111,12 @@ public class EnergyChartData {
       percentage = generation / consumption;
       // The amount generated covers what was consumed.
       if (percentage >= 1.0) {
-        tempDataMap.put("Generation", 100.0);
-        tempDataMap.put("Consumption", 0.0);
+        tempDataMap.put("Consumption Covered", 100.0);
       }
       else {
         percentage = formatPercentage(percentage);
         // amount covered by generation of solar panels.
-        tempDataMap.put("Generation", percentage);
+        tempDataMap.put("Consumption Covered", percentage);
         // amount that consumption goes over generation.
         tempDataMap.put("Consumption", 100.0 - percentage);
       }
@@ -132,13 +129,12 @@ public class EnergyChartData {
       percentage = generation / consumption;
       // The amount generated covers what was consumed.
       if (percentage >= 1.0) {
-        tempDataMap.put("Generation", 100.0);
-        tempDataMap.put("Consumption", 0.0);
+        tempDataMap.put("Consumption Covered", 100.0);
       }
       else {
         percentage = formatPercentage(percentage);
         // amount covered by generation of solar panels.
-        tempDataMap.put("Generation", percentage);
+        tempDataMap.put("Consumption Covered", percentage);
         // amount that consumption goes over generation.
         tempDataMap.put("Consumption", 100.0 - percentage);
       }
@@ -151,13 +147,12 @@ public class EnergyChartData {
       percentage = generation / consumption;
       // The amount generated covers what was consumed.
       if (percentage >= 1.0) {
-        tempDataMap.put("Generation", 100.0);
-        tempDataMap.put("Consumption", 0.0);
+        tempDataMap.put("Consumption Covered", 100.0);
       }
       else {
         percentage = formatPercentage(percentage);
         // amount covered by generation of solar panels.
-        tempDataMap.put("Generation", percentage);
+        tempDataMap.put("Consumption Covered", percentage);
         // amount that consumption goes over generation.
         tempDataMap.put("Consumption", 100.0 - percentage);
       }
