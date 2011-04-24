@@ -20,9 +20,7 @@ public class EnergyChartDataTest {
   private static final String deviceLabel =
       "[SOLAR THERMAL CONTROLLER, REFRIDGERATOR, OTHER, VENTILATION FAN, "
           + "TELEVISION, WASHER DRYER, DISHWASHER, STEREO SYSTEM, FREEZER]";
-  private static final String deviceData = "[[17.8, 2.2, 20.0, 15.6, 13.3, 8.9, 6.7, 11.1, 4.4]]";
   private static final String systemLabel = "[HVAC, AQUAPONICS, ELECTRIC, LIGHTING, PHOTOVOLTAIC]";
-  private static final String systemData = "[[22.5, 25.0, 17.5, 15.0, 20.0]]";
 
   // Chart data instance to use
   EnergyChartData chartData;
@@ -46,21 +44,29 @@ public class EnergyChartDataTest {
   @Test
   public void testPopulateFromDataMap() {
 
-    helpTestChartDataMap(ChartDisplayType.DEVICES_CURRENT_LOAD, deviceLabel, deviceData);
+    helpTestChartDataMap(ChartDisplayType.DEVICES_CURRENT_LOAD, deviceLabel,
+        "[[17.8, 2.2, 20.0, 15.6, 13.3, 8.9, 6.7, 11.1, 4.4]]");
 
-    helpTestChartDataMap(ChartDisplayType.DEVICES_LOAD_DAY, deviceLabel, deviceData);
+    helpTestChartDataMap(ChartDisplayType.DEVICES_LOAD_DAY, deviceLabel,
+        "[[17.8, 2.2, 20.0, 15.6, 13.3, 8.9, 6.7, 11.1, 4.4]]");
 
-    helpTestChartDataMap(ChartDisplayType.DEVICES_LOAD_WEEK, deviceLabel, deviceData);
+    helpTestChartDataMap(ChartDisplayType.DEVICES_LOAD_WEEK, deviceLabel,
+        "[[16.7, 3.7, 18.5, 14.8, 13.0, 9.3, 7.4, 11.1, 5.6]]");
 
-    helpTestChartDataMap(ChartDisplayType.DEVICES_LOAD_MONTH, deviceLabel, deviceData);
+    helpTestChartDataMap(ChartDisplayType.DEVICES_LOAD_MONTH, deviceLabel,
+        "[[15.9, 4.8, 17.5, 14.3, 12.7, 9.5, 7.9, 11.1, 6.3]]");
 
-    helpTestChartDataMap(ChartDisplayType.SYSTEM_CURRENT_LOAD, systemLabel, systemData);
+    helpTestChartDataMap(ChartDisplayType.SYSTEM_CURRENT_LOAD, systemLabel,
+        "[[22.5, 25.0, 17.5, 15.0, 20.0]]");
 
-    helpTestChartDataMap(ChartDisplayType.SYSTEM_LOAD_DAY, systemLabel, systemData);
+    helpTestChartDataMap(ChartDisplayType.SYSTEM_LOAD_DAY, systemLabel,
+        "[[22.5, 25.0, 17.5, 15.0, 20.0]]");
 
-    helpTestChartDataMap(ChartDisplayType.SYSTEM_LOAD_WEEK, systemLabel, systemData);
+    helpTestChartDataMap(ChartDisplayType.SYSTEM_LOAD_WEEK, systemLabel,
+        "[[21.1, 22.2, 18.9, 17.8, 20.0]]");
 
-    helpTestChartDataMap(ChartDisplayType.SYSTEM_LOAD_MONTH, systemLabel, systemData);
+    helpTestChartDataMap(ChartDisplayType.SYSTEM_LOAD_MONTH, systemLabel,
+        "[[20.7, 21.4, 19.3, 18.6, 20.0]]");
 
     helpTestChartDataMap(ChartDisplayType.CONSUMPTION_DAY, "[Consumption Covered, Consumption]",
         "[[70.0, 30.0]]");
@@ -81,10 +87,9 @@ public class EnergyChartDataTest {
    * @param data - expected data of pie chart.
    */
   private void helpTestChartDataMap(ChartDisplayType display, String labels, String data) {
-    // System.out.println("TESTING DISPLAY: " + display);
     chartData.populateChartDataMap(display);
     chartData.populateFromDataMap();
-
+    //System.out.println("DATA: " + Arrays.deepToString(chartData.getDataArray()));
     assertEquals("Check system labels", Arrays.toString(chartData.getLabelString()), labels);
     assertEquals("Check system data", Arrays.deepToString(chartData.getDataArray()), data);
   }

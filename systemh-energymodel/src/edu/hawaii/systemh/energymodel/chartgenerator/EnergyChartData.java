@@ -52,7 +52,7 @@ public class EnergyChartData {
   /**
    * Use chart data map to populate both labels and data arrays.
    */
-  void populateFromDataMap() {
+  public void populateFromDataMap() {
     // Determine size of arrays needed.
     int numEntries = chartDataMap.size();
 
@@ -86,7 +86,7 @@ public class EnergyChartData {
    * 
    * @param type The display type.
    */
-  void populateChartDataMap(ChartDisplayType type) {
+  public void populateChartDataMap(ChartDisplayType type) {
     // Get the time now
     Long now = System.currentTimeMillis();
     Long dayBeforeNow = now - oneDayInMillis;
@@ -208,7 +208,7 @@ public class EnergyChartData {
    * 
    * @return Returns the data array
    */
-  double[][] getDataArray() {
+  public double[][] getDataArray() {
     return chartDataArray;
   }
 
@@ -217,7 +217,7 @@ public class EnergyChartData {
    * 
    * @return Returns the label string as an array.
    */
-  String[] getLabelString() {
+  public String[] getLabelString() {
     return chartLabelArray;
   }
 
