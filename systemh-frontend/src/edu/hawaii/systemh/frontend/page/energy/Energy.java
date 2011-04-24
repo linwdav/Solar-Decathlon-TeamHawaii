@@ -36,7 +36,7 @@ import edu.hawaii.systemh.frontend.page.help.Help;
  */
 public class Energy extends Header {
 
-  private boolean DEBUG = false;
+  //private boolean DEBUG = false;
 
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
@@ -158,56 +158,38 @@ public class Energy extends Header {
 
     String url = "";
 
-    chartData.populateChartDataMap(ChartDisplayType.CONSUMPTION_DAY);
-    chartData.populateFromDataMap();
     url = generateURL(ChartDisplayType.CONSUMPTION_DAY);
     consumptionDayGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(consumptionDayGraph);
 
-    chartData.populateChartDataMap(ChartDisplayType.CONSUMPTION_WEEK);
-    chartData.populateFromDataMap();
     url = generateURL(ChartDisplayType.CONSUMPTION_WEEK);
     consumptionWeekGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(consumptionWeekGraph);
-    
-    chartData.populateChartDataMap(ChartDisplayType.CONSUMPTION_MONTH);
-    chartData.populateFromDataMap();
+
     url = generateURL(ChartDisplayType.CONSUMPTION_MONTH);
     consumptionMonthGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(consumptionMonthGraph);
-    
-    chartData.populateChartDataMap(ChartDisplayType.DEVICES_LOAD_DAY);
-    chartData.populateFromDataMap();
+
     url = generateURL(ChartDisplayType.DEVICES_LOAD_DAY);
     dayDeviceGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(dayDeviceGraph);
-    
-    chartData.populateChartDataMap(ChartDisplayType.DEVICES_LOAD_WEEK);
-    chartData.populateFromDataMap();
+
     url = generateURL(ChartDisplayType.DEVICES_LOAD_WEEK);
     weekDeviceGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(weekDeviceGraph);
-    
-    chartData.populateChartDataMap(ChartDisplayType.DEVICES_LOAD_MONTH);
-    chartData.populateFromDataMap();
+
     url = generateURL(ChartDisplayType.DEVICES_LOAD_MONTH);
     monthDeviceGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(monthDeviceGraph);
     
-    chartData.populateChartDataMap(ChartDisplayType.SYSTEM_LOAD_DAY);
-    chartData.populateFromDataMap();
     url = generateURL(ChartDisplayType.SYSTEM_LOAD_DAY);
     daySystemGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(daySystemGraph);
     
-    chartData.populateChartDataMap(ChartDisplayType.SYSTEM_LOAD_WEEK);
-    chartData.populateFromDataMap();
     url = generateURL(ChartDisplayType.SYSTEM_LOAD_WEEK);
     weekSystemGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(weekSystemGraph);
     
-    chartData.populateChartDataMap(ChartDisplayType.SYSTEM_LOAD_MONTH);
-    chartData.populateFromDataMap();
     url = generateURL(ChartDisplayType.SYSTEM_LOAD_MONTH);
     monthSystemGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(monthSystemGraph);
@@ -219,6 +201,9 @@ public class Energy extends Header {
    * @return - The URL
    */
   private String generateURL(ChartDisplayType display) {
+    chartData.populateChartDataMap(display);
+    chartData.populateFromDataMap();
+    
     String[] labels = chartData.getLabelString();
     StringBuffer buf = new StringBuffer();
     for (int i = 0; i < labels.length; i++) {
@@ -252,11 +237,43 @@ public class Energy extends Header {
     }
     String valueLabels = buf.toString();
     String colors = "";
+    String title = "";
     switch (display) {
     case CONSUMPTION_DAY:
-    case CONSUMPTION_WEEK:
-    case CONSUMPTION_MONTH:
+      title = "Consumption Covered Past Day";
       colors = "00AF00|FF0000";
+      break;
+    case CONSUMPTION_WEEK:
+      title = "Consumption Covered Past Week";
+      colors = "00AF00|FF0000";
+      break;
+    case CONSUMPTION_MONTH:
+      title = "Consumption Covered Past Month";
+      colors = "00AF00|FF0000";
+      break;
+    case DEVICES_LOAD_DAY:
+      title = "Device Consumption Past Day";
+      colors = "0000FF|000000";
+      break;
+    case DEVICES_LOAD_WEEK:
+      title = "Device Consumption Past Week";
+      colors = "0000FF|000000";
+      break;
+    case DEVICES_LOAD_MONTH:
+      title = "Device Consumption Past Month";
+      colors = "0000FF|000000";
+      break;
+    case SYSTEM_LOAD_DAY:
+      title = "System Consumption Past Day";
+      colors = "0000FF|000000";
+      break;
+    case SYSTEM_LOAD_WEEK:
+      title = "System Consumption Past Week";
+      colors = "0000FF|000000";
+      break;
+    case SYSTEM_LOAD_MONTH:
+      title = "System Consumption Past Month";
+      colors = "0000FF|000000";
       break;
     default:
       colors = "0000FF|000000";
@@ -267,6 +284,6 @@ public class Energy extends Header {
         + "&chd=t:" + valueString 
         + "&chdl=" + labelString 
         + "&chl=" + valueLabels
-        + "&chtt=Device+Consumption+Past+Day";
+        + "&chtt=" + title;
   }
 }
