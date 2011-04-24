@@ -240,15 +240,15 @@ public class Energy extends Header {
     String title = "";
     switch (display) {
     case CONSUMPTION_DAY:
-      title = "Consumption Covered Past Day";
+      title = "Consumption Covered By Generation For Past Day";
       colors = "00AF00|FF0000";
       break;
     case CONSUMPTION_WEEK:
-      title = "Consumption Covered Past Week";
+      title = "Consumption Covered By Generation For Past Week";
       colors = "00AF00|FF0000";
       break;
     case CONSUMPTION_MONTH:
-      title = "Consumption Covered Past Month";
+      title = "Consumption Covered By Generation For Past Month";
       colors = "00AF00|FF0000";
       break;
     case DEVICES_LOAD_DAY:
