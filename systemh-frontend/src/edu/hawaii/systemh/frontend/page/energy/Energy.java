@@ -1,7 +1,5 @@
 package edu.hawaii.systemh.frontend.page.energy;
 
-import java.text.DecimalFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.apache.wicket.AttributeModifier;
@@ -16,11 +14,12 @@ import org.apache.wicket.markup.html.list.ListItem;
 import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
-//import edu.hawaii.ihale.api.SystemStateEntry;
-//import edu.hawaii.ihale.api.SystemStateEntryDB;
-//import edu.hawaii.ihale.api.SystemStateEntryDBException;
+import com.codecommit.wicket.ChartProvider;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
-import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
+import edu.hawaii.systemh.energymodel.EnergyConsumptionDictionary.ChartDisplayType;
+import edu.hawaii.systemh.energymodel.chartgenerator.EnergyChartData;
+import edu.hawaii.systemh.energymodel.chartinterface.EnergyManagementChartInterface;
+import edu.hawaii.systemh.energymodel.chartinterface.SampleChartInterface;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.SolarDecathlonSession;
 import edu.hawaii.systemh.frontend.page.Header;
@@ -44,21 +43,24 @@ public class Energy extends Header {
 
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
-  // private static final String ELECTRICAL_CONSUMPTION = "electrical";
-  // private static final String EGAUGE_1 = "egauge-1";
-  // private static final String EGAUGE_2 = "egauge-2";
-  // private static final String PHOTOVOLTAICS = "photovoltaics";
-  // private static final String ENERGY = "energy";
-  private static final String C_VALUES = "cValues: ";
-  private static final String G_VALUES = "gValues: ";
-  private static final String Y_AXIS = "2500.0";
+
+  EnergyChartData chartData;
+  EnergyManagementChartInterface chartInterface;
+
+  ChartProvider provider;
 
   /**
    * MarkupContainer for all graphs.
    */
-  WebMarkupContainer dayGraph = new WebMarkupContainer("DayGraph");
-  WebMarkupContainer weekGraph = new WebMarkupContainer("WeekGraph");
-  WebMarkupContainer monthGraph = new WebMarkupContainer("MonthGraph");
+  WebMarkupContainer consumptionDayGraph = new WebMarkupContainer("DayConsumptionGraph");
+  WebMarkupContainer consumptionWeekGraph = new WebMarkupContainer("WeekConsumptionGraph");
+  WebMarkupContainer consumptionMonthGraph = new WebMarkupContainer("MonthConsumptionGraph");
+  WebMarkupContainer dayDeviceGraph = new WebMarkupContainer("DayDevicesGraph");
+  WebMarkupContainer weekDeviceGraph = new WebMarkupContainer("WeekDevicesGraph");
+  WebMarkupContainer monthDeviceGraph = new WebMarkupContainer("MonthDevicesGraph");
+  WebMarkupContainer daySystemGraph = new WebMarkupContainer("DaySystemGraph");
+  WebMarkupContainer weekSystemGraph = new WebMarkupContainer("WeekSystemGraph");
+  WebMarkupContainer monthSystemGraph = new WebMarkupContainer("MonthSystemGraph");
 
   /**
    * Buttons for all graphs.
@@ -81,6 +83,9 @@ public class Energy extends Header {
    * @throws Exception The exception.
    */
   public Energy() throws Exception {
+
+    chartInterface = new SampleChartInterface();
+    chartData = new EnergyChartData(chartInterface);
 
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(1);
 
@@ -151,543 +156,117 @@ public class Energy extends Header {
 
     // End messages section
 
-    // Create button
-    // Kept this button in case later on need other buttons
-    // dayConsumptionGraph = new Link<String>("dayConsumptionGraph") {
-    // private static final long serialVersionUID = 1L;
-    //
-    // @Override
-    // public void onClick() {
-    // try {
-    // setResponsePage(new Energy());
-    // }
-    // catch (Exception e) {
-    // e.printStackTrace();
-    // }
-    // }
-    // };
-    // add(dayConsumptionGraph);
-    Model<String> day = new Model<String>() {
+    String url = "";
 
-      private static final long serialVersionUID = 1L;
+    chartData.populateChartDataMap(ChartDisplayType.CONSUMPTION_DAY);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.CONSUMPTION_DAY);
+    consumptionDayGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(consumptionDayGraph);
 
-      @Override
-      public String getObject() {
-        String url;
-
-        url = setDayGraph();
-
-        return url;
-      }
-    };
-    Label dayLabel = new Label("dayLabel", day);
-    dayGraph.add(new AttributeModifier(SRC, true, new Model<String>((String) dayLabel
-        .getDefaultModelObject())));
-    add(dayGraph);
-
-    Model<String> week = new Model<String>() {
-
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public String getObject() {
-        String url;
-
-        url = setWeekGraph();
-
-        return url;
-      }
-    };
-    Label weekLabel = new Label("weekLabel", week);
-    weekGraph.add(new AttributeModifier(SRC, true, new Model<String>((String) weekLabel
-        .getDefaultModelObject())));
-    add(weekGraph);
-
-    Model<String> month = new Model<String>() {
-
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public String getObject() {
-        String url;
-
-        url = setMonthGraph();
-
-        return url;
-      }
-    };
-    Label monthLabel = new Label("monthLabel", month);
-    monthGraph.add(new AttributeModifier(SRC, true, new Model<String>((String) monthLabel
-        .getDefaultModelObject())));
-    add(monthGraph);
-
-    Model<String> consumptionModel = new Model<String>() {
-
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public String getObject() {
-        String fontOpenTag;
-        String fontCloseTag = "</font>";
-        String labelValue;
-
-        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > Math
-            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
-          fontOpenTag = "<font color=\"green\">";
-        }
-        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < Math
-            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
-          fontOpenTag = "<font color=\"red\">";
-        }
-        else {
-          fontOpenTag = "<font color=\"#FF9900\">";
-        }
-
-        labelValue =
-            fontOpenTag + Math.abs(SolarDecathlonApplication.getElectrical().getPower()) + " kWh"
-                + fontCloseTag;
-        return labelValue;
-      }
-    };
-    Label currentConsumption = new Label("CurrentConsumption", consumptionModel);
-
-    Model<String> generationModel = new Model<String>() {
-
-      private static final long serialVersionUID = 1L;
-
-      @Override
-      public String getObject() {
-        String fontOpenTag;
-        String fontCloseTag = "</font>";
-        String labelValue;
-
-        if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > Math
-            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
-          fontOpenTag = "<font color=\"green\">";
-        }
-        else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < Math
-            .abs(SolarDecathlonApplication.getElectrical().getPower())) {
-          fontOpenTag = "<font color=\"red\">";
-        }
-        else {
-          fontOpenTag = "<font color=\"#FF9900\">";
-        }
-
-        labelValue =
-            fontOpenTag + SolarDecathlonApplication.getPhotovoltaic().getEnergy() + " kWh"
-                + fontCloseTag;
-        return labelValue;
-      }
-    };
-    Label currentGeneration = new Label("CurrentGeneration", generationModel);
-
-    // enables recognition of html code within the string
-    currentConsumption.setEscapeModelStrings(false);
-    currentGeneration.setEscapeModelStrings(false);
-
-    add(currentConsumption);
-    add(currentGeneration);
-
+    chartData.populateChartDataMap(ChartDisplayType.CONSUMPTION_WEEK);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.CONSUMPTION_WEEK);
+    consumptionWeekGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(consumptionWeekGraph);
+    
+    chartData.populateChartDataMap(ChartDisplayType.CONSUMPTION_MONTH);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.CONSUMPTION_MONTH);
+    consumptionMonthGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(consumptionMonthGraph);
+    
+    chartData.populateChartDataMap(ChartDisplayType.DEVICES_LOAD_DAY);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.DEVICES_LOAD_DAY);
+    dayDeviceGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(dayDeviceGraph);
+    
+    chartData.populateChartDataMap(ChartDisplayType.DEVICES_LOAD_WEEK);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.DEVICES_LOAD_WEEK);
+    weekDeviceGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(weekDeviceGraph);
+    
+    chartData.populateChartDataMap(ChartDisplayType.DEVICES_LOAD_MONTH);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.DEVICES_LOAD_MONTH);
+    monthDeviceGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(monthDeviceGraph);
+    
+    chartData.populateChartDataMap(ChartDisplayType.SYSTEM_LOAD_DAY);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.SYSTEM_LOAD_DAY);
+    daySystemGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(daySystemGraph);
+    
+    chartData.populateChartDataMap(ChartDisplayType.SYSTEM_LOAD_WEEK);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.SYSTEM_LOAD_WEEK);
+    weekSystemGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(weekSystemGraph);
+    
+    chartData.populateChartDataMap(ChartDisplayType.SYSTEM_LOAD_MONTH);
+    chartData.populateFromDataMap();
+    url = generateURL(ChartDisplayType.SYSTEM_LOAD_MONTH);
+    monthSystemGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
+    add(monthSystemGraph);
   } // End Constructor
 
   /**
-   * Set the label for energy consumption and generation on this page.
-   * 
-   * @param consumption The current energy consumption label.
-   * @param generation The current energy generation label.
+   * Generates the URL for the graphs.
+   * @param display - The graph to generate URL for.
+   * @return - The URL
    */
-  // public static void setCurrentEnergy(Label consumption, Label generation) {
-  // String fontOpenTag;
-  // String fontCloseTag = "</font>";
-  // String labelValue;
-  //
-  // if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() > SolarDecathlonApplication
-  // .getElectrical().getEnergy()) {
-  // fontOpenTag = "<font color=\"green\">";
-  // }
-  // else if (SolarDecathlonApplication.getPhotovoltaic().getEnergy() < SolarDecathlonApplication
-  // .getElectrical().getEnergy()) {
-  // fontOpenTag = "<font color=\"red\">";
-  // }
-  // else {
-  // fontOpenTag = "<font color=\"#FF9900\">";
-  // }
-  //
-  // labelValue =
-  // fontOpenTag + SolarDecathlonApplication.getPhotovoltaic().getEnergy() + " kWh"
-  // + fontCloseTag;
-  // generation.setDefaultModelObject(labelValue);
-  //
-  // labelValue =
-  // fontOpenTag + SolarDecathlonApplication.getElectrical().getEnergy() + " kWh" + fontCloseTag;
-  // consumption.setDefaultModelObject(labelValue);
-  //
-  // }
-
-  /**
-   * Set the daily graph for production vs consumption. The points on the graph are averages from 1
-   * hour periods. So from 24 hours ago to 23 hours ago is one period, 23 hours ago to 22 hours ago
-   * is another period, etc, with the current hour being its own period.
-   * 
-   * In order to reget points for the graphs have to click on dashboard link in tabs to refresh
-   * page.
-   * 
-   * @return The day graph url.
-   */
-  private String setDayGraph() {
-    DecimalFormat df = new DecimalFormat("#.##");
-    // Google charts Y_AXIS is always from 0-100 even if y-axis is different
-    // so have to create conversion for values determined later on.
-    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
-    Calendar current = Calendar.getInstance();
-    int currentHour = current.get(Calendar.HOUR_OF_DAY);
-
-    // Sets x-axis
-    String xAxis = "";
-    StringBuffer xBuf = new StringBuffer();
-    for (int i = 0; i <= 11; i++) {
-      if ((currentHour + i * 2) % 12 == 0) {
-        xBuf.append(12 + "|");
+  private String generateURL(ChartDisplayType display) {
+    String[] labels = chartData.getLabelString();
+    StringBuffer buf = new StringBuffer();
+    for (int i = 0; i < labels.length; i++) {
+      if (i == labels.length - 1) {
+        buf.append(labels[i]);
       }
       else {
-        xBuf.append(((currentHour + i * 2) % 12) + "|");
+        buf.append(labels[i] + "|");
       }
     }
-    if (currentHour == 12) {
-      xBuf.append("12");
-    }
-    else {
-      xBuf.append((currentHour % 12));
-    }
-    xAxis = xBuf.toString();
-    long lastTwentyFour = 24 * 60 * 60 * 1000L;
-    long time = (new Date()).getTime();
-    List<TimestampIntegerPair> consumptionList = null;
-    List<TimestampIntegerPair> generationList = null;
-    // Gets all entries for photovoltaics and consumption in the last 24 hours.
-    consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - lastTwentyFour);
-
-    generationList =
-        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - lastTwentyFour);
-    
-    // milliseconds since beginning of hour
-    long mHourBegin =
-        current.get(Calendar.MINUTE) * 60000 + current.get(Calendar.SECOND) * 1000
-            + current.get(Calendar.MILLISECOND);
-    long twoHours = 2 * 60 * 60 * 1000L;
-    long cValue = 0;
-    long gValue = 0;
-    String cValues = "", gValues = "";
-    String printC = "", printG = "";
-    int cAverage = 0, gAverage = 0;
-    StringBuffer cBuf = new StringBuffer();
-    StringBuffer gBuf = new StringBuffer();
-    StringBuffer cPrintBuf = new StringBuffer();
-    StringBuffer gPrintBuf = new StringBuffer();
-    // x-axis is every two hours so get entries power average over 2 hour periods
-    // Ex. Entries from 2-4 is averaged into hour 4, 3-5 averaged into hour 5
-    for (int i = 12; i >= 0; i--) {
-      for (int j = 0; j < consumptionList.size(); j++) {
-
-        if ((consumptionList.get(j).getTimestamp() < ((time - mHourBegin) - (twoHours * (i - 1))))
-            && (consumptionList.get(j).getTimestamp() > ((time - mHourBegin) - (twoHours * i)))) {
-          cValue += Math.abs(consumptionList.get(j).getValue());
-          cAverage++;
-        }
-
-      }
-      for (int j = 0; j < generationList.size(); j++) {
-
-        if (generationList.get(j).getTimestamp() < (time - mHourBegin) - (twoHours * (i - 1))
-            && generationList.get(j).getTimestamp() > (time - mHourBegin) - (twoHours * i)) {
-          gValue += generationList.get(j).getValue();
-          gAverage++;
-        }
-
-      }
-      if (cAverage != 0) {
-        cValue = (long) ((cValue / (double) cAverage) / divisor);
-      }
-      if (gAverage != 0) {
-        gValue = (long) ((gValue / (double) gAverage) / divisor);
-      }
-      String tempValue = "";
-      if (i == 0) {
-        tempValue = (long) (cValue * divisor) + "|";
-        cPrintBuf.append(tempValue);
-        gPrintBuf.append((long) (gValue * divisor));
-        tempValue = cValue + "|";
-        cBuf.append(tempValue);
-        gBuf.append(gValue);
+    String labelString = buf.toString();
+    double[][] values = chartData.getDataArray();
+    buf = new StringBuffer();
+    for (int i = 0; i < values[0].length; i++) {
+      if (i == values[0].length - 1) {
+        buf.append(values[0][i]);
       }
       else {
-        tempValue = (long) (cValue * divisor) + ",";
-        cPrintBuf.append(tempValue);
-        tempValue = (long) (gValue * divisor) + ",";
-        gPrintBuf.append(tempValue);
-        tempValue = cValue + ",";
-        cBuf.append(tempValue);
-        tempValue = gValue + ",";
-        gBuf.append(tempValue);
+        buf.append(values[0][i] + ",");
       }
-      cValue = 0;
-      gValue = 0;
-      cAverage = 0;
-      gAverage = 0;
     }
-    cValues = cBuf.toString();
-    gValues = gBuf.toString();
-    printC = cPrintBuf.toString();
-    printG = gPrintBuf.toString();
-    if (DEBUG) {
-      System.out.println("Dashboard Day Graph:\n\tcValues: " + printC + "\n\t" + "gValues: "
-          + printG);
-    }
-    String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
-            + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
-            + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
-            + "&chg=25,50" + "&chls=0.75|2"
-            + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    return url;
-  }
-
-  /**
-   * Sets the weekly graph for production vs consumption. The points on the graph are averages from
-   * 1 day periods. So from 7 days ago to 6 days ago is one period, 6 days ago to 5 days ago is
-   * another period, etc, with the current day being its own period.
-   * 
-   * @return The url for the week graph.
-   */
-  private String setWeekGraph() {
-    DecimalFormat df = new DecimalFormat("#.##");
-    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
-    long mInADay = 24 * 3600000;
-    Calendar current = Calendar.getInstance();
-    int currentDay = current.get(Calendar.DAY_OF_WEEK);
-    String[] daysOfWeek = { "Sat", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri" };
-    long mWeek =
-        (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE)
-            * 60000L + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
-    long mToday =
-        current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
-            + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
-
-    // x-axis is the past 7 days starting from current day.
-    String xAxis = "";
-    StringBuffer xBuf = new StringBuffer();
-    for (int i = 0; i <= 5; i++) {
-      xBuf.append(daysOfWeek[(currentDay + i + 1) % 7] + "|");
-    }
-    xBuf.append(daysOfWeek[currentDay % 7]);
-    xAxis = xBuf.toString();
-    long time = (new Date()).getTime();
-    List<TimestampIntegerPair> consumptionList = null;
-    List<TimestampIntegerPair> generationList = null;
-
-    consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mWeek);
-
-    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mWeek), time);
-    generationList =
-        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mWeek);
-
-    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mWeek), time);
-
-    long cValue = 0, gValue = 0;
-    String cValues = "", gValues = "", printC = "", printG = "";
-    int cAverage = 0, gAverage = 0;
-    StringBuffer cBuf = new StringBuffer();
-    StringBuffer gBuf = new StringBuffer();
-    StringBuffer cPrintBuf = new StringBuffer();
-    StringBuffer gPrintBuf = new StringBuffer();
-    for (int i = 6; i >= 0; i--) {
-      for (int j = 0; j < consumptionList.size(); j++) {
-
-        if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mInADay * (i - 1))))
-            && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mInADay * i)))) {
-          cValue += Math.abs(consumptionList.get(j).getValue());
-          cAverage++;
-        }
-
-      }
-      for (int j = 0; j < generationList.size(); j++) {
-
-        if (generationList.get(j).getTimestamp() < (time - mToday) - (mInADay * (i - 1))
-            && generationList.get(j).getTimestamp() > (time - mToday) - (mInADay * i)) {
-          gValue += generationList.get(j).getValue();
-          gAverage++;
-        }
-
-      }
-      if (cAverage != 0) {
-        cValue = (long) ((cValue / (double) cAverage) / divisor);
-      }
-      if (gAverage != 0) {
-        gValue = (long) ((gValue / (double) gAverage) / divisor);
-      }
-      String tempValue = "";
-      if (i == 0) {
-        tempValue = (long) (cValue * divisor) + "|";
-        cPrintBuf.append(tempValue);
-        gPrintBuf.append((long) (gValue * divisor));
-        tempValue = cValue + "|";
-        cBuf.append(tempValue);
-        gBuf.append(gValue);
+    String valueString = buf.toString();
+    buf = new StringBuffer();
+    for (int i = 0; i < values[0].length; i++) {
+      if (i == values[0].length - 1) {
+        buf.append(values[0][i]);
       }
       else {
-        tempValue = (long) (cValue * divisor) + ",";
-        cPrintBuf.append(tempValue);
-        tempValue = (long) (gValue * divisor) + ",";
-        gPrintBuf.append(tempValue);
-        tempValue = cValue + ",";
-        cBuf.append(tempValue);
-        tempValue = gValue + ",";
-        gBuf.append(tempValue);
-      }
-      cValue = 0;
-      gValue = 0;
-      cAverage = 0;
-      gAverage = 0;
-    }
-    cValues = cBuf.toString();
-    gValues = gBuf.toString();
-    printC = cPrintBuf.toString();
-    printG = gPrintBuf.toString();
-    if (DEBUG) {
-      System.out.println("Dashboard Week Graph:\n\tcValues: " + printC + "\n" + "\tgValues: "
-          + printG);
-    }
-    String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
-            + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
-            + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
-            + "&chg=25,50" + "&chls=0.75|2"
-            + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    return url;
-  }
-
-  /**
-   * Sets the monthly graph for production vs consumption. The points on the graph are averages from
-   * 5 day periods. So from 30 days ago to 25 days ago is one period, 25 days ago to 20 days ago is
-   * another period, etc, with the current day being its own period.
-   * 
-   * @return The url for the month graph
-   */
-  private String setMonthGraph() {
-    DecimalFormat df = new DecimalFormat("#.##");
-    double divisor = Double.valueOf(df.format(Double.valueOf(Y_AXIS) / 100.0));
-    long mInADay = 24 * 3600000;
-    Calendar current = Calendar.getInstance();
-    int currentDay = current.get(Calendar.DAY_OF_MONTH);
-    int currentMonth = current.get(Calendar.MONTH);
-    int[] months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-    // xAxis is the past 30 days in increments of 5 days.
-    String xAxis = "";
-    StringBuffer xBuf = new StringBuffer();
-    for (int i = 6; i >= 1; i--) {
-      if ((currentDay - (i * 5)) <= 0) {
-        xBuf.append((months[currentMonth - 1] - (i * 5 - currentDay)) + "|");
-      }
-      else {
-        xBuf.append((currentDay - (i * 5)) + "|");
+        buf.append(values[0][i] + "|");
       }
     }
-    xBuf.append(currentDay);
-    xAxis = xBuf.toString();
-    long time = (new Date()).getTime();
-    List<TimestampIntegerPair> consumptionList = null;
-    List<TimestampIntegerPair> generationList = null;
-    long mMonth =
-        (30 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L
-            + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND) * 1000L
-            + current.get(Calendar.MILLISECOND);
-
-    consumptionList =
-        SolarDecathlonApplication.getRepository().getElectricalEnergySince(time - mMonth);
-
-    // getEntries(ELECTRICAL_CONSUMPTION, EGAUGE_2, (time - mSinceBeginning), time);
-    generationList =
-        SolarDecathlonApplication.getRepository().getPhotovoltaicEnergySince(time - mMonth);
-
-    // getEntries(PHOTOVOLTAICS, EGAUGE_1, (time - mSinceBeginning), time);
-
-    long cValue = 0, gValue = 0;
-    String cValues = "", gValues = "", printC = "", printG = "";
-    int cAverage = 0, gAverage = 0;
-    long mFive = 5 * 24 * 60 * 60 * 1000L;
-    long mToday =
-        current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
-            + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
-    StringBuffer cBuf = new StringBuffer();
-    StringBuffer gBuf = new StringBuffer();
-    StringBuffer cPrintBuf = new StringBuffer();
-    StringBuffer gPrintBuf = new StringBuffer();
-    for (int i = 6; i >= 0; i--) {
-      for (int j = 0; j < consumptionList.size(); j++) {
-
-        if ((consumptionList.get(j).getTimestamp() < ((time - mToday) - (mFive * (i - 1))))
-            && (consumptionList.get(j).getTimestamp() > ((time - mToday) - (mFive * i)))) {
-          cValue += Math.abs(consumptionList.get(j).getValue());
-          cAverage++;
-        }
-
-      }
-      for (int j = 0; j < generationList.size(); j++) {
-
-        if (generationList.get(j).getTimestamp() < (time - mToday) - (mFive * (i - 1))
-            && generationList.get(j).getTimestamp() > (time - mToday) - (mFive * i)) {
-          gValue += generationList.get(j).getValue();
-          gAverage++;
-        }
-
-      }
-      if (cAverage != 0) {
-        cValue = (long) ((cValue / (double) cAverage) / divisor);
-      }
-      if (gAverage != 0) {
-        gValue = (long) ((gValue / (double) gAverage) / divisor);
-      }
-      String tempValue = "";
-      if (i == 0) {
-        tempValue = (long) (cValue * divisor) + "|";
-        cPrintBuf.append(tempValue);
-        gPrintBuf.append((long) (gValue * divisor));
-        tempValue = cValue + "|";
-        cBuf.append(tempValue);
-        gBuf.append(gValue);
-      }
-      else {
-        tempValue = (long) (cValue * divisor) + ",";
-        cPrintBuf.append(tempValue);
-        tempValue = (long) (gValue * divisor) + ",";
-        gPrintBuf.append(tempValue);
-        tempValue = cValue + ",";
-        cBuf.append(tempValue);
-        tempValue = gValue + ",";
-        gBuf.append(tempValue);
-      }
-      cValue = 0;
-      gValue = 0;
-      cAverage = 0;
-      gAverage = 0;
+    String valueLabels = buf.toString();
+    String colors = "";
+    switch (display) {
+    case CONSUMPTION_DAY:
+    case CONSUMPTION_WEEK:
+    case CONSUMPTION_MONTH:
+      colors = "00AF00|FF0000";
+      break;
+    default:
+      colors = "0000FF|000000";
     }
-    cValues = cBuf.toString();
-    gValues = gBuf.toString();
-    printC = cPrintBuf.toString();
-    printG = gPrintBuf.toString();
-    if (DEBUG) {
-      System.out.println("Dashboard Month Graph: \n\t" + C_VALUES + printC + "\n\t" + G_VALUES
-          + printG);
-    }
-    String url =
-        "http://chart.apis.google.com/chart" + "?chxl=0:|" + xAxis + "&chxr=1,0," + Y_AXIS
-            + "&chxt=x,y" + "&chs=525x350" + "&cht=lc" + "&chco=FF0000,008000" + "&chd=t:"
-            + cValues + gValues + "&chdl=Energy+Consumption|Energy+Generation" + "&chdlp=t"
-            + "&chg=25,50" + "&chls=0.75|2"
-            + "&chm=o,008000,1,-1,8|b,3399CC44,0,1,0|d,FF0000,0,-1,8";
-    return url;
+    return "http://chart.apis.google.com/chart" 
+        + "?chs=500x300" + "&cht=p" 
+        + "&chco=" + colors
+        + "&chd=t:" + valueString 
+        + "&chdl=" + labelString 
+        + "&chl=" + valueLabels
+        + "&chtt=Device+Consumption+Past+Day";
   }
 }

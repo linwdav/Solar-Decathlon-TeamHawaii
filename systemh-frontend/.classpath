@@ -15,5 +15,6 @@
 	<classpathentry kind="lib" path="ihale-api/systemh-backend.jar"/>
 	<classpathentry kind="lib" path="ihale-api/systemh-api.jar"/>
 	<classpathentry kind="lib" path="lib/slf4j/slf4j-jdk14.jar"/>
+	<classpathentry kind="lib" path="ihale-api/systemh-energy-model.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

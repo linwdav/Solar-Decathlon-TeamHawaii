@@ -1,52 +1,67 @@
 <html>
 <wicket:extend>
-<div class="top-links">
-  <a class="icon-right" wicket:id="helpLink"><img wicket:id="helpEnergy" /></a>
-  <a class="icon-right" href="#" onClick="window.location.reload();return false;"><img wicket:id="refresh" /></a>
-  <a class="icon-right" href="#" onClick="window.print();return false;"><img wicket:id="printer" /></a>
-  <div class="clear"></div>
-</div>
+	<div class="top-links">
+		<a class="icon-right" wicket:id="helpLink"><img
+			wicket:id="helpEnergy" />
+		</a> <a class="icon-right" href="#"
+			onClick="window.location.reload();return false;"><img
+			wicket:id="refresh" />
+		</a> <a class="icon-right" href="#" onClick="window.print();return false;"><img
+			wicket:id="printer" />
+		</a>
+		<div class="clear"></div>
+	</div>
 
-<h1>Energy</h1>
+	<h1>Energy</h1>
 
-<div class="column-two">
-  <div class="inner">
-  	
-    
-    <div class="clear"></div>
-    
-	    <div class="tab-wrapper" id="tabset-2">
-	      <ul class="tabs">
-	        <li class="tab-1"><a href="#">Day</a></li>
-	        <li class="tab-2"><a href="#">Week</a></li>
-	        <li class="tab-3"><a href="#">Month</a></li>
-	      </ul>
-	      <ul class="tab-content">
-	        <li class="content-1">
-	          <h5>Energy Consumption Vs. Production for past 24 hours</h5>
-          	<p><img wicket:id="DayGraph"/></p>
-          	<div class="clear"></div>
-	        </li>
-	        <li class="content-2">
-						<h5>Energy Consumption Vs. Production for past 7 days</h5>
-            <p><img wicket:id="WeekGraph"/></p>
-            <div class="clear"></div>
-          </li>
-	        <li class="content-3">
-						<h5>Energy Consumption Vs. Production for past 30 days</h5>
-          	<p><img wicket:id="MonthGraph"/></p>
-          	<div class="clear"></div>
-          </li>
-	      </ul>	      
-	    </div>	    
-	    <div class="clear"></div>    
-    
-  </div>
-</div>
+	<div class="inner">
 
 
-<!-- COLUMN TWO -->
-<div class="column-two">
+		<div class="clear"></div>
+
+		<div class="tab-wrapper" id="tabset-2">
+			<ul class="tabs">
+				<li class="tab-1"><a href="#">Day</a>
+				</li>
+				<li class="tab-2"><a href="#">Week</a>
+				</li>
+				<li class="tab-3"><a href="#">Month</a>
+				</li>
+			</ul>
+			<ul class="tab-content">
+				<li class="content-1">
+					<h5>Energy Consumption for past 24 hours</h5>
+					<p>
+						<img wicket:id="DayDevicesGraph" />
+						<img wicket:id="DaySystemGraph" />
+						<img wicket:id="DayConsumptionGraph" />
+					</p>
+					<div class="clear"></div></li>
+				<li class="content-2">
+					<h5>Energy Consumption for past 7 days</h5>
+					<p>
+						<img wicket:id="WeekDevicesGraph" />
+						<img wicket:id="WeekSystemGraph" />
+						<img wicket:id="WeekConsumptionGraph" />
+					</p>
+					<div class="clear"></div></li>
+				<li class="content-3">
+					<h5>Energy Consumption 30 days</h5>
+					<p>
+						<img wicket:id="MonthDevicesGraph" />
+						<img wicket:id="MonthSystemGraph" />
+						<img wicket:id="MonthConsumptionGraph" />
+					</p>
+					<div class="clear"></div></li>
+			</ul>
+		</div>
+		<div class="clear"></div>
+
+	</div>
+
+
+	<!-- COLUMN TWO -->
+	<!--div class="column-two">
   <div class="inner" style="padding-top:30px;">
   	<table class="bare" style="width:100%;">
     	<tr>
@@ -66,13 +81,13 @@
     
     
   </div>
-</div>
+</div-->
 
-<div class="inner">
-	<div class="box">
-    <h2>Energy Log</h2>
-    <form action="#" class="table-wrapper" method="get" name="tableform">	
-    <!--p class="show-count">		
+	<div class="inner">
+		<div class="box">
+			<h2>Energy Log</h2>
+			<form action="#" class="table-wrapper" method="get" name="tableform">
+				<!--p class="show-count">		
 	        Show&nbsp;		
 	        <select>		
 	          <option>10</option>		
@@ -81,44 +96,46 @@
 	          <option>40</option>		
 	        </select>		
 	        &nbsp;Entries		
-     </p-->		
-          <div wicket:id="EnergySystemLogContainer">
-          
-			<script type="text/javascript">
-			$(document).ready(function(){
-			   $("#EnergySystemLogTable").tablesorter();
-			 });
-			</script>
-			
-	      <table id="EnergySystemLogTable" cellpadding="0" cellspacing="0" class="tablesorter log" width="100%">		
-	        <thead>		
-	          <tr>		
-				<th>System</th>	
-	            <th>Type</th>	
-	            <th>Time</th>
-	            <th>Message</th>		
-	          </tr>		
-	        </thead>		
-		
-	        <tbody>		
-	          <tr wicket:id="EnergyStatusMessages">
-	          	<td wicket:id="EnergySystemName">System Name Goes Here</td>
-	    		<td wicket:id="EnergyMessageType">Message Type Goes Here</td>
-	    		<td wicket:id="EnergyTimestamp">Time Goes Here</td>
-	    		<td wicket:id="EnergyMessageContent">Message Content Goes Here</td>
-	    	</tr>	
-	        </tbody>	
-	        <tfoot>
-	          <tr>
-	            <td wicket:id="paginatorEnergy"></td>
-	          </tr>
-	        </tfoot>	
-	      </table>		
-      	  </div>
-	      <div class="clear"></div>		
-	    </form>
-  </div>
-</div>
-<!-- End Status Messages -->   
+     </p-->
+				<div wicket:id="EnergySystemLogContainer">
+
+					<script type="text/javascript">
+						$(document).ready(function() {
+							$("#EnergySystemLogTable").tablesorter();
+						});
+					</script>
+
+					<table id="EnergySystemLogTable" cellpadding="0" cellspacing="0"
+						class="tablesorter log" width="100%">
+						<thead>
+							<tr>
+								<th>System</th>
+								<th>Type</th>
+								<th>Time</th>
+								<th>Message</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr wicket:id="EnergyStatusMessages">
+								<td wicket:id="EnergySystemName">System Name Goes Here</td>
+								<td wicket:id="EnergyMessageType">Message Type Goes Here</td>
+								<td wicket:id="EnergyTimestamp">Time Goes Here</td>
+								<td wicket:id="EnergyMessageContent">Message Content Goes
+									Here</td>
+							</tr>
+						</tbody>
+						<tfoot>
+							<tr>
+								<td wicket:id="paginatorEnergy"></td>
+							</tr>
+						</tfoot>
+					</table>
+				</div>
+				<div class="clear"></div>
+			</form>
+		</div>
+	</div>
+	<!-- End Status Messages -->
 </wicket:extend>
 </html>
