@@ -1,7 +1,9 @@
 package edu.hawaii.systemh.api;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * Defines the legal names to be used in the SystemH API.
@@ -33,6 +35,7 @@ public class ApiDictionary {
     KITCHEN,
     /** The bathroom. */
     BATHROOM 
+
     }
 
   /** All state variables names. */
@@ -189,26 +192,59 @@ public class ApiDictionary {
   /** All command names. */
   public enum SystemHCommandType { 
     /** For aquaponics. */
-    FEED_FISH,
+    FEED_FISH(SystemHSystem.AQUAPONICS,"/aquaponics/fish/feed"),
     /** For aquaponics. */
-    HARVEST_FISH,
+    HARVEST_FISH(SystemHSystem.AQUAPONICS,"/aquaponics/fish/harvest"),
     /** For aquaponics. */
-    SET_PH,
+    SET_PH(SystemHSystem.AQUAPONICS,"/aquaponics/ph"),
     /** For aquaponics. */
-    SET_WATER_LEVEL,
+    SET_WATER_LEVEL(SystemHSystem.AQUAPONICS,"/aquaponics/water/level"),
     /** For aquaponics, hvac. */
-    SET_TEMPERATURE,
+    SET_TEMPERATURE(SystemHSystem.HVAC,"hvac/temperature",
+                    SystemHSystem.AQUAPONICS,"aquaponics/temperature"),
     /** For Hvac. */
-    SET_HVAC_ENABLED,
+    SET_HVAC_ENABLED(SystemHSystem.HVAC,"/hvac/enabled"),
     /** For aquaponics. */
-    SET_NUTRIENTS,
+    SET_NUTRIENTS(SystemHSystem.AQUAPONICS,"/aquaponics/nutrients"),
     /** For lighting. */
-    SET_LIGHTING_LEVEL,
+    SET_LIGHTING_LEVEL(SystemHSystem.LIGHTING,"/lighting/level"),
     /** For lighting. */
-    SET_LIGHTING_COLOR,
+    SET_LIGHTING_COLOR(SystemHSystem.LIGHTING,"/lighting/color"),
     /** For lighting. */ 
-    SET_LIGHTING_ENABLED 
-    }
+    SET_LIGHTING_ENABLED(SystemHSystem.LIGHTING,"/lighting/enabled");
+    
+    //map of SystemHSystems to uri ending for each variable.
+    //This is mostly for the SET_TEMPERATURE enum which is
+    //in the scope of both HVAC and AQUAPONICS.
+    private Map<SystemHSystem,String> uriMap;
+    
+    /**
+     * Creates a new SystemHCommandType given the SystemHSystem 
+     * to which the command belongs, and a String representing the URI ending.
+     * Multiple entries can be added at a time, but the SystemHSystem must
+     * immediately preceed the URI String.
+     * @param var A variable list of Objects, following the pattern
+     *         {SystemHSystem, String} zero or more times.
+     */
+    SystemHCommandType(Object ...var) {
+      uriMap = new HashMap<SystemHSystem,String>();
+       for (int i = 0; i < var.length; i += 2) {  
+         uriMap.put((SystemHSystem)var[i],(String) var[i + 1]); 
+         }
+       } 
+    
+    /**
+     * Returns the URI ending for a SystemHCommandType given the SystemHSystem.
+     * For example, SystemHCommandType.SET_TEMPERATURE.getUri(SystemHSystem.HVAC))
+     * will return hvac/temperature.
+     * @param system The SystemHSystem to which the CommandType is associated.
+     * @return A String representation of the URI Ending for that particular 
+     * SystemHSystem-SystemHCommand pairing.
+     */
+    public String getUri(SystemHSystem system) {
+      return uriMap.get(system);
+    } 
+  }
   
   /** Indicates the possible types of SystemStatusMessages.  */
   public enum SystemStatusMessageType { 
