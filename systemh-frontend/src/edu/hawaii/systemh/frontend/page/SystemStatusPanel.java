@@ -28,12 +28,19 @@ public class SystemStatusPanel extends SystemPanel {
    * System Status values.
    */
   public enum SystemStatus {
-    OK, CAUTION, WARNING
+    /** System OK. */
+    OK,
+    
+    /** System getting close to bad. */
+    CAUTION,
+    
+    /** Something wrong with the system. */
+    WARNING
   };
 
-  private final String ORB_OK = "images/icons/ball_green.png";
-  private final String ORB_CAUTION = "images/icons/ball_yellow.png";
-  private final String ORB_WARNING = "images/icons/ball_red.png";
+  private static final String ORB_OK = "images/icons/ball_green.png";
+  private static final String ORB_CAUTION = "images/icons/ball_yellow.png";
+  private static final String ORB_WARNING = "images/icons/ball_red.png";
 
   /**
    * Serial ID.
@@ -125,7 +132,8 @@ class SystemStatusObj implements Serializable {
   /**
    * Default Construtor.
    * 
-   * @param link String
+   * @param linkLabel String
+   * @param linkClass Class
    * @param status SystemStatus
    */
   public SystemStatusObj(String linkLabel, Class<? extends Page> linkClass, SystemStatus status) {

@@ -52,6 +52,7 @@ public abstract class SystemPanel extends Panel implements IHeaderContributor {
    * Adds the component to the panel.
    * 
    * @param comp Component
+   * @return component
    */
   public Component addToPanel(Component comp) {
     return this.panel.add(comp);
@@ -59,6 +60,7 @@ public abstract class SystemPanel extends Panel implements IHeaderContributor {
 
   /**
    * Renders the javascript on the page.
+   * @param response IHeaderResponse
    */
   @Override
   public void renderHead(IHeaderResponse response) {

@@ -43,6 +43,7 @@ public class Energy extends Header {
 
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
+  private static final String pieColors = "0000FF|000000";
 
   EnergyChartData chartData;
   EnergyManagementChartInterface chartInterface;
@@ -205,13 +206,15 @@ public class Energy extends Header {
     chartData.populateFromDataMap();
     
     String[] labels = chartData.getLabelString();
+    String pmd = "";
     StringBuffer buf = new StringBuffer();
     for (int i = 0; i < labels.length; i++) {
       if (i == labels.length - 1) {
         buf.append(labels[i]);
       }
       else {
-        buf.append(labels[i] + "|");
+        pmd = labels[i] + "|";
+        buf.append(pmd);
       }
     }
     String labelString = buf.toString();
@@ -222,7 +225,8 @@ public class Energy extends Header {
         buf.append(values[0][i]);
       }
       else {
-        buf.append(values[0][i] + ",");
+        pmd = values[0][i] + ",";
+        buf.append(pmd);
       }
     }
     String valueString = buf.toString();
@@ -232,7 +236,8 @@ public class Energy extends Header {
         buf.append(values[0][i]);
       }
       else {
-        buf.append(values[0][i] + "|");
+        pmd = values[0][i] + "|";
+        buf.append(pmd);
       }
     }
     String valueLabels = buf.toString();
@@ -253,30 +258,30 @@ public class Energy extends Header {
       break;
     case DEVICES_LOAD_DAY:
       title = "Device Consumption Past Day";
-      colors = "0000FF|000000";
+      colors = pieColors;
       break;
     case DEVICES_LOAD_WEEK:
       title = "Device Consumption Past Week";
-      colors = "0000FF|000000";
+      colors = pieColors;
       break;
     case DEVICES_LOAD_MONTH:
       title = "Device Consumption Past Month";
-      colors = "0000FF|000000";
+      colors = pieColors;
       break;
     case SYSTEM_LOAD_DAY:
       title = "System Consumption Past Day";
-      colors = "0000FF|000000";
+      colors = pieColors;
       break;
     case SYSTEM_LOAD_WEEK:
       title = "System Consumption Past Week";
-      colors = "0000FF|000000";
+      colors = pieColors;
       break;
     case SYSTEM_LOAD_MONTH:
       title = "System Consumption Past Month";
-      colors = "0000FF|000000";
+      colors = pieColors;
       break;
     default:
-      colors = "0000FF|000000";
+      colors = pieColors;
     }
     return "http://chart.apis.google.com/chart" 
         + "?chs=500x300" + "&cht=p" 

@@ -68,11 +68,15 @@ public class TestEnergy {
     tester.assertComponent("CurrentWeatherHeader", Label.class);
     tester.assertComponent("OutsideTemperatureHeader", Label.class);
     tester.assertComponent("InsideTemperatureHeader", Label.class);
-    tester.assertComponent("DayGraph", WebMarkupContainer.class);
-    tester.assertComponent("WeekGraph", WebMarkupContainer.class);
-    tester.assertComponent("MonthGraph", WebMarkupContainer.class);
-    tester.assertComponent("CurrentConsumption", Label.class);
-    tester.assertComponent("CurrentGeneration", Label.class);
+    tester.assertComponent("DayConsumptionGraph", WebMarkupContainer.class);
+    tester.assertComponent("WeekConsumptionGraph", WebMarkupContainer.class);
+    tester.assertComponent("MonthConsumptionGraph", WebMarkupContainer.class);
+    tester.assertComponent("DayDevicesGraph", WebMarkupContainer.class);
+    tester.assertComponent("WeekDevicesGraph", WebMarkupContainer.class);
+    tester.assertComponent("MonthDevicesGraph", WebMarkupContainer.class);
+    tester.assertComponent("DaySystemGraph", WebMarkupContainer.class);
+    tester.assertComponent("WeekSystemGraph", WebMarkupContainer.class);
+    tester.assertComponent("MonthSystemGraph", WebMarkupContainer.class);
    
     // The following line is useful for seeing what's on the page.
     //tester.debugComponentTrees();
