@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.SeekBar;
+import android.widget.TextView;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
 
@@ -13,45 +15,152 @@ import edu.hawaii.systemh.android.menu.Menu;
  * Activity to start the aquaponics page.
  * 
  * @author Group H
- *
+ * 
  */
 public class Aquaponics extends Activity {
 
-  /** 
-   * Called when the activity is first created. 
-   * @param savedInstanceState - A mapping from String values to various Parcelable types.
-   */
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
+    SeekBar temp;
+    SeekBar ph;
+    SeekBar level;
+    SeekBar nutrients;
 
-    // requesting to turn the title OFF
-    requestWindowFeature(Window.FEATURE_NO_TITLE);
+    TextView tempValue;
+    TextView phValue;
+    TextView levelValue;
+    TextView nutrientsValue;
 
-    // making it full screen
-    getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-        WindowManager.LayoutParams.FLAG_FULLSCREEN);
+    /**
+     * Called when the activity is first created.
+     * 
+     * @param savedInstanceState
+     *            - A mapping from String values to various Parcelable types.
+     */
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
-    setContentView(R.layout.aquaponics);
-  }
+        // requesting to turn the title OFF
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-  /**
-   * Take the user to the menu.
-   * @param view The view.
-   */
-  public void showMenu(View view) {
-    Intent intent = new Intent(Intent.ACTION_VIEW);
-    intent.setClassName(this, Menu.class.getName());
-    startActivity(intent);
-  }
+        // making it full screen
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
-  /**
-   * Destroys this activity when onStop is called.
-   */
-  @Override
-  protected void onStop() {
-    finish();
-    super.onDestroy();
-  }
+        setContentView(R.layout.aquaponics);
+
+        /** Water Temperature **/
+        temp = (SeekBar) this.findViewById(R.id.tempSeekbar);
+        tempValue = (TextView) this.findViewById(R.id.tempValue);
+        temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                    boolean fromUser) {
+                // TODO Auto-generated method stub
+                tempValue.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        /** PH Level **/
+        ph = (SeekBar) this.findViewById(R.id.phSeekBar);
+        phValue = (TextView) this.findViewById(R.id.phValue);
+        ph.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                    boolean fromUser) {
+                // TODO Auto-generated method stub
+                phValue.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        /** Water Level **/
+        level = (SeekBar) this.findViewById(R.id.levelSeekBar);
+        levelValue = (TextView) this.findViewById(R.id.levelValue);
+        level.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress,
+                    boolean fromUser) {
+                // TODO Auto-generated method stub
+                levelValue.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        /** Water Nutrients **/
+        nutrients = (SeekBar) this.findViewById(R.id.nutrientsSeekBar);
+        nutrientsValue = (TextView) this.findViewById(R.id.nutrientsValue);
+        nutrients
+        .setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar,
+                    int progress, boolean fromUser) {
+                // TODO Auto-generated method stub
+                nutrientsValue.setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+    }
+
+    /**
+     * Take the user to the menu.
+     * 
+     * @param view
+     *            The view.
+     */
+    public void showMenu(View view) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setClassName(this, Menu.class.getName());
+        startActivity(intent);
+    }
+
+    /**
+     * Destroys this activity when onStop is called.
+     */
+    @Override
+    protected void onStop() {
+        finish();
+        super.onDestroy();
+    }
 
 }
