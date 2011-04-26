@@ -16,12 +16,12 @@ public class Simulator {
    * @return a double representing the distance from noon.
    */
   public static double getTime() {  
-                                                 //DC time zone is "EDT"
+                                              //DC time zone is "EDT"
                                               //Hawaii timezone is "HST"
     Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("HST"));  
     double rough = calendar.get(Calendar.HOUR_OF_DAY) - 12.0;  
-    int multiplier = 1;  
- 
+    int multiplier = 1;
+
     //Create a double representing time with 
     //hour as the whole number,
     //minutes as the first two decimal places,
@@ -31,7 +31,7 @@ public class Simulator {
     double fine = calendar.get(Calendar.MINUTE) / 60.0;
     fine += calendar.get(Calendar.SECOND) / 6000.0;
     fine += calendar.get(Calendar.MILLISECOND) / 10000000.0;
-    
+
     //essentially, were taking the distance from noon, so
     //fine should be negative in the morning (when rough
     //is negative).
@@ -42,27 +42,19 @@ public class Simulator {
     //value between 0 and 100.
     return rough + fine * multiplier; 
   }
-  
-  /**
-   * Returns the temp based on time.
-   * @return double temp.
-   */
-  public static double getTemp() {
-    return getTemp(getTime());
-    }
-  
+
   /**
    * Returns the temp based on time.
    * @param time - a double representing the time given by getTime().
    * @return a double representing the temperature in F.
    */
-  public static double getTemp(double time) {
+  public static double getTemp() {
     //Using the basic formula   y = 12.5*sin((x/4)-7)
     //average temperature in DC is between 50 and 75 F, see link below...
     //http://www.wunderground.com/history/airport/KDCA/2011/10/21/MonthlyHistory.
     //html?req_city=NA&req_state=NA&req_statename=NA
     
-    double seed = time / 4.0 - 5.1; 
+    double seed = getTime() / 4.0 - 5.1; 
     return 12.5 * Math.sin(seed) + 62.5; 
   }
   /**
@@ -90,8 +82,6 @@ public class Simulator {
     System.out.println("Time = " + getTime());
     System.out.println("Solar Intensity = " +  getSolarIntensity());
     System.out.println("Temp = " +  getTemp()); 
-    for (double i = -12; i <= 12; ++i) { System.out.println(i + " " + getTemp(i));
-      
-    }
+//    for (double i = -12; i <= 12; ++i) { System.out.println(i + " " + getTemp()); }
   }
 }
