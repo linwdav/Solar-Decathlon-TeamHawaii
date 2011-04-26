@@ -1,6 +1,7 @@
 package edu.hawaii.systemh.housemodel.misc;
 
 import edu.hawaii.systemh.housemodel.Device;
+import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
 import edu.hawaii.systemh.housemodel.System;
 
 /**
@@ -25,14 +26,25 @@ public class MiscSystem extends System {
    */
   private void initDeviceValues() {
 
-    Device refrigerator = new Device("REFRIGERATOR");
+    Device refrigerator = new Device(EnergyConsumptionDevice.REFRIGERATOR.toString());
     double[] refrigEntries = {17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
                               17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
                               17, 17, 17, 17};
     for (int i = 0; i < 24; i++) {
       refrigerator.addHourEntry(i, refrigEntries[i]);
     }
+    
+    Device freezer = new Device(EnergyConsumptionDevice.FREEZER.toString());
+    double[] freezerEntries = {13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5,
+                               13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5,
+                               13.5, 13.5, 13.5, 13.5};
+    for (int i = 0; i < 24; i++) {
+      freezer.addHourEntry(i, freezerEntries[i]);
+    }
+    
     //deviceList.add(refrigerator);
     deviceMap.put(refrigerator.getDeviceName(), refrigerator);
+    deviceMap.put(freezer.getDeviceName(), freezer);
+
   }
 }

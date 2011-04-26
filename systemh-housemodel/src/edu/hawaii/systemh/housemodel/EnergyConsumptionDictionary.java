@@ -16,29 +16,38 @@ public class EnergyConsumptionDictionary {
    */
   public enum EnergyConsumptionDevice {
 
-    /** Refidgerator. **/
-    REFRIDGERATOR, 
+    /** Refrigerator. **/
+    REFRIGERATOR, 
     
     /** Freezer. **/
     FREEZER, 
     
+    /** Home Electronic System. **/
+    HOME_ELECTRONIC,
+    
     /** Dishwasher. **/
     DISHWASHER, 
     
-    /** Washer and Dryer. **/
-    WASHER_DRYER,
-
-    /** Stereo system. **/
-    STEREO_SYSTEM, 
+    /** Washer. **/
+    CLOTHES_WASHER,
     
-    /** TV. **/
-    TELEVISION,
+    /** Dryer. **/
+    CLOTHES_DRYER,
 
-    /** Ventilation Fan. **/
-    VENTILATION_FAN, 
+    /** The heating and cooling system. **/
+    HEATING_COOLING,
     
-    /** Solar Thermal Controller. **/
-    SOLAR_THERMAL_CONTROLLER,
+    /** Cooking appliance. **/
+    COOKING,
+    
+    /** Humidifier. **/
+    HUMIDIFIER,
+    
+    /** The lighting in the home. **/
+    LIGHTING,
+    
+    /** Hot water usage. **/
+    HOT_WATER,
 
     /** Handles miscellaneous other devices that
      *  are not individually tracked.
