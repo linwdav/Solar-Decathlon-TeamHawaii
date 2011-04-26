@@ -75,6 +75,7 @@ public class Lighting extends Header {
   private String buttonOff = "gray-button";
 
   private HiddenField<String> colorChange;
+  private HiddenField<String> colorChangeAll;
 
   private TextField<String> intensity;
   private int setLivingIntensity;
@@ -89,6 +90,7 @@ public class Lighting extends Header {
   // private Label colorFeedback;
   private Label intensityFeedback;
 
+  private String setColorAll = white;
   private String setColor = white;
   private String desiredLivingColor = white;
   private String desiredDiningColor = white;
@@ -103,6 +105,8 @@ public class Lighting extends Header {
 
   private Link<String> onButton;
   private Link<String> offButton;
+  private Link<String> allOnButton;
+  private Link<String> allOffButton;
 
   /**
    * Layout of page.
@@ -392,6 +396,38 @@ public class Lighting extends Header {
     // set markup id to true for ajax update
     offButton.setOutputMarkupId(true);
 
+    // the on button
+    allOnButton = new Link<String>("AllOnButton") {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      /**
+       * Turn on the light in this room.
+       */
+      public void onClick() {
+        handleRoomState(LIVING_ROOM, true);
+        handleRoomState(DINING_ROOM, true);
+        handleRoomState(KITCHEN, true);
+        handleRoomState(BATHROOM, true);
+      }
+    };
+
+    // the off button
+    allOffButton = new Link<String>("AllOffButton") {
+      private static final long serialVersionUID = 1L;
+
+      @Override
+      /**
+       * Turn off the light in this room.
+       */
+      public void onClick() {
+        handleRoomState(LIVING_ROOM, false);
+        handleRoomState(DINING_ROOM, false);
+        handleRoomState(KITCHEN, false);
+        handleRoomState(BATHROOM, false);
+      }
+    };
+
     // set the buttons according to user's current dropdownchoice
     if (LIVING_ROOM.equals(currentRoom)) {
       setButtons(livingState);
@@ -411,6 +447,41 @@ public class Lighting extends Header {
     intensityFeedback.setEscapeModelStrings(false);
     intensityFeedback.setOutputMarkupId(true);
 
+    colorChangeAll = new HiddenField<String>("colorchangeall", new Model<String>(setColorAll));
+    // Added for jquery control.
+    colorChangeAll.setMarkupId(colorChangeAll.getId());
+    colorChangeAll.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 1L;
+
+      /**
+       * Updates the model when the value is changed on screen.
+       */
+      @Override
+      protected void onUpdate(AjaxRequestTarget target) {
+        setColorAll = colorChangeAll.getDefaultModelObjectAsString();
+
+        IHaleSystem system = IHaleSystem.LIGHTING;
+        IHaleCommandType command = IHaleCommandType.SET_LIGHTING_COLOR;
+
+          desiredLivingColor = setColorAll;
+          desiredDiningColor = setColorAll;
+          desiredKitchenColor = setColorAll;
+          desiredBathroomColor = setColorAll;
+          SolarDecathlonApplication.getBackend().doCommand(system, IHaleRoom.LIVING, command,
+              setColorAll);
+          SolarDecathlonApplication.getBackend().doCommand(system, IHaleRoom.DINING, command,
+              setColorAll);
+          SolarDecathlonApplication.getBackend().doCommand(system, IHaleRoom.KITCHEN, command,
+              setColorAll);
+          SolarDecathlonApplication.getBackend().doCommand(system, IHaleRoom.BATHROOM, command,
+              setColorAll);
+        }
+
+    });
     colorChange = new HiddenField<String>("colorchange", new Model<String>(setColor));
     // Added for jquery control.
     colorChange.setMarkupId(colorChange.getId());
@@ -476,6 +547,7 @@ public class Lighting extends Header {
     });
 
     add(colorChange);
+    add(colorChangeAll);
     form.add(intensityFeedback);
     add(form);
 
@@ -521,6 +593,8 @@ public class Lighting extends Header {
     add(roomForm);
     add(onButton);
     add(offButton);
+    add(allOnButton);
+    add(allOffButton);
     // add(form);
   }
 
@@ -550,6 +624,39 @@ public class Lighting extends Header {
     });
 
     offButton.add(new AbstractBehavior() {
+
+      // support serialization
+      private static final long serialVersionUID = 1L;
+
+      public void onComponentTag(Component component, ComponentTag tag) {
+        if (enabled) {
+          tag.put(CLASS, buttonOff);
+        }
+        else {
+          tag.put(CLASS, buttonOn);
+        }
+      }
+    });
+
+    allOnButton.add(new AbstractBehavior() {
+      // support serialization
+      private static final long serialVersionUID = 1L;
+
+      public void onComponentTag(Component component, ComponentTag tag) {
+        if (DEBUG) {
+          System.out.println("state: " + enabled);
+        }
+
+        if (enabled) {
+          tag.put(CLASS, buttonOn);
+        }
+        else {
+          tag.put(CLASS, buttonOff);
+        }
+      }
+    });
+
+    allOffButton.add(new AbstractBehavior() {
 
       // support serialization
       private static final long serialVersionUID = 1L;

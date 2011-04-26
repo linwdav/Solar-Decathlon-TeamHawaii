@@ -14,6 +14,18 @@ $(function(){
     	showInput:true,
     	title:false
     });
+
+    $("#icolor2").icolor({
+    	flat:true,
+    	onSelect:function(c){
+    		this.$tb.css("background-color",c);
+    		$("#colorchangeall").val(c);
+    		$("#colorchangeall").change();
+    	},
+    	showInput:true,
+    	title:false
+    });
+  
   
 	// Slider for brightness
 	$('#sliderBright').slider({
@@ -83,25 +95,23 @@ function toggleOnOff(x) {
 
 <h1>Lighting</h1>
 
-<div class="column-three">
+<div class="column-two" height="400">
   <div class="inner">
-    <div class="box">
-      <h2>General Settings</h2>     
+    <div class="box" style="padding-bottom:20px;">
+      <h2>Room Settings</h2>     
       <div class="clear"></div>
-      <div class="column-two" style="width:40%">
-      	<h5 class="dark-purple" style="margin-bottom:0px;">Room</h5>
-       <div class="clear"></div>
-        <form wicket:id="roomForm">
+      	<div class="column-four"><h5 class="dark-purple" style="margin-bottom:0px;">Select Room: </h5></div>
+        <div class="column-four-three"><form wicket:id="roomForm">
            <select wicket:id="room">               
            </select>
-           </form>
-            </div>
-		<div class="column-two" style="width:60%">
-		  <h5 class="dark-purple" style="margin-bottom:0px;">Brightness</h5>
-
-        <div class="clear"></div>
+        </form>
+		</div>
+		<br /><br />
+	<div style="background: #fff; border: 1px solid #ccc; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; clear: both; padding-top: 20px; padding-left:40px; padding-right:40px; padding-bottom:290px;">	
+        <div class="column-two">
         <form wicket:id="form">
-        <table class="bare" style="width:100%;">
+        <h5 class="dark-purple" style="margin-bottom:0px;">Brightness: </h5>
+        <table class="bare" style="width:50%;">
           <tr>
           	<td style="width:100%;" colspan="2"><div id="sliderBright"></div></td>
           </tr>
@@ -112,35 +122,65 @@ function toggleOnOff(x) {
           </tr>
           <tr>
           	<td colspan="1" align="center">
-              <input wicket:id="SubmitIntensity" class="gray-button" type="submit" value="Change" style="color: #333333;"/>
+              <input wicket:id="SubmitIntensity" class="gray-button" type="submit" value="Change" style="color: #FFFFFF;"/>
             </td>
           	<td colspan="1" width="40%">
-              <div style="width:100%;margin-top:3px;border: 3px #DDD solid;" align="center"><span wicket:id="intensityfeedback"></span></div>
+              <span wicket:id="intensityfeedback"></span>
             </td>
           </tr>          
         </table>
 
         </form>
-      </div>
-      <div class="clear"></div>
-      <div class="column-two">
- 	     <h5 class="dark-purple" style="margin-bottom:1px;">Lights</h5>
- 	     <div class="clear"></div>
- 	     <a wicket:id="OnButton"  class="green-button" >On</a>&nbsp;
- 	     <a wicket:id="OffButton"  class="gray-button" >Off</a>
- 	  </div>
- 	  <div class="clear"></div>
- 	  <h5 class="dark-purple" style="margin-top:20px; margin-bottom:-5px;">Color</h5>
-      <div id="icolor" class="icolorC">
-      	<input wicket:id="colorchange" type="hidden"/>    
-      </div>
+        <br /><br />
+        <h5 class="dark-purple" style="margin-bottom:1px;">Lights: </h5>
+ 	    <a wicket:id="OnButton"  class="green-button" >On</a>&nbsp;
+ 	    <a wicket:id="OffButton"  class="gray-button" >Off</a>
+ 	    </div>
+ 	    
+ 	    <div class="column-two">
+ 	     <h5 class="dark-purple" style="margin-bottom:-5px;">Color: </h5>
+     	 <div id="icolor" class="icolorC">
+      		<input wicket:id="colorchange" type="hidden"/>    
+      	</div>
+ 	    </div>
+ 	    
+	</div>
+	<div class="clear"></div>
+    </div>
+    <div class="clear"></div>
+  </div>
+  <div class="clear"></div>
+</div>
+
+<div class="column-two">
+  <div class="inner">
+    <div class="box">
+      <h2>Global Settings</h2>     
       <div class="clear"></div>
 
+	  <div style="padding-left:50px;">
+		<div class="column-two">
+ 	  	<h5 class="dark-purple" style="margin-bottom:-5px;">Color: </h5>
+     	 <div id="icolor2" class="icolorC">
+      		<input wicket:id="colorchangeall" type="hidden"/>    
+      	</div>
+      	</div>
+      	<div class="column-two">
+      	 <h5 class="dark-purple" style="padding-top:80px;padding-left:90px;margin-bottom:2px;padding-right:-50px;">All Lights: </h5>
+ 	     <div style="padding-left:90px;">
+ 	     <a wicket:id="AllOnButton"  class="green-button" >On</a>&nbsp;
+ 	     <a wicket:id="AllOffButton"  class="gray-button" >Off</a>
+ 	     </div>
+ 	     </div>
+      </div>
+     
+      
+      <div class="clear"></div>
+      
     </div>
   </div>
 </div>
 
-<div class="column-three-two">
 <div class="inner">
 	<div class="box">
     <h2>Lighting Log</h2>
@@ -190,7 +230,7 @@ function toggleOnOff(x) {
 	    </form>
   </div>
 </div>
-</div>
+
 <!-- End Status Messages -->        
 
 
