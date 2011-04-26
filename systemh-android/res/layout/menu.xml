@@ -22,7 +22,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="100dip"
-			android:onClick="showAquaponicsPage">
+			android:onClick="showAquaponicsPage" android:drawableLeft="@drawable/aqua">
 	</Button>
 	
 	<Button android:text="@string/Lighting"
@@ -32,7 +32,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="20dip"
-			android:onClick="showLightingPage">
+			android:onClick="showLightingPage" android:drawableLeft="@drawable/lights">
 	</Button>
 	
 	<Button android:text="@string/Hvac"
@@ -42,7 +42,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="20dip"
-			android:onClick="showHvacPage">
+			android:onClick="showHvacPage" android:drawableLeft="@drawable/hvac">
 	</Button>
 	
 	<Button android:text="@string/Help"
@@ -52,7 +52,7 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="20dip"
-			android:onClick="showHelpPage">
+			android:onClick="showHelpPage" android:drawableLeft="@drawable/help">
 	</Button>
 	
 </LinearLayout>
