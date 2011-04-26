@@ -24,9 +24,9 @@
 			</fileset>
 		</unjar>
 
-	  <!-- ihale-api library -->
+	  <!-- systemh-api library -->
     <unjar dest="${tmp.dir}">
-      <fileset dir="${basedir}/ihale-api">
+      <fileset dir="${basedir}/systemh-api">
         <include name="*.jar" />
       </fileset>
     </unjar>
