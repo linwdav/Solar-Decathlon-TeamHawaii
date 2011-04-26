@@ -21,15 +21,32 @@ public class Device {
     this.deviceName = deviceName;
   }
   
+  /**
+   * Returns the device name.
+   *
+   * @return The device name.
+   */
   public String getDeviceName() {
     return this.deviceName;
   }
   
+  /**
+   * Adds an entry to the energyConsumptionByHourOfDay array with hour parameter as the array index 
+   * and the amount of energy consumed for this device at that hour as its value.
+   *
+   * @param hour The hour.
+   * @param value The amount of energy consumed by the device at that hour.
+   */
   public void addHourEntry(int hour, double value) {
     Device.energyConsumptionByHourOfDay[hour] = value;
   }
   
+  /**
+   * Returns an array containing a daily report of the energy consumption of this device.
+   *
+   * @return An array containing a daily recording of the energy consumption of this device.
+   */
   public double[] getEnergyArray() {
-    return Device.energyConsumptionByHourOfDay;
+    return Device.energyConsumptionByHourOfDay.clone();
   }
 }

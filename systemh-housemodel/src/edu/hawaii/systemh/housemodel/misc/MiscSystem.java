@@ -11,18 +11,25 @@ import edu.hawaii.systemh.housemodel.System;
  */
 public class MiscSystem extends System {
   
+  /**
+   * . . .
+   * @param systemName . . .
+   */
   public MiscSystem(String systemName) {
     super(systemName);
     initDeviceValues();
   }
   
-  public void initDeviceValues() {
+  /**
+   * . . .
+   */
+  private void initDeviceValues() {
 
     Device refrigerator = new Device("REFRIGERATOR");
     double[] refrigEntries = {17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
                               17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
                               17, 17, 17, 17};
-    for (int i = 0; i < 23; i++) {
+    for (int i = 0; i < 24; i++) {
       refrigerator.addHourEntry(i, refrigEntries[i]);
     }
     //deviceList.add(refrigerator);
