@@ -77,5 +77,4 @@ public class WeatherReport {
     cloudCover = conditionMap.get(weather);
     timestamp = time.longValue();
   }
-  
 }

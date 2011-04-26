@@ -21,10 +21,7 @@
     <unjar dest="${tmp.dir}">
       <fileset dir="${lib.dir}/restlet">
         <include name="*.jar" />
-      </fileset>
-      <fileset dir="${basedir}/systemh-api">
-        <include name="*.jar" />
-      </fileset>
+      </fileset> 
     </unjar>
 
     <jar destfile="${basedir}/${system.name}.jar" basedir="${tmp.dir}">

@@ -20,16 +20,10 @@
     </path>
   </target>
   
-  <!-- Pointer to the ihale-api library, temporarily bundled with this system. -->
-  <path id="systemh-api.path">
-    <fileset dir="${basedir}/systemh-api">
-      <include name="*.jar" />
-    </fileset>
-  </path>
 
   <!-- Basic properties for this system. -->
-  <property name="system.name" value="systemh-model-behavior" />
-  <property name="system.main.class" value="edu.hawaii.ihale.model.behavior.BehavioralModel" />
+  <property name="system.name" value="systemh-model-behavioral" />
+  <property name="system.main.class" value="edu.hawaii.systemh.model.behavior.Simulator" />
 
   <property name="majorVersionNumber" value="1" />
   <property name="minorVersionNumber" value="0" />
