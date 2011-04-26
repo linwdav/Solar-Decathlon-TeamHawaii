@@ -13,9 +13,9 @@
     <ivy:retrieve organisation="org.junit" module="junit" revision="${junit.version}" pattern="${lib.dir}/junit/[artifact].[ext]" sync="true" inline="true" conf="default" log="download-only" transitive="false" type="jar" />
     <path id="junit.path" location="${lib.dir}/junit/junit.jar" />
 
-    <!-- Pointer to the ihale-api library. -->
-    <path id="ihale-api.path">
-      <fileset dir="${basedir}/ihale-api">
+    <!-- Pointer to the systemh-api library. -->
+    <path id="systemh-api.path">
+      <fileset dir="${basedir}/systemh-api">
         <include name="*.jar" />
       </fileset>
     </path>
@@ -43,7 +43,7 @@
   <path id="compile.classpath">
     <path refid="junit.path" />
     <path refid="restlet.path" />
-    <path refid="ihale-api.path" />
+    <path refid="systemh-api.path" />
   </path>
 
 

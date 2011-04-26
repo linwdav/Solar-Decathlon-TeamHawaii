@@ -7,7 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
 
 /**
  * Provides data on the Lighting system, as well as an XML representation.
@@ -400,9 +400,9 @@ public class LightingData {
     rootElement.setAttribute("timestamp", String.valueOf(new Date().getTime()));
     doc.appendChild(rootElement);
 
-    String levelString = IHaleState.LIGHTING_LEVEL.toString();
-    String enableString = IHaleState.LIGHTING_ENABLED.toString();
-    String colorString = IHaleState.LIGHTING_COLOR.toString();
+    String levelString = SystemHState.LIGHTING_LEVEL.toString();
+    String enableString = SystemHState.LIGHTING_ENABLED.toString();
+    String colorString = SystemHState.LIGHTING_COLOR.toString();
     
     // Create state tag.
     Element levelElement = doc.createElement("state");

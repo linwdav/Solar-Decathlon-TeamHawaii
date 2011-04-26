@@ -9,8 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
 
 /**
  * Provides data on the Photovoltaics system, as well as an XML representation.
@@ -234,11 +234,11 @@ public class PhotovoltaicsData {
     String system = "system";
     String tStamp = "timestamp";
     String stateKey = "state";
-    String pvString = IHaleSystem.PHOTOVOLTAIC.toString();
+    String pvString = SystemHSystem.PHOTOVOLTAIC.toString();
     String keyString = "key";
     String valueString = "value";
-    String energyString = IHaleState.ENERGY.toString();
-    String powerString = IHaleState.POWER.toString();
+    String energyString = SystemHState.ENERGY.toString();
+    String powerString = SystemHState.POWER.toString();
     
     changePoints(hour);
     Element parent = doc.getDocumentElement();

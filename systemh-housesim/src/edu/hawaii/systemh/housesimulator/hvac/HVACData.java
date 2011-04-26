@@ -9,8 +9,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
 
 /**
  * Provides data on the HVAC system, as well as an XML representation. Temperature values returned
@@ -523,11 +523,11 @@ public class HVACData {
     // Re-initialize temperature values.
     modifySystemState();
     
-    String system = IHaleSystem.HVAC.toString();
+    String system = SystemHSystem.HVAC.toString();
     String device = "arduino-3";
     //String timestampString = timestamp.toString();
     String timestampString = String.valueOf(currentTime.getTime());
-    String temperatureString = IHaleState.TEMPERATURE.toString();
+    String temperatureString = SystemHState.TEMPERATURE.toString();
     int celsiusTemp = currentHomeTemp;
 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
@@ -571,10 +571,10 @@ public class HVACData {
     // Re-initialize temperature values.
     modifySystemState();
         
-    String system = IHaleSystem.HVAC.toString();
+    String system = SystemHSystem.HVAC.toString();
     String device = "arduino-3";
     String timestampString = timestamp.toString();
-    String temperatureString = IHaleState.TEMPERATURE.toString();
+    String temperatureString = SystemHState.TEMPERATURE.toString();
     int celsiusTemp = currentHomeTemp;
 
     // Get the root element, in this case would be <state-history> element.

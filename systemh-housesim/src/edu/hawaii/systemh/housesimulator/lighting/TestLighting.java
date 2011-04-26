@@ -12,8 +12,8 @@ import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHCommandType;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
 import edu.hawaii.systemh.housesimulator.SimulatorServer;
 
 /**
@@ -94,7 +94,7 @@ public class TestLighting {
     String value = ((Element) xmlList.item(0)).getAttribute("value");    
     
     // Check the key.
-    assertEquals("Checking that key is level", key, IHaleState.LIGHTING_LEVEL.toString());
+    assertEquals("Checking that key is level", key, SystemHState.LIGHTING_LEVEL.toString());
 
     // Return the level value for the specified room.
     return value;
@@ -125,13 +125,13 @@ public class TestLighting {
     String name = "name";
     
     if ("level".equals(command)) {
-      rootElement.setAttribute(name, IHaleCommandType.SET_LIGHTING_LEVEL.toString());
+      rootElement.setAttribute(name, SystemHCommandType.SET_LIGHTING_LEVEL.toString());
     }
     else if ("color".equals(command)) {
-      rootElement.setAttribute(name, IHaleCommandType.SET_LIGHTING_COLOR.toString());
+      rootElement.setAttribute(name, SystemHCommandType.SET_LIGHTING_COLOR.toString());
     }
     else if ("enabled".equals(command)) {
-      rootElement.setAttribute(name, IHaleCommandType.SET_LIGHTING_ENABLED.toString());
+      rootElement.setAttribute(name, SystemHCommandType.SET_LIGHTING_ENABLED.toString());
     }
 
     doc.appendChild(rootElement);

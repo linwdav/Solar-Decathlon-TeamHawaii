@@ -8,7 +8,7 @@ import org.restlet.resource.ServerResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHCommandType;
 
 /**
  * A server resource that will handle requests regarding the HVAC system. 
@@ -45,7 +45,7 @@ public class HVACPutResource extends ServerResource {
     String putCommand = (String) this.getRequestAttributes().get("putcommand");
     
     if ("temperature".equals(putCommand) && 
-        IHaleCommandType.SET_TEMPERATURE.toString().equals(command)) {
+        SystemHCommandType.SET_TEMPERATURE.toString().equals(command)) {
       HVACData.setDesiredTemp(Integer.parseInt(arg));
       HVACData.modifySystemState();
     }

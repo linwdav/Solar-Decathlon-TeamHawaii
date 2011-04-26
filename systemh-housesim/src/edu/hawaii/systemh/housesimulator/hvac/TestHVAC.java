@@ -13,9 +13,9 @@ import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
-import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHCommandType;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
+import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
 import edu.hawaii.systemh.housesimulator.SimulatorServer;
 
 /**
@@ -75,7 +75,7 @@ public class TestHVAC {
 
     // Create root tag
     Element rootElement = doc.createElement("command");
-    rootElement.setAttribute("name", IHaleCommandType.SET_TEMPERATURE.toString());
+    rootElement.setAttribute("name", SystemHCommandType.SET_TEMPERATURE.toString());
     doc.appendChild(rootElement);
 
     // Create state tag.
@@ -231,7 +231,7 @@ public class TestHVAC {
     String systemName = stateData.getAttribute(systemNameAttributeName);
     String deviceName = stateData.getAttribute(deviceNameAttributeName);
     
-    assertEquals("Checking for system name", IHaleSystem.HVAC.toString(), systemName);
+    assertEquals("Checking for system name", SystemHSystem.HVAC.toString(), systemName);
     assertEquals("Checking for device name", "arduino-3", deviceName);
     
     // Retrieve a child node from the Document object. Represents state data.
@@ -241,7 +241,7 @@ public class TestHVAC {
     String key = ((Element) xmlList.item(0)).getAttribute("key");
     String value = ((Element) xmlList.item(0)).getAttribute(valueAttributeString);
 
-    String temperatureString = IHaleState.TEMPERATURE.toString();
+    String temperatureString = SystemHState.TEMPERATURE.toString();
     
     assertEquals("Checking that key is TEMPERATURE", key, temperatureString);
     
@@ -267,7 +267,7 @@ public class TestHVAC {
 
     // Create root tag
     Element rootElement = doc.createElement("command");
-    rootElement.setAttribute("name", IHaleCommandType.SET_TEMPERATURE.toString());
+    rootElement.setAttribute("name", SystemHCommandType.SET_TEMPERATURE.toString());
     doc.appendChild(rootElement);
 
     // Create state tag.
