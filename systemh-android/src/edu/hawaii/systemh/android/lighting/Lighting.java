@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
 
@@ -23,7 +22,7 @@ import edu.hawaii.systemh.android.menu.Menu;
  */
 public class Lighting extends Activity implements ColorPickerDialog.OnColorChangedListener {
 
-  private TextView color;
+  private View color;
   private Spinner spinner;
 
   /**
@@ -44,7 +43,7 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
 
     setContentView(R.layout.lighting);
 
-    color = (TextView) findViewById(R.id.color);
+    color = (View) findViewById(R.id.color);
 
     spinner = (Spinner) findViewById(R.id.spinner);
     ArrayAdapter<CharSequence> adapter =
@@ -93,13 +92,14 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
   @Override
   public void colorChanged(String key, int color) {
 
-    int red = Color.red(color);
-    int green = Color.green(color);
-    int blue = Color.blue(color);
+    //int red = Color.red(color);
+    //int green = Color.green(color);
+    //int blue = Color.blue(color);
 
-    this.color.setText((String)spinner.getSelectedItem() + ": #" + Integer.toHexString(red)
-        + Integer.toHexString(green) + Integer.toHexString(blue));
-    this.color.setTextColor(color);
+    //this.color.setText("#" + Integer.toHexString(red)
+    //    + Integer.toHexString(green) + Integer.toHexString(blue));
+    //this.color.setTextColor(color);
+    this.color.setBackgroundColor(color);
 
   }
 
@@ -115,8 +115,11 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
       // need to read the current color for the selected room.
       // right now just using a default color.
-      color.setText(spinner.getSelectedItem() + ": #FFFFFF");
-      color.setTextColor(Color.WHITE);
+      //color.setText("#FFFFFF");
+      //color.setTextColor(Color.WHITE);
+            
+      // decimal value for hex #333333
+      color.setBackgroundColor(Color.WHITE);
     }
 
     @Override

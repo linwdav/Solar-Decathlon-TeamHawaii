@@ -35,39 +35,46 @@
 	android:text="@string/roomPrompt"
 	android:textSize="50sp"
 	android:layout_marginTop="40sp"
-	android:layout_below="@id/Title"
-	android:layout_centerHorizontal="true"
+	android:layout_below="@id/Title"	
 	/>
 
 <Spinner
 	android:id="@+id/spinner"
-	android:layout_width="fill_parent"
+	android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:textSize="50sp"
     android:prompt="@string/roomPrompt"
-    android:layout_below="@id/roomPrompt"    	
+    android:layout_marginLeft="20sp"
+    android:layout_marginTop="47sp"
+    android:layout_below="@id/Title"
+    android:layout_toRightOf="@id/roomPrompt"    	
+    android:background="#333333"
+    android:paddingLeft="20sp"
+ 	android:paddingRight="20sp"
 	/>
  	
-<Button android:text="@string/ChangeColor"
+<TextView android:text="@string/ChangeColor"
 	android:textSize="50sp"
-	android:id="@+id/changeColorButton"
+	android:id="@+id/changeColor"
 	android:layout_gravity="center" 
-	android:layout_width="fill_parent"
+	android:layout_width="wrap_content"
 	android:layout_height="wrap_content" 
 	android:layout_below="@id/spinner"
-	android:layout_marginTop="40dip"
-	android:onClick="changeColor"
+	android:layout_marginTop="40dip"	
 	/>
 
- <TextView
+ <View
  	android:id="@+id/color"
- 	android:layout_width="wrap_content"
- 	android:layout_height="wrap_content"
- 	android:text="@string/color"
+ 	android:layout_width="120sp"
+ 	android:layout_height="60sp" 	
  	android:textSize="50sp"
- 	android:layout_marginTop="40sp" 
- 	android:layout_below="@id/changeColorButton"
- 	android:layout_centerHorizontal="true"
+ 	android:layout_marginTop="45sp" 
+ 	android:layout_marginLeft="57sp"
+ 	android:layout_below="@id/spinner"
+ 	android:layout_toRightOf="@id/changeColor" 	
+ 	android:clickable="true"
+ 	android:onClick="changeColor"
+ 	android:background="#FFFFFF" 	
  	/>
 
 </RelativeLayout>
