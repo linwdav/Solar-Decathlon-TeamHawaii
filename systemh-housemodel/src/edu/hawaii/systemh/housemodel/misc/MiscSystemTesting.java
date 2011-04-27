@@ -14,7 +14,7 @@ public class MiscSystemTesting {
    * @param args . . .
    */
   public static void main(String args[]) { 
-    MiscSystem MS = new MiscSystem("MiscSystem");
+    MiscSystem MS = new MiscSystem();
     //double[] x = MS.getDeviceList().get(0).getEnergyArray();
     double[] x = MS.getDeviceMap().get("REFRIGERATOR").getEnergyArray();
     System.out.println(x[1]);

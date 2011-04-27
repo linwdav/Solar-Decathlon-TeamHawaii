@@ -1,10 +1,10 @@
 package edu.hawaii.systemh.housemodel.hvac;
 
 import java.util.List;
-import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
 import edu.hawaii.systemh.api.repository.TimestampDoublePair;
 import edu.hawaii.systemh.housemodel.Device;
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
+import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionSystem;
 import edu.hawaii.systemh.housemodel.System;
 
 /**
@@ -18,7 +18,7 @@ public class HvacSystem extends System {
    * Default Constructor.
    */
   public HvacSystem() {
-    super(SystemHSystem.HVAC.toString());
+    super(EnergyConsumptionSystem.HVAC.toString());
 
     Device temperature = new Device(EnergyConsumptionDevice.HEATING_COOLING.toString());
     double[] tempValues =

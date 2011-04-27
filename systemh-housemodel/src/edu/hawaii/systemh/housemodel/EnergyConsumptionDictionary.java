@@ -7,9 +7,29 @@ package edu.hawaii.systemh.housemodel;
  */
 public class EnergyConsumptionDictionary {
 
+  /**
+   * Represents the systems that will be tracked/monitored for energy consumption purposes.
+   *    *
+   * @author Leonardo Nguyen
+   * @version Java 1.6.0_21
+   */
+  public enum EnergyConsumptionSystem {
+    
+    /** Aquaponics. **/ 
+    AQUAPONICS,
+    
+    /** HVAC. **/
+    HVAC,
+    
+    /** Lighting. **/
+    LIGHTING,
+    
+    /** Contains all the devices not defined to an actual system within the SystemH home. **/
+    MISC
+  }
+  
   /** 
-   * Represents the devices that will be tracked/monitored
-   * for energy consumption purposes.
+   * Represents the devices that will be tracked/monitored for energy consumption purposes.
    * 
    * @author Kylan Hughes, Kevin Leong, Emerson Tabucol
    *
