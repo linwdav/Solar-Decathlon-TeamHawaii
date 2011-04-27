@@ -54,24 +54,7 @@ public class ApiDictionary {
     PH (Double.class), 
     /** Temperature: Integer (for aquaponics, hvac). */
     TEMPERATURE (Integer.class), 
-    
-    /** Whether hvac is on in a room: Boolean (for hvac). */
-    HVAC_ENABLED (Boolean.class) {
-      /** {@inheritDoc} */
-      @Override
-      public boolean isType(String stringValue) {
-        return isBooleanType(stringValue);
-      }
-    },
-
-    /** Requests for power setting: Boolean (on or off) (for hvac). */
-    SET_HVAC_ENABLED_COMMAND (Boolean.class) {
-      /** {@inheritDoc} */
-      @Override
-      public boolean isType(String stringValue) {
-        return isBooleanType(stringValue);
-      }
-    }, 
+      
     /** Water turbidity: Double (for aquaponics). */
     TURBIDITY (Double.class), 
     /** Water level: Integer. (for aquaponics). */
@@ -201,9 +184,7 @@ public class ApiDictionary {
     SET_WATER_LEVEL(SystemHSystem.AQUAPONICS,"/aquaponics/water/level"),
     /** For aquaponics, hvac. */
     SET_TEMPERATURE(SystemHSystem.HVAC,"hvac/temperature",
-                    SystemHSystem.AQUAPONICS,"aquaponics/temperature"),
-    /** For Hvac. */
-    SET_HVAC_ENABLED(SystemHSystem.HVAC,"/hvac/enabled"),
+                    SystemHSystem.AQUAPONICS,"aquaponics/temperature"),   
     /** For aquaponics. */
     SET_NUTRIENTS(SystemHSystem.AQUAPONICS,"/aquaponics/nutrients"),
     /** For lighting. */
