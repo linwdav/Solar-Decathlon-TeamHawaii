@@ -19,9 +19,10 @@
     	<item>Kitchen</item>
     	<item>Bathroom</item>
     </string-array>
-    	<string name="temperature">temperature:</string>
-    	<string name="waterTemp">Water Temperature</string>
-    	<string name="ph">PH</string>
-    	<string name="waterLevel">Water Level</string>
-    	<string name="waterNutrients">Water Nutrients</string>
+    <string name="brightness">Brightness:</string>
+    <string name="temperature">temperature:</string>
+    <string name="waterTemp">Water Temperature</string>
+    <string name="ph">PH</string>
+    <string name="waterLevel">Water Level</string>
+    <string name="waterNutrients">Water Nutrients</string>
 </resources>

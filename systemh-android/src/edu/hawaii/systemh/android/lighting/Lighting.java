@@ -10,6 +10,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
@@ -23,7 +24,7 @@ import edu.hawaii.systemh.android.menu.Menu;
 public class Lighting extends Activity implements ColorPickerDialog.OnColorChangedListener {
 
   private View color;
-  private Spinner spinner;
+  private SeekBar brightness;
 
   /**
    * Called when the activity is first created.
@@ -45,12 +46,33 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
 
     color = (View) findViewById(R.id.color);
 
-    spinner = (Spinner) findViewById(R.id.spinner);
+    Spinner spinner = (Spinner) findViewById(R.id.spinner);
     ArrayAdapter<CharSequence> adapter =
         ArrayAdapter.createFromResource(this, R.array.rooms, R.layout.spinner);
     adapter.setDropDownViewResource(R.layout.spinner_dropdown);
     spinner.setAdapter(adapter);
     spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
+    
+    brightness = (SeekBar) this.findViewById(R.id.brightnessSeekbar);
+    
+    brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+      @Override
+      public void onProgressChanged(SeekBar seekBar, int progress,
+              boolean fromUser) {
+          // do nothing
+      }
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+          // do nothing
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+          // send the http command to the lighting system
+      }
+  });
   }
 
   /**
@@ -113,13 +135,13 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+      
       // need to read the current color for the selected room.
-      // right now just using a default color.
-      //color.setText("#FFFFFF");
-      //color.setTextColor(Color.WHITE);
-            
-      // decimal value for hex #333333
+      // right now just using a default color.    
       color.setBackgroundColor(Color.WHITE);
+      
+      // set 50 for now...have to read value from the backend later.
+      brightness.setProgress(50);
     }
 
     @Override
