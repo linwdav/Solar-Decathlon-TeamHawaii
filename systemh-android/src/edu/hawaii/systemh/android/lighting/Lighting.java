@@ -12,6 +12,7 @@ import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.ToggleButton;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
 
@@ -25,6 +26,7 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
 
   private View color;
   private SeekBar brightness;
+  private ToggleButton lightSwitch;
 
   /**
    * Called when the activity is first created.
@@ -44,6 +46,23 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
 
     setContentView(R.layout.lighting);
 
+    lightSwitch = (ToggleButton) this.findViewById(R.id.ToggleButton);
+
+    lightSwitch.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+
+        if (lightSwitch.isChecked()) {
+          // do "on" and command
+          // to bypass the pmd error(empty if else statment)...just doing useless stuff for now
+          lightSwitch.setText("ON");
+        }
+        else {
+          // do "off" command
+          lightSwitch.setText("OFF");
+        }
+      }
+    });
+
     color = (View) findViewById(R.id.color);
 
     Spinner spinner = (Spinner) findViewById(R.id.spinner);
@@ -52,27 +71,26 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
     adapter.setDropDownViewResource(R.layout.spinner_dropdown);
     spinner.setAdapter(adapter);
     spinner.setOnItemSelectedListener(new MyOnItemSelectedListener());
-    
+
     brightness = (SeekBar) this.findViewById(R.id.brightnessSeekbar);
-    
+
     brightness.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
       @Override
-      public void onProgressChanged(SeekBar seekBar, int progress,
-              boolean fromUser) {
-          // do nothing
+      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        // do nothing
       }
 
       @Override
       public void onStartTrackingTouch(SeekBar seekBar) {
-          // do nothing
+        // do nothing
       }
 
       @Override
       public void onStopTrackingTouch(SeekBar seekBar) {
-          // send the http command to the lighting system
+        // send the http command to the lighting system
       }
-  });
+    });
   }
 
   /**
@@ -114,13 +132,13 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
   @Override
   public void colorChanged(String key, int color) {
 
-    //int red = Color.red(color);
-    //int green = Color.green(color);
-    //int blue = Color.blue(color);
+    // int red = Color.red(color);
+    // int green = Color.green(color);
+    // int blue = Color.blue(color);
 
-    //this.color.setText("#" + Integer.toHexString(red)
-    //    + Integer.toHexString(green) + Integer.toHexString(blue));
-    //this.color.setTextColor(color);
+    // this.color.setText("#" + Integer.toHexString(red)
+    // + Integer.toHexString(green) + Integer.toHexString(blue));
+    // this.color.setTextColor(color);
     this.color.setBackgroundColor(color);
 
   }
@@ -135,13 +153,15 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-      
+
       // need to read the current color for the selected room.
-      // right now just using a default color.    
+      // right now just using a default color.
       color.setBackgroundColor(Color.WHITE);
-      
+
       // set 50 for now...have to read value from the backend later.
       brightness.setProgress(50);
+      
+      // also have to read the room state (on / off) and change the toggle button value
     }
 
     @Override

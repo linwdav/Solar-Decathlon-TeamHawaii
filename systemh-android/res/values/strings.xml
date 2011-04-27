@@ -12,6 +12,7 @@
     <string name="Close">Close</string>
     <string name="ColorPicker">Pick a Color</string>
     <string name="ChangeColor">Change Color:</string>
+    <string name="lightSwitch">Light Switch:</string>
     <string name="roomPrompt">Choose a room:</string>
     <string-array name="rooms">
     	<item>Living Room</item>
