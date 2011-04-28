@@ -23,6 +23,7 @@
 			<fileset dir="${basedir}/ihale-api">
 				<include name="systemh-api.jar" />
 				<include name="systemh-backend.jar" />
+				<include name="systemh-energy-model.jar" />
 				<include name="wicket-googlecharts-api.jar" />
 			</fileset>
 			<fileset dir="${lib.dir}/wicket">
@@ -36,8 +37,7 @@
 				<include name="servlet-api-2.5.jar" />
 			</fileset>
 			<fileset dir="${lib.dir}/slf4j">
-				<include name="slf4j-api.jar" />
-				<include name="slf4j-simple.jar" />
+				<include name="*.jar" />
 			</fileset>
 			<fileset dir="${lib.dir}/restlet">
 				<include name="*.jar" />
