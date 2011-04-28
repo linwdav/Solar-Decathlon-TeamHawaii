@@ -60,7 +60,8 @@ public abstract class System {
   public abstract double getSystemCurrentLoad();
 
   /**
-   * Gets the congregate system device's current energy usage during a certain interval.
+   * Gets the congregate of each device's current energy usage during a certain interval associated
+   * with this system.
    * 
    * @param device EnergyConsumptionDevice
    * @param startTime Long

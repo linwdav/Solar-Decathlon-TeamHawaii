@@ -22,6 +22,13 @@
 			<include name="*.jar" />
 		</fileset>
 	</path>
+  
+  <!-- Pointer to the ihale-api library, temporarily bundled with this system. -->
+  <path id="commons-lang.path">
+    <fileset dir="${basedir}/commons-lang">
+      <include name="*.jar" />
+    </fileset>
+  </path>
 
 	<!-- Basic properties for this system. -->
 	<property name="system.name" value="systemh-housemodel" />
@@ -38,6 +45,7 @@
 	<path id="compile.classpath">
 		<path refid="junit.path" />
 		<path refid="systemh-api.path" />
+	  <path refid="commons-lang.path" />
 	</path>
 
 

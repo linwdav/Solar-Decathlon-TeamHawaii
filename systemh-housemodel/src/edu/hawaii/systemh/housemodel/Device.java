@@ -1,7 +1,8 @@
 package edu.hawaii.systemh.housemodel;
 
 /**
- * . . .
+ * A device or appliance within the SystemH home. Contains information regarding the device's
+ * energy usage by the hour throughout the day. All energy measurements are in Watts/h.
  *
  * @author Leonardo Nguyen, Kurt Teichman , Bret K. Ikehara
  * @version Java 1.6.0_21
@@ -10,7 +11,8 @@ public class Device {
 
   /** The device name. **/
   private String deviceName;
-  /** The device's consumption of energy throughout the hours of the day. **/
+  /** The device's consumption of energy throughout the hours of the day. There are 24 entries,
+   *  to represent each hour throughout the day. **/
   private static final double[] energyConsumptionByHourOfDay = new double[24];
   
   /**
@@ -49,6 +51,19 @@ public class Device {
    */
   public double getEnergyConsumptionByHourOfDay(int hour) {
     return Device.energyConsumptionByHourOfDay[hour];
+  }
+  
+  /**
+   * Returns the daily energy consumption of the device.
+   *
+   * @return The daily energy consumption of the device.
+   */
+  public double getEnergyConsumptionDaily() {
+    double totalLoad = 0.0;
+    for (int i = 0; i < 24; i++) {
+      totalLoad += Device.energyConsumptionByHourOfDay[i];
+    }
+    return 0.0;
   }
   
   /**

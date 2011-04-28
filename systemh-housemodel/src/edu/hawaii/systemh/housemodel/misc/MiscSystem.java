@@ -1,5 +1,7 @@
 package edu.hawaii.systemh.housemodel.misc;
 
+import org.apache.commons.lang.time.DateUtils;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +23,9 @@ import edu.hawaii.systemh.housemodel.System;
  */
 public class MiscSystem extends System {
     
+  static final long oneHourInMillis = 1000L * 60L * 60L;
+  static final long oneDayInMillis = 1000L * 60L * 60L * 24L;
+  
   /**
    * The main constructor. Initializes all the associated devices with this system.
    */
@@ -132,7 +137,7 @@ public class MiscSystem extends System {
       loadValue = device.getEnergyConsumptionByHourOfDay(currentHour);
     }
     else {
-      throw new RuntimeException("The device name requested does not belong to the MiscSystem.");
+      throw new RuntimeException("The device requested does not belong to the MiscSystem.");
     }
     return loadValue;
   }
@@ -154,20 +159,100 @@ public class MiscSystem extends System {
       String keyName = (mapEntry.getKey());
       totalLoadValue += deviceMap.get(keyName).getEnergyConsumptionByHourOfDay(currentHour);
     }
-    
     return totalLoadValue;
   }
 
   @Override
   public List<TimestampDoublePair> getDeviceLoadDuringInterval(EnergyConsumptionDevice device,
       Long startTime, Long endTime) {
-    // TODO Auto-generated method stub
-    return null;
+
+    // Device name.
+    String dn = device.toString();
+    List<TimestampDoublePair> deviceLoadList = new ArrayList<TimestampDoublePair>();
+
+    if (deviceMap.containsKey(dn)) {
+      
+      // The desired device to retrieve energy usage values from.
+      Device d = deviceMap.get(dn);
+      
+      Calendar startCal = Calendar.getInstance();
+      // Floor to the nearest hour.
+      startCal.setTime(DateUtils.truncate(new Date(startTime), Calendar.HOUR_OF_DAY));
+      
+      Calendar endCal = Calendar.getInstance();
+      // Floor to the nearest hour.
+      endCal.setTime(DateUtils.truncate(new Date(endTime), Calendar.HOUR_OF_DAY));
+      
+      Long lengthOfInterval = endTime - startTime;
+      int intervalInNumOfHours = (int) (lengthOfInterval / oneHourInMillis);
+      int currentHour = startCal.get(Calendar.HOUR_OF_DAY);
+      int hoursProcessed = 0;
+      long currentTime = startTime;
+      
+      for (int i = currentHour; hoursProcessed < intervalInNumOfHours; i++) {
+
+        // Add the device's energy load at the 'currentTime' to the list.
+        deviceLoadList.add(new TimestampDoublePair
+            (currentTime, d.getEnergyConsumptionByHourOfDay(i)));
+        // Increment the time-stamp by one hour.
+        currentTime += oneHourInMillis;
+        // The energy consumption array supports only 24 entries, representative of each hour
+        // throughout the day. If the interval to retrieve past data exceeds more than a day, 
+        // than i (the hour), needs to be reset after exceeding 23 (hour range from 0-23).
+        // i reset to -1, will be incremented to 0 from the for-loop-increment process.
+        if (i == 23) {
+          i = -1;
+        }
+        hoursProcessed++;
+      }
+    }
+    else {
+      throw new RuntimeException("The device requested does not belong to the MiscSystem.");
+    }
+    return deviceLoadList;
   }
 
   @Override
   public List<TimestampDoublePair> getSystemLoadDuringInterval(Long startTime, Long endTime) {
-    // TODO Auto-generated method stub
-    return null;
+
+    // Map.Entry to retrieve the map's keys, which represents the device names.
+    Set<Map.Entry<String, Device>> set = getDeviceMap().entrySet();
+    
+    List<List<TimestampDoublePair>> allDeviceLoadList = new ArrayList<List<TimestampDoublePair>>();
+    // Iterate through the map and retrieve corresponding device's energy usage for each hour 
+    // within the specified time-range.
+    for (Map.Entry<String, Device> mapEntry : set) {
+      String keyName = (mapEntry.getKey());
+      List<TimestampDoublePair> tempList = 
+        getDeviceLoadDuringInterval(EnergyConsumptionDevice.valueOf(keyName), startTime, endTime);
+      allDeviceLoadList.add(tempList);
+    }
+    
+    double totalLoadValue = 0.0;
+    
+    Calendar startCal = Calendar.getInstance();
+    // Floor to the nearest hour.
+    startCal.setTime(DateUtils.truncate(new Date(startTime), Calendar.HOUR_OF_DAY));
+    
+    Calendar endCal = Calendar.getInstance();
+    // Floor to the nearest hour.
+    endCal.setTime(DateUtils.truncate(new Date(endTime), Calendar.HOUR_OF_DAY));
+    
+    Long lengthOfInterval = endTime - startTime;
+    int intervalInNumOfHours = (int) (lengthOfInterval / oneHourInMillis);
+    long currentTime = startTime;
+    List<TimestampDoublePair> systemLoadList = new ArrayList<TimestampDoublePair>();
+    
+    // For each hour within the specified time, total all the devices associated with this system's 
+    // energy load and add the entry to the list being returned.
+    for (int i = 0; i < intervalInNumOfHours; i++) {
+      for (List<TimestampDoublePair> listItem : allDeviceLoadList) {
+        totalLoadValue += listItem.get(i).getValue();
+      }
+      systemLoadList.add(new TimestampDoublePair(currentTime, totalLoadValue));
+      totalLoadValue = 0.0;
+      currentTime += oneHourInMillis;
+    }
+    return systemLoadList;
   }
 }
