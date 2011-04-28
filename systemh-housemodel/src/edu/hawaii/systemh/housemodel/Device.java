@@ -42,11 +42,21 @@ public class Device {
   }
   
   /**
+   * Returns the energy consumption of the device at a hour specified.
+   *
+   * @param hour The hour.
+   * @return The energy consumption of the device at a specific hour.
+   */
+  public double getEnergyConsumptionByHourOfDay(int hour) {
+    return Device.energyConsumptionByHourOfDay[hour];
+  }
+  
+  /**
    * Returns an array containing a daily report of the energy consumption of this device.
    *
    * @return An array containing a daily recording of the energy consumption of this device.
    */
-  public double[] getEnergyArray() {
+  public double[] getEnergyConsumptionArray() {
     return Device.energyConsumptionByHourOfDay.clone();
   }
 }

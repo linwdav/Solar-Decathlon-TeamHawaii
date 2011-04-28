@@ -1,6 +1,10 @@
 package edu.hawaii.systemh.housemodel.misc;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import edu.hawaii.systemh.api.repository.TimestampDoublePair;
 import edu.hawaii.systemh.housemodel.Device;
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
@@ -16,7 +20,7 @@ import edu.hawaii.systemh.housemodel.System;
  * @version Java 1.6.0_21
  */
 public class MiscSystem extends System {
-  
+    
   /**
    * The main constructor. Initializes all the associated devices with this system.
    */
@@ -116,14 +120,42 @@ public class MiscSystem extends System {
 
   @Override
   public double getDeviceCurrentLoad(EnergyConsumptionDevice deviceName) {
-    // TODO Auto-generated method stub
-    return 0;
+    
+    double loadValue = 0.0;
+    // Device name.
+    String dn = deviceName.toString();
+    if (deviceMap.containsKey(dn)) {
+      Device device = deviceMap.get(dn);
+      Calendar calendar = Calendar.getInstance();
+      calendar.setTime(new Date());
+      int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+      loadValue = device.getEnergyConsumptionByHourOfDay(currentHour);
+    }
+    else {
+      throw new RuntimeException("The device name requested does not belong to the MiscSystem.");
+    }
+    return loadValue;
   }
 
   @Override
   public double getSystemCurrentLoad() {
-    // TODO Auto-generated method stub
-    return 0;
+
+    Calendar calendar = Calendar.getInstance();
+    calendar.setTime(new Date());
+    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
+    double totalLoadValue = 0.0;
+    
+    // Map.Entry to retrieve the map's keys, which represents the device names.
+    Set<Map.Entry<String, Device>> set = getDeviceMap().entrySet();
+    
+    // Iterate through the map and retrieve corresponding device's current energy load and total it
+    // for the full system load.
+    for (Map.Entry<String, Device> mapEntry : set) {
+      String keyName = (mapEntry.getKey());
+      totalLoadValue += deviceMap.get(keyName).getEnergyConsumptionByHourOfDay(currentHour);
+    }
+    
+    return totalLoadValue;
   }
 
   @Override
