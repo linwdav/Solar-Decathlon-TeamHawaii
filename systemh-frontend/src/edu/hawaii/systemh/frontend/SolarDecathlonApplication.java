@@ -1,5 +1,6 @@
 package edu.hawaii.systemh.frontend;
 
+import java.util.HashMap;
 import org.apache.wicket.Application;
 import org.apache.wicket.Page;
 import org.apache.wicket.Request;
@@ -13,6 +14,7 @@ import edu.hawaii.ihale.api.repository.impl.Repository;
 //import edu.hawaii.ihale.backend.DataGatheringThread;
 import edu.hawaii.ihale.backend.IHaleBackend;
 //import edu.hawaii.ihale.backend.rest.IHaleServer;
+import edu.hawaii.systemh.frontend.page.SystemStatusPanel.SystemStatus;
 import edu.hawaii.systemh.frontend.page.aquaponics.AquaPonics;
 import edu.hawaii.systemh.frontend.page.aquaponics.AquaponicsListener;
 import edu.hawaii.systemh.frontend.page.aquaponics.AquaponicsStats;
@@ -54,6 +56,10 @@ public class SolarDecathlonApplication extends WebApplication {
   // private static IHaleRepository repository;
   private static Repository repository;
   private static IHaleCommand backend;
+  
+  
+  // Stores status' of systems
+  private static HashMap<String, SystemStatus> statusMap;
 
   static {
 
@@ -269,6 +275,15 @@ public class SolarDecathlonApplication extends WebApplication {
    */
   public static Messages getMessages() {
     return messages;
+  }
+  
+  /**
+   * Returns the Systems' Status Map.
+   * 
+   * @return The Systems' Status Map.
+   */
+  public static HashMap<String, SystemStatus> getStatusMap() {
+    return statusMap;
   }
 
 }
