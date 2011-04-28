@@ -26,11 +26,6 @@ public class BehavioralModel {
    * @throws Exception 
    */
   public static void main(String[] args) throws Exception {
-    System.err.println("Behavioral model of the house.");
-    WeatherReport weather = new WeatherReport(location);
-    
-    System.out.println(weather.cloudCover);
-    System.out.println(weather.fTemp);
-    System.out.println(weather.timestamp);
+    System.err.println("Behavioral model of the house."); 
   }
 }
