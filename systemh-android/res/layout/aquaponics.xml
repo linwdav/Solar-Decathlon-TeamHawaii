@@ -19,14 +19,48 @@
 		android:layout_below="@id/BackToMenu" android:layout_centerHorizontal="true" 
 		android:layout_marginBottom="30dip"/>
 
+<!--  Data for Water Temperature  -->
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_below="@+id/Title"
+        android:layout_width="match_parent" 
+        android:stretchColumns="1"
+        android:background="@drawable/shape" 
+        android:layout_height="wrap_content" 
+        android:layout_margin="10dip" 
+        android:layout_marginTop="30dip" android:id="@+id/DataLayout">
+
+        <TableRow android:layout_marginTop="10dip">
+            <TextView android:layout_height="wrap_content" 
+                android:layout_width="wrap_content" android:text="@string/waterTemp" android:textSize="25sp"
+                android:textStyle="bold" android:layout_column="1"
+                android:id="@+id/tempLabel" android:layout_margin="10dip"/>
+ 
+            <TextView 
+                android:text="00" 
+                android:layout_height="wrap_content" 
+                android:layout_gravity="center"
+                android:padding="4dip" 
+                android:gravity="left" 
+                android:layout_marginLeft="10dip" 
+                android:textSize="20sp" android:id="@+id/tempDataValue" android:layout_margin="10dip" android:layout_marginRight="30dip"/>
+        </TableRow>
+        </TableLayout>
+
+<TextView android:layout_width="wrap_content"
+        android:layout_height="wrap_content" android:textSize="40sp" android:layout_marginTop="10dip"
+        android:layout_below="@id/DataLayout" android:layout_centerHorizontal="true" 
+        android:layout_marginBottom="10dip" android:id="@+id/Controls" android:text="@string/controls"/>
+
 	<!--  Water Temperature  -->
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:layout_below="@+id/Title"
+    	android:layout_below="@+id/Controls"
 		android:layout_width="match_parent" 
 		android:stretchColumns="1"
 		android:background="@drawable/shape" 
 		android:layout_height="wrap_content" 
-		android:id="@+id/TempLayout" android:layout_margin="10dip" android:layout_marginTop="60dip">
+		android:id="@+id/TempLayout" 
+		android:layout_margin="10dip" 
+		android:layout_marginTop="200dip">
 
 		<TableRow android:layout_marginTop="10dip">
 			<TextView android:layout_height="wrap_content" 
@@ -38,7 +72,7 @@
 
 		<TableRow>
 			<TextView 
-				android:text="50" 
+				
 				android:layout_height="wrap_content" 
 				android:layout_gravity="center"
 				android:padding="4dip" 
@@ -46,13 +80,11 @@
 				android:layout_marginLeft="10dip" 
 				android:id="@+id/tempValue" 
 				android:textSize="20sp"/>
-			<SeekBar 
-				android:progress="50" 
+			<SeekBar
 				android:padding="4dip" 
 				android:layout_margin="10px" 
 				android:layout_marginLeft="30dip" 
 				android:layout_marginTop="30dip" 
-				android:max="100" 
 				android:layout_width="wrap_content" 
 				android:layout_height="wrap_content" 
 				android:layout_marginRight="10dip" 
@@ -98,7 +130,7 @@
 				android:layout_margin="10px" 
 				android:layout_marginLeft="30dip" 
 				android:layout_marginTop="30dip" 
-				android:max="14" 
+				android:max="1400" 
 				android:layout_marginRight="10dip" />
 		</TableRow>
 		</TableLayout>

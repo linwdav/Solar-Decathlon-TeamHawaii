@@ -10,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
+import edu.hawaii.systemh.android.systemdata.SystemData;
 
 /**
  * Activity to start the aquaponics page.
@@ -28,6 +29,8 @@ public class Aquaponics extends Activity {
     TextView phValue;
     TextView levelValue;
     TextView nutrientsValue;
+    
+    TextView tempData;
 
     /**
      * Called when the activity is first created.
@@ -49,7 +52,16 @@ public class Aquaponics extends Activity {
         setContentView(R.layout.aquaponics);
 
         /** Water Temperature **/
+        SystemData aquaponics = new SystemData("aquaponics");
+        long tempVal = aquaponics.getTemp();
+        
+        tempData = (TextView) findViewById(R.id.tempDataValue);
+        tempData.setText(String.valueOf(tempVal));
+        
         temp = (SeekBar) this.findViewById(R.id.tempSeekbar);
+        temp.setMax(10000);
+        temp.setProgress(50);
+        
         tempValue = (TextView) this.findViewById(R.id.tempValue);
         temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -57,7 +69,7 @@ public class Aquaponics extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
                 // TODO Auto-generated method stub
-                tempValue.setText(String.valueOf(progress));
+                tempValue.setText(String.valueOf((float)progress/100));
             }
 
             @Override
@@ -80,7 +92,7 @@ public class Aquaponics extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
                 // TODO Auto-generated method stub
-                phValue.setText(String.valueOf(progress));
+                phValue.setText(String.valueOf((float)progress/100));
             }
 
             @Override

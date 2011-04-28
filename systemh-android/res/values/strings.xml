@@ -3,7 +3,7 @@
     <string name="app_name">SystemHTablet</string>
     <string name="Menu">Menu</string>
     <string name="HouseName">Hale Pilihonua</string>
-    <string name="Aquaponics">Aquaponics System Controls</string>
+    <string name="Aquaponics">Aquaponics System</string>
     <string name="Lighting">Lighting System Controls</string>
     <string name="Hvac">Hvac System Controls</string>
     <string name="Help">Help</string>
@@ -11,7 +11,7 @@
     <string name="Confirm">Confirm</string>
     <string name="Close">Close</string>
     <string name="ColorPicker">Pick a Color</string>
-    <string name="ChangeColor">Change Color:</string>
+    <string name="ChangeColor">Change Color</string>
     <string name="lightSwitch">Light Switch:</string>
     <string name="roomPrompt">Choose a room:</string>
     <string-array name="rooms">
@@ -26,4 +26,5 @@
     <string name="ph">PH</string>
     <string name="waterLevel">Water Level</string>
     <string name="waterNutrients">Water Nutrients</string>
+    <string name="controls">Controls</string>
 </resources>
