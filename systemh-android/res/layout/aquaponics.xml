@@ -21,29 +21,184 @@
 
 <!--  Data for Water Temperature  -->
     <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/DataLayout"
         android:layout_below="@+id/Title"
         android:layout_width="match_parent" 
         android:stretchColumns="1"
         android:background="@drawable/shape" 
         android:layout_height="wrap_content" 
         android:layout_margin="10dip" 
-        android:layout_marginTop="30dip" android:id="@+id/DataLayout">
+        android:layout_marginTop="30dip">
 
-        <TableRow android:layout_marginTop="10dip">
-            <TextView android:layout_height="wrap_content" 
-                android:layout_width="wrap_content" android:text="@string/waterTemp" android:textSize="25sp"
-                android:textStyle="bold" android:layout_column="1"
-                android:id="@+id/tempLabel" android:layout_margin="10dip"/>
- 
+        <TableRow android:layout_marginTop="10dip" android:layout_marginBottom="5dip">
+            <TextView
+                android:id="@+id/tempLabel"
+                android:text="@string/waterTemp"
+                android:layout_height="wrap_content" 
+                android:layout_width="wrap_content"  
+                android:textSize="25sp"
+                android:textStyle="bold" 
+                android:layout_column="0"
+                android:paddingLeft="30dip"/>
+            <TextView 
+                android:id="@+id/tempDataValue"
+                android:text="00" 
+                android:layout_height="wrap_content" 
+                android:gravity="right" 
+                android:layout_column="1"
+                android:textSize="20sp"  
+                android:layout_marginTop="0dip" 
+                android:paddingRight="50dip" />
+        </TableRow>
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#202020" 
+            />
+ <!--  Data for PH Level  -->           
+        <TableRow android:layout_marginTop="5dip" android:layout_marginBottom="5dip">
+            <TextView
+                android:layout_height="wrap_content" 
+                android:layout_width="wrap_content"  
+                android:textSize="25sp"
+                android:textStyle="bold" 
+                android:layout_column="0"
+                android:paddingLeft="30dip" android:id="@+id/phLabel" android:text="@string/ph"/>
             <TextView 
                 android:text="00" 
                 android:layout_height="wrap_content" 
-                android:layout_gravity="center"
-                android:padding="4dip" 
-                android:gravity="left" 
-                android:layout_marginLeft="10dip" 
-                android:textSize="20sp" android:id="@+id/tempDataValue" android:layout_margin="10dip" android:layout_marginRight="30dip"/>
+                android:gravity="right" 
+                android:layout_column="1"
+                android:textSize="20sp"  
+                android:layout_marginTop="0dip" 
+                android:paddingRight="50dip" android:id="@+id/phDataValue"/>
         </TableRow>
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#202020" 
+            />
+     <!--  Data for Electrical Conductivity  -->       
+        <TableRow android:layout_marginTop="5dip" android:layout_marginBottom="5dip">
+            <TextView
+                android:layout_height="wrap_content" 
+                android:layout_width="wrap_content"  
+                android:textSize="25sp"
+                android:textStyle="bold" 
+                android:layout_column="0"
+                android:paddingLeft="30dip" android:id="@+id/ecLabel" android:text="@string/electricalConductivity"/>
+            <TextView 
+                android:text="00" 
+                android:layout_height="wrap_content" 
+                android:gravity="right" 
+                android:layout_column="1"
+                android:textSize="20sp"  
+                android:layout_marginTop="0dip" 
+                android:paddingRight="50dip" android:id="@+id/ecDataValue"/>
+        </TableRow>
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#202020" 
+            />
+            
+            <!--  Data for Oxygen  -->
+        <TableRow android:layout_marginTop="5dip" android:layout_marginBottom="5dip">
+            <TextView
+                android:layout_height="wrap_content" 
+                android:layout_width="wrap_content"  
+                android:textSize="25sp"
+                android:textStyle="bold" 
+                android:layout_column="0"
+                android:paddingLeft="30dip" android:id="@+id/oxygenLabel" android:text="@string/oxygen"/>
+            <TextView 
+                android:text="00" 
+                android:layout_height="wrap_content" 
+                android:gravity="right" 
+                android:layout_column="1"
+                android:textSize="20sp"  
+                android:layout_marginTop="0dip" 
+                android:paddingRight="50dip" android:id="@+id/oxygenDataValue"/>
+        </TableRow>
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#202020" 
+            />
+            
+            <!--  Data for Water Level  -->
+        <TableRow android:layout_marginTop="5dip" android:layout_marginBottom="5dip">
+            <TextView
+                android:layout_height="wrap_content" 
+                android:layout_width="wrap_content"  
+                android:textSize="25sp"
+                android:textStyle="bold" 
+                android:layout_column="0"
+                android:paddingLeft="30dip" android:id="@+id/levelLabel" android:text="@string/waterLevel"/>
+            <TextView 
+                android:text="00" 
+                android:layout_height="wrap_content" 
+                android:gravity="right" 
+                android:layout_column="1"
+                android:textSize="20sp"  
+                android:layout_marginTop="0dip" 
+                android:paddingRight="50dip" android:id="@+id/levelDataValue"/>
+        </TableRow>
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#202020" 
+            />
+            
+            <!--  Data for Water Circulation -->
+        <TableRow android:layout_marginTop="5dip" android:layout_marginBottom="5dip">
+            <TextView
+                android:layout_height="wrap_content" 
+                android:layout_width="wrap_content"  
+                android:textSize="25sp"
+                android:textStyle="bold" 
+                android:layout_column="0"
+                android:paddingLeft="30dip" android:id="@+id/circulationLabel" android:text="@string/waterCirculation"/>
+            <TextView 
+                android:text="00" 
+                android:layout_height="wrap_content" 
+                android:gravity="right" 
+                android:layout_column="1"
+                android:textSize="20sp"  
+                android:layout_marginTop="0dip" 
+                android:paddingRight="50dip" android:id="@+id/circulationDataValue"/>
+        </TableRow>
+        
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#202020" 
+            />
+            
+            <!--  Data for Water Turbidity  -->
+        <TableRow android:layout_marginTop="5dip" android:layout_marginBottom="5dip">
+            <TextView
+                android:layout_height="wrap_content" 
+                android:layout_width="wrap_content"  
+                android:textSize="25sp"
+                android:textStyle="bold" 
+                android:layout_column="0"
+                android:paddingLeft="30dip" android:id="@+id/turbidityLabel" android:text="@string/waterTurbidity"/>
+            <TextView 
+                android:text="00" 
+                android:layout_height="wrap_content" 
+                android:gravity="right" 
+                android:layout_column="1"
+                android:textSize="20sp"  
+                android:layout_marginTop="0dip" 
+                android:paddingRight="50dip" android:id="@+id/turbidityDataValue"/>
+        </TableRow>
+        
         </TableLayout>
 
 <TextView android:layout_width="wrap_content"
@@ -66,35 +221,34 @@
 			<TextView android:layout_height="wrap_content" 
 				android:layout_width="wrap_content" android:id="@+id/tempTextView"
 				android:text="@string/waterTemp" android:textSize="25sp"
-				android:textStyle="bold" android:layout_column="1"
+				android:textStyle="bold" android:layout_column="0" android:layout_span="2" 
+				android:paddingLeft="30dip"
 				/>
 		</TableRow>
 
-		<TableRow>
+		<TableRow >
 			<TextView 
-				
+				android:text="99.99" 
 				android:layout_height="wrap_content" 
-				android:layout_gravity="center"
-				android:padding="4dip" 
-				android:gravity="left" 
-				android:layout_marginLeft="10dip" 
+				android:layout_marginTop="12dip"
+				android:layout_marginLeft="25dip" 
 				android:id="@+id/tempValue" 
-				android:textSize="20sp"/>
+				android:textSize="20sp"
+				android:layout_column="0" android:layout_width="60dip"/>
 			<SeekBar
-				android:padding="4dip" 
-				android:layout_margin="10px" 
-				android:layout_marginLeft="30dip" 
-				android:layout_marginTop="30dip" 
-				android:layout_width="wrap_content" 
-				android:layout_height="wrap_content" 
-				android:layout_marginRight="10dip" 
-				android:id="@+id/tempSeekbar"/>
+			    android:progress="50" android:paddingTop="0dip"
+                android:layout_margin="10dip" android:layout_marginTop="30dip"
+                android:max="100" android:paddingLeft="20dip" android:paddingRight="30dip"
+                android:layout_height="wrap_content" android:id="@+id/tempSeekbar"
+                android:layout_column="1" android:layout_width="match_parent"
+                android:layout_marginLeft="0dip" />
+			
 		</TableRow>
 		</TableLayout>
 		
 		<!--  PH Level  -->
 		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:layout_marginTop="30dip" 
+    	android:layout_marginTop="20dip" 
 		android:layout_width="match_parent" 
 		android:stretchColumns="1"
 		android:background="@drawable/shape" 
@@ -109,35 +263,39 @@
 				android:layout_width="wrap_content"
 				android:textSize="25sp"
 				android:textStyle="bold" 
-				android:layout_column="1" android:text="@string/ph"/>
+				android:layout_column="0" 
+				android:text="@string/ph"
+				android:layout_span="2" 
+                android:paddingLeft="30dip"/>
 		</TableRow>
 		<TableRow>
 			<TextView 
-				android:text="7" 
-				android:layout_height="wrap_content" 
-				android:id="@+id/phValue" 
-				android:layout_gravity="center"
-				android:padding="4dip" 
-				android:gravity="left" 
-				android:layout_marginLeft="10dip"
-				android:textSize="20sp"/>
+			    android:id="@+id/phValue" 
+				android:text="7.0" 
+				android:textSize="20sp"
+				android:layout_height="wrap_content" 	
+				android:layout_marginTop="12dip"
+                android:layout_marginLeft="25dip"
+                android:layout_column="0" 
+                android:layout_width="60dip"/>
 			<SeekBar 
+			    android:id="@+id/phSeekBar"
 				android:layout_height="wrap_content" 
 				android:layout_width="match_parent" 
-				android:id="@+id/phSeekBar"
+				android:layout_column="1"
 				android:progress="7" 
-				android:padding="4dip" 
-				android:layout_margin="10px" 
-				android:layout_marginLeft="30dip" 
-				android:layout_marginTop="30dip" 
 				android:max="1400" 
-				android:layout_marginRight="10dip" />
+				android:layout_margin="10dip" 
+                android:layout_marginTop="30dip"
+                android:paddingLeft="20dip" 
+                android:paddingRight="30dip"
+				 />
 		</TableRow>
 		</TableLayout>
 		
 		<!--  Water Level -->
 		<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    	android:layout_marginTop="30dip" 
+    	android:layout_marginTop="20dip" 
 		android:layout_width="match_parent" 
 		android:stretchColumns="1"
 		android:background="@drawable/shape" 
@@ -147,39 +305,46 @@
 		android:layout_margin="10dip">
 		<TableRow android:layout_marginTop="10dip">
 			<TextView 
+			    android:id="@+id/levelTextView" 
+                android:text="@string/waterLevel"
 				android:layout_height="wrap_content" 
 				android:layout_width="wrap_content"
 				android:textSize="25sp"
 				android:textStyle="bold" 
-				android:layout_column="1" android:id="@+id/levelTextView" android:text="@string/waterLevel"/>
+				android:layout_column="0" 
+				android:layout_span="2" 
+                android:paddingLeft="30dip"
+				/>
 		</TableRow>
 		<TableRow>
 			<TextView 
+			    android:id="@+id/levelValue"
 				android:text="50" 
-				android:layout_height="wrap_content" 
-				android:layout_gravity="center"
-				android:padding="4dip" 
-				android:gravity="left" 
-				android:layout_marginLeft="10dip"
-				android:textSize="20sp" android:id="@+id/levelValue"/>
+				android:textSize="20sp"
+                android:layout_height="wrap_content"    
+                android:layout_marginTop="12dip"
+                android:layout_marginLeft="25dip"
+                android:layout_column="0" 
+                android:layout_width="60dip" />
 			<SeekBar 
+			    android:id="@+id/levelSeekBar"
 				android:layout_height="wrap_content" 
 				android:layout_width="match_parent" 
 				android:progress="50" 
-				android:padding="4dip" 
-				android:layout_margin="10px" 
-				android:layout_marginLeft="30dip" 
-				android:layout_marginTop="30dip" 
 				android:max="100" 
-				android:layout_marginRight="10dip" 
-				android:id="@+id/levelSeekBar"/>
+				android:layout_column="1"
+				android:layout_margin="10dip" 
+                android:layout_marginTop="30dip"
+                android:paddingLeft="20dip" 
+                android:paddingRight="30dip"
+				/>
 		</TableRow>
 		</TableLayout>
 		
 		<!-- Water Nutrients -->
 		<TableLayout 
 			xmlns:android="http://schemas.android.com/apk/res/android"
-    		android:layout_marginTop="30dip" 
+    		android:layout_marginTop="20dip" 
 			android:layout_width="match_parent" 
 			android:stretchColumns="1"
 			android:background="@drawable/shape" 
@@ -189,31 +354,37 @@
 			android:layout_margin="10dip">
 		<TableRow android:layout_marginTop="10dip">
 			<TextView 
+			    android:id="@+id/nutrientsTextView" 
+			    android:text="@string/waterNutrients"
 				android:layout_height="wrap_content" 
 				android:layout_width="wrap_content"
 				android:textSize="25sp"
 				android:textStyle="bold" 
-				android:layout_column="1" android:id="@+id/nutrientsTextView" android:text="@string/waterNutrients"/>
+				android:layout_column="0" 
+                android:layout_span="2" 
+                android:paddingLeft="30dip" />
 		</TableRow>
 		<TableRow>
 			<TextView 
+			    android:id="@+id/nutrientsValue"
 				android:text="50" 
-				android:layout_height="wrap_content" 
-				android:layout_gravity="center"
-				android:padding="4dip" 
-				android:gravity="left" 
-				android:layout_marginLeft="10dip"
-				android:textSize="20sp" android:id="@+id/nutrientsValue"/>
+				android:textSize="20sp"
+                android:layout_height="wrap_content"    
+                android:layout_marginTop="12dip"
+                android:layout_marginLeft="25dip"
+                android:layout_column="0" 
+                android:layout_width="60dip" />
 			<SeekBar 
+			    android:id="@+id/nutrientsSeekBar"
 				android:layout_height="wrap_content" 
 				android:layout_width="match_parent" 
 				android:progress="50" 
-				android:padding="4dip" 
-				android:layout_margin="10px" 
-				android:layout_marginLeft="30dip" 
-				android:layout_marginTop="30dip" 
-				android:max="100" 
-				android:layout_marginRight="10dip" android:id="@+id/nutrientsSeekBar"/>
+				android:max="100"
+				android:layout_column="1"
+                android:layout_margin="10dip" 
+                android:layout_marginTop="30dip"
+                android:paddingLeft="20dip" 
+                android:paddingRight="30dip" />
 		</TableRow>
 		
 		

@@ -9,6 +9,12 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+/**
+ * Retrieves and Change data from the database.
+ * 
+ * @author Group H
+ * 
+ */
 public class SystemData {
 
     // Initialize
@@ -36,6 +42,11 @@ public class SystemData {
     boolean enabled = false;
     String color = "";
 
+    /**
+     * Getter of values
+     * 
+     * @param systemName The name of the system you want to get data from
+     */
     public SystemData(String systemName) {
 
         String getUrl = null;
@@ -163,12 +174,24 @@ public class SystemData {
 
     }
     
+    /**
+     * 
+     * @return
+     */
     public long getTemp () {
         return temperature;
     }
     
+    /**
+     * 
+     * @param value
+     */
     public void setTemp(String value){
-        System.out.println("You set the temp to " + value + "F" );
+        
+        String putUrl = "http://" + ipAddress + ":8111/AQUAPONICS/command/SET_TEMPERATURE?arg=" + value; 
+        ClientResource putClient = new ClientResource(putUrl);
+        putClient.put(putUrl);
+        putClient.release();
     }
     
     public double getCirculation () {

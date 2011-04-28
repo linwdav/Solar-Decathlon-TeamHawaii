@@ -23,8 +23,12 @@
     <string name="brightness">Brightness:</string>
     <string name="temperature">temperature:</string>
     <string name="waterTemp">Water Temperature</string>
-    <string name="ph">PH</string>
+    <string name="ph">PH Level</string>
     <string name="waterLevel">Water Level</string>
     <string name="waterNutrients">Water Nutrients</string>
     <string name="controls">Controls</string>
+    <string name="electricalConductivity">Electrical Conductivity</string>
+    <string name="oxygen">Dissolved Oxygen</string>
+    <string name="waterCirculation">Water Circulation</string>
+    <string name="waterTurbidity">Water Turbidity</string>
 </resources>

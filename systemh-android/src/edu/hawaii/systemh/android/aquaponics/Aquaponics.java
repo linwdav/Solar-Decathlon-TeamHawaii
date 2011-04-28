@@ -31,6 +31,12 @@ public class Aquaponics extends Activity {
     TextView nutrientsValue;
     
     TextView tempData;
+    TextView phData;
+    TextView ecData;
+    TextView oxygenData;
+    TextView levelData;
+    TextView circulationData;
+    TextView turbidityData;
 
     /**
      * Called when the activity is first created.
@@ -51,16 +57,34 @@ public class Aquaponics extends Activity {
 
         setContentView(R.layout.aquaponics);
 
-        /** Water Temperature **/
+        /** Get Data Values for Aquaponic System **/
         SystemData aquaponics = new SystemData("aquaponics");
-        long tempVal = aquaponics.getTemp();
         
         tempData = (TextView) findViewById(R.id.tempDataValue);
-        tempData.setText(String.valueOf(tempVal));
+        tempData.setText(String.valueOf(aquaponics.getTemp()) + "\u00b0F");
         
+        phData = (TextView) findViewById(R.id.phDataValue);
+        phData.setText(String.valueOf(aquaponics.getPh()));
+        
+        ecData = (TextView) findViewById(R.id.ecDataValue);
+        ecData.setText(String.valueOf(aquaponics.getElectricalConductivity()) + " \u00b5s/cm");
+        
+        oxygenData = (TextView) findViewById(R.id.oxygenDataValue);
+        oxygenData.setText(String.valueOf(aquaponics.getOxygen()) + " mg/l");
+        
+        levelData = (TextView) findViewById(R.id.levelDataValue);
+        levelData.setText(String.valueOf(aquaponics.getWaterLevel()) + " in");
+        
+        circulationData = (TextView) findViewById(R.id.circulationDataValue);
+        circulationData.setText(String.valueOf(aquaponics.getCirculation()) + " gpm");
+        
+        turbidityData = (TextView) findViewById(R.id.turbidityDataValue);
+        turbidityData.setText(String.valueOf(aquaponics.getTurbidity()) + " NTUs");
+        
+        /** Water Temperature Slider Control**/
         temp = (SeekBar) this.findViewById(R.id.tempSeekbar);
         temp.setMax(10000);
-        temp.setProgress(50);
+        temp.setProgress((int)aquaponics.getTemp());
         
         tempValue = (TextView) this.findViewById(R.id.tempValue);
         temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -83,7 +107,7 @@ public class Aquaponics extends Activity {
             }
         });
 
-        /** PH Level **/
+        /** PH Level Slider Control**/
         ph = (SeekBar) this.findViewById(R.id.phSeekBar);
         phValue = (TextView) this.findViewById(R.id.phValue);
         ph.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -106,7 +130,7 @@ public class Aquaponics extends Activity {
             }
         });
 
-        /** Water Level **/
+        /** Water Level Slider Control**/
         level = (SeekBar) this.findViewById(R.id.levelSeekBar);
         levelValue = (TextView) this.findViewById(R.id.levelValue);
         level.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -129,7 +153,7 @@ public class Aquaponics extends Activity {
             }
         });
 
-        /** Water Nutrients **/
+        /** Water Nutrients Slider Control **/
         nutrients = (SeekBar) this.findViewById(R.id.nutrientsSeekBar);
         nutrientsValue = (TextView) this.findViewById(R.id.nutrientsValue);
         nutrients
