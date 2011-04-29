@@ -13,7 +13,7 @@ public class Device {
   private String deviceName;
   /** The device's consumption of energy throughout the hours of the day. There are 24 entries,
    *  to represent each hour throughout the day. **/
-  private static final double[] energyConsumptionByHourOfDay = new double[24];
+  private final double[] energyConsumptionByHourOfDay = new double[24];
   
   /**
    * The main constructor.
@@ -40,7 +40,7 @@ public class Device {
    * @param value The amount of energy consumed by the device at that hour.
    */
   public void addHourEntry(int hour, double value) {
-    Device.energyConsumptionByHourOfDay[hour] = value;
+    this.energyConsumptionByHourOfDay[hour] = value;
   }
   
   /**
@@ -50,7 +50,7 @@ public class Device {
    * @return The energy consumption of the device at a specific hour.
    */
   public double getEnergyConsumptionByHourOfDay(int hour) {
-    return Device.energyConsumptionByHourOfDay[hour];
+    return this.energyConsumptionByHourOfDay[hour];
   }
   
   /**
@@ -61,7 +61,7 @@ public class Device {
   public double getEnergyConsumptionDaily() {
     double totalLoad = 0.0;
     for (int i = 0; i < 24; i++) {
-      totalLoad += Device.energyConsumptionByHourOfDay[i];
+      totalLoad += this.energyConsumptionByHourOfDay[i];
     }
     return 0.0;
   }
@@ -72,6 +72,6 @@ public class Device {
    * @return An array containing a daily recording of the energy consumption of this device.
    */
   public double[] getEnergyConsumptionArray() {
-    return Device.energyConsumptionByHourOfDay.clone();
+    return this.energyConsumptionByHourOfDay.clone();
   }
 }

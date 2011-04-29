@@ -22,27 +22,37 @@ public class MiscSystemTesting {
    * @param args . . .
    */
   public static void main(String args[]) { 
+    
     MiscSystem MS = new MiscSystem();
-    //double[] x = MS.getDeviceList().get(0).getEnergyArray();
     String refrigerator = "REFRIGERATOR";
     double[] x = MS.getDeviceMap().get(refrigerator).getEnergyConsumptionArray();
-    System.out.println(x[1]);
-    System.out.println(x[22]);
+    
+    System.out.println("Device name is: " + MS.getDeviceMap().get(refrigerator).getDeviceName());
+    
+    for (int i = 0; i < x.length; i++) {
+      System.out.println("i is: " + i + " energy consumption is: " + x[i]);
+    }
     MS.getDeviceMap().get(refrigerator).addHourEntry(22, 10000);
     x = MS.getDeviceMap().get(refrigerator).getEnergyConsumptionArray();
     System.out.println(x[1]);
     System.out.println(x[22]);
     
     System.out.println("MiscSystem has " + MS.getDeviceMap().size() + " devices.");
-    for (int i = 0; i < MS.getDeviceMap().size(); i++) {
-      //System.out.println(MS.getDeviceMap().get("REFRIGERATOR").getDeviceName());
-    }
-    
     Set<Map.Entry<String, Device>> set = MS.getDeviceMap().entrySet();
-  
     for (Map.Entry<String, Device> mapEntry : set) {
       System.out.println(mapEntry.getKey());
     }
+    
+    String freezer = "FREEZER";
+    double[] y = MS.getDeviceMap().get(freezer).getEnergyConsumptionArray();
+    System.out.println("Device name is: " + MS.getDeviceMap().get(freezer).getDeviceName());
+    for (int i = 0; i < y.length; i++) {
+      System.out.println("i is: " + i + " energy consumption is: " + y[i]);
+    }
+    
+    System.out.println(MS.getDeviceCurrentLoad(EnergyConsumptionDevice.valueOf(freezer)));
+    
+    
     // 2.0 days
     Long startTime = 1000L * 60L * 60L * 24L * 2L;
     // 5.5 days.
@@ -77,13 +87,7 @@ public class MiscSystemTesting {
     
     String keyName = "REFRIGERATOR";
     System.out.println(EnergyConsumptionDevice.valueOf(keyName));
-    
-    
-    
-    
-    
-    
-    
+        
     
     int currentHour = 23;
     int hoursProcessed = 0;
