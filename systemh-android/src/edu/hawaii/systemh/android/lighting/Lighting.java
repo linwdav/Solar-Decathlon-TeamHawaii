@@ -258,6 +258,7 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
   @Override
   protected void onPause() {
     running = false;
+    super.onStop();
   }
 
   /**
@@ -365,6 +366,14 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
         else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(BATHROOM)) {
           bathroom = new SystemData("lighting-bathroom");
           updateViews(bathroom);
+        }
+        
+        // pause thread for half a second.
+        try {
+          Thread.sleep(500);
+        }
+        catch (InterruptedException e) {         
+          e.printStackTrace();
         }
       }
     }
