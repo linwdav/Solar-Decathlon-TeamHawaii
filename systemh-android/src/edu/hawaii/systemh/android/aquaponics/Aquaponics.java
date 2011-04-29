@@ -67,25 +67,25 @@ public class Aquaponics extends Activity {
         
         newTemp = (int) aquaponics.getTemp();
         tempData = (TextView) findViewById(R.id.tempDataValue);
-        tempData.setText(String.valueOf(newTemp) + "\u00b0F");
+        tempData.setText(newTemp + "\u00b0F");
         
         phData = (TextView) findViewById(R.id.phDataValue);
         phData.setText(String.valueOf(aquaponics.getPh()));
         
         ecData = (TextView) findViewById(R.id.ecDataValue);
-        ecData.setText(String.valueOf(aquaponics.getElectricalConductivity()) + " \u00b5s/cm");
+        ecData.setText(aquaponics.getElectricalConductivity() + " \u00b5s/cm");
         
         oxygenData = (TextView) findViewById(R.id.oxygenDataValue);
-        oxygenData.setText(String.valueOf(aquaponics.getOxygen()) + " mg/l");
+        oxygenData.setText(aquaponics.getOxygen() + " mg/l");
         
         levelData = (TextView) findViewById(R.id.levelDataValue);
-        levelData.setText(String.valueOf(aquaponics.getWaterLevel()) + " in");
+        levelData.setText(aquaponics.getWaterLevel() + " in");
         
         circulationData = (TextView) findViewById(R.id.circulationDataValue);
-        circulationData.setText(String.valueOf(aquaponics.getCirculation()) + " gpm");
+        circulationData.setText(aquaponics.getCirculation() + " gpm");
         
         turbidityData = (TextView) findViewById(R.id.turbidityDataValue);
-        turbidityData.setText(String.valueOf(aquaponics.getTurbidity()) + " NTUs");
+        turbidityData.setText(aquaponics.getTurbidity() + " NTUs");
         
         /** Water Temperature Slider Control**/
         temp = (SeekBar) this.findViewById(R.id.tempSeekbar);

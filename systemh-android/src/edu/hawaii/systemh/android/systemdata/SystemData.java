@@ -1,6 +1,7 @@
 package edu.hawaii.systemh.android.systemdata;
 
 import java.text.DecimalFormat;
+import java.util.Locale;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
@@ -19,9 +20,11 @@ import android.util.Log;
  * 
  */
 public class SystemData {
+  
+  private static final String HTTP = "http://";
 
   // Initialize
-  String ipAddress = "168.105.254.5";
+  String ipAddress = "192.168.1.109";
 
   String system = "";
   String device = "";
@@ -70,35 +73,35 @@ public class SystemData {
     try {
 
       if ("Aquaponics".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/AQUAPONICS/state";
+        getUrl = HTTP + ipAddress + ":8111/AQUAPONICS/state";
 
       }
       else if ("hvac".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/HVAC/state";
+        getUrl = HTTP + ipAddress + ":8111/HVAC/state";
 
       }
       else if ("electric".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/ELECTRIC/state";
+        getUrl = HTTP + ipAddress + ":8111/ELECTRIC/state";
 
       }
       else if ("photovoltaics".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/PHOTOVOLTAIC/state";
+        getUrl = HTTP + ipAddress + ":8111/PHOTOVOLTAIC/state";
 
       }
       else if ("lighting-bathroom".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/LIGHTING/state?room=BATHROOM";
+        getUrl = HTTP + ipAddress + ":8111/LIGHTING/state?room=BATHROOM";
 
       }
       else if ("lighting-livingroom".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/LIGHTING/state?room=LIVINGROOM";
+        getUrl = HTTP + ipAddress + ":8111/LIGHTING/state?room=LIVING";
 
       }
-      else if ("lighting-dinningroom".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/LIGHTING/state?room=DININGROOM";
+      else if ("lighting-diningroom".equalsIgnoreCase(systemName)) {
+        getUrl = HTTP + ipAddress + ":8111/LIGHTING/state?room=DINING";
 
       }
       else if ("lighting-kitchen".equalsIgnoreCase(systemName)) {
-        getUrl = "http://" + ipAddress + ":8111/LIGHTING/state?room=KITCHEN";
+        getUrl = HTTP + ipAddress + ":8111/LIGHTING/state?room=KITCHEN";
 
       }
       else {
@@ -347,7 +350,7 @@ public class SystemData {
 
     try {
       String putUrl =
-          "http://" + ipAddress + ":8111/AQUAPONICS/command/SET_TEMPERATURE?arg=" + value;
+          HTTP + ipAddress + ":8111/AQUAPONICS/command/SET_TEMPERATURE?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -365,7 +368,7 @@ public class SystemData {
   public void setPh(double value) {
 
     try {
-      String putUrl = "http://" + ipAddress + ":8111/AQUAPONICS/command/SET_PH?arg=" + value;
+      String putUrl = HTTP + ipAddress + ":8111/AQUAPONICS/command/SET_PH?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -384,7 +387,7 @@ public class SystemData {
 
     try {
       String putUrl =
-          "http://" + ipAddress + ":8111/AQUAPONICS/command/SET_WATER_LEVEL?arg=" + value;
+          HTTP + ipAddress + ":8111/AQUAPONICS/command/SET_WATER_LEVEL?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -402,7 +405,7 @@ public class SystemData {
   public void setNutrients(double value) {
 
     try {
-      String putUrl = "http://" + ipAddress + ":8111/AQUAPONICS/command/SET_NUTRIENTS?arg=" + value;
+      String putUrl = HTTP + ipAddress + ":8111/AQUAPONICS/command/SET_NUTRIENTS?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -420,7 +423,7 @@ public class SystemData {
   public void feedFish(double value) {
 
     try {
-      String putUrl = "http://" + ipAddress + ":8111/AQUAPONICS/command/FEED_FISH?arg=" + value;
+      String putUrl = HTTP + ipAddress + ":8111/AQUAPONICS/command/FEED_FISH?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -438,7 +441,7 @@ public class SystemData {
   public void harvestFish(int value) {
 
     try {
-      String putUrl = "http://" + ipAddress + ":8111/AQUAPONICS/command/HARVEST_FISH?arg=" + value;
+      String putUrl = HTTP + ipAddress + ":8111/AQUAPONICS/command/HARVEST_FISH?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -456,7 +459,7 @@ public class SystemData {
   public void setHvacTemp(int value) {
 
     try {
-      String putUrl = "http://" + ipAddress + ":8111/HVAC/command/SET_TEMPERATURE?arg=" + value;
+      String putUrl = HTTP + ipAddress + ":8111/HVAC/command/SET_TEMPERATURE?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -477,8 +480,8 @@ public class SystemData {
     try {
 
       String putUrl =
-          "http://" + ipAddress + ":8111/LIGHTING/command/SET_LIGHTING_LEVEL?arg=" + value
-              + "&room=" + room.toUpperCase();
+          HTTP + ipAddress + ":8111/LIGHTING/command/SET_LIGHTING_LEVEL?arg=" + value
+              + "&room=" + room.toUpperCase(Locale.US);
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -498,8 +501,8 @@ public class SystemData {
 
     try {
       String putUrl =
-          "http://" + ipAddress + ":8111/LIGHTING/command/SET_LIGHTING_ENABLED?arg=" + value
-              + "&room=" + room.toUpperCase();
+          HTTP + ipAddress + ":8111/LIGHTING/command/SET_LIGHTING_ENABLED?arg=" + value
+              + "&room=" + room.toUpperCase(Locale.US);
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
@@ -519,8 +522,8 @@ public class SystemData {
 
     try {
       String putUrl =
-          "http://" + ipAddress + ":8111/LIGHTING/command/SET_LIGHTING_COLOR?arg=" + value
-              + "&room=" + room.toUpperCase();
+          HTTP + ipAddress + ":8111/LIGHTING/command/SET_LIGHTING_COLOR?arg=" + value
+              + "&room=" + room.toUpperCase(Locale.US);
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
       putClient.release();
