@@ -35,7 +35,16 @@ public class EnergyConsumptionDictionary {
    *
    */
   public enum EnergyConsumptionDevice {
-
+    
+    /** AQUAPONICS_HEATER */
+    AQUAPONICS_HEATER,
+    
+    /** Pump. **/
+    PUMP,
+    
+    /** Filter. **/
+    FILTER, 
+    
     /** Refrigerator. **/
     REFRIGERATOR, 
     
