@@ -13,8 +13,8 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.backend.IHaleBackend;
 
 /**
- * A server resource that will handle requests to System H. Supported operations: PUT.
- * Supported representations: XML.
+ * A server resource that will handle requests to System H. Supported operations: PUT. Supported
+ * representations: XML.
  * 
  * @author Michael Cera
  */
@@ -42,8 +42,13 @@ public class PutResource extends ServerResource {
     IHaleSystem system = IHaleSystem.valueOf(systemParam);
     IHaleRoom room = queryMap.containsKey("room") ? IHaleRoom.valueOf(queryMap.get("room")) : null;
     IHaleCommandType command = IHaleCommandType.valueOf(commandParam);
+
     String arg = queryMap.containsKey("arg") ? queryMap.get("arg") : null;
 
+    // Add "#" symbol in front of arg for setting the color.
+    if (command.equals(IHaleCommandType.SET_LIGHTING_COLOR) && arg != null) {
+      arg = "#" + arg;
+    }
     IHaleState state = ApiDictionary.iHaleCommandType2State(command);
 
     if (arg != null && state.isType(arg)) {
