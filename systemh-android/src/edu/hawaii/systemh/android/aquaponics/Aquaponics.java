@@ -37,6 +37,9 @@ public class Aquaponics extends Activity {
     TextView levelData;
     TextView circulationData;
     TextView turbidityData;
+    
+    // Store new value to change
+    int newTemp = 0;
 
     /**
      * Called when the activity is first created.
@@ -48,6 +51,8 @@ public class Aquaponics extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        
+        
         // requesting to turn the title OFF
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -58,10 +63,11 @@ public class Aquaponics extends Activity {
         setContentView(R.layout.aquaponics);
 
         /** Get Data Values for Aquaponic System **/
-        SystemData aquaponics = new SystemData("aquaponics");
+        final SystemData aquaponics = new SystemData("aquaponics");
         
+        newTemp = (int) aquaponics.getTemp();
         tempData = (TextView) findViewById(R.id.tempDataValue);
-        tempData.setText(String.valueOf(aquaponics.getTemp()) + "\u00b0F");
+        tempData.setText(String.valueOf(newTemp) + "\u00b0F");
         
         phData = (TextView) findViewById(R.id.phDataValue);
         phData.setText(String.valueOf(aquaponics.getPh()));
@@ -83,17 +89,21 @@ public class Aquaponics extends Activity {
         
         /** Water Temperature Slider Control**/
         temp = (SeekBar) this.findViewById(R.id.tempSeekbar);
-        temp.setMax(10000);
-        temp.setProgress((int)aquaponics.getTemp());
+        temp.setMax(110);
+        temp.setProgress(newTemp);
         
         tempValue = (TextView) this.findViewById(R.id.tempValue);
+        tempValue.setText(String.valueOf(newTemp));
+        
         temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
-                // TODO Auto-generated method stub
-                tempValue.setText(String.valueOf((float)progress/100));
+                
+                tempValue.setText(String.valueOf(newTemp));
+                newTemp = progress;
+                
             }
 
             @Override
@@ -103,7 +113,8 @@ public class Aquaponics extends Activity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                // TODO Auto-generated method stub
+               
+                aquaponics.setAquaponicsTemp(newTemp);
             }
         });
 
@@ -115,8 +126,8 @@ public class Aquaponics extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
-                // TODO Auto-generated method stub
-                phValue.setText(String.valueOf((float)progress/100));
+                
+                phValue.setText(String.valueOf((float)progress / 100));
             }
 
             @Override
@@ -138,7 +149,7 @@ public class Aquaponics extends Activity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
-                // TODO Auto-generated method stub
+                
                 levelValue.setText(String.valueOf(progress));
             }
 
@@ -181,8 +192,7 @@ public class Aquaponics extends Activity {
     /**
      * Take the user to the menu.
      * 
-     * @param view
-     *            The view.
+     * @param view The view.
      */
     public void showMenu(View view) {
         Intent intent = new Intent(Intent.ACTION_VIEW);
