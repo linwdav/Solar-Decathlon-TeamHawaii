@@ -348,23 +348,22 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
     public void run() {
 
       while (running) {
-
-        livingRoom = new SystemData("lighting-livingroom");
-        diningRoom = new SystemData("lighting-diningroom");
-        bathroom = new SystemData("lighting-bathroom");
-        kitchen = new SystemData("lighting-kitchen");
-
+        
         // update the components according to the selected room.
         if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(LIVING)) {
+          livingRoom = new SystemData("lighting-livingroom");
           updateViews(livingRoom);
         }
         else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(DINING)) {
+          diningRoom = new SystemData("lighting-diningroom");
           updateViews(diningRoom);
         }
         else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(KITCHEN)) {
+          kitchen = new SystemData("lighting-kitchen");
           updateViews(kitchen);
         }
         else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(BATHROOM)) {
+          bathroom = new SystemData("lighting-bathroom");
           updateViews(bathroom);
         }
       }

@@ -424,17 +424,17 @@ public class LightingData {
     else if ("dining".equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(diningLevel));
       enableElement.setAttribute(value, String.valueOf(diningEnabled));
-      colorElement.setAttribute(value, String.valueOf(diningEnabled));
+      colorElement.setAttribute(value, String.valueOf(diningColor));
     }
     else if ("kitchen".equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(kitchenLevel));
       enableElement.setAttribute(value, String.valueOf(kitchenEnabled));
-      colorElement.setAttribute(value, String.valueOf(kitchenEnabled));
+      colorElement.setAttribute(value, String.valueOf(kitchenColor));
     }
     else if ("bathroom".equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(bathroomLevel));
       enableElement.setAttribute(value, String.valueOf(bathroomEnabled));
-      colorElement.setAttribute(value, String.valueOf(bathroomEnabled));
+      colorElement.setAttribute(value, String.valueOf(bathroomColor));
     }
 
     rootElement.appendChild(levelElement);

@@ -24,7 +24,7 @@ public class SystemData {
   private static final String HTTP = "http://";
 
   // Initialize
-  String ipAddress = "192.168.1.109";
+  String ipAddress = "168.105.242.83";
 
   String system = "";
   String device = "";
