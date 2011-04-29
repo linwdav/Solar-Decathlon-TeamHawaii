@@ -45,6 +45,16 @@
 			android:onClick="showHvacPage" android:drawableLeft="@drawable/hvac">
 	</Button>
 	
+	<Button android:text="@string/Settings"
+			android:textSize="50sp"
+			android:id="@+id/settingsButton"
+			android:layout_gravity="center" 
+			android:layout_width="fill_parent"
+			android:layout_height="120dip" 
+			android:layout_marginTop="20dip"
+			android:onClick="showSettingsPage">
+	</Button>
+	
 	<Button android:text="@string/Help"
 			android:textSize="50sp"
 			android:id="@+id/lightingButton"

@@ -1,7 +1,9 @@
 package edu.hawaii.systemh.android.menu;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -11,6 +13,7 @@ import edu.hawaii.systemh.android.aquaponics.Aquaponics;
 import edu.hawaii.systemh.android.help.Help;
 import edu.hawaii.systemh.android.hvac.Hvac;
 import edu.hawaii.systemh.android.lighting.Lighting;
+import edu.hawaii.systemh.android.settings.Settings;
 
 /**
  * The main activity of this application, called on startup.
@@ -20,6 +23,8 @@ import edu.hawaii.systemh.android.lighting.Lighting;
  */
 public class Menu extends Activity {
 
+  private static SharedPreferences preferences;
+  
   /**
    * Called when the activity is first created.
    * @param savedInstanceState - A mapping from String values to various Parcelable types. 
@@ -36,6 +41,10 @@ public class Menu extends Activity {
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     setContentView(R.layout.menu);
+    
+    preferences = getSharedPreferences("USER_SETTINGS", 
+        Context.MODE_WORLD_READABLE);
+    
   }
 
   /**
@@ -72,6 +81,17 @@ public class Menu extends Activity {
   }
 
   /**
+   * Take user to the Settings page.
+   * 
+   * @param view The view
+   */
+  public void showSettingsPage(View view) {
+    Intent intent = new Intent(Intent.ACTION_VIEW);
+    intent.setClassName(this, Settings.class.getName());
+    startActivity(intent);
+  }
+  
+  /**
    * Take user to the Help page.
    * 
    * @param view The view
@@ -91,4 +111,11 @@ public class Menu extends Activity {
     super.onDestroy();
   }
 
+  /**
+   * Accessor method for preferences.
+   * @return The preferences associated with app.
+   */
+  public static SharedPreferences getPreferences() {
+    return preferences;
+  }
 }

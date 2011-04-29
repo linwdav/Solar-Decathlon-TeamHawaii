@@ -7,6 +7,7 @@
     <string name="Lighting">Lighting System Controls</string>
     <string name="Hvac">Hvac System Controls</string>
     <string name="Help">Help</string>
+    <string name="Settings">User Settings</string>
     <string name="BackToMenu">Back To Menu</string>
     <string name="Confirm">Confirm</string>
     <string name="Close">Close</string>

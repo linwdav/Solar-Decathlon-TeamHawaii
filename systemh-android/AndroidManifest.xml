@@ -26,6 +26,10 @@
 		<activity android:name="edu.hawaii.systemh.android.hvac.Hvac"
 			android:label="@string/Lighting" android:screenOrientation="portrait"
 			android:configChanges="orientation|keyboardHidden" />
+			
+		<activity android:name="edu.hawaii.systemh.android.settings.Settings"
+			android:label="@string/Settings" android:screenOrientation="portrait"
+			android:configChanges="orientation|keyboardHidden" />
 
 		<activity android:name="edu.hawaii.systemh.android.help.Help"
 			android:label="@string/Lighting" android:screenOrientation="portrait"
