@@ -67,7 +67,7 @@ public class LightingLivingPutResource extends ServerResource {
         "SET_LIGHTING_ENABLED".equalsIgnoreCase(command) ) {
       
       boolean enableLights = Boolean.parseBoolean(arg);
-      LightingData.setBathroomEnabled(enableLights);
+      LightingData.setLivingEnabled(enableLights);
     }
     else { 
       getResponse().setStatus(Status.CLIENT_ERROR_NOT_ACCEPTABLE);
