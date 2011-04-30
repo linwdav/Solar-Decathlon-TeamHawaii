@@ -15,6 +15,13 @@
     <string name="ChangeColor">Change Color</string>
     <string name="lightSwitch">Light Switch:</string>
     <string name="roomPrompt">Choose a room:</string>
+    <string name="systemPrompt">Choose a system:</string>
+    <string-array name="systems">
+    	<item>Aquaponics</item>
+    	<item>Lighting</item>
+    	<item>Hvac</item>
+    	<item>Energy</item>
+    </string-array>
     <string-array name="rooms">
     	<item>Living Room</item>
     	<item>Dining Room</item>
