@@ -28,6 +28,15 @@
     	<item>Kitchen</item>
     	<item>Bathroom</item>
     </string-array>
+    <string-array name="feedAmount">
+        <item>0.0</item>
+        <item>0.5</item>
+        <item>1.0</item>
+        <item>2.0</item>
+        <item>3.0</item>
+        <item>4.0</item>
+        <item>5.0</item>
+    </string-array>
     <string name="brightness">Brightness:</string>
     <string name="temperature">temperature:</string>
     <string name="waterTemp">Water Temperature</string>
@@ -39,4 +48,8 @@
     <string name="oxygen">Dissolved Oxygen</string>
     <string name="waterCirculation">Water Circulation</string>
     <string name="waterTurbidity">Water Turbidity</string>
+    <string name="deadFish">Dead Fish</string>
+    <string name="feeding">Feeding</string>
+    <string name="selectFeedAmount">Select Feed Amount:</string>
+    <string name="feedFish">Feed Fish</string>
 </resources>

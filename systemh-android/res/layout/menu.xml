@@ -3,6 +3,7 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/solar"
     >
     
     <TextView  
@@ -22,7 +23,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="100dip"
-			android:onClick="showAquaponicsPage" android:drawableLeft="@drawable/aqua">
+			android:onClick="showAquaponicsPage" 
+			android:drawableLeft="@drawable/aquaponics"
+			>
 	</Button>
 	
 	<Button android:text="@string/Lighting"
@@ -32,7 +35,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="20dip"
-			android:onClick="showLightingPage" android:drawableLeft="@drawable/lights">
+			android:onClick="showLightingPage" 
+			android:drawableLeft="@drawable/lights"
+			>
 	</Button>
 	
 	<Button android:text="@string/Hvac"
@@ -42,7 +47,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="20dip"
-			android:onClick="showHvacPage" android:drawableLeft="@drawable/hvac">
+			android:onClick="showHvacPage" 
+			android:drawableLeft="@drawable/hvac"
+			>
 	</Button>
 	
 	<Button android:text="@string/Settings"
@@ -52,7 +59,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="20dip"
-			android:onClick="showSettingsPage">
+			android:onClick="showSettingsPage"
+			android:drawableLeft="@drawable/settings"
+			>
 	</Button>
 	
 	<Button android:text="@string/Help"
@@ -62,7 +71,9 @@
 			android:layout_width="fill_parent"
 			android:layout_height="120dip" 
 			android:layout_marginTop="20dip"
-			android:onClick="showHelpPage" android:drawableLeft="@drawable/help">
+			android:onClick="showHelpPage" 
+			android:drawableLeft="@drawable/help"
+			>
 	</Button>
 	
 </LinearLayout>
