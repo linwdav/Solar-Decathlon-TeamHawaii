@@ -18,7 +18,7 @@ public class MiscSystem extends HouseSystem {
   static final long oneHourInMillis = 1000L * 60L * 60L;
   
   /**
-   * The main constructor. Initializes all the associated devices with this system.
+   * The default constructor. Initializes all the associated devices with this system.
    */
   public MiscSystem() {
     super(EnergyConsumptionSystem.MISC.toString());
@@ -33,18 +33,18 @@ public class MiscSystem extends HouseSystem {
 
     /** Refrigerator. **/
     Device refrigerator = new Device(EnergyConsumptionDevice.REFRIGERATOR.toString());
-    double[] refrigEntries = {17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-                              17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-                              17, 17, 17, 17};
+    double[] refrigEntries = {31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                              31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                              31.5, 31.5, 31.5, 31.5};
     for (int i = 0; i < 24; i++) {
       refrigerator.addHourEntry(i, refrigEntries[i]);
     }
     
     /** Freezer. **/
     Device freezer = new Device(EnergyConsumptionDevice.FREEZER.toString());
-    double[] freezerEntries = {13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5,
-                               13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5, 13.5,
-                               13.5, 13.5, 13.5, 13.5};
+    double[] freezerEntries = {25, 25, 25, 25, 25, 25, 25, 25, 25, 25,
+                               25, 25, 25, 25, 25, 25, 25, 25, 25, 25,
+                               25, 25, 25, 25};
     for (int i = 0; i < 24; i++) {
       freezer.addHourEntry(i, freezerEntries[i]);
     }
@@ -61,8 +61,8 @@ public class MiscSystem extends HouseSystem {
     /** Clothes Washer. **/
     Device clothesWasher = new Device(EnergyConsumptionDevice.CLOTHES_WASHER.toString());
     double[] clothesWasherEntries = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                     0, 0, 0, 0, 0, 0, 50, 50, 50, 50,
-                                     0, 0, 0, 0};
+                                     0, 0, 0, 0, 0, 0, 0, 0, 0, 100,
+                                     100, 100, 0, 0};
     for (int i = 0; i < 24; i++) {
       clothesWasher.addHourEntry(i, clothesWasherEntries[i]);
     }
@@ -70,8 +70,8 @@ public class MiscSystem extends HouseSystem {
     /** Clothes Dryer. **/
     Device clothesDryer = new Device(EnergyConsumptionDevice.CLOTHES_DRYER.toString());
     double[] clothesDryerEntries = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                    0, 0, 0, 0, 0, 0, 736, 736, 736, 736,
-                                    0, 0, 0, 0};
+                                    0, 0, 0, 0, 0, 0, 0, 0, 0, 736,
+                                    736, 736, 0, 0};
     for (int i = 0; i < 24; i++) {
       clothesDryer.addHourEntry(i, clothesDryerEntries[i]);
     }
@@ -79,7 +79,7 @@ public class MiscSystem extends HouseSystem {
     /** Dish Washer. **/
     Device dishWasher = new Device(EnergyConsumptionDevice.DISHWASHER.toString());
     double[] dishWashereEntries = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                   0, 0, 0, 0, 0, 0, 900, 900, 900, 900,
+                                   0, 0, 0, 0, 0, 0, 1000, 1000, 1000, 0,
                                    0, 0, 0, 0};
     for (int i = 0; i < 24; i++) {
       dishWasher.addHourEntry(i, dishWashereEntries[i]);
@@ -88,7 +88,7 @@ public class MiscSystem extends HouseSystem {
     /** Cooking energy usage. **/
     Device cooking = new Device(EnergyConsumptionDevice.COOKING.toString());
     double[] cookingEntries = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                               0, 0, 0, 0, 0, 0, 0, 447.5, 447.5, 447.5,
+                               0, 0, 447.5, 447.5, 0, 0, 0, 0, 0, 0,
                                0, 0, 0, 0};
     for (int i = 0; i < 24; i++) {
       cooking.addHourEntry(i, cookingEntries[i]);
@@ -97,8 +97,8 @@ public class MiscSystem extends HouseSystem {
     /** Hot water energy usage. **/
     Device hotWater = new Device(EnergyConsumptionDevice.HOT_WATER.toString());
     double[] hotWaterEntries = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                0, 0, 0, 0, 0, 0, 0, 0, 0, 25,
-                                50, 25, 0, 0};
+                                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                0, 50, 50, 0};
     for (int i = 0; i < 24; i++) {
       hotWater.addHourEntry(i, hotWaterEntries[i]);
     }

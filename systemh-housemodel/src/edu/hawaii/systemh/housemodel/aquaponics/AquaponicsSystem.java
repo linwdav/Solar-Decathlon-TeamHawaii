@@ -8,7 +8,7 @@ import edu.hawaii.systemh.housemodel.HouseSystem;
 /**
  * Creates the HVAC System model for energy consumption.
  * 
- * @author Kurt Teichman, Leonardo Ngyuen, Bret K. Ikehara
+ * @author Bret K. Ikehara, Leonardo Ngyuen, Kurt Teichman. 
  */
 public class AquaponicsSystem extends HouseSystem {
 
@@ -22,34 +22,36 @@ public class AquaponicsSystem extends HouseSystem {
   @Override
   protected void initDeviceValues() {
 
+    /** Heater. **/
     Device heater = new Device(EnergyConsumptionDevice.AQUAPONICS_HEATER.toString());
-    double[] heaterValues =
-        { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-            17, 17 };
+    double[] heaterValues =  {31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                              31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                              31.5, 31.5, 31.5, 31.5};
     for (int i = 0; i < 24; i++) {
       heater.addHourEntry(i, heaterValues[i]);
     }
 
-    deviceMap.put(heater.getDeviceName(), heater);
-
+    /** Water Pump. **/
     Device waterpump = new Device(EnergyConsumptionDevice.PUMP.toString());
-    double[] waterPumpValues =
-        { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-            17, 17 };
+    double[] waterPumpValues = {31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                                31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                                31.5, 31.5, 31.5, 31.5};
     for (int i = 0; i < 24; i++) {
       waterpump.addHourEntry(i, waterPumpValues[i]);
     }
 
-    deviceMap.put(waterpump.getDeviceName(), waterpump);
-    
+    /** Water Filter. **/
     Device waterFilter = new Device(EnergyConsumptionDevice.FILTER.toString());
-    double[] waterFilterValues =
-        { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-            17, 17 };
+    double[] waterFilterValues =  {31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                                   31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
+                                   31.5, 31.5, 31.5, 31.5};
     for (int i = 0; i < 24; i++) {
       waterFilter.addHourEntry(i, waterFilterValues[i]);
     }
-
+    
+    // Associated the following devices with the Aquaponics System.
+    deviceMap.put(heater.getDeviceName(), heater);
+    deviceMap.put(waterpump.getDeviceName(), waterpump);
     deviceMap.put(waterpump.getDeviceName(), waterFilter);
   }
 }

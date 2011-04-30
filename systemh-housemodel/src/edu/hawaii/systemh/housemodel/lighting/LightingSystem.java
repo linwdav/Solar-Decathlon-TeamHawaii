@@ -1,30 +1,28 @@
 package edu.hawaii.systemh.housemodel.lighting;
 
-import java.util.List;
-import edu.hawaii.systemh.api.repository.TimestampDoublePair;
 import edu.hawaii.systemh.housemodel.Device;
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
+import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionSystem;
 import edu.hawaii.systemh.housemodel.HouseSystem;
 
 /**
  * Creates the Lighting System model for energy consumption.
  * 
- * @author Bret K. Ikehara
+ * @author Leonardo Nguyen, Kurt Teichman , Bret K. Ikehara
  */
 public class LightingSystem extends HouseSystem {
 
   /**
    * Default Constructor.
-   * 
-   * @param systemName String
    */
-  public LightingSystem(String systemName) {
-    super(systemName);
+  public LightingSystem() {
+    super(EnergyConsumptionSystem.LIGHTING.toString());
   }
 
   @Override
   protected void initDeviceValues() {
 
+    /** The lights in the home. **/
     Device lighting = new Device(EnergyConsumptionDevice.LIGHTING.toString());
     double[] values = { 0, 0, 0, 0, 0, 200, 200, 0, 0, 0, 
                         0, 0, 0, 0, 0, 0, 0, 0, 50, 175, 
@@ -33,31 +31,7 @@ public class LightingSystem extends HouseSystem {
       lighting.addHourEntry(i, values[i]);
     }
 
+    // Associated the following devices with the Lighting System.
     deviceMap.put(lighting.getDeviceName(), lighting);    
-  }
-  
-  @Override
-  public double getDeviceCurrentLoad(EnergyConsumptionDevice deviceName) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public double getSystemCurrentLoad() {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public List<TimestampDoublePair> getDeviceLoadDuringInterval(EnergyConsumptionDevice device,
-      Long startTime, Long endTime) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public List<TimestampDoublePair> getSystemLoadDuringInterval(Long startTime, Long endTime) {
-    // TODO Auto-generated method stub
-    return null;
   }
 }

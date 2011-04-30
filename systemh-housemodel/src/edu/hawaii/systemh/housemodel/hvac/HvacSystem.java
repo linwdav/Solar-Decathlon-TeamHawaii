@@ -1,7 +1,5 @@
 package edu.hawaii.systemh.housemodel.hvac;
 
-import java.util.List;
-import edu.hawaii.systemh.api.repository.TimestampDoublePair;
 import edu.hawaii.systemh.housemodel.Device;
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionSystem;
@@ -10,7 +8,7 @@ import edu.hawaii.systemh.housemodel.HouseSystem;
 /**
  * Creates the HVAC System model for energy consumption.
  * 
- * @author Bret K. Ikehara
+ * @author Bret K. Ikehara, Leonardo Nguyen, Kurt Teichman.
  */
 public class HvacSystem extends HouseSystem {
 
@@ -28,49 +26,26 @@ public class HvacSystem extends HouseSystem {
    */
   protected void initDeviceValues() {
     
+    /** Heating and Cooling. **/
     Device temperature = new Device(EnergyConsumptionDevice.HEATING_COOLING.toString());
-    double[] tempValues =
-        { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-            17, 17 };
+    double[] tempValues = {228, 245, 274, 290, 290, 290, 0, 0, 0, 0,
+                           17, 17, 17, 17, 376, 308, 211, 0, 0, 0,
+                           0, 0, 0, 0};
     for (int i = 0; i < 24; i++) {
       temperature.addHourEntry(i, tempValues[i]);
     }
 
-    deviceMap.put(temperature.getDeviceName(), temperature);
-
+    /** Humidifier. **/
     Device humidifier = new Device(EnergyConsumptionDevice.HUMIDIFIER.toString());
-    double[] humidifierValues =
-        { 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17, 17,
-            17, 17 };
+    double[] humidifierValues =  {165, 165, 165, 165, 165, 165, 165, 165, 165, 165,
+                                  165, 165, 165, 165, 0, 0, 0, 0, 0, 0,
+                                  0, 0, 165, 165};
     for (int i = 0; i < 24; i++) {
       humidifier.addHourEntry(i, humidifierValues[i]);
     }
-
+    
+    // Associated the following devices with the HVAC System.
+    deviceMap.put(temperature.getDeviceName(), temperature);
     deviceMap.put(humidifier.getDeviceName(), humidifier);
-  }
-  
-  @Override
-  public double getDeviceCurrentLoad(EnergyConsumptionDevice deviceName) {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public double getSystemCurrentLoad() {
-    // TODO Auto-generated method stub
-    return 0;
-  }
-
-  @Override
-  public List<TimestampDoublePair> getDeviceLoadDuringInterval(EnergyConsumptionDevice device,
-      Long startTime, Long endTime) {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
-  @Override
-  public List<TimestampDoublePair> getSystemLoadDuringInterval(Long startTime, Long endTime) {
-    // TODO Auto-generated method stub
-    return null;
   }
 }
