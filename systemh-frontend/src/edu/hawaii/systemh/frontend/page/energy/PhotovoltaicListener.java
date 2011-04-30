@@ -1,9 +1,12 @@
 package edu.hawaii.systemh.frontend.page.energy;
 
+import java.util.Calendar;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.SystemStateListener;
+import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
+import edu.hawaii.systemh.frontend.page.SystemStatusPanel.SystemStatus;
 
 /**
  * A listener that the UI uses to learn when the database has changed state.
@@ -21,7 +24,10 @@ public class PhotovoltaicListener extends SystemStateListener {
 
   private Integer power = -1;
   private Integer energy = -1;
-
+  private static long[] hourlyAverage = { 1, 1, 1, 1, 1, 1, 3000 / 64, 3000 / 32, 3000 / 16,
+    3000 / 8, 3000 / 4, 3000 / 2, 3000 / 2, 3000 / 4, 3000 / 8, 3000 / 16, 3000 / 32, 3000 / 64,
+    1, 1, 1, 1, 1, 1, 6000 / 24 };
+  
   /**
    * Provide a default constructor that indicates that this listener is for Photovoltaics.
    */
@@ -38,9 +44,21 @@ public class PhotovoltaicListener extends SystemStateListener {
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
+    long cautionCap = (Long) value - 10;
+    long warningCap = (Long) value - 20;
     switch (state) {
-    case ENERGY: 
+    case ENERGY:
       energy = (Integer) value;
+      if (hourlyAverage[Calendar.HOUR_OF_DAY] <= cautionCap
+          && hourlyAverage[Calendar.HOUR_OF_DAY] > warningCap) {
+        SolarDecathlonApplication.getStatusMap().put("Photovoltaics", SystemStatus.CAUTION);
+      }
+      else if (hourlyAverage[Calendar.HOUR_OF_DAY] <= warningCap) {
+        SolarDecathlonApplication.getStatusMap().put("Photovoltaics", SystemStatus.WARNING);
+      }
+      else {
+        SolarDecathlonApplication.getStatusMap().put("Photovoltaics", SystemStatus.OK);
+      }
       break;
     
     case POWER: 
