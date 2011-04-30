@@ -65,6 +65,7 @@ public class Lighting extends Header {
   private static final String DINING_ROOM = "Dining Room";
   private static final String KITCHEN = "Kitchen";
   private static final String BATHROOM = "Bathroom";
+  private static final String ONCHANGE = "onchange";
 
   private boolean livingState;
   private boolean diningState;
@@ -215,7 +216,7 @@ public class Lighting extends Header {
 
     // Added for jquery control.
     intensity.setMarkupId(intensity.getId());
-    intensity.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    intensity.add(new AjaxFormComponentUpdatingBehavior(ONCHANGE) {
 
       /**
        * Serial ID.
@@ -450,7 +451,7 @@ public class Lighting extends Header {
     colorChangeAll = new HiddenField<String>("colorchangeall", new Model<String>(setColorAll));
     // Added for jquery control.
     colorChangeAll.setMarkupId(colorChangeAll.getId());
-    colorChangeAll.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    colorChangeAll.add(new AjaxFormComponentUpdatingBehavior(ONCHANGE) {
 
       /**
        * Serial ID.
@@ -485,7 +486,7 @@ public class Lighting extends Header {
     colorChange = new HiddenField<String>("colorchange", new Model<String>(setColor));
     // Added for jquery control.
     colorChange.setMarkupId(colorChange.getId());
-    colorChange.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    colorChange.add(new AjaxFormComponentUpdatingBehavior(ONCHANGE) {
 
       /**
        * Serial ID.
@@ -555,7 +556,7 @@ public class Lighting extends Header {
     roomChoices =
         new DropDownChoice<String>("room", new PropertyModel<String>(this, "currentRoom"), rooms);
 
-    roomChoices.add(new AjaxFormComponentUpdatingBehavior("onchange") {
+    roomChoices.add(new AjaxFormComponentUpdatingBehavior(ONCHANGE) {
 
       private static final long serialVersionUID = 1L;
 
