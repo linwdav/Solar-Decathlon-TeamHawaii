@@ -52,4 +52,5 @@
     <string name="feeding">Feeding</string>
     <string name="selectFeedAmount">Select Feed Amount:</string>
     <string name="feedFish">Feed Fish</string>
+    <string name="Energy">Energy</string>
 </resources>

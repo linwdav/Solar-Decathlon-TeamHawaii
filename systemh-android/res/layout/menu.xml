@@ -52,6 +52,18 @@
 			>
 	</Button>
 	
+	<Button android:text="@string/Energy"
+			android:textSize="50sp"
+			android:id="@+id/lightingButton"
+			android:layout_gravity="center" 
+			android:layout_width="fill_parent"
+			android:layout_height="120dip" 
+			android:layout_marginTop="20dip"
+			android:onClick="showEnergyPage" 
+			android:drawableLeft="@drawable/energy"
+			>
+	</Button>
+	
 	<Button android:text="@string/Settings"
 			android:textSize="50sp"
 			android:id="@+id/settingsButton"

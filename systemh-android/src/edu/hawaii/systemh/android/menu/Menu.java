@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.aquaponics.Aquaponics;
+import edu.hawaii.systemh.android.energy.Energy;
 import edu.hawaii.systemh.android.help.Help;
 import edu.hawaii.systemh.android.hvac.Hvac;
 import edu.hawaii.systemh.android.lighting.Lighting;
@@ -77,6 +78,17 @@ public class Menu extends Activity {
   public void showHvacPage(View view) {
     Intent intent = new Intent(Intent.ACTION_VIEW);
     intent.setClassName(this, Hvac.class.getName());
+    startActivity(intent);
+  }
+  
+  /**
+   * Take user to the Energy page.
+   * 
+   * @param view The view
+   */
+  public void showEnergyPage(View view) {
+    Intent intent = new Intent(Intent.ACTION_VIEW);
+    intent.setClassName(this, Energy.class.getName());
     startActivity(intent);
   }
 
