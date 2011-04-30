@@ -32,7 +32,7 @@ public class AquaponicsSystem extends HouseSystem {
     }
 
     /** Water Pump. **/
-    Device waterpump = new Device(EnergyConsumptionDevice.PUMP.toString());
+    Device waterpump = new Device(EnergyConsumptionDevice.WATER_PUMP.toString());
     double[] waterPumpValues = {31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
                                 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
                                 31.5, 31.5, 31.5, 31.5};
@@ -41,7 +41,7 @@ public class AquaponicsSystem extends HouseSystem {
     }
 
     /** Water Filter. **/
-    Device waterFilter = new Device(EnergyConsumptionDevice.FILTER.toString());
+    Device waterFilter = new Device(EnergyConsumptionDevice.WATER_FILTER.toString());
     double[] waterFilterValues =  {31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
                                    31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5, 31.5,
                                    31.5, 31.5, 31.5, 31.5};

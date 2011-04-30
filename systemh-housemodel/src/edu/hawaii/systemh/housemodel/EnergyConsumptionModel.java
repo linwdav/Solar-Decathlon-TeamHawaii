@@ -4,7 +4,9 @@ import java.util.List;
 import edu.hawaii.systemh.api.repository.TimestampDoublePair;
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionDevice;
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionSystem;
+import edu.hawaii.systemh.housemodel.aquaponics.AquaponicsSystem;
 import edu.hawaii.systemh.housemodel.hvac.HvacSystem;
+import edu.hawaii.systemh.housemodel.lighting.LightingSystem;
 import edu.hawaii.systemh.housemodel.misc.MiscSystem;
 
 /**
@@ -16,12 +18,10 @@ import edu.hawaii.systemh.housemodel.misc.MiscSystem;
  */
 public class EnergyConsumptionModel implements EnergyManagementChartInterface {
 
-  /**
-   * Error message.
-   */
+  /** Error message. **/
   private static final String errorMsg;
-  //private AquaponicsSystem aquaponics;  
-  //private LightingSystem lighting;
+  private AquaponicsSystem aquaponics;  
+  private LightingSystem lighting;
   private HvacSystem hvac;
   private MiscSystem misc;
 
@@ -36,25 +36,38 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
    * Default Constructor.
    */
   public EnergyConsumptionModel() {
+    this.aquaponics = new AquaponicsSystem();
     this.hvac = new HvacSystem();
+    this.lighting = new LightingSystem();
     this.misc = new MiscSystem();
   }
 
   /**
-   * Gets the device current load.
+   * Retrieves the device current energy load.
    * 
-   * @param deviceName EnergyConsumptionDevice
-   * @return double
+   * @param deviceName The device.
+   * @return The device's current energy usage load.
    */
   @Override
   public double getDeviceCurrentLoad(EnergyConsumptionDevice deviceName) {
+    
     double value = 0;
 
     switch (deviceName) {
+    // Devices associated with the Aquaponics system.
+    case AQUAPONICS_HEATER:
+    case WATER_PUMP:
+    case WATER_FILTER:
+      value = this.aquaponics.getDeviceCurrentLoad(deviceName);
+      break;    
     // Devices associated with the HVAC system.
     case HEATING_COOLING:
     case HUMIDIFIER:
       value = this.hvac.getDeviceCurrentLoad(deviceName);
+      break;  
+    // Devices associated with the Lighting system.
+    case LIGHTING:
+      value = this.lighting.getDeviceCurrentLoad(deviceName);
       break;
     // Devices associated with the the MiscSystem.
     case REFRIGERATOR:
@@ -75,10 +88,10 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
   }
 
   /**
-   * Gets the system current load.
+   * Retrieves the system's current energy usage load.
    * 
-   * @param system EnergyConsumptionSystem
-   * @return double
+   * @param system The system.
+   * @return The system's current energy usage load.
    */
   @Override
   public double getSystemCurrentLoad(EnergyConsumptionSystem system) {
@@ -86,15 +99,15 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
     double value = 0;
 
     switch (system) {
-    //case AQUAPONICS:
-    //  value = this.aquaponics.getSystemCurrentLoad();
-    //  break;
+    case AQUAPONICS:
+      value = this.aquaponics.getSystemCurrentLoad();
+      break;
     case HVAC:
       value = this.hvac.getSystemCurrentLoad();
       break;
-    //case LIGHTING:
-    //  value = this.lighting.getSystemCurrentLoad();
-    //  break;
+    case LIGHTING:
+      value = this.lighting.getSystemCurrentLoad();
+      break;
     case MISC:
       value = this.misc.getSystemCurrentLoad();
       break;
@@ -106,12 +119,13 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
   }
 
   /**
-   * Gets the load for a device during a certain interval.
+   * Retrieves the energy usage load for a device during a certain interval.
    * 
-   * @param deviceName EnergyConsumptionDevice
-   * @param startTime Long
-   * @param endTime Long
-   * @return List<TimestampDoublePair>
+   * @param deviceName The device.
+   * @param startTime The start time in ms since "the epoch".
+   * @param endTime The end time in ms since "the epoch".
+   * @return List of entries of one hour intervals since the startTime of the device's energy usage
+   *         load.   
    */
   @Override
   public List<TimestampDoublePair> getDeviceLoadDuringInterval(EnergyConsumptionDevice deviceName,
@@ -120,11 +134,20 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
     List<TimestampDoublePair> deviceLoadList = null;
 
     switch (deviceName) {
+    // Devices associated with the Aquaponics system.
+    case AQUAPONICS_HEATER:
+    case WATER_PUMP:
+    case WATER_FILTER:
+      deviceLoadList = this.aquaponics.getDeviceLoadDuringInterval(deviceName, startTime, endTime);
+      break;  
     // Devices associated with the HVAC system.
     case HEATING_COOLING:
     case HUMIDIFIER:
       deviceLoadList = this.hvac.getDeviceLoadDuringInterval(deviceName, startTime, endTime);
       break;
+    case LIGHTING:
+      deviceLoadList = this.lighting.getDeviceLoadDuringInterval(deviceName, startTime, endTime);
+      break;  
     // Devices associated with the the MiscSystem.
     case REFRIGERATOR:
     case FREEZER:
@@ -144,12 +167,14 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
   }
 
   /**
-   * Gets the congregate load for a system during a certain interval.
+   * Retrieves the congregate of energy usage load for a system during a certain interval.
    * 
-   * @param system EnergyConsumptionSystem
-   * @param startTime Long
-   * @param endTime Long
-   * @return List<TimestampDoublePair>
+   * @param system The system.
+   * @param startTime The start time in ms since "the epoch".
+   * @param endTime The end time in ms since "the epoch".
+   * 
+   * @return List of entries one hour intervals since the startTime of the the system's energy 
+   *         usage load.
    */
   @Override
   public List<TimestampDoublePair> getSystemLoadDuringInterval(EnergyConsumptionSystem system,
@@ -158,15 +183,15 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
     List<TimestampDoublePair> systemLoadList = null;
     
     switch (system) {
-    //case AQUAPONICS:
-    //  systemLoadList = this.aquaponics.getSystemLoadDuringInterval(startTime, endTime);
-    //  break;
-    //case LIGHTING:
-    //  systemLoadList = this.lighting.getSystemLoadDuringInterval(startTime, endTime);
-    //  break;
+    case AQUAPONICS:
+      systemLoadList = this.aquaponics.getSystemLoadDuringInterval(startTime, endTime);
+      break;
     case HVAC:
       systemLoadList = this.hvac.getSystemLoadDuringInterval(startTime, endTime);
       break;
+    case LIGHTING:
+      systemLoadList = this.lighting.getSystemLoadDuringInterval(startTime, endTime);
+      break;  
     case MISC:
       systemLoadList = this.misc.getSystemLoadDuringInterval(startTime, endTime);
       break;

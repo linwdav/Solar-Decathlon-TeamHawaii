@@ -40,10 +40,10 @@ public class EnergyConsumptionDictionary {
     AQUAPONICS_HEATER,
     
     /** Pump. **/
-    PUMP,
+    WATER_PUMP,
     
     /** Filter. **/
-    FILTER, 
+    WATER_FILTER, 
     
     /** Refrigerator. **/
     REFRIGERATOR, 
