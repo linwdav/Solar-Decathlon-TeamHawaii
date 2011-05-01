@@ -103,20 +103,14 @@ public class WeatherReport {
     root = "/forecast/moon_phase/";
     
     //parse sunrise
-    double hour = (Double) xpath.evaluate(root + "sunrise/hour", doc, XPathConstants.NUMBER) - 12.0;
-    double min = (Double) xpath.evaluate(root + "sunrise/minute", doc, XPathConstants.NUMBER);
-    if (hour < 0) {
-      min *= -1;
-    }
-    sunRise = hour + (min / 60.0);
+    double hour = (Double) xpath.evaluate(root + "sunrise/hour", doc, XPathConstants.NUMBER);
+    double min = (Double) xpath.evaluate(root + "sunrise/minute", doc, XPathConstants.NUMBER); 
+    sunRise = (hour + (min / 60.0)) - 12.0;
     
     //parse sunset
-    hour = (Double) xpath.evaluate(root + "sunset/hour", doc, XPathConstants.NUMBER) - 12.0;
-    min = (Double) xpath.evaluate(root + "sunset/minute", doc, XPathConstants.NUMBER);
-    if (hour < 0) {
-      min *= -1;
-    }
-    sunSet = hour + (min / 60.0);
+    hour = (Double) xpath.evaluate(root + "sunset/hour", doc, XPathConstants.NUMBER);
+    min = (Double) xpath.evaluate(root + "sunset/minute", doc, XPathConstants.NUMBER); 
+    sunSet = (hour + (min / 60.0)) - 12.0;
      
     root = "/forecast/simpleforecast/forecastday[1]/";
     

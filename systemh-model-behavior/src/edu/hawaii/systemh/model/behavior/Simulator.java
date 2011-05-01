@@ -42,9 +42,7 @@ public class Simulator {
                                                  //DC time zone is "EDT"
                                               //Hawaii timezone is "HST"
     Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("HST"));  
-    double rough = calendar.get(Calendar.HOUR_OF_DAY) - 12.0;  
-    int multiplier = 1;  
- 
+    double rough = calendar.get(Calendar.HOUR_OF_DAY);  
     //Create a double representing time with 
     //hour as the whole number,
     //minutes as the first two decimal places,
@@ -55,15 +53,10 @@ public class Simulator {
     fine += calendar.get(Calendar.SECOND) / 6000.0;
     fine += calendar.get(Calendar.MILLISECOND) / 10000000.0;
     
-    //essentially, were taking the distance from noon, so
-    //fine should be negative in the morning (when rough
-    //is negative).
-    if (rough < 0) {
-      multiplier = -1;
-    } 
+    
     //plug the double into a parabolic function to get a 
     //value between 0 and 100.
-    return rough + fine * multiplier; 
+    return (rough + fine) - 12.0; 
   }
   
   /**
@@ -80,11 +73,11 @@ public class Simulator {
    * @return a double representing the temperature in F.
    */
   public static double getOutsideTemp(double time) {
-    //Using the basic formula   y = 12.5*sin((x/4)-7)
-    //average temperature in DC is between 50 and 75 F, see link below...
-    //http://www.wunderground.com/history/airport/KDCA/2011/10/21/MonthlyHistory.
-//html?req_city=NA&req_state=NA&req_statename=NA
-    double seed = time / 4.0 - 1.1;  
+    //Using the basic formula   y = k*sin((x/4)-p) 
+    //where k is half the difference in high and low temp.
+      //representing the fluxuation above and below 0 for the basic sin function.
+    //p represents some offset to make the wave fit the daylight hours.
+    double seed = time / 4.0 - 5.0;  
     double high = weatherReport.getHighTemp();
     double low = weatherReport.getLowTemp();
     return ((high - low) / 2.0) * Math.sin(seed) + ((high + low) / 2.0); 
@@ -123,19 +116,18 @@ public class Simulator {
     double halfHOD = hoursOfDaylight / 2.0; 
     
     //make sure its daytime or return 0
-    if (((time > 0) && (time >= weatherReport.getSunSet())) || (time < 0) && 
-        Math.abs(time) < Math.abs(weatherReport.getSunRise())) {
+    if ((time >= weatherReport.getSunSet()) || 
+        time < weatherReport.getSunRise()) {
       System.out.println("Dark");
       return 0;
     } 
     //affects the zeroes of the sin function, as well as the max height of 100
     double multiplier = (-100.0 / Math.pow(halfHOD,2.0));
     //crazy maths...
-    double sun = Math.pow((time + subtractTimes(weatherReport.getSunRise(),-(halfHOD + .63))),2.0); 
+    double sun = Math.pow((time + subtractTimes(weatherReport.getSunRise(),-(halfHOD))),2.0); 
     sun = sun * multiplier + 100.0;
     //Definitely don't return negatives...
-    if (sun < 0) {
-      System.out.println("Was negative");
+    if (sun < 0) { 
       return 0;
     }
     //return the sunshine but correct for cloud cover...
@@ -150,13 +142,7 @@ public class Simulator {
  * @return a signed double.
  */
   private static double subtractTimes(double early, double late) {
-    int earlyHour = (int) (early / 1) + 12;
-    int lateHour = (int) (late / 1) + 12;
-    double earlyMin = Math.abs(early % 1.0);
-    double lateMin = Math.abs(late % 1.0);
-    double earlyTime = earlyHour + earlyMin;
-    double lateTime = lateHour + lateMin;
-    return lateTime - earlyTime;
+    return late - early;
   }
   
   /**
@@ -190,15 +176,11 @@ public class Simulator {
     System.out.println("Cloud cover = " + ( (1 - weatherReport.getCloudCover()) * 100.0) + "%");
     System.out.println("**************************************");
     System.out.println("Data over time");
-    for (double i = -7; i <= 8.5; i += .1) {
-      if (i == -5) {
-        i += 12;
-      }
+    for (double i = -12; i <= 12; i += 1) { 
       System.out.println();
       System.out.println("Hour = " + i);
-      //System.out.println("Temp = " + getTemp(i)); 
+      System.out.println("Temp = " + getOutsideTemp(i)); 
       System.out.println("Sun = " + getSolarIntensity(i)); 
-      //System.out.print(getSolarIntensity(i) +",");
     }  
   }
 
