@@ -2,14 +2,18 @@ package edu.hawaii.systemh.android.aquaponics;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
 import edu.hawaii.systemh.android.systemdata.SystemData;
@@ -43,12 +47,15 @@ public class Aquaponics extends Activity {
     
     Spinner feeds;
     
+    Button feed;
+    
     // Store new value to change
     int newTemp = 0;
     int fish = 0;
-    double newPh = 0;
-    double newWaterLevel = 0;
-    double newNutrients = 0;
+    String newPh = "0";
+    String newWaterLevel = "0";
+    String newNutrients = "0";
+    double newFeedAmnt = 0;
    
     /**
      * Called when the activity is first created.
@@ -60,8 +67,6 @@ public class Aquaponics extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        
-        
         // requesting to turn the title OFF
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -76,30 +81,41 @@ public class Aquaponics extends Activity {
         
         newTemp = (int) aquaponics.getTemp();
         tempData = (TextView) findViewById(R.id.tempDataValue);
-        tempData.setText(newTemp + "\u00b0F");
+        tempData.setText(newTemp + "\u00b0C");
+        setTextColorStatus(tempData, newTemp, 28, 30, 20, 45);
         
-        newPh = aquaponics.getPh();
+        newPh = String.valueOf(aquaponics.getPh());
         phData = (TextView) findViewById(R.id.phDataValue);
-        phData.setText(String.valueOf(newPh));
+        phData.setText(newPh);
+        setTextColorStatus(phData, (int) (aquaponics.getPh() * 10), 70, 79, 66, 82);
         
         ecData = (TextView) findViewById(R.id.ecDataValue);
         ecData.setText(aquaponics.getElectricalConductivity() + " \u00b5s/cm");
+        setTextColorStatus(ecData, (int) (aquaponics.getElectricalConductivity() * 100), 
+                1100, 1900, 900, 2100);
         
         oxygenData = (TextView) findViewById(R.id.oxygenDataValue);
         oxygenData.setText(aquaponics.getOxygen() + " mg/l");
+        setTextColorStatus(oxygenData, (int) (aquaponics.getOxygen() * 100), 400, 500, 350, 650);
         
-        newWaterLevel = aquaponics.getWaterLevel();
+        newWaterLevel = (String.valueOf(aquaponics.getWaterLevel()));
         levelData = (TextView) findViewById(R.id.levelDataValue);
         levelData.setText(newWaterLevel + " in");
+        setTextColorStatus(levelData, aquaponics.getWaterLevel(), 38, 45, 24, 60);
         
         circulationData = (TextView) findViewById(R.id.circulationDataValue);
         circulationData.setText(aquaponics.getCirculation() + " gpm");
+        setTextColorStatus(circulationData, (int) (aquaponics.getCirculation() * 100), 
+                6500, 9500, 5000, 11000);
         
         turbidityData = (TextView) findViewById(R.id.turbidityDataValue);
         turbidityData.setText(aquaponics.getTurbidity() + " NTUs");
+        setTextColorStatus(turbidityData, (int) (aquaponics.getTurbidity() * 100), 
+                0, 10000, 0, 11000);
         
         deadFishData = (TextView) findViewById(R.id.deadFishDataValue);
-        deadFishData.setText(aquaponics.getDeadFish());
+        deadFishData.setText(String.valueOf(aquaponics.getDeadFish()));
+        setTextColorStatus(deadFishData, aquaponics.getDeadFish(), 0, 0, 0, 0);
         
         /** Water Temperature Slider Control**/
         temp = (SeekBar) this.findViewById(R.id.tempSeekbar);
@@ -133,11 +149,12 @@ public class Aquaponics extends Activity {
 
         /** PH Level Slider Control**/
         ph = (SeekBar) this.findViewById(R.id.phSeekBar);
-        ph.setMax(1400);
-        ph.setProgress((int) (newPh * 100));
+        ph.setMax(140);
+        ph.setProgress((int) (aquaponics.getPh() * 10));
+        //ph.setProgress(10);
         
         phValue = (TextView) this.findViewById(R.id.phValue);
-        phValue.setText(String.valueOf(newPh));
+        phValue.setText(newPh);
         
         ph.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
 
@@ -145,8 +162,8 @@ public class Aquaponics extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
                 
-                newPh = progress / 100;
-                phValue.setText(String.valueOf(newPh));
+                newPh = String.valueOf((float) progress / 10);
+                phValue.setText(newPh);
             }
 
             @Override
@@ -157,14 +174,14 @@ public class Aquaponics extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 
-                aquaponics.setPh(newPh);
+                aquaponics.setPh(Double.parseDouble(newPh));
             }
         });
 
         /** Water Level Slider Control**/
         level = (SeekBar) this.findViewById(R.id.levelSeekBar);
         level.setMax(10000);
-        level.setProgress((int) (newWaterLevel * 100));
+        level.setProgress((int) (aquaponics.getWaterLevel() * 100));
         
         levelValue = (TextView) this.findViewById(R.id.levelValue);
         levelValue.setText(String.valueOf(newWaterLevel));
@@ -175,7 +192,7 @@ public class Aquaponics extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
                 
-                newWaterLevel = progress / 100;
+                newWaterLevel = String.valueOf((float) progress / 100);
                 levelValue.setText(String.valueOf(newWaterLevel));
             }
 
@@ -187,7 +204,7 @@ public class Aquaponics extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 
-                aquaponics.setWaterLevel(newWaterLevel);
+                aquaponics.setWaterLevel(Double.parseDouble(newWaterLevel));
             }
         });
 
@@ -204,7 +221,7 @@ public class Aquaponics extends Activity {
             public void onProgressChanged(SeekBar seekBar,
                     int progress, boolean fromUser) {
                
-                newNutrients = progress / 100;
+                newNutrients = String.valueOf((float) progress / 100);
                 nutrientsValue.setText(String.valueOf(newNutrients));
             }
 
@@ -216,7 +233,7 @@ public class Aquaponics extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 
-                aquaponics.setNutrients(newNutrients);
+                aquaponics.setNutrients(Double.parseDouble(newNutrients));
             }
         });
         
@@ -226,9 +243,68 @@ public class Aquaponics extends Activity {
             ArrayAdapter.createFromResource(this, R.array.feedAmount, R.layout.spinner);
         adapter.setDropDownViewResource(R.layout.spinner_dropdown);
         feeds.setAdapter(adapter);
+        feeds.setOnItemSelectedListener(new MyOnItemSelectedListener());
         
+        feed = (Button) findViewById(R.id.feedFishButton);
+        feed.setOnClickListener(new View.OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                aquaponics.feedFish(newFeedAmnt);
+                
+            }
+        });
+  
     }
 
+    /**
+     * The listener for the feed amount choices.
+     * 
+     * @author Group H
+     * 
+     */
+    public class MyOnItemSelectedListener implements OnItemSelectedListener {
+
+      @Override
+      public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+
+        // update the components according to the selected feed amount.
+       newFeedAmnt = Double.parseDouble(String.valueOf(feeds.getSelectedItem()));   
+      }
+
+      @Override
+      public void onNothingSelected(AdapterView<?> parent) {
+        // Do nothing.
+      }
+    }
+    
+    /**
+     * Set text color depending on the range of the value.
+     * 
+     * @param text The TextView
+     * @param value The current value
+     * @param minWarn Min value for Warning (gold)
+     * @param maxWarn Max value for Warning (gold)
+     * @param minAlrt Min value for Alert (red)
+     * @param maxAlrt Max value for Alert (red)
+     */
+    public void setTextColorStatus(TextView text, int value, int minWarn, 
+            int maxWarn, int minAlrt, int maxAlrt) {
+        
+        
+        if (value < minAlrt || value > maxAlrt) {
+            text.setTextColor(Color.RED);
+        } 
+        else if ((value < minWarn && value > minAlrt) || (value > maxWarn && value < maxAlrt)) {
+            text.setTextColor(0xFFFFD700);
+        }
+        else {
+            text.setTextColor(Color.GREEN);
+        }
+        
+    }
+    
+    
     /**
      * Take the user to the menu.
      * 

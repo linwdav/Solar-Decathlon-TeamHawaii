@@ -14,17 +14,19 @@
 		android:layout_height="wrap_content" android:text="@string/Aquaponics"
 		android:textSize="50sp" android:layout_marginTop="40sp"
 		android:layout_below="@id/BackToMenu" android:layout_centerHorizontal="true"
-		android:layout_marginBottom="30dip" />
+		android:layout_marginBottom="20dip" />
 
 	<!-- Data for Water Temperature -->
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/DataLayout" android:layout_below="@+id/Title"
 		android:layout_width="match_parent" android:stretchColumns="1"
 		android:background="@drawable/shape" android:layout_height="wrap_content"
-		android:layout_margin="10dip" android:layout_marginTop="30dip">
+		android:layout_margin="10dip" android:layout_marginTop="10dip">
 
 		<TableRow android:layout_marginTop="10dip"
 			android:layout_marginBottom="5dip">
+			
+			
 			<TextView android:id="@+id/tempLabel" android:text="@string/waterTemp"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
 				android:textSize="25sp" android:textStyle="bold"
@@ -155,8 +157,8 @@
 
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:textSize="40sp"
-		android:layout_marginTop="10dip" android:layout_below="@id/DataLayout"
-		android:layout_centerHorizontal="true" android:layout_marginBottom="10dip"
+		android:layout_below="@id/DataLayout"
+		android:layout_centerHorizontal="true" 
 		android:id="@+id/Controls" android:text="@string/controls" />
 
 	<!-- Water Temperature -->
@@ -164,7 +166,7 @@
 		android:layout_below="@+id/Controls" android:layout_width="match_parent"
 		android:stretchColumns="1" android:background="@drawable/shape"
 		android:layout_height="wrap_content" android:id="@+id/TempLayout"
-		android:layout_margin="10dip" android:layout_marginTop="200dip">
+		android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:layout_marginTop="15dip" android:layout_marginBottom="5dip">
 
 		<TableRow android:layout_marginTop="10dip">
 			<TextView android:layout_height="wrap_content"
@@ -191,10 +193,10 @@
 
 	<!-- PH Level -->
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_marginTop="20dip" android:layout_width="match_parent"
+		 android:layout_width="match_parent"
 		android:stretchColumns="1" android:background="@drawable/shape"
 		android:layout_height="wrap_content" android:id="@+id/PhLayout"
-		android:layout_below="@+id/TempLayout" android:layout_margin="10dip">
+		android:layout_below="@+id/TempLayout" android:layout_marginLeft="10dip" android:layout_marginRight="10dip">
 		<TableRow android:layout_marginTop="10dip">
 			<TextView android:layout_height="wrap_content" android:id="@+id/phTextView"
 				android:layout_width="wrap_content" android:textSize="25sp"
@@ -202,13 +204,13 @@
 				android:layout_span="2" android:paddingLeft="30dip" />
 		</TableRow>
 		<TableRow>
-			<TextView android:id="@+id/phValue" android:text="7.0"
+			<TextView android:id="@+id/phValue" android:text="0.0"
 				android:textSize="20sp" android:layout_height="wrap_content"
 				android:layout_marginTop="12dip" android:layout_marginLeft="25dip"
 				android:layout_column="0" android:layout_width="60dip" />
 			<SeekBar android:id="@+id/phSeekBar" android:layout_height="wrap_content"
 				android:layout_width="match_parent" android:layout_column="1"
-				android:progress="7" android:max="1400" android:layout_margin="10dip"
+				android:progress="0" android:max="140" android:layout_margin="10dip"
 				android:layout_marginTop="30dip" android:paddingLeft="20dip"
 				android:paddingRight="30dip" />
 		</TableRow>
@@ -216,10 +218,10 @@
 
 	<!-- Water Level -->
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_marginTop="20dip" android:layout_width="match_parent"
+		android:layout_marginTop="5dip" android:layout_width="match_parent"
 		android:stretchColumns="1" android:background="@drawable/shape"
 		android:layout_height="wrap_content" android:id="@+id/LevelLayout"
-		android:layout_below="@+id/PhLayout" android:layout_margin="10dip">
+		android:layout_below="@+id/PhLayout" android:layout_marginLeft="10dip" android:layout_marginRight="10dip">
 		<TableRow android:layout_marginTop="10dip">
 			<TextView android:id="@+id/levelTextView" android:text="@string/waterLevel"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
@@ -242,10 +244,10 @@
 
 	<!-- Water Nutrients -->
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_marginTop="20dip" android:layout_width="match_parent"
+		android:layout_marginTop="5dip" android:layout_width="match_parent"
 		android:stretchColumns="1" android:background="@drawable/shape"
 		android:layout_height="wrap_content" android:id="@+id/NutrientsLayout"
-		android:layout_below="@+id/LevelLayout" android:layout_margin="10dip">
+		android:layout_below="@+id/LevelLayout" android:layout_marginLeft="10dip" android:layout_marginRight="10dip">
 		<TableRow android:layout_marginTop="10dip">
 			<TextView android:id="@+id/nutrientsTextView" android:text="@string/waterNutrients"
 				android:layout_height="wrap_content" android:layout_width="wrap_content"
@@ -254,7 +256,7 @@
 				android:paddingLeft="30dip" />
 		</TableRow>
 		<TableRow>
-			<TextView android:id="@+id/nutrientsValue" android:text="50"
+			<TextView android:id="@+id/nutrientsValue" android:text="00"
 				android:textSize="20sp" android:layout_height="wrap_content"
 				android:layout_marginTop="12dip" android:layout_marginLeft="25dip"
 				android:layout_column="0" android:layout_width="60dip" />
@@ -268,10 +270,10 @@
 
 	<!-- Feed Fish -->
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_marginTop="20dip" android:layout_width="match_parent"
+		android:layout_marginTop="5dip" android:layout_width="match_parent"
 		android:stretchColumns="1" android:background="@drawable/shape"
 		android:layout_height="wrap_content" android:layout_below="@+id/NutrientsLayout"
-		android:layout_margin="10dip" android:id="@+id/FeedFishLayout">
+		android:layout_marginLeft="10dip" android:layout_marginRight="10dip" android:id="@+id/FeedFishLayout">
 		<TableRow android:layout_marginTop="10dip">
 			<TextView android:layout_height="wrap_content"
 				android:layout_width="wrap_content" android:textSize="25sp"
@@ -281,16 +283,15 @@
 		</TableRow>
 		<TableRow android:layout_marginBottom="10dip">
 			<TextView android:textSize="20sp" android:layout_height="wrap_content"
-				android:layout_marginTop="3dip" android:layout_marginLeft="25dip"
+				android:layout_marginTop="3dip" android:layout_marginLeft="100dip"
 				android:layout_column="0" android:id="@+id/feedFishLabel"
 				android:text="@string/selectFeedAmount" android:layout_width="wrap_content" />
 			<Spinner android:id="@+id/feedSpinner" android:layout_height="wrap_content"
-				android:layout_width="wrap_content" android:layout_marginRight="30dip"
-				android:layout_marginLeft="20dip"/>
+				android:layout_marginRight="80dip"
+				android:layout_marginLeft="40dip" android:layout_width="wrap_content"/>
 			<Button android:layout_column="3" android:background="#009900" android:textSize="20sp"
-				
 				android:paddingLeft="10dip" android:id="@+id/feedFishButton" android:text="@string/feedFish"
-				android:layout_height="40sp" android:layout_width="wrap_content" android:layout_marginRight="30dip" android:paddingRight="10dip"/>
+				android:layout_height="40sp" android:layout_width="wrap_content" android:layout_marginRight="130dip" android:paddingRight="10dip"/>
 		</TableRow>
 
 	</TableLayout>
