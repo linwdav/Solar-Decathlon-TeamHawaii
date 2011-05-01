@@ -16,13 +16,14 @@
 		android:layout_below="@id/BackToMenu" android:layout_centerHorizontal="true"
 		android:layout_marginBottom="20dip" />
 
-	<!-- Data for Water Temperature -->
+  <!-- Aquaponics System State Table. -->
 	<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
 		android:id="@+id/DataLayout" android:layout_below="@+id/Title"
 		android:layout_width="match_parent" android:stretchColumns="1"
 		android:background="@drawable/shape" android:layout_height="wrap_content"
 		android:layout_margin="10dip" android:layout_marginTop="10dip">
 
+    <!-- Data for Water Temperature -->
 		<TableRow android:layout_marginTop="10dip"
 			android:layout_marginBottom="5dip">
 			
@@ -153,7 +154,7 @@
 				android:id="@+id/deadFishDataValue" />
 		</TableRow>
 
-	</TableLayout>
+	</TableLayout> <!-- End of @id/DataLayout. -->
 
 	<TextView android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:textSize="40sp"

@@ -211,7 +211,7 @@ public class SystemData {
           }
         }
       }
-
+      getClient.release();
     }
     catch (Exception e) {
       e.printStackTrace();

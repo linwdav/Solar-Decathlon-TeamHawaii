@@ -161,7 +161,9 @@ public class Help extends Activity {
                 + "the lights in the room.");
       }
       else if ("Hvac".equals(room)) {
-        helpContent.setText("This page allows the user to control the air conditioning system.");
+        helpContent.setText("This page displays the current home temperature and allows the user " 
+            + "to control the HVAC system's ability to maintain the home at a user-specified " 
+            + "temperature.");
       }
       else if ("Energy".equals(room)) {
         helpContent

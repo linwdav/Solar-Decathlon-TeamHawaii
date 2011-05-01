@@ -5,7 +5,7 @@
     <string name="HouseName">Hale Pilihonua</string>
     <string name="Aquaponics">Aquaponics System</string>
     <string name="Lighting">Lighting System Controls</string>
-    <string name="Hvac">Hvac System Controls</string>
+    <string name="Hvac">Hvac System</string>
     <string name="Help">Help</string>
     <string name="Settings">User Settings</string>
     <string name="BackToMenu">Back To Menu</string>
@@ -53,4 +53,6 @@
     <string name="selectFeedAmount">Select Feed Amount:</string>
     <string name="feedFish">Feed Fish</string>
     <string name="Energy">Energy</string>
+    <string name="HvacCurrTempLabel">Current Home Temperature</string>
+    <string name="DesiredHomeTemp">Desired Home Temperature</string>
 </resources>

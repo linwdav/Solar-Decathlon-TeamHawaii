@@ -18,12 +18,15 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
+import edu.hawaii.systemh.android.systemdata.SystemData;
 
 /**
- * The activity that starts the hvac page.
+ * The activity that starts the hvac page. Note: temperature values are in Celsius as that
+ * are the units being returned by the house simulator XMLs.
  * 
  * @author Group H
  *
@@ -34,6 +37,17 @@ public class Hvac extends Activity implements OnClickListener {
   TextView testTextView;
   int numOfClicks = 0;
   
+  /** Displays the current home temperature. **/
+  private TextView currTempTextView;
+  /** Displays the desired home temperature SeekBar value. **/
+  private TextView desiredHomeTempLabel;  
+  /** Controls the desired home temperature. **/
+  private SeekBar desiredHomeTempSeekBar;
+  
+  private int currentTemp;
+  private int desiredHomeTemp;
+  private SystemData hvac;
+  
   /** 
    * Called when the activity is first created. 
    * @param savedInstanceState - A mapping from String values to various Parcelable types. 
@@ -42,40 +56,62 @@ public class Hvac extends Activity implements OnClickListener {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    // requesting to turn the title OFF
+    // Requesting to turn the title OFF.
     requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-    // making it full screen
+    // Making it full screen.
     getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     setContentView(R.layout.hvac);
-    
-    //Engine.getInstance().getRegisteredClients().add(new HttpClientHelper(null));
-    //System.clearProperty("http.proxyHost");
 
     // Test widgets for Restlet communication with the back-end server.
-    testButton = (Button) findViewById(R.id.ButtonHvacTest);
-    testButton.setOnClickListener(this);
-    testTextView = (TextView) findViewById(R.id.TextViewTestView);
+    //testButton = (Button) findViewById(R.id.ButtonHvacTest);
+    //testButton.setOnClickListener(this);
+    //testTextView = (TextView) findViewById(R.id.TextViewTestView);
+    
+    hvac = new SystemData("hvac");
+    
+    currTempTextView = (TextView) findViewById(R.id.TextViewCurrTempValue);
+    currentTemp = (int) hvac.getTemp();
+    currTempTextView.setText(String.valueOf(currentTemp) + "\u00b0C");
+
+    desiredHomeTempLabel = (TextView) findViewById(R.id.TextViewDesiredHomeTempValue);
+    
+    desiredHomeTempSeekBar = (SeekBar) findViewById(R.id.SeekBarDesiredHomeTemp);
+    desiredHomeTempSeekBar.setMax(32);
+    desiredHomeTempSeekBar.setProgress(23);
+    
+    desiredHomeTempSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
+      // When a user moves the SeekBar slider controlling the desired home temperature,
+      // the value is displayed on the left of the SeekBar within a TextView.
+      // Provides feedback on the values selected by the user.
+      @Override
+      public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        desiredHomeTemp = progress;
+        desiredHomeTempLabel.setText(String.valueOf(desiredHomeTemp));
+      }
+
+      @Override
+      public void onStartTrackingTouch(SeekBar seekBar) {
+        // Unimplemented.
+      }
+
+      @Override
+      public void onStopTrackingTouch(SeekBar seekBar) {
+        hvac.setHvacTemp(desiredHomeTempSeekBar.getProgress());
+      }
+    });
     
   }
   
   @Override
   public void onClick(View view) {
     System.out.println("A button has been clicked!");
+    
     int id = view.getId();
-    
-    // To test if the button works upon clicking.
     /*
-    if (id == R.id.ButtonHvacTest) {
-      numOfClicks++;
-      testTextView.setText("CHANGE OCCUR: The number of times the TestButton has been clicked is:
-       " + numOfClicks);
-      return;
-    }
-    */
-    
     // To test if we can retrieve information after sending a HTTP GET request.
     if (id == R.id.ButtonHvacTest) {
 
@@ -130,6 +166,7 @@ public class Hvac extends Activity implements OnClickListener {
         e.printStackTrace();
       }
     }
+    */
   }
 
   /**

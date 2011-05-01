@@ -2,8 +2,9 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:id="@+id/hvacMainScreen"
-  android:layout_width="fill_parent"
-  android:layout_height="fill_parent">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#202020">
   
   <TextView  
 	  android:id="@+id/BackToMenu"
@@ -27,8 +28,11 @@
 	 	android:layout_marginTop="40sp" 
 	 	android:layout_below="@id/BackToMenu"
 	 	android:layout_centerHorizontal="true"
+	 	android:layout_marginBottom="30dip"
  	/>
  	
+ <!-- DELETE THIS BUTTON IN FINAL PRODUCT. -->   
+ <!-- 	
  <Button 
 	 android:id="@+id/ButtonHvacTest" 
 	 android:layout_width="wrap_content" 
@@ -37,7 +41,10 @@
    android:layout_marginTop="10sp"
    android:layout_below="@id/Title" 
  />
-	 
+ -->
+  
+ <!-- DELETE THIS TEXT VIEW IN FINAL PRODUCT. -->	 
+ <!-- 
  <TextView 
 	 android:id="@+id/TextViewTestView" 
 	 android:layout_width="wrap_content" 
@@ -45,5 +52,114 @@
 	 android:text="Test text goes here from clicking on TestButton" 
 	 android:layout_below="@id/ButtonHvacTest"
  />
+ -->
+  
+ <!-- HVAC System State Table. -->
+ <TableLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/TableLayoutHvacSystemState" 
+    android:layout_below="@+id/Title"
+    android:layout_width="match_parent" 
+    android:stretchColumns="1"
+    android:background="@drawable/shape" 
+    android:layout_height="wrap_content"
+    android:layout_margin="10dip" 
+    android:layout_marginTop="30dip">
+    
+    <!-- Data for Current Home Temperature -->
+    <TableRow 
+      android:layout_marginTop="10dip"
+      android:layout_marginBottom="5dip">
+      <TextView 
+        android:id="@+id/TextViewCurrTempLabel" 
+        android:text="@string/HvacCurrTempLabel"
+        android:layout_height="wrap_content" 
+        android:layout_width="wrap_content"
+        android:textSize="25sp" 
+        android:textStyle="bold"
+        android:layout_column="0" 
+        android:paddingLeft="30dip" />
+      <TextView 
+        android:id="@+id/TextViewCurrTempValue" 
+        android:text="00"
+        android:layout_height="wrap_content" 
+        android:gravity="right"
+        android:layout_column="1" 
+        android:textSize="20sp"
+        android:layout_marginTop="0dip" 
+        android:paddingRight="50dip" />
+    </TableRow>
+    
+    <View 
+      android:layout_width="fill_parent" 
+      android:layout_height="1dip"
+      android:background="#202020" />
+ </TableLayout>
+ 
+ <!-- HVAC Control Title Text. -->
+ <TextView 
+  android:layout_width="wrap_content"
+  android:layout_height="wrap_content" 
+  android:textSize="40sp"
+  android:layout_marginTop="10dip" 
+  android:layout_below="@id/TableLayoutHvacSystemState"
+  android:layout_centerHorizontal="true" 
+  android:layout_marginBottom="10dip"
+  android:id="@+id/TextViewHvacControls" 
+  android:text="@string/controls" />
+ 
+ <!-- Desired Temperature Control Table. -->>
+ <TableLayout 
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_below="@+id/TextViewHvacControls" 
+   android:layout_width="match_parent"
+   android:stretchColumns="1" 
+   android:background="@drawable/shape"
+   android:layout_height="wrap_content" 
+   android:id="@+id/TableLayoutHvacControl"
+   android:layout_margin="10dip" 
+   android:layout_marginTop="200dip">
+
+   <TableRow 
+     android:layout_marginTop="10dip">
+     <!-- Desired Temperature Title/Header. -->
+     <TextView 
+       android:layout_height="wrap_content"
+       android:layout_width="wrap_content" 
+       android:id="@+id/TextViewDesiredHomeTempTitle"
+       android:text="@string/DesiredHomeTemp" 
+       android:textSize="25sp"
+       android:textStyle="bold" 
+       android:layout_column="0"
+       android:layout_span="2" 
+       android:paddingLeft="30dip" />
+   </TableRow>
+
+   <TableRow>
+     <!-- Default to 23 degrees Celsius. -->
+     <TextView 
+       android:text="23\u00b0C" 
+       android:layout_height="wrap_content"
+       android:layout_marginTop="12dip" 
+       android:layout_marginLeft="25dip"
+       android:id="@+id/TextViewDesiredHomeTempValue" 
+       android:textSize="20sp"
+       android:layout_column="0" 
+       android:layout_width="60dip" />
+     <SeekBar 
+       android:progress="23" 
+       android:paddingTop="0dip"
+       android:layout_margin="10dip" 
+       android:layout_marginTop="30dip"
+       android:max="32" 
+       android:paddingLeft="20dip" 
+       android:paddingRight="30dip"
+       android:layout_height="wrap_content" 
+       android:id="@+id/SeekBarDesiredHomeTemp"
+       android:layout_column="1" 
+       android:layout_width="match_parent"
+       android:layout_marginLeft="0dip" />
+   </TableRow>
+ </TableLayout>
 
 </RelativeLayout>
