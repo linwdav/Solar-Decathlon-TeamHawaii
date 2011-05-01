@@ -771,6 +771,40 @@ public class Header extends WebPage {
       }
     }));
     
+    list.add(new SystemPanelListObj("Aquaponics", AquaPonics.class, new Model<ResourceReference>() {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 4497832961448106036L;
+      
+      /**
+       * Gets the aquaponics object.
+       */
+      @Override
+      public ResourceReference getObject() {
+        SystemHStatus status = SolarDecathlonApplication.getAquaponics().getAquaponicsStatus();
+        return SystemPanel.getStatusImage(status);
+      }
+    }));
+    
+    list.add(new SystemPanelListObj("HVAC", Hvac.class, new Model<ResourceReference>() {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 4497832961448106036L;
+      
+      /**
+       * Gets the HVAC object.
+       */
+      @Override
+      public ResourceReference getObject() {
+        SystemHStatus status = SolarDecathlonApplication.getHvac().getHvacStatus();
+        return SystemPanel.getStatusImage(status);
+      }
+    }));
+    
     add(new SystemPanel("system-status", list));
   }
 

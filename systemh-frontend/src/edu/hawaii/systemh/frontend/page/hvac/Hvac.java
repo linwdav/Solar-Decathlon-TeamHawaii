@@ -187,7 +187,7 @@ public class Hvac extends Header {
           original = "<font color=\"red\">" + original + closeTag;
         }
         else {
-          original = "<font color=\"red\">" + original + closeTag;
+          original = "<font color=\"green\">" + original + closeTag;
         }
         return original;
       }
