@@ -27,3 +27,7 @@ $.widget("ui.panel", {
 		this.options[option] = value;
 	}
 });
+
+function panelUpdateImage(id, src) {
+	document.getElementById(id).src = src;
+}

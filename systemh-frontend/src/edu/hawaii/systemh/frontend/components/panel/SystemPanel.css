@@ -27,3 +27,28 @@ div.system-panel div.system-content {
   height:150px; 
   width:170px;
 }
+
+div#system-status.system-panel div.system-content {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+}
+
+div#system-status.system-panel div.system-button {
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#CCC), to(#FFFFFF));
+  background: -moz-linear-gradient(top, #CCCCCC, #FFFFFF);
+}
+
+div.system-panel img {
+	height : 18px;
+	width : 18px;
+	vertical-align : middle;
+}
+
+div.system-panel	div.system-button img {
+	position : fixed;
+	bottom : 3px;
+	right : 25px;
+	
+}

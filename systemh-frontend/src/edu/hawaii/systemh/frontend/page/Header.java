@@ -1,7 +1,9 @@
 package edu.hawaii.systemh.frontend.page;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
@@ -20,6 +22,9 @@ import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.SolarDecathlonSession;
+import edu.hawaii.systemh.frontend.components.panel.SystemPanel;
+import edu.hawaii.systemh.frontend.components.panel.SystemPanel.SystemHStatus;
+import edu.hawaii.systemh.frontend.components.panel.SystemPanelListObj;
 import edu.hawaii.systemh.frontend.page.aquaponics.AquaPonics;
 import edu.hawaii.systemh.frontend.page.dashboard.Dashboard;
 import edu.hawaii.systemh.frontend.page.energy.Energy;
@@ -76,11 +81,9 @@ public class Header extends WebPage {
    * The header page. This is a parent class to all pages.
    */
   public Header() {
-    
-    add(new SystemStatusPanel("system-status", new Model<String>("Systems' Status")));
+    addStatusPanel();
 
     activeTab = ((SolarDecathlonSession) getSession()).getHeaderSession().getActiveTab();
-    
 
     // System.out.println("\n\nUSER IS VIEWING PAGE" + activeTab + "\n\n");
 
@@ -217,7 +220,7 @@ public class Header extends WebPage {
     // Other images used throughout system
     add(new Image("TableViewImage", new ResourceReference(Header.class,
         "images/icons/magnifier.png")));
-    add(new Image("TableEditImage", new ResourceReference(Header.class, 
+    add(new Image("TableEditImage", new ResourceReference(Header.class,
         "images/icons/pencil.png")));
     add(new Image("TableDeleteImage",
         new ResourceReference(Header.class, "images/icons/cancel.png")));
@@ -743,6 +746,32 @@ public class Header extends WebPage {
    */
   public static void setCityName(String newCity) {
     cityName = newCity;
+  }
+  
+  /**
+   * Adds the Status Panel to the page.
+   */
+  private void addStatusPanel() {
+
+    List<SystemPanelListObj> list = new ArrayList<SystemPanelListObj>();
+    list.add(new SystemPanelListObj("Electical", Energy.class, new Model<ResourceReference>() {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 4497832961448106036L;
+      
+      /**
+       * Gets the electrical object.
+       */
+      @Override
+      public ResourceReference getObject() {
+        SystemHStatus status = SolarDecathlonApplication.getElectrical().getEnergyStatus();
+        return SystemPanel.getStatusImage(status);
+      }
+    }));
+    
+    add(new SystemPanel("system-status", list));
   }
 
   /**

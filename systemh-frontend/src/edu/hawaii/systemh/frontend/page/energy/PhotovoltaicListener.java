@@ -5,8 +5,7 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.SystemStateListener;
-import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
-import edu.hawaii.systemh.frontend.page.SystemStatusPanel.SystemStatus;
+import edu.hawaii.systemh.frontend.components.panel.SystemPanel.SystemHStatus;
 
 /**
  * A listener that the UI uses to learn when the database has changed state.
@@ -16,7 +15,6 @@ import edu.hawaii.systemh.frontend.page.SystemStatusPanel.SystemStatus;
  * @author Chuan Lun Hung
  */
 public class PhotovoltaicListener extends SystemStateListener {
-  
 
   // private static final String SYSTEM_NAME = "photovoltaics";
   // private static final String POWER_KEY = "power";
@@ -25,22 +23,26 @@ public class PhotovoltaicListener extends SystemStateListener {
   private Integer power = -1;
   private Integer energy = -1;
   private static long[] hourlyAverage = { 1, 1, 1, 1, 1, 1, 3000 / 64, 3000 / 32, 3000 / 16,
-    3000 / 8, 3000 / 4, 3000 / 2, 3000 / 2, 3000 / 4, 3000 / 8, 3000 / 16, 3000 / 32, 3000 / 64,
-    1, 1, 1, 1, 1, 1, 6000 / 24 };
-  
+      3000 / 8, 3000 / 4, 3000 / 2, 3000 / 2, 3000 / 4, 3000 / 8, 3000 / 16, 3000 / 32, 3000 / 64,
+      1, 1, 1, 1, 1, 1, 6000 / 24 };
+
+  private SystemHStatus photovoltaicStatus;
+
   /**
    * Provide a default constructor that indicates that this listener is for Photovoltaics.
    */
   public PhotovoltaicListener() {
     super(IHaleSystem.PHOTOVOLTAIC);
+    this.photovoltaicStatus = SystemHStatus.OK;
   }
 
   /**
-   * Runs when the Photovoltaics state changes. 
-   * @param state One of the Photovoltaics state values. 
+   * Runs when the Photovoltaics state changes.
+   * 
+   * @param state One of the Photovoltaics state values.
    * @param room Always null for the Photovoltaics system.
    * @param timestamp The time when this state change occurred.
-   * @param value The value associated with this state change. 
+   * @param value The value associated with this state change.
    */
   @Override
   public void entryAdded(IHaleState state, IHaleRoom room, Long timestamp, Object value) {
@@ -51,23 +53,23 @@ public class PhotovoltaicListener extends SystemStateListener {
       energy = (Integer) value;
       if (hourlyAverage[Calendar.HOUR_OF_DAY] <= cautionCap
           && hourlyAverage[Calendar.HOUR_OF_DAY] > warningCap) {
-        SolarDecathlonApplication.getStatusMap().put("Photovoltaics", SystemStatus.CAUTION);
+        photovoltaicStatus = SystemHStatus.CAUTION;
       }
       else if (hourlyAverage[Calendar.HOUR_OF_DAY] <= warningCap) {
-        SolarDecathlonApplication.getStatusMap().put("Photovoltaics", SystemStatus.WARNING);
+        photovoltaicStatus = SystemHStatus.WARNING;
       }
       else {
-        SolarDecathlonApplication.getStatusMap().put("Photovoltaics", SystemStatus.OK);
+        photovoltaicStatus = SystemHStatus.OK;
       }
       break;
-    
-    case POWER: 
+
+    case POWER:
       power = (Integer) value;
       break;
-    
-    default: 
+
+    default:
       System.out.println("Unhandled Photovoltaics state: " + state);
-    
+
     }
   }
 
@@ -87,5 +89,14 @@ public class PhotovoltaicListener extends SystemStateListener {
    */
   public long getEnergy() {
     return energy;
+  }
+
+  /**
+   * Gets this photovoltaic status.
+   * 
+   * @return SystemHStatus
+   */
+  public SystemHStatus getPhotovoltaicStatus() {
+    return this.photovoltaicStatus;
   }
 }

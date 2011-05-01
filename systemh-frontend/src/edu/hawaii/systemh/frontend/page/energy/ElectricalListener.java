@@ -5,8 +5,7 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleRoom;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleState;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.SystemStateListener;
-import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
-import edu.hawaii.systemh.frontend.page.SystemStatusPanel.SystemStatus;
+import edu.hawaii.systemh.frontend.components.panel.SystemPanel.SystemHStatus;
 
 /**
  * A listener for consumption that the UI uses to learn when the database has changed state.
@@ -26,12 +25,15 @@ public class ElectricalListener extends SystemStateListener {
   private static long[] hourlyAverage = { // in watts per hour
       1640, 1620, 1550, 1500, 1580, 1640, 1890, 2120, 1990, 1910, 1970, 1980, 1910, 1900, 1890,
           1880, 1850, 1860, 1910, 2230, 2080, 2070, 1980, 1880 };
+  
+  private SystemHStatus energyStatus;
 
   /**
    * Provide a default constructor that indicates that this listener is for Electricity Consumption.
    */
   public ElectricalListener() {
     super(IHaleSystem.ELECTRIC);
+    this.energyStatus = SystemHStatus.OK;
   }
 
   /**
@@ -51,13 +53,13 @@ public class ElectricalListener extends SystemStateListener {
       energy = (Integer) value;
       if (hourlyAverage[Calendar.HOUR_OF_DAY] >= cautionCap
           && hourlyAverage[Calendar.HOUR_OF_DAY] < warningCap) {
-        SolarDecathlonApplication.getStatusMap().put("Energy", SystemStatus.CAUTION);
+        this.energyStatus = SystemHStatus.CAUTION;
       }
       else if (hourlyAverage[Calendar.HOUR_OF_DAY] >= warningCap) {
-        SolarDecathlonApplication.getStatusMap().put("Energy", SystemStatus.WARNING);
+        this.energyStatus = SystemHStatus.WARNING;
       }
       else {
-        SolarDecathlonApplication.getStatusMap().put("Energy", SystemStatus.OK);
+        this.energyStatus = SystemHStatus.OK;
       }
       break;
 
@@ -87,5 +89,14 @@ public class ElectricalListener extends SystemStateListener {
    */
   public long getEnergy() {
     return energy;
+  }
+  
+  /**
+   * Gets this energy status.
+   * 
+   * @return SystemHStatus
+   */
+  public SystemHStatus getEnergyStatus() {
+    return this.energyStatus;
   }
 }
