@@ -9,7 +9,8 @@ import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumpti
 import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumptionSystem;
 
 /**
- * Tests the HTTP operations of the system.
+ * Tests that the values put into the Lighting Consumption Model are working
+ * as intended.
  * 
  * @author Kurt Teichman
  */
@@ -18,6 +19,8 @@ public class TestHvacSystem {
   /**
    * Tests that the values put into the Hvac Consumption Model are working
    * as intended.
+   * 
+   * @throws Exception generalized exception
    */
   
   @Test
@@ -27,7 +30,7 @@ public class TestHvacSystem {
     java.util.Date todayDate = new java.util.Date();
     
     long startTime = todayDate.getTime();
-    long endTime = startTime + 60*60*24*7; // 1 week from our startTime
+    long endTime = startTime + 60 * 60 * 24 * 7; // 1 week from our startTime
 
     List<TimestampDoublePair> hvacSystemData =
       energyConsumptionModel.getSystemLoadDuringInterval(
