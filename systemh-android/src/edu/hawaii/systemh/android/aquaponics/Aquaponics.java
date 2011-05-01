@@ -204,7 +204,7 @@ public class Aquaponics extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 
-                aquaponics.setWaterLevel(Double.parseDouble(newWaterLevel));
+                aquaponics.setWaterLevel((int) Math.round(Double.valueOf(newWaterLevel)));
             }
         });
 

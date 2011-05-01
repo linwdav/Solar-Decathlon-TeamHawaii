@@ -383,7 +383,7 @@ public class SystemData {
    * 
    * @param value Desired water level
    */
-  public void setWaterLevel(double value) {
+  public void setWaterLevel(int value) {
 
     try {
       String putUrl =
