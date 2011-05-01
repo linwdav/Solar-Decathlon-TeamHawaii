@@ -535,9 +535,12 @@ public class Help extends Header {
     // lighting
     case 4:
       info =
-          P_OPEN_TAG2 + "General Settings" + P_CLOSE_TAG + P_OPEN_TAG
+          P_OPEN_TAG2 + "Room Settings" + P_CLOSE_TAG + P_OPEN_TAG
               + "This section allows the user to control the lighting (e.g. light switch"
               + ", light brightness, light color) in each room." + P_CLOSE_TAG + P_OPEN_TAG2
+              + "Global Settings" + P_CLOSE_TAG + P_OPEN_TAG
+              + "This section allows the user to control the lighting (e.g. light switch"
+              + ", light color) for all rooms at once." + P_CLOSE_TAG + P_OPEN_TAG2
               + "Lighting Log" + P_CLOSE_TAG + P_OPEN_TAG
               + "The lighting log section provides a list of the historical system changes"
               + " for the lighting system. A new entry is added each time a user"
