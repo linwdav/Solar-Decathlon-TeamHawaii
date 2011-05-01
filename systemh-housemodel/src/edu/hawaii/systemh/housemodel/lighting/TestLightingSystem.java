@@ -16,7 +16,7 @@ import edu.hawaii.systemh.housemodel.EnergyConsumptionDictionary.EnergyConsumpti
 public class TestLightingSystem {
   
   /**
-   * Tests that the values put into the Aquaponics Consumption Model are working
+   * Tests that the values put into the Lighting Consumption Model are working
    * as intended.
    */
   
