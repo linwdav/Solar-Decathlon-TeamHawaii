@@ -1,5 +1,10 @@
 package edu.hawaii.systemh.model.behavior;
 
+import java.util.Calendar; 
+import java.util.GregorianCalendar;
+ 
+ 
+
 /**
  * Improve the realism of the house simulation by creating a 
  * more sophisticated "behavioral model" of house.
@@ -16,16 +21,31 @@ package edu.hawaii.systemh.model.behavior;
  * @author Tony Gaskell
  * @author Kurt Teichman
  */
-public class BehavioralModel {
-  private static final String location = "Washington, District of Columbia";
-  
+public class BehavioralModel { 
   /**
-   * Sets up the REST server to communicate with the IHaleBackend object.
+   * Runs the Behavioral Model.
    * 
    * @param args (ignored)
    * @throws Exception 
-   */
+   */ 
   public static void main(String[] args) throws Exception {
-    System.err.println("Behavioral model of the house."); 
+    System.err.println("Behavioral model of the house.");   
+    DailyTemperatureHistory temp = new DailyTemperatureHistory(2011,4);  
+    Calendar date = new GregorianCalendar ();    
+
+    int month = date.get(Calendar.MONTH ) + 1;  
+    for (int i = 0; i <  32; i++) { 
+      if (temp.getTemp(month, i) != null) {
+      System.out.println("Date = " + month + "/" +  i); 
+      System.out.println(temp.getTemp(month, i));
+      }
+      if (i == 31) {
+        month -= 1;
+        i = 0;
+      }
+      
+    } 
   }
+
+
 }
