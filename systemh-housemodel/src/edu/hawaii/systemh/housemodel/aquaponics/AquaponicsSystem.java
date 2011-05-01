@@ -52,6 +52,6 @@ public class AquaponicsSystem extends HouseSystem {
     // Associated the following devices with the Aquaponics System.
     deviceMap.put(heater.getDeviceName(), heater);
     deviceMap.put(waterpump.getDeviceName(), waterpump);
-    deviceMap.put(waterpump.getDeviceName(), waterFilter);
+    deviceMap.put(waterFilter.getDeviceName(), waterFilter);
   }
 }
