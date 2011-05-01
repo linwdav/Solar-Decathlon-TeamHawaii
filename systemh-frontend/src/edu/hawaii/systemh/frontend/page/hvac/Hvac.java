@@ -66,12 +66,14 @@ public class Hvac extends Header {
   private static final long serialVersionUID = 1L;
 
   // desired room temperature range
-  private static final long TEMPERATURE_RANGE_START = 15L;
-  private static final long TEMPERATURE_RANGE_END = 27L;
+  private static final long LOW_ROOM_TEMP_BOTTOM = 18L;
+  private static final long LOW_ROOM_TEMP_TOP = 18L;
+  private static final long HIGH_ROOM_TEMP_BOTTOM = 30L;
+  private static final long HIGH_ROOM_TEMP_TOP = 32L;
 
   // for validating user's input for setTemp
   // don't want them perform duplicate doCommand with the same temperature.
-  private int desiredTemp = SolarDecathlonApplication.getHvac().getTemp();
+  private int desiredTemp = SolarDecathlonApplication.getHvac().getTempCommand();
   private int setTemp = SolarDecathlonApplication.getHvac().getTemp();
 
   // feedback to user after they setTemp, failed or successful
@@ -177,16 +179,16 @@ public class Hvac extends Header {
         long value = SolarDecathlonApplication.getHvac().getTemp();
         String original = value + "&deg;C";
         String closeTag = "</font>";
-        if (value > TEMPERATURE_RANGE_START && value < TEMPERATURE_RANGE_END) {
-          original = "<font color=\"green\">" + original + closeTag;
-        }
-        else if (value == TEMPERATURE_RANGE_START || value == TEMPERATURE_RANGE_END) {
+        if ((value <= LOW_ROOM_TEMP_TOP && value >= LOW_ROOM_TEMP_BOTTOM)
+            || (value <= HIGH_ROOM_TEMP_TOP && value >= HIGH_ROOM_TEMP_BOTTOM)) {
           original = "<font color=\"#FF9900\">" + original + closeTag;
+        }
+        else if (value < LOW_ROOM_TEMP_BOTTOM || value > HIGH_ROOM_TEMP_TOP) {
+          original = "<font color=\"red\">" + original + closeTag;
         }
         else {
           original = "<font color=\"red\">" + original + closeTag;
         }
-
         return original;
       }
     };
