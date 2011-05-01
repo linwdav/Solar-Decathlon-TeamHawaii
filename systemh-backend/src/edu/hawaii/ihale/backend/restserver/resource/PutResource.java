@@ -96,7 +96,7 @@ public class PutResource extends ServerResource {
       commandArg = Double.parseDouble(arg);
       break;
     case SET_WATER_LEVEL:
-      commandArg = Double.parseDouble(arg);
+      commandArg = Integer.parseInt(arg);
       break;
     // Lighting
     case SET_LIGHTING_LEVEL:
