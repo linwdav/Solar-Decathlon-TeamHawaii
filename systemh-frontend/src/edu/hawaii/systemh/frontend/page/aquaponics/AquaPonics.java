@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -51,7 +52,22 @@ public class AquaPonics extends Header {
   private static final String boxTagName = "box";
   private static final String classTagName = "class";
   private static final String styleTagName = "style";
+  
+  private static final String greenOrb = "images/icons/ball_green.png";
+  private static final String yellowOrb = "images/icons/ball_yellow.png";
+  private static final String redOrb = "images/icons/ball_red.png";
 
+  // tempOuterDiv.add(new Image("greenOrb", new ResourceReference(Header.class, "images/icons/ball_green.png")));
+  
+  // Controls which orbs to display
+  private String tempOrb = greenOrb;
+  private String phOrb = greenOrb;
+  private String oxygenOrb = greenOrb;
+  private String ecOrb = greenOrb;
+  private String levelOrb = greenOrb;
+  private String circulationOrb = greenOrb;
+  private String turbidityOrb = greenOrb;
+  
   // labels to store div colors
   private Label tempColorLabel;
   private Label phColorLabel;
@@ -159,7 +175,7 @@ public class AquaPonics extends Header {
   public AquaPonics() throws Exception {
 
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(2);
-
+    
     final String onChange = "onchange";
 
     /*****************
@@ -247,6 +263,43 @@ public class AquaPonics extends Header {
         }
       };
 
+    Component tempOrbStatus = new Image("tempOrb", new ResourceReference(Header.class, tempOrb));
+    add(tempOrbStatus);
+      
+//      Model<ResourceReference> model = new Model<ResourceReference>();
+//      model.setObject(new ResourceReference(Header.class, tempOrb));
+//      DynamicImage orb = new DynamicImage("tempOrb", model);
+//      add(orb);
+      
+//   // NOTE: overriding the "onComponentTag" method will not work when adding the image to an Ajax target (target.addComponent(dynamicImage);). This is why an AttributeModifier is used instead
+//     Component dynamicImage = new Image("tempOrb");
+//      dynamicImage.add(new AttributeModifier("src", true, new Model<ResourceReference>() {
+//        private static final long serialVersionUID = 1L;
+//
+//          /**
+//           * {@inheritDoc}
+//           */
+//          @Override
+//          public final ResourceReference getObject() {
+//            long value = SolarDecathlonApplication.getAquaponics().getTemp();
+//            String tempOrb;
+//            // based on some condition return the image source
+//            if ((value < TEMPERATURE_RANGE_START && value > TEMPERATURE_ALERT_RANGE_START)
+//                || (value > TEMPERATURE_RANGE_END && value < TEMPERATURE_ALERT_RANGE_END)) {
+//              tempOrb = yellowOrb;
+//            }
+//            else if (value <= TEMPERATURE_ALERT_RANGE_START || value >= TEMPERATURE_ALERT_RANGE_END) {
+//              tempOrb = redOrb;
+//            }
+//            else {
+//              tempOrb = greenOrb;
+//            }
+//            return new ResourceReference(Header.class, tempOrb);
+//          }
+//      }));
+//      dynamicImage.setOutputMarkupId(true);
+//      add(dynamicImage);
+      
     /********************************************************
      ** Feedback Message for all System (Warning or Alert) **
      ********************************************************/
