@@ -359,8 +359,11 @@ public class HVACData {
     boolean occupantsHome;
     
     // Occupants are assumed to be out of the home for work on the weekdays from 9:00 AM to 
-    // 5:00 PM for AM/PM system or 0900 to 1700 hour system.
+    // 5:00 PM for AM/PM system or 0900 to 1700 hour system and also during Saturdays past 1100.
     if ((currentHour >= 9 && currentHour <= 17) && (currentDay > 1 && currentDay < 7)) {
+      occupantsHome = false;
+    }
+    else if (currentHour >= 11 && currentDay == 7) {
       occupantsHome = false;
     }
     else {
@@ -388,10 +391,10 @@ public class HVACData {
     // Occupants are assumed to be sleeping from 11:00 PM to 7:00 AM for AM/PM system 
     // or 2300 to 700 hour system.
     if (currentHour >= 23 || currentHour <= 7) {
-      occupantsSleeping = false;
+      occupantsSleeping = true;
     }
     else {
-      occupantsSleeping = true;
+      occupantsSleeping = false;
     }
     return occupantsSleeping;
   }

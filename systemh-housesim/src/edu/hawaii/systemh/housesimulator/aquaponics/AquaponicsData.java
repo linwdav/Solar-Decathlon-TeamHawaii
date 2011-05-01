@@ -149,8 +149,8 @@ public class AquaponicsData {
       int fishDeath = randomGen.nextInt(2);
       deadFish += fishDeath;
       aliveFish -= fishDeath;
-      if (fishDeath > 0) {
-        // Each dead fish increases EC by 0.3
+      // Each dead fish increases EC by 0.3
+      for (int i = 0; i < fishDeath; i++) {
         ec += 0.3;
       }
     }
