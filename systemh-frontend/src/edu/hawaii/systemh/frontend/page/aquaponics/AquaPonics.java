@@ -61,14 +61,19 @@ public class AquaPonics extends Header {
       ORB_CAUTION);
   private static final ResourceReference REF_ORB_WARNING = new ResourceReference(Header.class,
       ORB_WARNING);
-  
-  private DynamicImage tempOrbStatus = new DynamicImage("tempOrb", new Model<ResourceReference>());
+
+  private DynamicImage tempOrbStatus =
+      new DynamicImage("tempOrb", new Model<ResourceReference>());
   private DynamicImage phOrbStatus = new DynamicImage("phOrb", new Model<ResourceReference>());
-  private DynamicImage oxygenOrbStatus = new DynamicImage("oxygenOrb", new Model<ResourceReference>());
+  private DynamicImage oxygenOrbStatus = new DynamicImage("oxygenOrb",
+      new Model<ResourceReference>());
   private DynamicImage ecOrbStatus = new DynamicImage("ecOrb", new Model<ResourceReference>());
-  private DynamicImage levelOrbStatus = new DynamicImage("levelOrb", new Model<ResourceReference>());
-  private DynamicImage circulationOrbStatus = new DynamicImage("circulationOrb", new Model<ResourceReference>());
-  private DynamicImage turbidityOrbStatus = new DynamicImage("turbidityOrb", new Model<ResourceReference>());
+  private DynamicImage levelOrbStatus = new DynamicImage("levelOrb",
+      new Model<ResourceReference>());
+  private DynamicImage circulationOrbStatus = new DynamicImage("circulationOrb",
+      new Model<ResourceReference>());
+  private DynamicImage turbidityOrbStatus = new DynamicImage("turbidityOrb",
+      new Model<ResourceReference>());
 
   // labels to store div colors
   private Label tempColorLabel;
@@ -599,7 +604,7 @@ public class AquaPonics extends Header {
     /*************************************************************
      ** Determine the Background Color (Green, Yellow, and Red) **
      *************************************************************/
-    
+
     // color for current temp div
     Model<String> tempColorModel = new Model<String>() {
 
@@ -831,7 +836,7 @@ public class AquaPonics extends Header {
     });
 
     recommendedTempLabel.setEscapeModelStrings(false);
-    
+
     tempOuterDiv.add(tempOrbStatus);
     tempInnerDiv.add(new Label("Temp", temp));
     tempInnerDiv.add(tempStatusLabel);
