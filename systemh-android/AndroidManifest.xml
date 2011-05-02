@@ -24,7 +24,7 @@
 			android:configChanges="orientation|keyboardHidden" />
 
 		<activity android:name="edu.hawaii.systemh.android.hvac.Hvac"
-			android:label="@string/Lighting" android:screenOrientation="portrait"
+			android:label="@string/Hvac" android:screenOrientation="portrait"
 			android:configChanges="orientation|keyboardHidden" />
 			
 		<activity android:name="edu.hawaii.systemh.android.settings.Settings"
@@ -32,11 +32,11 @@
 			android:configChanges="orientation|keyboardHidden" />
 
     <activity android:name="edu.hawaii.systemh.android.energy.Energy"
-      android:label="@string/Lighting" android:screenOrientation="portrait"
+      android:label="@string/Energy" android:screenOrientation="portrait"
       android:configChanges="orientation|keyboardHidden" />
 
 		<activity android:name="edu.hawaii.systemh.android.help.Help"
-			android:label="@string/Lighting" android:screenOrientation="portrait"
+			android:label="@string/Help" android:screenOrientation="portrait"
 			android:configChanges="orientation|keyboardHidden" />
 
 	</application>
