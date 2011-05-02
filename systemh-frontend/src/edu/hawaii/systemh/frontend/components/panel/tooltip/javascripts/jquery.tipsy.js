@@ -14,7 +14,7 @@
                 var tip = $.data(this, 'active.tipsy');
                 if (!tip) {
                     tip = $('<div class="tipsy"><div class="tipsy-inner"/></div>');
-                    tip.css({position: 'absolute', zIndex: 100000});
+                    tip.css({position: 'static', zIndex: 100000});
                     $.data(this, 'active.tipsy', tip);
                 }
 

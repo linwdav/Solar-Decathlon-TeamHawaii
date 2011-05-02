@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AbstractAjaxTimerBehavior;
 import org.apache.wicket.ajax.AjaxRequestTarget;
+import org.apache.wicket.behavior.SimpleAttributeModifier;
 import org.apache.wicket.markup.html.CSSPackageResource;
 import org.apache.wicket.markup.html.IHeaderContributor;
 import org.apache.wicket.markup.html.IHeaderResponse;
@@ -82,7 +83,12 @@ public class SystemPanel extends Panel implements IHeaderContributor {
             "SystemPanel.css", "screen"));
     super.add(JavascriptPackageResource.getHeaderContribution(
         edu.hawaii.systemh.frontend.components.panel.SystemPanel.class, "SystemPanel.js"));
-
+    super.add(CSSPackageResource
+        .getHeaderContribution(edu.hawaii.systemh.frontend.components.panel.SystemPanel.class,
+            "tooltip/stylesheets/tipsy.css", "screen"));
+    super.add(JavascriptPackageResource.getHeaderContribution(
+        edu.hawaii.systemh.frontend.components.panel.SystemPanel.class, "tooltip/javascripts/jquery.tipsy.js"));
+    
     final WebMarkupContainer panel;
     final WebMarkupContainer content;
     final DynamicImage img;
@@ -177,6 +183,7 @@ public class SystemPanel extends Panel implements IHeaderContributor {
       }
     });
     panel.add(img);
+    img.add(new SimpleAttributeModifier("original-title","Testing tooltip."));
 
     // Adds the update event to the panel
     panel.add(new AbstractAjaxTimerBehavior(Duration.seconds(5)) {
@@ -196,6 +203,7 @@ public class SystemPanel extends Panel implements IHeaderContributor {
         target.addComponent(img);
         target.addComponent(content);
       }
+      
     });
   }
 
