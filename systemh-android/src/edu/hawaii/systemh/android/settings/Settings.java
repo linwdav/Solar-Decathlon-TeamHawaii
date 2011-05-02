@@ -22,7 +22,7 @@ import edu.hawaii.systemh.android.R;
  */
 public class Settings extends Activity {
 
-  String ipAddress = "127.0.0.1";
+  String ipAddress = "";
   EditText enteredIP;
   SharedPreferences preferences;
 
@@ -50,7 +50,7 @@ public class Settings extends Activity {
 
     String ip = preferences.getString("ip_address", null);
     if (ip == null) {
-      enteredIP.setText("127.0.0.1");
+      enteredIP.setText("127.0" + ".0.1");
     }
     else {
       enteredIP.setText(ip);

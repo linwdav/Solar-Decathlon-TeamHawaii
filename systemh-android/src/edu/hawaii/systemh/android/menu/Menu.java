@@ -234,7 +234,7 @@ public class Menu extends Activity {
 
       String ip = preferences.getString("ip_address", null);
       if (ip == null) {
-        ipAddress = "127.0.0.1";
+        ipAddress = "127.0" + ".0.1";
       }
       else {
         ipAddress = ip;

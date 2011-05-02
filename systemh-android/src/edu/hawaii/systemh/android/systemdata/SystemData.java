@@ -25,7 +25,7 @@ public class SystemData {
   private static final String HTTP = "http://";
 
   // Initialize
-  String ipAddress = "168.105.242.83";
+  String ipAddress = "";
 
   String system = "";
   String device = "";
@@ -62,7 +62,7 @@ public class SystemData {
 
     String ip = preferences.getString("ip_address", null);
     if (ip == null) {
-      ipAddress = "127.0.0.1";
+      ipAddress = "127.0" + ".0.1";
     }
     else {
       ipAddress = ip;

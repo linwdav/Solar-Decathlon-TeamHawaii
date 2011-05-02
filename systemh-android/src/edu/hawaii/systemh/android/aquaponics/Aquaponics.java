@@ -52,8 +52,8 @@ public class Aquaponics extends Activity {
     // Store new value to change
     int newTemp = 0;
     int fish = 0;
+    int newWaterLevel = 0;
     String newPh = "0";
-    String newWaterLevel = "0";
     String newNutrients = "0";
     double newFeedAmnt = 0;
    
@@ -98,10 +98,10 @@ public class Aquaponics extends Activity {
         oxygenData.setText(aquaponics.getOxygen() + " mg/l");
         setTextColorStatus(oxygenData, (int) (aquaponics.getOxygen() * 100), 400, 500, 350, 650);
         
-        newWaterLevel = (String.valueOf(aquaponics.getWaterLevel()));
+        newWaterLevel = aquaponics.getWaterLevel();
         levelData = (TextView) findViewById(R.id.levelDataValue);
         levelData.setText(newWaterLevel + " in");
-        setTextColorStatus(levelData, aquaponics.getWaterLevel(), 38, 45, 24, 60);
+        setTextColorStatus(levelData, aquaponics.getWaterLevel(), 39, 45, 35, 49);
         
         circulationData = (TextView) findViewById(R.id.circulationDataValue);
         circulationData.setText(aquaponics.getCirculation() + " gpm");
@@ -180,8 +180,8 @@ public class Aquaponics extends Activity {
 
         /** Water Level Slider Control**/
         level = (SeekBar) this.findViewById(R.id.levelSeekBar);
-        level.setMax(10000);
-        level.setProgress((int) (aquaponics.getWaterLevel() * 100));
+        level.setMax(100);
+        level.setProgress(newWaterLevel);
         
         levelValue = (TextView) this.findViewById(R.id.levelValue);
         levelValue.setText(String.valueOf(newWaterLevel));
@@ -192,7 +192,7 @@ public class Aquaponics extends Activity {
             public void onProgressChanged(SeekBar seekBar, int progress,
                     boolean fromUser) {
                 
-                newWaterLevel = String.valueOf((float) progress / 100);
+                newWaterLevel = progress;
                 levelValue.setText(String.valueOf(newWaterLevel));
             }
 
@@ -204,7 +204,7 @@ public class Aquaponics extends Activity {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 
-                aquaponics.setWaterLevel((int) Math.round(Double.valueOf(newWaterLevel)));
+                aquaponics.setWaterLevel(newWaterLevel);
             }
         });
 
