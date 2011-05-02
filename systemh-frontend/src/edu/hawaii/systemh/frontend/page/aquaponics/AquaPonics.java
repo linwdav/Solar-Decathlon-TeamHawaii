@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-import org.apache.wicket.AttributeModifier;
 import org.apache.wicket.Component;
 import org.apache.wicket.ResourceReference;
 import org.apache.wicket.ajax.AjaxRequestTarget;
@@ -32,6 +31,7 @@ import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.SolarDecathlonSession;
+import edu.hawaii.systemh.frontend.components.image.DynamicImage;
 import edu.hawaii.systemh.frontend.page.Header;
 import edu.hawaii.systemh.frontend.page.help.Help;
 
@@ -52,22 +52,24 @@ public class AquaPonics extends Header {
   private static final String boxTagName = "box";
   private static final String classTagName = "class";
   private static final String styleTagName = "style";
-  
-  private static final String greenOrb = "images/icons/ball_green.png";
-  private static final String yellowOrb = "images/icons/ball_yellow.png";
-  private static final String redOrb = "images/icons/ball_red.png";
 
-  // tempOuterDiv.add(new Image("greenOrb", new ResourceReference(Header.class, "images/icons/ball_green.png")));
+  private static final String ORB_OK = "images/icons/ball_green.png";
+  private static final String ORB_CAUTION = "images/icons/ball_yellow.png";
+  private static final String ORB_WARNING = "images/icons/ball_red.png";
+  private static final ResourceReference REF_ORB_OK = new ResourceReference(Header.class, ORB_OK);
+  private static final ResourceReference REF_ORB_CAUTION = new ResourceReference(Header.class,
+      ORB_CAUTION);
+  private static final ResourceReference REF_ORB_WARNING = new ResourceReference(Header.class,
+      ORB_WARNING);
   
-  // Controls which orbs to display
-  private String tempOrb = greenOrb;
-  private String phOrb = greenOrb;
-  private String oxygenOrb = greenOrb;
-  private String ecOrb = greenOrb;
-  private String levelOrb = greenOrb;
-  private String circulationOrb = greenOrb;
-  private String turbidityOrb = greenOrb;
-  
+  private DynamicImage tempOrbStatus = new DynamicImage("tempOrb", new Model<ResourceReference>());
+  private DynamicImage phOrbStatus = new DynamicImage("phOrb", new Model<ResourceReference>());
+  private DynamicImage oxygenOrbStatus = new DynamicImage("oxygenOrb", new Model<ResourceReference>());
+  private DynamicImage ecOrbStatus = new DynamicImage("ecOrb", new Model<ResourceReference>());
+  private DynamicImage levelOrbStatus = new DynamicImage("levelOrb", new Model<ResourceReference>());
+  private DynamicImage circulationOrbStatus = new DynamicImage("circulationOrb", new Model<ResourceReference>());
+  private DynamicImage turbidityOrbStatus = new DynamicImage("turbidityOrb", new Model<ResourceReference>());
+
   // labels to store div colors
   private Label tempColorLabel;
   private Label phColorLabel;
@@ -123,7 +125,7 @@ public class AquaPonics extends Header {
   private static final int TURBIDITY_RANGE_START = 0;
   private static final int TURBIDITY_RANGE_END = 100;
   private static final int TURBIDITY_ACCEPTED_DIFFERENCE = 5;
-  //private static final int FISH_TOTAL = 20;
+  // private static final int FISH_TOTAL = 20;
 
   // labels for recommended values
   private static final Label recommendedTempLabel = new Label("RecommendedTempLabel",
@@ -141,8 +143,9 @@ public class AquaPonics extends Header {
   private static final Label recommendedLevelLabel = new Label("RecommendedLevelLabel",
       LEVEL_RANGE_START + dash + LEVEL_RANGE_END + " inches");
 
-  private static final Label recommendedCirculationLabel = new Label("RecommendedCirculationLabel",
-      CIRCULATION_RANGE_START + dash + CIRCULATION_RANGE_END + " gpm");
+  private static final Label recommendedCirculationLabel = new Label(
+      "RecommendedCirculationLabel", CIRCULATION_RANGE_START + dash + CIRCULATION_RANGE_END
+          + " gpm");
 
   private static final Label recommendedTurbidityLabel = new Label("RecommendedTurbidityLabel",
       TURBIDITY_RANGE_START + dash + TURBIDITY_RANGE_END + " NTUs");
@@ -154,7 +157,7 @@ public class AquaPonics extends Header {
   // Drop down choices for number of fish to harvest
   private static final List<String> num = Arrays.asList(new String[] { "1", "2", "3", "4", "5",
       "6", "7", "8", "9", "10" });
-  
+
   // Default selected value for the dropdowns
   private String selectedFeedAmnt = "0.5";
   private String selectedFishNum = "1";
@@ -175,7 +178,8 @@ public class AquaPonics extends Header {
   public AquaPonics() throws Exception {
 
     ((SolarDecathlonSession) getSession()).getHeaderSession().setActiveTab(2);
-    
+
+    tempOrbStatus.setImageResourceReference(REF_ORB_OK);
     final String onChange = "onchange";
 
     /*****************
@@ -202,8 +206,8 @@ public class AquaPonics extends Header {
     };
 
     // Help Image
-    helpLink
-        .add(new Image("helpAqua", new ResourceReference(Header.class, "images/icons/help.png")));
+    helpLink.add(new Image("helpAqua", new ResourceReference(Header.class,
+        "images/icons/help.png")));
 
     add(helpLink);
 
@@ -244,62 +248,25 @@ public class AquaPonics extends Header {
     add(systemLog);
 
     // End messages section
-    
+
     /******************************************
      ** Tab button for Aquaponics Statistics **
      ******************************************/
     Link<String> statsButton = new Link<String>("statsButton") {
-        private static final long serialVersionUID = 1L;
+      private static final long serialVersionUID = 1L;
 
-        /** Upon clicking this link, go to AquaponicsStatsPage. */
-        @Override
-        public void onClick() {
-          try {
-            setResponsePage(AquaponicsStats.class);
-          }
-          catch (Exception e) {
-            e.printStackTrace();
-          }
+      /** Upon clicking this link, go to AquaponicsStatsPage. */
+      @Override
+      public void onClick() {
+        try {
+          setResponsePage(AquaponicsStats.class);
         }
-      };
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    };
 
-    Component tempOrbStatus = new Image("tempOrb", new ResourceReference(Header.class, tempOrb));
-    add(tempOrbStatus);
-      
-//      Model<ResourceReference> model = new Model<ResourceReference>();
-//      model.setObject(new ResourceReference(Header.class, tempOrb));
-//      DynamicImage orb = new DynamicImage("tempOrb", model);
-//      add(orb);
-      
-//   // NOTE: overriding the "onComponentTag" method will not work when adding the image to an Ajax target (target.addComponent(dynamicImage);). This is why an AttributeModifier is used instead
-//     Component dynamicImage = new Image("tempOrb");
-//      dynamicImage.add(new AttributeModifier("src", true, new Model<ResourceReference>() {
-//        private static final long serialVersionUID = 1L;
-//
-//          /**
-//           * {@inheritDoc}
-//           */
-//          @Override
-//          public final ResourceReference getObject() {
-//            long value = SolarDecathlonApplication.getAquaponics().getTemp();
-//            String tempOrb;
-//            // based on some condition return the image source
-//            if ((value < TEMPERATURE_RANGE_START && value > TEMPERATURE_ALERT_RANGE_START)
-//                || (value > TEMPERATURE_RANGE_END && value < TEMPERATURE_ALERT_RANGE_END)) {
-//              tempOrb = yellowOrb;
-//            }
-//            else if (value <= TEMPERATURE_ALERT_RANGE_START || value >= TEMPERATURE_ALERT_RANGE_END) {
-//              tempOrb = redOrb;
-//            }
-//            else {
-//              tempOrb = greenOrb;
-//            }
-//            return new ResourceReference(Header.class, tempOrb);
-//          }
-//      }));
-//      dynamicImage.setOutputMarkupId(true);
-//      add(dynamicImage);
-      
     /********************************************************
      ** Feedback Message for all System (Warning or Alert) **
      ********************************************************/
@@ -350,10 +317,10 @@ public class AquaPonics extends Header {
         // set the text and color according to the value
         double value = SolarDecathlonApplication.getAquaponics().getPH();
         String status;
-        if ((value <= (PH_RANGE_START) &&
-            value >= Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)) 
-            || (value >= (PH_RANGE_END) &&
-            value <= Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE)) ) {
+        if ((value <= (PH_RANGE_START) && value >= Math.abs(PH_RANGE_START
+            - PH_ACCEPTED_DIFFERENCE))
+            || (value >= (PH_RANGE_END) && value <= Math.abs(PH_RANGE_END
+                + PH_ACCEPTED_DIFFERENCE))) {
           status = WARNG_MESSAGE;
         }
         else if (value < Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)
@@ -381,7 +348,7 @@ public class AquaPonics extends Header {
       }
     };
 
-    /** model for the OXYGEN feedback (WARNG or ALERT) label on page.*/
+    /** model for the OXYGEN feedback (WARNG or ALERT) label on page. */
     Model<String> oxygenStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -415,9 +382,8 @@ public class AquaPonics extends Header {
 
       @Override
       public String getObject() {
-        return String
-                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
-                   .getAquaponics().getOxygen()));
+        return String.valueOf(roundTwoDecimals(SolarDecathlonApplication.getAquaponics()
+            .getOxygen()));
       }
     };
 
@@ -431,14 +397,14 @@ public class AquaPonics extends Header {
         // set the text and color according to the value
         double value = SolarDecathlonApplication.getAquaponics().getConductivity();
         String status;
-        if ((value <= (EC_RANGE_START) &&
-                value >= Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)) 
-                || (value >= (EC_RANGE_END) &&
-                value <= Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) ) {
-              status = WARNG_MESSAGE;
-            }
-            else if (value < Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)
-                || value > Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) {
+        if ((value <= (EC_RANGE_START) && value >= Math.abs(EC_RANGE_START
+            - EC_ACCEPTED_DIFFERENCE))
+            || (value >= (EC_RANGE_END) && value <= Math.abs(EC_RANGE_END
+                + EC_ACCEPTED_DIFFERENCE))) {
+          status = WARNG_MESSAGE;
+        }
+        else if (value < Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)
+            || value > Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) {
           status = ALERT_MESSAGE;
         }
         else {
@@ -458,13 +424,12 @@ public class AquaPonics extends Header {
 
       @Override
       public String getObject() {
-        return String
-                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
-                   .getAquaponics().getConductivity()));
+        return String.valueOf(roundTwoDecimals(SolarDecathlonApplication.getAquaponics()
+            .getConductivity()));
       }
     };
 
-    /* model for the WATER LEVEL feedback (WARNG or ALERT) label on page.*/
+    /* model for the WATER LEVEL feedback (WARNG or ALERT) label on page. */
     Model<String> levelStatusModel = new Model<String>() {
 
       private static final long serialVersionUID = 1L;
@@ -537,9 +502,8 @@ public class AquaPonics extends Header {
 
       @Override
       public String getObject() {
-        return String
-                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
-                   .getAquaponics().getCirculation()));
+        return String.valueOf(roundTwoDecimals(SolarDecathlonApplication.getAquaponics()
+            .getCirculation()));
       }
     };
 
@@ -578,9 +542,8 @@ public class AquaPonics extends Header {
 
       @Override
       public String getObject() {
-        return String
-                   .valueOf(roundTwoDecimals(SolarDecathlonApplication
-                   .getAquaponics().getTurbidity()));
+        return String.valueOf(roundTwoDecimals(SolarDecathlonApplication.getAquaponics()
+            .getTurbidity()));
       }
     };
 
@@ -628,10 +591,11 @@ public class AquaPonics extends Header {
     circulationStatusLabel.setEscapeModelStrings(false);
     turbidityStatusLabel.setEscapeModelStrings(false);
     fishStatusLabel.setEscapeModelStrings(false);
-    
+
     /*************************************************************
      ** Determine the Background Color (Green, Yellow, and Red) **
      *************************************************************/
+    
     // color for current temp div
     Model<String> tempColorModel = new Model<String>() {
 
@@ -644,12 +608,15 @@ public class AquaPonics extends Header {
         if ((value < TEMPERATURE_RANGE_START && value > TEMPERATURE_ALERT_RANGE_START)
             || (value > TEMPERATURE_RANGE_END && value < TEMPERATURE_ALERT_RANGE_END)) {
           color = WARNG_BACKGROUND;
+          tempOrbStatus.setImageResourceReference(REF_ORB_CAUTION);
         }
         else if (value <= TEMPERATURE_ALERT_RANGE_START || value >= TEMPERATURE_ALERT_RANGE_END) {
           color = ALERT_BACKGROUND;
+          tempOrbStatus.setImageResourceReference(REF_ORB_WARNING);
         }
         else {
           color = NORM_BACKGROUND;
+          tempOrbStatus.setImageResourceReference(REF_ORB_OK);
         }
         return color;
       }
@@ -665,18 +632,21 @@ public class AquaPonics extends Header {
       public String getObject() {
         double value = SolarDecathlonApplication.getAquaponics().getPH();
         String color;
-        if ((value <= (PH_RANGE_START) &&
-                value >= Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)) 
-                || (value >= (PH_RANGE_END) &&
-                value <= Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE))) {
+        if ((value <= (PH_RANGE_START) && value >= Math.abs(PH_RANGE_START
+            - PH_ACCEPTED_DIFFERENCE))
+            || (value >= (PH_RANGE_END) && value <= Math.abs(PH_RANGE_END
+                + PH_ACCEPTED_DIFFERENCE))) {
           color = WARNG_BACKGROUND;
+          phOrbStatus.setImageResourceReference(REF_ORB_CAUTION);
         }
         else if (value < Math.abs(PH_RANGE_START - PH_ACCEPTED_DIFFERENCE)
-                || value > Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE)) {
+            || value > Math.abs(PH_RANGE_END + PH_ACCEPTED_DIFFERENCE)) {
           color = ALERT_BACKGROUND;
+          phOrbStatus.setImageResourceReference(REF_ORB_WARNING);
         }
         else {
           color = NORM_BACKGROUND;
+          phOrbStatus.setImageResourceReference(REF_ORB_OK);
         }
         return color;
       }
@@ -695,12 +665,15 @@ public class AquaPonics extends Header {
         if (Math.abs(value - OXYGEN_RANGE_START) < OXYGEN_ACCEPTED_DIFFERENCE
             || Math.abs(value - OXYGEN_RANGE_END) < OXYGEN_ACCEPTED_DIFFERENCE) {
           color = WARNG_BACKGROUND;
+          oxygenOrbStatus.setImageResourceReference(REF_ORB_CAUTION);
         }
         else if (value < OXYGEN_RANGE_START || value > OXYGEN_RANGE_END) {
           color = ALERT_BACKGROUND;
+          oxygenOrbStatus.setImageResourceReference(REF_ORB_WARNING);
         }
         else {
           color = NORM_BACKGROUND;
+          oxygenOrbStatus.setImageResourceReference(REF_ORB_OK);
         }
         return color;
       }
@@ -716,18 +689,21 @@ public class AquaPonics extends Header {
       public String getObject() {
         double value = SolarDecathlonApplication.getAquaponics().getConductivity();
         String color;
-        if ((value <= (EC_RANGE_START) &&
-                value >= Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)) 
-                || (value >= (EC_RANGE_END) &&
-                value <= Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE))) {
+        if ((value <= (EC_RANGE_START) && value >= Math.abs(EC_RANGE_START
+            - EC_ACCEPTED_DIFFERENCE))
+            || (value >= (EC_RANGE_END) && value <= Math.abs(EC_RANGE_END
+                + EC_ACCEPTED_DIFFERENCE))) {
           color = WARNG_BACKGROUND;
+          ecOrbStatus.setImageResourceReference(REF_ORB_CAUTION);
         }
         else if (value < Math.abs(EC_RANGE_START - EC_ACCEPTED_DIFFERENCE)
-                || value > Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) {
+            || value > Math.abs(EC_RANGE_END + EC_ACCEPTED_DIFFERENCE)) {
           color = ALERT_BACKGROUND;
+          ecOrbStatus.setImageResourceReference(REF_ORB_WARNING);
         }
         else {
           color = NORM_BACKGROUND;
+          ecOrbStatus.setImageResourceReference(REF_ORB_OK);
         }
         return color;
       }
@@ -746,12 +722,15 @@ public class AquaPonics extends Header {
         if (Math.abs(value - LEVEL_RANGE_START) < LEVEL_ACCEPTED_DIFFERENCE
             || Math.abs(value - LEVEL_RANGE_END) < LEVEL_ACCEPTED_DIFFERENCE) {
           color = WARNG_BACKGROUND;
+          levelOrbStatus.setImageResourceReference(REF_ORB_CAUTION);
         }
         else if (value < LEVEL_RANGE_START || value > LEVEL_RANGE_END) {
           color = ALERT_BACKGROUND;
+          levelOrbStatus.setImageResourceReference(REF_ORB_WARNING);
         }
         else {
           color = NORM_BACKGROUND;
+          levelOrbStatus.setImageResourceReference(REF_ORB_OK);
         }
         return color;
       }
@@ -770,12 +749,15 @@ public class AquaPonics extends Header {
         if (Math.abs(value - CIRCULATION_RANGE_START) < CIRCULATION_ACCEPTED_DIFFERENCE
             || Math.abs(value - CIRCULATION_RANGE_END) < CIRCULATION_ACCEPTED_DIFFERENCE) {
           color = WARNG_BACKGROUND;
+          circulationOrbStatus.setImageResourceReference(REF_ORB_CAUTION);
         }
         else if (value < CIRCULATION_RANGE_START || value > CIRCULATION_RANGE_END) {
           color = ALERT_BACKGROUND;
+          circulationOrbStatus.setImageResourceReference(REF_ORB_WARNING);
         }
         else {
           color = NORM_BACKGROUND;
+          circulationOrbStatus.setImageResourceReference(REF_ORB_OK);
         }
         return color;
       }
@@ -794,12 +776,15 @@ public class AquaPonics extends Header {
         if (Math.abs(value - TURBIDITY_RANGE_START) < TURBIDITY_ACCEPTED_DIFFERENCE
             || Math.abs(value - TURBIDITY_RANGE_END) < TURBIDITY_ACCEPTED_DIFFERENCE) {
           color = WARNG_BACKGROUND;
+          turbidityOrbStatus.setImageResourceReference(REF_ORB_CAUTION);
         }
         else if (value < TURBIDITY_RANGE_START || value > TURBIDITY_RANGE_END) {
           color = ALERT_BACKGROUND;
+          turbidityOrbStatus.setImageResourceReference(REF_ORB_WARNING);
         }
         else {
           color = NORM_BACKGROUND;
+          turbidityOrbStatus.setImageResourceReference(REF_ORB_OK);
         }
         return color;
       }
@@ -842,7 +827,8 @@ public class AquaPonics extends Header {
     });
 
     recommendedTempLabel.setEscapeModelStrings(false);
-
+    
+    tempOuterDiv.add(tempOrbStatus);
     tempInnerDiv.add(new Label("Temp", temp));
     tempInnerDiv.add(tempStatusLabel);
     tempOuterDiv.add(tempInnerDiv);
@@ -889,6 +875,7 @@ public class AquaPonics extends Header {
 
     recommendedPHLabel.setEscapeModelStrings(false);
 
+    phOuterDiv.add(phOrbStatus);
     phInnerDiv.add(new Label("PH", ph));
     phInnerDiv.add(phStatusLabel);
     phOuterDiv.add(phInnerDiv);
@@ -935,6 +922,7 @@ public class AquaPonics extends Header {
 
     recommendedOxygenLabel.setEscapeModelStrings(false);
 
+    oxygenOuterDiv.add(oxygenOrbStatus);
     oxygenInnerDiv.add(new Label("Oxygen", oxygen));
     oxygenInnerDiv.add(oxygenStatusLabel);
     oxygenOuterDiv.add(oxygenInnerDiv);
@@ -981,6 +969,7 @@ public class AquaPonics extends Header {
 
     recommendedECLabel.setEscapeModelStrings(false);
 
+    ecOuterDiv.add(ecOrbStatus);
     ecInnerDiv.add(new Label("EC", ec));
     ecInnerDiv.add(ecStatusLabel);
     ecOuterDiv.add(ecInnerDiv);
@@ -1027,6 +1016,7 @@ public class AquaPonics extends Header {
 
     recommendedLevelLabel.setEscapeModelStrings(false);
 
+    levelOuterDiv.add(levelOrbStatus);
     levelInnerDiv.add(new Label("Level", level));
     levelInnerDiv.add(levelStatusLabel);
     levelOuterDiv.add(levelInnerDiv);
@@ -1073,6 +1063,7 @@ public class AquaPonics extends Header {
 
     recommendedCirculationLabel.setEscapeModelStrings(false);
 
+    circulationOuterDiv.add(circulationOrbStatus);
     circulationInnerDiv.add(new Label("Circulation", circulation));
     circulationInnerDiv.add(circulationStatusLabel);
     circulationOuterDiv.add(circulationInnerDiv);
@@ -1119,6 +1110,7 @@ public class AquaPonics extends Header {
 
     recommendedTurbidityLabel.setEscapeModelStrings(false);
 
+    turbidityOuterDiv.add(turbidityOrbStatus);
     turbidityInnerDiv.add(new Label("Turbidity", turbidity));
     turbidityInnerDiv.add(turbidityStatusLabel);
     turbidityOuterDiv.add(turbidityInnerDiv);
@@ -1160,7 +1152,7 @@ public class AquaPonics extends Header {
         // setTemp = Integer.valueOf(waterTemp.getValue().substring(0,
         // waterTemp.getValue().length() - 6));
         setTemp = Integer.valueOf(waterTemp.getValue());
-        //System.out.println("onUpdate setTemp: " + setTemp);
+        // System.out.println("onUpdate setTemp: " + setTemp);
 
         IHaleSystem system = IHaleSystem.AQUAPONICS;
         IHaleCommandType command = IHaleCommandType.SET_TEMPERATURE;
@@ -1200,7 +1192,7 @@ public class AquaPonics extends Header {
       protected void onUpdate(AjaxRequestTarget target) {
 
         setPh = Double.parseDouble(waterPh.getValue());
-        //System.out.println("onUpdate setPh: " + setPh);
+        // System.out.println("onUpdate setPh: " + setPh);
 
         IHaleSystem system = IHaleSystem.AQUAPONICS;
         IHaleCommandType command = IHaleCommandType.SET_PH;
@@ -1240,7 +1232,7 @@ public class AquaPonics extends Header {
       @Override
       protected void onUpdate(AjaxRequestTarget target) {
         setLevel = Integer.valueOf(waterLevel.getValue());
-        //System.out.println("onUpdate setLevel: " + setLevel);
+        // System.out.println("onUpdate setLevel: " + setLevel);
 
         IHaleSystem system = IHaleSystem.AQUAPONICS;
         IHaleCommandType command = IHaleCommandType.SET_WATER_LEVEL;
@@ -1263,7 +1255,8 @@ public class AquaPonics extends Header {
     setNutrients = SolarDecathlonApplication.getAquaponics().getNutrients();
 
     // Add the control for the water temp slider
-    waterNutrients = new TextField<String>("waterNUTRIENTS", new Model<String>(setNutrients + ""));
+    waterNutrients =
+        new TextField<String>("waterNUTRIENTS", new Model<String>(setNutrients + ""));
 
     // Added for jquery control.
     waterNutrients.setMarkupId(waterNutrients.getId());
@@ -1281,7 +1274,7 @@ public class AquaPonics extends Header {
       protected void onUpdate(AjaxRequestTarget target) {
 
         setNutrients = Double.parseDouble(waterNutrients.getValue());
-        //System.out.println("onUpdate setNutrients: " + setNutrients);
+        // System.out.println("onUpdate setNutrients: " + setNutrients);
 
         IHaleSystem system = IHaleSystem.AQUAPONICS;
         IHaleCommandType command = IHaleCommandType.SET_NUTRIENTS;
@@ -1334,8 +1327,8 @@ public class AquaPonics extends Header {
 
     /** Drop down list for Feeding */
     DropDownChoice<String> feedAmount =
-        new DropDownChoice<String>("FeedAmount",
-            new PropertyModel<String>(this, "selectedFeedAmnt"), amount);
+        new DropDownChoice<String>("FeedAmount", new PropertyModel<String>(this,
+            "selectedFeedAmnt"), amount);
 
     feedForm.add(feedAmount);
 
@@ -1353,7 +1346,7 @@ public class AquaPonics extends Header {
         double newFeedAmount = Double.parseDouble(selectedFeedAmnt);
         SolarDecathlonApplication.getBackend().doCommand(system, null, command, newFeedAmount);
 
-        //System.out.println("Feeding " + selectedFeedAmnt + " oz of feed.");
+        // System.out.println("Feeding " + selectedFeedAmnt + " oz of feed.");
       }
 
     });
@@ -1374,13 +1367,13 @@ public class AquaPonics extends Header {
       @Override
       protected void onSubmit(AjaxRequestTarget target, Form<?> feedForm) {
 
-        //System.out.println("Fishnum " + selectedFishNum + " fish.");
+        // System.out.println("Fishnum " + selectedFishNum + " fish.");
         IHaleSystem system = IHaleSystem.AQUAPONICS;
         IHaleCommandType command = IHaleCommandType.HARVEST_FISH;
         int newFishNum = Integer.valueOf(selectedFishNum);
         SolarDecathlonApplication.getBackend().doCommand(system, null, command, newFishNum);
 
-        //System.out.println("Harvesting " + selectedFishNum + " fish.");
+        // System.out.println("Harvesting " + selectedFishNum + " fish.");
       }
 
     });
@@ -1406,7 +1399,7 @@ public class AquaPonics extends Header {
   public String getSelectedFishNum() {
     return selectedFishNum;
   }
-  
+
   /**
    * 
    * @param d The number to convert.
