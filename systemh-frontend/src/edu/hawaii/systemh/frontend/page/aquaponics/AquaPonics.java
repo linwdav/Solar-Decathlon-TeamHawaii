@@ -98,9 +98,13 @@ public class AquaPonics extends Header {
   private static final String WARNG_MESSAGE = "<font color=\"#FF9900\">(WARNING)</font>";
   private static final String NORM_MESSAGE = "<font>&nbsp;</font>";
 
-  private static final String ALERT_BACKGROUND = "background-color:red;";
-  private static final String WARNG_BACKGROUND = "background-color:#FF9900;";
-  private static final String NORM_BACKGROUND = "background-color:green;";
+  // private static final String ALERT_BACKGROUND = "background-color:red;";
+  // private static final String WARNG_BACKGROUND = "background-color:#FF9900;";
+  // private static final String NORM_BACKGROUND = "background-color:green;";
+
+  private static final String ALERT_BACKGROUND = "background-color:#D1D1D1;";
+  private static final String WARNG_BACKGROUND = "background-color:#D1D1D1;";
+  private static final String NORM_BACKGROUND = "background-color:#D1D1D1;";
 
   // Range values for each system
   private static final long TEMPERATURE_RANGE_START = 27;
