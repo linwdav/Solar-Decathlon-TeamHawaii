@@ -219,6 +219,10 @@ public class Menu extends Activity {
    * 
    */
   public class ConnectionThread extends Thread {
+    
+    /**
+     * Start the connection test.
+     */
     public void run() {
 
       // boolean success = false;

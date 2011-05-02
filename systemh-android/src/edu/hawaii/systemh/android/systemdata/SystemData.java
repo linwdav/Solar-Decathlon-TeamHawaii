@@ -54,7 +54,7 @@ public class SystemData {
    * 
    * @param systemName The name of the system you want to get data from
    */
-  public SystemData(String systemName){
+  public SystemData(String systemName) {
 
     final String TAG = SystemData.class.getSimpleName();
 

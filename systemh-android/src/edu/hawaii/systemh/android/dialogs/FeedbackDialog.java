@@ -14,8 +14,10 @@ import android.widget.TextView;
  */
 public class FeedbackDialog extends Dialog {
 
-  private TextView feedback;
-
+  /**
+   * The constructor.
+   * @param context The context.
+   */
   public FeedbackDialog(Context context) {
     super(context);
   }
@@ -26,7 +28,7 @@ public class FeedbackDialog extends Dialog {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.dialog);
 
-    feedback = (TextView) findViewById(R.id.dialogText);
+    TextView feedback = (TextView) findViewById(R.id.dialogText);
 
     feedback.setText("Connection Failed. Please check your IP address");
     
