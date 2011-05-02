@@ -43,7 +43,7 @@ public class Energy extends Header {
 
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
-  private static final String pieColors = "0000FF|000000";
+  private static final String pieColors = "0000FF";
 
   EnergyChartData chartData;
   EnergyManagementChartInterface chartInterface;
