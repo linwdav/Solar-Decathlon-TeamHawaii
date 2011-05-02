@@ -89,11 +89,12 @@ public class Help extends Activity {
       if ("Aquaponics".equals(room)) {
         SpannableString content =
             new SpannableString(
-                "This page provides necessary information and controls for the aquaponics system.\n\n"
+                "This page provides necessary information and controls for the aquaponics system." 
+                    + "\n\n"
                     // the controls
                     + "Controls\n\n"
-                    + "This section provides ways to interact with the aquaponics system. The users "
-                    + "can set the desired values for different parameters.\n\n"
+                    + "This section provides ways to interact with the aquaponics system. "
+                    + "The users can set the desired values for different parameters.\n\n"
                     + "Water Temp: Allow the user to change the desired water "
                     + "temperature (°F) for the system.\n"
                     + "pH Level: Allow the user to change the pH level for the system\n"
@@ -129,18 +130,20 @@ public class Help extends Activity {
                     // circulation
                     + "Circulation\n"
                     + "Circulation indicates the total amount of time the pump has been"
-                    + "on in one day divided by the total water volume. \nUnit used: hours/gallons.\n\n"// 1665
+                    + "on in one day divided by the total water volume. \nUnit used: "
+                    + "hours/gallons.\n\n"// 1665
                     // turbidity
                     + "Turbidity\n"
                     + "Turbidity is the cloudiness of a fluid caused by individual particles."
-                    + "The measurement of turbidity indicates the water quality. Unit used: Formazin "
-                    + "Turbidity Unit (FTU).\n\n"/* 1846 */
+                    + "The measurement of turbidity indicates the water quality. Unit used: "
+                    + "Formazin Turbidity Unit (FTU).\n\n"/* 1846 */
                     + "Water Level\n"
                     + "The measurement of water level indicates the amount of water in the"
                     + " aquaponics system. \nUnit used: gallons\n\n"// 1966
                     // nutrient
                     + "Nutrient\n"
-                    + "The measurement of nutrients indicated the amount of nutrients in the water.");
+                    + "The measurement of nutrients indicated the amount of nutrients in the " 
+                    + "water.");
         content.setSpan(new UnderlineSpan(), 530, 532, 0);
         content.setSpan(new UnderlineSpan(), 805, 816, 0);
         content.setSpan(new UnderlineSpan(), 1110, 1127, 0);
@@ -167,7 +170,8 @@ public class Help extends Activity {
       }
       else if ("Energy".equals(room)) {
         helpContent
-            .setText("This page gives feedback on the energy consumption and generation of the house.");
+            .setText("This page gives feedback on the energy consumption and generation of the "
+            + "house.");
       }
       else {
         helpContent.setText("wtf");

@@ -30,29 +30,6 @@
 	 	android:layout_centerHorizontal="true"
 	 	android:layout_marginBottom="30dip"
  	/>
- 	
- <!-- DELETE THIS BUTTON IN FINAL PRODUCT. -->   
- <!-- 	
- <Button 
-	 android:id="@+id/ButtonHvacTest" 
-	 android:layout_width="wrap_content" 
-	 android:layout_height="wrap_content"
-	 android:text="TestButton"
-   android:layout_marginTop="10sp"
-   android:layout_below="@id/Title" 
- />
- -->
-  
- <!-- DELETE THIS TEXT VIEW IN FINAL PRODUCT. -->	 
- <!-- 
- <TextView 
-	 android:id="@+id/TextViewTestView" 
-	 android:layout_width="wrap_content" 
-	 android:layout_height="wrap_content"
-	 android:text="Test text goes here from clicking on TestButton" 
-	 android:layout_below="@id/ButtonHvacTest"
- />
- -->
   
  <!-- HVAC System State Table. -->
  <TableLayout 
@@ -160,6 +137,30 @@
        android:layout_width="match_parent"
        android:layout_marginLeft="0dip" />
    </TableRow>
+ </TableLayout>
+ 
+ <!-- Desired Temperature Set Feedback View. -->
+ <TableLayout
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_below="@+id/TableLayoutHvacControl" 
+   android:layout_width="match_parent"
+   android:stretchColumns="1" 
+   android:background="@drawable/shape"
+   android:layout_height="wrap_content" 
+   android:id="@+id/TableLayoutDesiredHomeTempLog"
+   android:layout_margin="10dip" 
+   android:layout_marginTop="200dip">
+    
+   <TableRow>
+     <TextView 
+       android:layout_height="wrap_content"
+       android:layout_marginTop="12dip" 
+       android:layout_marginLeft="25dip"
+       android:id="@+id/TextViewDesiredHomeTempLog" 
+       android:text="No desired temperature has been set."
+       android:textSize="20sp" />
+   </TableRow>
+ 
  </TableLayout>
 
 </RelativeLayout>

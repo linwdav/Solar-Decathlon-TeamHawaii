@@ -2,6 +2,7 @@ package edu.hawaii.systemh.android.systemdata;
 
 import java.text.DecimalFormat;
 import java.util.Locale;
+import org.restlet.data.Status;
 import org.restlet.ext.xml.DomRepresentation;
 import org.restlet.resource.ClientResource;
 import org.restlet.resource.ResourceException;
@@ -455,17 +456,21 @@ public class SystemData {
    * Set HVAC to desired temperature.
    * 
    * @param value Desired home temperature
+   * @return The status of the PUT request to change the home temperature.
    */
-  public void setHvacTemp(int value) {
+  public Status setHvacTemp(int value) {
 
     try {
       String putUrl = HTTP + ipAddress + ":8111/HVAC/command/SET_TEMPERATURE?arg=" + value;
       ClientResource putClient = new ClientResource(putUrl);
       putClient.put(putUrl);
+      Status status = putClient.getResponse().getStatus();
       putClient.release();
+      return status;
     }
     catch (ResourceException e) {
       e.printStackTrace();
+      return e.getStatus();
     }
   }
 
@@ -544,4 +549,6 @@ public class SystemData {
     return Double.valueOf(twoDForm.format(d));
   }
 
+  
+  
 }
