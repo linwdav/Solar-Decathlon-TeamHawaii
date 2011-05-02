@@ -16,6 +16,7 @@ import org.apache.wicket.markup.html.list.ListView;
 import org.apache.wicket.markup.html.panel.Panel;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.util.time.Duration;
+import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.components.image.DynamicImage;
 import edu.hawaii.systemh.frontend.page.Header;
 
@@ -156,9 +157,23 @@ public class SystemPanel extends Panel implements IHeaderContributor {
       public ResourceReference getObject() {
 
         // put logic here
-        SystemHStatus status = (i % 2 == 0) ? SystemHStatus.OK : SystemHStatus.CAUTION;
-
-        return getStatusImage(status);
+        if (SolarDecathlonApplication.getAquaponics().getAquaponicsStatus()
+            .equals(SystemHStatus.WARNING)
+            || SolarDecathlonApplication.getElectrical().getEnergyStatus()
+                .equals(SystemHStatus.WARNING)
+            || SolarDecathlonApplication.getHvac().getHvacStatus().equals(SystemHStatus.WARNING)) {
+          return getStatusImage(SystemHStatus.WARNING);
+        }
+        else if (SolarDecathlonApplication.getAquaponics().getAquaponicsStatus()
+            .equals(SystemHStatus.CAUTION)
+            || SolarDecathlonApplication.getElectrical().getEnergyStatus()
+                .equals(SystemHStatus.CAUTION)
+            || SolarDecathlonApplication.getHvac().getHvacStatus().equals(SystemHStatus.CAUTION)) {
+          return getStatusImage(SystemHStatus.CAUTION);
+        }
+        else {
+          return getStatusImage(SystemHStatus.OK);
+        }
       }
     });
     panel.add(img);

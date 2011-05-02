@@ -75,6 +75,7 @@ public class AquaponicsListener extends SystemStateListener {
    */
   public AquaponicsListener() {
     super(IHaleSystem.AQUAPONICS);
+    this.aquaponicsStatus = SystemHStatus.OK;
   }
 
   /**
