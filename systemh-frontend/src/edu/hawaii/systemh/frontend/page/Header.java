@@ -771,6 +771,23 @@ public class Header extends WebPage {
       }
     }));
     
+    list.add(new SystemPanelListObj("Photovoltaics", Energy.class, new Model<ResourceReference>() {
+
+      /**
+       * Serial ID.
+       */
+      private static final long serialVersionUID = 4497832961448106036L;
+      
+      /**
+       * Gets the electrical object.
+       */
+      @Override
+      public ResourceReference getObject() {
+        SystemHStatus status = SolarDecathlonApplication.getPhotovoltaic().getPhotovoltaicStatus();
+        return SystemPanel.getStatusImage(status);
+      }
+    }));    
+    
     list.add(new SystemPanelListObj("Aquaponics", AquaPonics.class, new Model<ResourceReference>() {
 
       /**
