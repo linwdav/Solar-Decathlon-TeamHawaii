@@ -48,6 +48,7 @@
     <string name="oxygen">Dissolved Oxygen</string>
     <string name="waterCirculation">Water Circulation</string>
     <string name="waterTurbidity">Water Turbidity</string>
+    <string name="dialogText">Checking connection...</string>
     <string name="deadFish">Dead Fish</string>
     <string name="feeding">Feeding</string>
     <string name="selectFeedAmount">Select Feed Amount:</string>

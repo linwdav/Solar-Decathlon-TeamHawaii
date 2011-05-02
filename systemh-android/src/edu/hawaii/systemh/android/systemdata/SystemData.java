@@ -47,14 +47,14 @@ public class SystemData {
 
   int lightingLevel = 0;
   boolean enabled = false;
-  String color = "";
+  String color = "#FFFFFF";
 
   /**
    * Getter of values.
    * 
    * @param systemName The name of the system you want to get data from
    */
-  public SystemData(String systemName) {
+  public SystemData(String systemName){
 
     final String TAG = SystemData.class.getSimpleName();
 
@@ -109,9 +109,15 @@ public class SystemData {
         System.out.println("Unknown System Name!");
       }
 
+      Log.d(TAG, "before get");
+      
       ClientResource getClient = new ClientResource(getUrl);
+      
+      Log.d(TAG, "before dom");
 
       DomRepresentation domRep = new DomRepresentation(getClient.get());
+      
+      Log.d(TAG, "dom rep is" + domRep.getText());
 
       // Get the XML representation.
       Document doc = domRep.getDocument();

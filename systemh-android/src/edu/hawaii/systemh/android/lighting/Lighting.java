@@ -69,13 +69,8 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
         lightSwitch.setChecked((Boolean) msg.obj);
         break;
 
-      case COLOR_IDENTIFIER:
-
-        // need this if statement before the backend XML for external devices is fixed.
-        if (!"true".equalsIgnoreCase(String.valueOf(msg.obj))
-            && !"false".equalsIgnoreCase(String.valueOf(msg.obj))) {
-          color.setBackgroundColor(Color.parseColor(String.valueOf(msg.obj)));
-        }
+      case COLOR_IDENTIFIER:       
+        color.setBackgroundColor(Color.parseColor(String.valueOf(msg.obj)));       
         break;
 
       case BRIGHTNESS_IDENTIFIER:
@@ -249,12 +244,11 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
    * Destroys this activity when onStop is called.
    */
   @Override
-  protected void onStop() {    
+  protected void onStop() {
     finish();
     super.onDestroy();
   }
-  
-  
+
   @Override
   protected void onPause() {
     running = false;
@@ -308,6 +302,7 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
         bathroom = new SystemData("lighting-bathroom");
         updateViews(bathroom);
       }
+
     }
 
     @Override
@@ -324,15 +319,7 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
   public void updateViews(SystemData selectedRoom) {
     lightSwitch.setChecked(selectedRoom.getEnabled());
     brightness.setProgress(selectedRoom.getLevel());
-
-    // need this if statement until the backend XML bug is fixed
-    if ("true".equalsIgnoreCase(selectedRoom.getColor())
-        || "false".equalsIgnoreCase(selectedRoom.getColor())) {
-      color.setBackgroundColor(Color.WHITE);
-    }
-    else {
-      color.setBackgroundColor(Color.parseColor(selectedRoom.getColor()));
-    }
+    color.setBackgroundColor(Color.parseColor(selectedRoom.getColor()));   
   }
 
   /**
@@ -349,32 +336,32 @@ public class Lighting extends Activity implements ColorPickerDialog.OnColorChang
     public void run() {
 
       while (running) {
-        
-        // update the components according to the selected room.
-        if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(LIVING)) {
-          livingRoom = new SystemData("lighting-livingroom");
-          updateViews(livingRoom);
-        }
-        else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(DINING)) {
-          diningRoom = new SystemData("lighting-diningroom");
-          updateViews(diningRoom);
-        }
-        else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(KITCHEN)) {
-          kitchen = new SystemData("lighting-kitchen");
-          updateViews(kitchen);
-        }
-        else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(BATHROOM)) {
-          bathroom = new SystemData("lighting-bathroom");
-          updateViews(bathroom);
-        }
-        
-        // pause thread for half a second.
+
         try {
+          // update the components according to the selected room.
+          if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(LIVING)) {
+            livingRoom = new SystemData("lighting-livingroom");
+            updateViews(livingRoom);
+          }
+          else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(DINING)) {
+            diningRoom = new SystemData("lighting-diningroom");
+            updateViews(diningRoom);
+          }
+          else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(KITCHEN)) {
+            kitchen = new SystemData("lighting-kitchen");
+            updateViews(kitchen);
+          }
+          else if (String.valueOf(spinner.getSelectedItem()).equalsIgnoreCase(BATHROOM)) {
+            bathroom = new SystemData("lighting-bathroom");
+            updateViews(bathroom);
+          }
+
           Thread.sleep(500);
         }
-        catch (InterruptedException e) {         
+        catch (InterruptedException e) {
           e.printStackTrace();
         }
+
       }
     }
 
