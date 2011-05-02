@@ -2,7 +2,8 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="match_parent"
+  android:background="@drawable/solar">
   
 <TextView  
 	android:id="@+id/BackToMenu"
@@ -10,6 +11,7 @@
     android:layout_height="wrap_content" 
     android:text="@string/BackToMenu"
     android:textSize="40sp"
+    android:textColor="#0000FF"
     android:layout_alignParentRight="true"
     android:layout_marginTop="10sp" 
     android:layout_marginRight="10sp"

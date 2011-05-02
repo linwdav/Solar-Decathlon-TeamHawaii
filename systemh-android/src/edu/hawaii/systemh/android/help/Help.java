@@ -101,7 +101,8 @@ public class Help extends Activity {
                     + "Water Level: Allow the user to change the water "
                     + "level (inches) for the system\n"
                     + "Water nutrients: Allow the user to change the "
-                    + "water nutrients for the system\n\n"
+                    + "water nutrients for the system\n"
+                    + "Feed Fish: Allows the user to feed the fish.\n\n"
                     // parameters start from here
                     // ph
                     + "pH\n"
@@ -172,9 +173,6 @@ public class Help extends Activity {
         helpContent
             .setText("This page gives feedback on the energy consumption and generation of the "
             + "house.");
-      }
-      else {
-        helpContent.setText("wtf");
       }
     }
 
