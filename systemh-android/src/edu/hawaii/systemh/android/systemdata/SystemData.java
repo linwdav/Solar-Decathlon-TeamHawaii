@@ -108,13 +108,9 @@ public class SystemData {
       else {
         System.out.println("Unknown System Name!");
       }
-
-      Log.d(TAG, "before get");
-      
+           
       ClientResource getClient = new ClientResource(getUrl);
-      
-      Log.d(TAG, "before dom");
-
+ 
       DomRepresentation domRep = new DomRepresentation(getClient.get());
       
       Log.d(TAG, "dom rep is" + domRep.getText());

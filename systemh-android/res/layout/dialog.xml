@@ -12,7 +12,7 @@
     android:textColor="#FFFFFF"
     android:padding="40dip" 
     android:text="@string/dialogText"
-    android:textSize="40sp"      
+    android:textSize="20sp"      
     />
 
 </LinearLayout>

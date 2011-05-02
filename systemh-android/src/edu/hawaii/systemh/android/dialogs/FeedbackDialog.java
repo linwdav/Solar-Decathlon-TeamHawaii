@@ -30,7 +30,9 @@ public class FeedbackDialog extends Dialog {
 
     TextView feedback = (TextView) findViewById(R.id.dialogText);
 
-    feedback.setText("Connection Failed. Please check your IP address");
+    setTitle("Connection Failed");
+    feedback.setText("Please check the IP address of the running frontend" +
+        "\n\n\nTouch outside to cancel");
     
     this.setCancelable(true);
     setCanceledOnTouchOutside(true);

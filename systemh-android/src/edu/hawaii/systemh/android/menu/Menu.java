@@ -124,7 +124,9 @@ public class Menu extends Activity {
    * Check for the internet connection outside the main thread.
    */
   public void checkConnection() {
-    dialog = ProgressDialog.show(this, "Please wait...", "Connecting to the house system...");
+    dialog =
+        ProgressDialog.show(this, "Please wait...", "Connecting to the house system..."
+            + "\n\n\nTouch outside to cancel");
     dialog.setCancelable(true);
     new ConnectionThread().start();
   }
@@ -219,7 +221,7 @@ public class Menu extends Activity {
    * 
    */
   public class ConnectionThread extends Thread {
-    
+
     /**
      * Start the connection test.
      */
