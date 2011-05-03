@@ -75,12 +75,12 @@ public class SimulatorServer extends Application {
       System.out.println("New sensor data will be updated every N seconds.");
       System.exit(0);
     }
-    //runServer();
+    // runServer();
   }
 
   /**
-   * Start servers beginning from port 7000. Applications and their resources are specified in
-   * their respective classes.
+   * Start servers beginning from port 7000. Applications and their resources are specified in their
+   * respective classes.
    * 
    * @throws Exception If problems occur starting up this server.
    */
@@ -404,34 +404,32 @@ public class SimulatorServer extends Application {
     // Append 12 state points of 5 minute intervals to represent 1 hour of past state data
     // for all house system but Lighting.
     for (int i = 0; i < 12; i++) {
+      timestampPast -= timestampDecrement;
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      timestampPast -= timestampDecrement;
     }
 
     // Decrement a timestamp by 60 minutes or 1 hour.
     timestampDecrement = 1000 * 60 * 60;
-    timestampPast = timestamp;
 
     // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
     // all house system but Lighting.
     for (int i = 0; i < 24; i++) {
+      timestampPast -= timestampDecrement;
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      timestampPast -= timestampDecrement;
     }
 
     // Decrement a timestamp by 1 day.
     timestampDecrement = 1000 * 60 * 60 * 24;
-    timestampPast = timestamp;
 
     // Append 31 state points of 1 day intervals to represent both at least 1 week of past
     // state data and for a total of 1 month of state data for all house systems but
     // Lighting.
     for (int i = 0; i < 31; i++) {
+      timestampPast -= timestampDecrement;
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      timestampPast -= timestampDecrement;
     }
 
     Map<String, Integer> baseTime = new HashMap<String, Integer>();
