@@ -8,7 +8,7 @@ import org.htmlparser.util.ParserException;
 
 /**
  * A Class that provides the high and low temperatures for each 
- * day for the past 3 months (at least 31 days).  
+ * day for the past 3 months (at least 31 days). 
  * @author Greg Burgess
  *
  */

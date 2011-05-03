@@ -1,15 +1,18 @@
 package edu.hawaii.systemh.model.behavior; 
 
 import java.io.IOException; 
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.HashMap;
 import java.util.Map;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
 import javax.xml.xpath.XPathFactory;
 import org.restlet.ext.xml.DomRepresentation;
-import org.restlet.representation.Representation;
-import org.restlet.resource.ClientResource;
 import org.w3c.dom.Document;
 
 /**
@@ -20,15 +23,17 @@ import org.w3c.dom.Document;
 public class WeatherReport { 
   private static XPathFactory factory = XPathFactory.newInstance();
   private static XPath xpath = factory.newXPath(); 
+   
   
-  private static ClientResource weatherClient = null; 
-  private static ClientResource astrologicalClient = null; 
-  
-  private static final String weatherUrl = 
+  private static final String weatherUrlTxt = 
     "http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query=";
-  private static final String astrologicalUrl =
+  private static final String astrologicalUrlTxt =
     "http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=";
-  
+  private static URL weatherUrl;
+  private static URL astroUrl;
+  private static String location;
+  private static final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+  private static DocumentBuilder db;
   private Map<String,Double> conditionMap;
 
   private  double cloudCover = -1;
@@ -57,18 +62,22 @@ public class WeatherReport {
   
   /**
    * Initalizes the object. 
-   * @param location - Geographic Location defined by Weather Underground 
+   * @param loc - Geographic Location defined by Weather Underground 
    * http://www.wunderground.com/.
    * @param station - the identifier for the desired weatherstation to use,
    * defined by Weather Undergound.
    * @throws XPathExpressionException 
    * @throws IOException 
+   * @throws ParserConfigurationException 
    */
-  private final void init(String location, String station) 
-                      throws XPathExpressionException, IOException {
-    weatherClient = new ClientResource(weatherUrl + location);
-    astrologicalClient = new ClientResource(astrologicalUrl + location);
-    
+  private final void init(String loc, String station) 
+                      throws XPathExpressionException, IOException, ParserConfigurationException {
+    db = dbf.newDocumentBuilder(); 
+    weatherUrl = new URL("http","api.wunderground.com",
+                          "/auto/wui/geo/WXCurrentObXML/index.xml?query=" + loc);
+    astroUrl = new URL("http","api.wunderground.com",
+                          "/auto/wui/geo/ForecastXML/index.xml?query=" + loc);
+    location = loc;
     //init the condition map
     conditionMap = new HashMap<String,Double>();
     conditionMap.put("Clear", 1.0);
@@ -80,28 +89,54 @@ public class WeatherReport {
     conditionMap.put("Scattered Clouds",.80);
     conditionMap.put("Overcast",  .55);
     
-
-    //do a get
-    Representation weatherRep = weatherClient.get();
-    Representation astroRep = astrologicalClient.get();
+    
+    //do a get   
+    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+    DocumentBuilder db = dbf.newDocumentBuilder();
+    Document doc1 = null,doc2 = null;
+    try {
+      URLConnection wurlcon = weatherUrl.openConnection();
+      wurlcon.addRequestProperty("query", location );  
+      wurlcon.connect();
+      doc1 = db.parse(wurlcon.getInputStream());
+      
+      URLConnection aurlcon = astroUrl.openConnection();
+      aurlcon.addRequestProperty("query",location); 
+      aurlcon.connect(); 
+      doc2 = db.parse(aurlcon.getInputStream()); 
+    }
+    catch ( Exception e1) { 
+      e1.printStackTrace();
+    }
+    //cast the documents back to representations
+    DomRepresentation weatherRep = new DomRepresentation();
+    weatherRep.setDocument(doc1);  
+    DomRepresentation astroRep = new DomRepresentation(); 
+    astroRep.setDocument(doc2); 
     
     // parse the weather document for local time, temperature, and cloud cover.
     DomRepresentation dom = new DomRepresentation(weatherRep);
     Document doc = dom.getDocument();
     String weather;
-    String root = "/current_observation/";
-
-
+    String root = "/current_observation/"; 
     fTemp = (Double) xpath.evaluate(root + "temp_f",doc,XPathConstants.NUMBER); 
     weather = (String) xpath.evaluate(root + "weather", doc, XPathConstants.STRING); 
-    cloudCover = conditionMap.get(weather);
+    try {
+      cloudCover = conditionMap.get(weather);
+    }
+    catch (Exception e) {
+      cloudCover = .5;
+    }
     timestamp = System.currentTimeMillis() + 1000 * 60 * 60 * 5;
+    
+    
     
     // parse the astrological client for sunrise and sun set times.
     dom = new DomRepresentation(astroRep);
     doc = dom.getDocument();
     root = "/forecast/moon_phase/";
     
+   
     //parse sunrise
     double hour = (Double) xpath.evaluate(root + "sunrise/hour", doc, XPathConstants.NUMBER);
     double min = (Double) xpath.evaluate(root + "sunrise/minute", doc, XPathConstants.NUMBER); 
@@ -127,16 +162,19 @@ public class WeatherReport {
     timestamp = System.currentTimeMillis() + 1000 * 60 * 60 * 5;
     
     //if more than 15 mins since we updated, update again
-    if (timestamp >= lastUpdate + 1000 * 60 * 15) {
-      Representation weatherRep = weatherClient.get();  
-      // parse the weather document for local time, temperature, and cloud cover.
-      DomRepresentation dom = new DomRepresentation(weatherRep);
-      Document doc = dom.getDocument();
+    if (timestamp >= lastUpdate + 1000 * 60 * 15) { 
+      // parse the weather document for local time, temperature, and cloud cover. 
+      Document doc = get(weatherUrl );
       String weather;
       String root = "/current_observation/"; 
       fTemp = (Double) xpath.evaluate(root + "temp_f",doc,XPathConstants.NUMBER); 
       weather = (String) xpath.evaluate(root + "weather", doc, XPathConstants.STRING); 
-      cloudCover = conditionMap.get(weather);
+      try {
+        cloudCover = conditionMap.get(weather);
+      }
+      catch (Exception e) {
+        cloudCover = .5;
+      }
       lastUpdate = timestamp;
     }
   }
@@ -196,5 +234,20 @@ public class WeatherReport {
   public Long getTimeStamp() {
     return timestamp;
   }
+  
+  /**
+   * Performs a "get" request on a URL, passing additional 
+   * data as a property map.
+   * @param url a fully formed url, with designated protocol, domain, and file.
+   * @return a document containing the result.
+   * @throws Exception If url is unreachable.
+   */
+  private Document get(URL url) throws Exception { 
+    URLConnection wurlcon = url.openConnection();
+    wurlcon.addRequestProperty("query", location);  
+    wurlcon.connect();
+    return db.parse(wurlcon.getInputStream()); 
+  }
+  
 }
  

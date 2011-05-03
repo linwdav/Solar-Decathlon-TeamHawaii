@@ -13,12 +13,11 @@ import java.util.TimeZone;
 public class Simulator { 
   /** The String value of the area of interest, 
    * given by WeatherUndergound's API.**/
-  private  static final String location = "Washington, District of Columbia";
+  private  static final String location = "Washington%2c%20District%20of%20Columbia";
   /** The weather station nearest DC that we will pull data from. **/
-  private static final String station = "Eckington Pl, NE, Washington";
+  private static final String station = "Eckington%20Pl%2c%20NE%2c%20Washington";
   
-  private static WeatherReport weatherReport;
-  
+  private static WeatherReport weatherReport; 
   /**
    * Default Constrctor.
    * @throws Exception If WeatherUnderground is unreachable.
@@ -31,14 +30,14 @@ public class Simulator {
    * Initalizes the data.
    * @throws Exception If WeatherUndergound cannot be reached.
    */
-  public static final void init() throws Exception {
-    weatherReport = new WeatherReport(location,station);
+  private static final void init() throws Exception {
+    weatherReport = new WeatherReport(location,station); 
   }
   /**
    * Generate a double between -12 (AM) and 12 (PM) representing the time.
    * @return a double representing the distance from noon.
    */
-  public static double getTime() {  
+  public double getTime() {  
                                                  //DC time zone is "EDT"
                                               //Hawaii timezone is "HST"
     Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("HST"));  
@@ -60,19 +59,20 @@ public class Simulator {
   }
   
   /**
-   * Returns the temp based on time.
+   * Returns the current outside temp in F.
    * @return double temp.
    */
-  public static double getOutsideTemp() {
+  public double getOutsideTemp() {
     return getOutsideTemp(getTime());
     }
   
   /**
-   * Returns the outside temp based on time.
+   * Returns the outside temp based on a time from the current day.  
+   * Do not use for generating historical data.
    * @param time - a double representing the time given by getTime().
    * @return a double representing the temperature in F.
    */
-  public static double getOutsideTemp(double time) {
+  public double getOutsideTemp(double time) {
     //Using the basic formula   y = k*sin((x/4)-p) 
     //where k is half the difference in high and low temp.
       //representing the fluxuation above and below 0 for the basic sin function.
@@ -83,11 +83,12 @@ public class Simulator {
     return ((high - low) / 2.0) * Math.sin(seed) + ((high + low) / 2.0); 
   }
   
+ 
   /**
    * Returns a value between 0 and 100 representing solar intensity.
    * @return a double between 0 and 100.
    */
-  public static double getSolarIntensity() {
+  public double getSolarIntensity() {
     return getSolarIntensity(getTime());
   }
   
@@ -103,7 +104,7 @@ public class Simulator {
   // h = hrs of daylight/2; 
   // x = current time given by getTime();
   // y = -(100/((h/2)^2)) (x + (sunrise time-h/2)^2 + 100
-  public static double getSolarIntensity(double time) { 
+  public double getSolarIntensity(double time) { 
     try {
       weatherReport.refresh();
     }
@@ -146,6 +147,13 @@ public class Simulator {
   }
   
   /**
+   * Returns the current WeatherReport object.
+   * @return WeatherReport object containing meteorological data.
+   */
+  public WeatherReport getWeatherReport() {
+    return weatherReport;
+  }
+  /**
    * Returns an unsigned double representing the absolute distance
    * between two times.
    * @param early the first time.
@@ -162,13 +170,13 @@ public class Simulator {
    * @throws Exception 
    */
   public static void main (String[] args) throws Exception {
-    init(); 
+    Simulator sim = new Simulator();
     System.out.println(subtractTimes(weatherReport.getSunSet(),weatherReport.getSunRise()));
-     
+     weatherReport.refresh();
     System.out.println("Current Data:");
-    System.out.println("Time = " + getTime());
-    System.out.println("Solar Intensity = " +  getSolarIntensity());
-    System.out.println("Temp = " +  getOutsideTemp()); 
+    System.out.println("Time = " + sim.getTime());
+    System.out.println("Solar Intensity = " +  sim.getSolarIntensity());
+    System.out.println("Temp = " +  sim.getOutsideTemp()); 
     System.out.println("High/low = " + weatherReport.getHighTemp() +
                         "/" + weatherReport.getLowTemp());
     System.out.println("Sunrise/set = " + weatherReport.getSunRise() + 
@@ -179,9 +187,10 @@ public class Simulator {
     for (double i = -12; i <= 12; i += 1) { 
       System.out.println();
       System.out.println("Hour = " + i);
-      System.out.println("Temp = " + getOutsideTemp(i)); 
-      System.out.println("Sun = " + getSolarIntensity(i)); 
-    }  
+      System.out.println("Temp = " + sim.getOutsideTemp(i)); 
+      System.out.println("Sun = " + sim.getSolarIntensity(i)); 
+    }   
+    
   }
 
   /**
