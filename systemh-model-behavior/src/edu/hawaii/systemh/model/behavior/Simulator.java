@@ -1,6 +1,6 @@
 package edu.hawaii.systemh.model.behavior;
 
-import java.util.Calendar; 
+import java.util.Calendar;  
 import java.util.GregorianCalendar; 
 import java.util.TimeZone;
 
@@ -22,7 +22,8 @@ public class Simulator {
   static {
     try {
         instance = new Simulator();
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
         throw new ExceptionInInitializerError(e);
     }
   }
@@ -76,6 +77,20 @@ public class Simulator {
     return (rough + fine) - 12.0; 
   }
   
+  /**
+   * Converts a long into a Simulator compatible value.
+   * @param timestamp long representing the date.
+   * @return a double representing a simulator timestamp.
+   */
+  public double getSystemTime(long timestamp) {
+    Calendar cal = new GregorianCalendar();
+    cal.setTimeInMillis(timestamp); 
+    double hours = cal.get(Calendar.HOUR_OF_DAY);
+    double fine = cal.get(Calendar.MINUTE) / 59.0;
+    fine += cal.get(Calendar.SECOND) / 6000.0;
+    fine += cal.get(Calendar.MILLISECOND) / 10000000.0;
+    return hours + fine - 12.0;
+  }
   /**
    * Returns the current outside temp in F.
    * @return double temp.

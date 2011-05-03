@@ -1,6 +1,7 @@
 package edu.hawaii.systemh.model.behavior; 
 
 import java.io.IOException; 
+import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
@@ -11,8 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpressionException;
-import javax.xml.xpath.XPathFactory;
-import org.restlet.ext.xml.DomRepresentation;
+import javax.xml.xpath.XPathFactory; 
 import org.w3c.dom.Document;
 
 /**
@@ -52,7 +52,8 @@ public class WeatherReport {
   static {
     try {
         instance = new WeatherReport(DC,ECKINGTON);
-    } catch (Exception e) {
+    } 
+    catch (Exception e) {
         throw new ExceptionInInitializerError(e);
     }
   }
@@ -114,30 +115,29 @@ public class WeatherReport {
     //do a get   
     DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
     DocumentBuilder db = dbf.newDocumentBuilder();
-    Document doc1 = null,doc2 = null;
+    Document weatherDoc = null,astroDoc = null;
     try {
-      URLConnection wurlcon = weatherUrl.openConnection();
-      wurlcon.addRequestProperty("query", location );  
-      wurlcon.connect();
-      doc1 = db.parse(wurlcon.getInputStream());
+      URLConnection weatherURLConnection = weatherUrl.openConnection();
+      weatherURLConnection.addRequestProperty("query", location );  
+      weatherURLConnection.connect();
+      InputStream weatherIS = weatherURLConnection.getInputStream();
+      weatherDoc = db.parse(weatherIS);
+      weatherIS.close();
       
-      URLConnection aurlcon = astroUrl.openConnection();
-      aurlcon.addRequestProperty("query",location); 
-      aurlcon.connect(); 
-      doc2 = db.parse(aurlcon.getInputStream()); 
+      URLConnection astrologicalURLConnection = astroUrl.openConnection();
+      astrologicalURLConnection.addRequestProperty("query",location); 
+      astrologicalURLConnection.connect(); 
+      InputStream astroIS = astrologicalURLConnection.getInputStream();
+      astroDoc = db.parse(astroIS); 
+      astroIS.close();
     }
     catch ( Exception e1) { 
       e1.printStackTrace();
     }
-    //cast the documents back to representations
-    DomRepresentation weatherRep = new DomRepresentation();
-    weatherRep.setDocument(doc1);  
-    DomRepresentation astroRep = new DomRepresentation(); 
-    astroRep.setDocument(doc2); 
+    //cast the documents back to representations 
     
-    // parse the weather document for local time, temperature, and cloud cover.
-    DomRepresentation dom = new DomRepresentation(weatherRep);
-    Document doc = dom.getDocument();
+    // parse the weather document for local time, temperature, and cloud cover. 
+    Document doc = weatherDoc;
     String weather;
     String root = "/current_observation/"; 
     fTemp = (Double) xpath.evaluate(root + "temp_f",doc,XPathConstants.NUMBER); 
@@ -152,9 +152,8 @@ public class WeatherReport {
     
     
     
-    // parse the astrological client for sunrise and sun set times.
-    dom = new DomRepresentation(astroRep);
-    doc = dom.getDocument();
+    // parse the astrological client for sunrise and sun set times. 
+    doc = astroDoc;
     root = "/forecast/moon_phase/";
     
    

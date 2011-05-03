@@ -31,9 +31,7 @@ public class DailyTemperatureHistory {
     }
   }
   /**
-   * Makes initializing calls for each of the three months of history.
-   * @param year the year of the current date.
-   * @param month the month of the current date.
+   * Makes initializing calls for each of the three months of history. 
    * @throws Exception if the url cannot be reached, or is invalid.
    */
   private DailyTemperatureHistory() throws Exception {
@@ -58,8 +56,7 @@ public class DailyTemperatureHistory {
    * @throws ParserException If the data is invalid, or site cannot be reached.
    */
   private static final void init(int year, int month) throws ParserException {
-    String url = urlStart + year + "/" + month + urlEnding;
-    System.out.println(url);
+    String url = urlStart + year + "/" + month + urlEnding; 
     //Create a parser with the URL 
     Parser parse = new Parser(url); 
     
@@ -74,7 +71,6 @@ public class DailyTemperatureHistory {
         root = nodes.elementAt(i);  
     }
   }
-   
   //HTML Parse gets messy when you do multiple parses on a document,
   //so just do it manually.
   nodes = root.getChildren(); 
@@ -92,7 +88,12 @@ public class DailyTemperatureHistory {
     }
   } 
 }
-  public synchronized static DailyTemperatureHistory getInstance() {
+  
+  /**
+   * Returns the singleton instance of this class.
+   * @return the singleton instance of the class.
+   */
+  public static synchronized DailyTemperatureHistory getInstance() {
     return instance;
   }
   
