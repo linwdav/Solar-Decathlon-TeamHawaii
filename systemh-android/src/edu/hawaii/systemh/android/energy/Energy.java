@@ -2,6 +2,7 @@ package edu.hawaii.systemh.android.energy;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -37,15 +38,33 @@ public class Energy extends Activity {
 
     setContentView(R.layout.energy);
     
+    // Get power generation from PV and display it
     SystemData pv = new SystemData("photovoltaics");   
     TextView pvText = (TextView) findViewById(R.id.PVValue);
     int currentPV = (int) pv.getEnergy();
     pvText.setText(currentPV + "");
     
+    // Get power consumption from electricity and display it
     SystemData electric = new SystemData("electric");
     TextView electricText = (TextView) findViewById(R.id.PowerValue);
     int currentElectric = (int) electric.getPower();
     electricText.setText(currentElectric + "");
+    
+    // Display the difference between power generation and consumption
+    TextView netPowerText = (TextView) findViewById(R.id.NetPowerValue);
+    int difference = currentPV - currentElectric;
+    if (difference > 0) {
+      netPowerText.setText("+" + difference);
+      netPowerText.setTextColor(Color.GREEN);
+    }
+    else if (difference == 0){
+      netPowerText.setText(difference);
+      netPowerText.setTextColor(Color.CYAN);
+    }
+    else {
+      netPowerText.setText(difference);
+      netPowerText.setTextColor(Color.RED);
+    }
   }
 
   /**
