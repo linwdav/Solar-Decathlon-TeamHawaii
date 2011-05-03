@@ -63,8 +63,6 @@ public class SystemPanel extends Panel implements IHeaderContributor {
     REF_ORB_WARNING = new ResourceReference(Header.class, ORB_WARNING);
   }
 
-  private int i;
-
   /**
    * Serial ID.
    */
@@ -83,16 +81,10 @@ public class SystemPanel extends Panel implements IHeaderContributor {
             "SystemPanel.css", "screen"));
     super.add(JavascriptPackageResource.getHeaderContribution(
         edu.hawaii.systemh.frontend.components.panel.SystemPanel.class, "SystemPanel.js"));
-    super.add(CSSPackageResource
-        .getHeaderContribution(edu.hawaii.systemh.frontend.components.panel.SystemPanel.class,
-            "tooltip/stylesheets/tipsy.css", "screen"));
-    super.add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.systemh.frontend.components.panel.SystemPanel.class, 
-            "tooltip/javascripts/jquery.tipsy.js"));
-    
+
     final WebMarkupContainer panel;
     final WebMarkupContainer content;
-    final DynamicImage img;
+    final DynamicImage buttonImage;
 
     // Creates the panel object. This component's HTML ID is used by jQuery to create the panel
     // object.
@@ -145,12 +137,12 @@ public class SystemPanel extends Panel implements IHeaderContributor {
         link.add(new Label("system-link-label", obj.getLinkLabel()));
 
         // Add the image.
-        DynamicImage img = new DynamicImage("system-image", obj.getModel());
-        item.add(img);
+        DynamicImage linkImage = new DynamicImage("system-link-image", obj.getModel());
+        item.add(linkImage);
       }
     });
 
-    img = new DynamicImage("img", new Model<ResourceReference>() {
+    buttonImage = new DynamicImage("system-button-image", new Model<ResourceReference>() {
 
       /**
        * Serial ID.
@@ -183,11 +175,13 @@ public class SystemPanel extends Panel implements IHeaderContributor {
         }
       }
     });
-    panel.add(img);
-    img.add(new SimpleAttributeModifier("original-title","Testing tooltip."));
+    panel.add(buttonImage);
+    buttonImage.add(new SimpleAttributeModifier("original-title",
+        "Testing tooltip.<br/>Testing tooltip."));
+    buttonImage.setMarkupId(buttonImage.getId());
 
     // Adds the update event to the panel
-    panel.add(new AbstractAjaxTimerBehavior(Duration.seconds(5)) {
+    panel.add(new AbstractAjaxTimerBehavior(Duration.seconds(10)) {
 
       /**
        * Serial ID.
@@ -200,11 +194,9 @@ public class SystemPanel extends Panel implements IHeaderContributor {
        */
       @Override
       protected void onTimer(AjaxRequestTarget target) {
-        i++;
-        target.addComponent(img);
+        target.addComponent(buttonImage);
         target.addComponent(content);
       }
-      
     });
   }
 
@@ -230,7 +222,6 @@ public class SystemPanel extends Panel implements IHeaderContributor {
   public void renderHead(IHeaderResponse response) {
 
     String id = this.get("system-panel").getMarkupId();
-
     response.renderOnDomReadyJavascript("$('#" + id + "').panel();");
   }
 }

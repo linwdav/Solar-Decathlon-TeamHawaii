@@ -6,7 +6,7 @@
 <wicket:panel>
 	<div wicket:id="system-panel" class="system-panel">
 		<div class="system-content">
-			<table wicket:id="system-content" class="plain" border="0">
+			<table wicket:id="system-content" class="plain">
 		    <wicket:container wicket:id="system-list">
 		      <tr>
 		        <td>
@@ -15,7 +15,7 @@
 		          </a>
 		        </td>
 		        <td>
-		          <img style="height:18px;width:18px;vertical-align:middle;" wicket:id="system-image" />
+		          <img wicket:id="system-link-image" />
 		        </td>
 		      </tr>
 		    </wicket:container>
@@ -24,7 +24,7 @@
 		<div class="system-button">
       Systems' Status
       <a class="icon-right">
-        <img wicket:id="img" alt="Alert!" class="tooltip" />
+        <img wicket:id="system-button-image" alt="Alert!" />
       </a>
 		</div>
 	</div>
