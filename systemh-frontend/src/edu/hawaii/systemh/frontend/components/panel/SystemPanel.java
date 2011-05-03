@@ -87,7 +87,8 @@ public class SystemPanel extends Panel implements IHeaderContributor {
         .getHeaderContribution(edu.hawaii.systemh.frontend.components.panel.SystemPanel.class,
             "tooltip/stylesheets/tipsy.css", "screen"));
     super.add(JavascriptPackageResource.getHeaderContribution(
-        edu.hawaii.systemh.frontend.components.panel.SystemPanel.class, "tooltip/javascripts/jquery.tipsy.js"));
+        edu.hawaii.systemh.frontend.components.panel.SystemPanel.class, 
+            "tooltip/javascripts/jquery.tipsy.js"));
     
     final WebMarkupContainer panel;
     final WebMarkupContainer content;
