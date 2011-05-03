@@ -46,6 +46,16 @@ public class HVACPutResource extends ServerResource {
     
     if ("temperature".equals(putCommand) && 
         SystemHCommandType.SET_TEMPERATURE.toString().equals(command)) {
+      
+      try {
+        HVACDataWeb data = HVACDataWeb.getInstance();
+        data.setDesiredTemp(Integer.parseInt(arg));
+        HVACData.modifySystemState();
+      }
+      catch (Exception e ) {
+        e.printStackTrace();
+      }
+      //send the other data too, incase the web version ever breaks
       HVACData.setDesiredTemp(Integer.parseInt(arg));
       HVACData.modifySystemState();
     }
