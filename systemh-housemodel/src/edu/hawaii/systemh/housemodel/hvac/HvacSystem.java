@@ -68,7 +68,7 @@ public class HvacSystem extends HouseSystem {
   public double energyUsageWhenDesiredTempSet(int currentHomeTemp, int desiredHomeTemp, 
       int outsideHomeTemp) {
     
-    long tempDiff = Math.abs(currentHomeTemp - desiredHomeTemp);
+    long tempDiff = Math.abs(desiredHomeTemp - currentHomeTemp);
     double energyUsagePerHour = (heatingCoolingEnergyUsage) * Math.log10(tempDiff) + 4;
 
     return energyUsagePerHour;

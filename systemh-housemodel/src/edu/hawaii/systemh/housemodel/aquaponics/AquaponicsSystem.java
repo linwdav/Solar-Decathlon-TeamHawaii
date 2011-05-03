@@ -70,10 +70,10 @@ public class AquaponicsSystem extends HouseSystem {
    */
   public double energyUsageWhenDesiredTempSet(long startTime, long endTime, 
       boolean heaterState) {  
-    long tempDiff = Math.abs(startTime - endTime);
+    long timeDiff = Math.abs(endTime - startTime);
     
     // heater is turned on, multiply by 3
-    return (heaterState) ? (0.0064) * 3 * tempDiff
-        : (0.0064) * tempDiff;
+    return (heaterState) ? (0.0064) * 3 * timeDiff
+        : (0.0064) * timeDiff;
   }
 }
