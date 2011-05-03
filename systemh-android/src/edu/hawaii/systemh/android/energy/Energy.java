@@ -64,7 +64,7 @@ public class Energy extends Activity {
       netPowerText.setText("+" + difference);
       netPowerText.setTextColor(Color.GREEN);
     }
-    else if (difference == 0){
+    else if (difference == 0) {
       netPowerText.setText(difference);
       netPowerText.setTextColor(Color.CYAN);
     }
