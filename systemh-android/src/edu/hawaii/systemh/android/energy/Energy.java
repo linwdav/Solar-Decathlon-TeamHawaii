@@ -38,17 +38,24 @@ public class Energy extends Activity {
 
     setContentView(R.layout.energy);
     
-    // Get power generation from PV and display it
-    SystemData pv = new SystemData("photovoltaics");   
-    TextView pvText = (TextView) findViewById(R.id.PVValue);
-    int currentPV = (int) pv.getEnergy();
-    pvText.setText(currentPV + "");
-    
     // Get power consumption from electricity and display it
     SystemData electric = new SystemData("electric");
     TextView electricText = (TextView) findViewById(R.id.PowerValue);
     int currentElectric = (int) electric.getPower();
     electricText.setText(currentElectric + "");
+    electricText.setTextColor(Color.YELLOW);
+    
+    // Get power generation from PV and display it
+    SystemData pv = new SystemData("photovoltaics");   
+    TextView pvText = (TextView) findViewById(R.id.PVValue);
+    int currentPV = (int) pv.getEnergy();
+    pvText.setText(currentPV + "");
+    if (currentPV > currentElectric) {
+      pvText.setTextColor(Color.GREEN);
+    }
+    else {
+      pvText.setTextColor(Color.RED);
+    }
     
     // Display the difference between power generation and consumption
     TextView netPowerText = (TextView) findViewById(R.id.NetPowerValue);
