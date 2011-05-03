@@ -395,41 +395,36 @@ public class SimulatorServer extends Application {
     Element rootElement = returnDoc.createElement("state-history");
     returnDoc.appendChild(rootElement);
 
-    // Decrement a timestamp by 5 minutes.
-    long timestampDecrement = 1000 * 60 * 5;
-    // timestampPast is a timestamp value that gets decremented on to reflect
-    // past timestamp values.
-    long timestampPast = timestamp;
+    long timestampDay = 1000 * 60 * 60 * 24;
+    long timestampHour = 1000 * 60 * 60;
+    long timestampFiveMinutes = 1000 * 60 * 5;
 
+    // Set timestampPast to a past date which is equals to 31 days + 1 day + 1 hour.
+    long timestampPast =
+        timestamp - ((timestampDay * 31) + (timestampHour * 24) + (timestampFiveMinutes * 12));
+
+    // Append 31 state points of 1 day intervals to represent a total of 1 month of state data for
+    // all house systems but Lighting.
+    for (int i = 0; i < 31; i++) {
+      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      timestampPast += timestampDay;
+    }
+
+    // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
+    // all house systems but Lighting.
+    for (int i = 0; i < 24; i++) {
+      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
+      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      timestampPast += timestampHour;
+    }
+    
     // Append 12 state points of 5 minute intervals to represent 1 hour of past state data
     // for all house system but Lighting.
     for (int i = 0; i < 12; i++) {
-      timestampPast -= timestampDecrement;
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-    }
-
-    // Decrement a timestamp by 60 minutes or 1 hour.
-    timestampDecrement = 1000 * 60 * 60;
-
-    // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
-    // all house system but Lighting.
-    for (int i = 0; i < 24; i++) {
-      timestampPast -= timestampDecrement;
-      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-    }
-
-    // Decrement a timestamp by 1 day.
-    timestampDecrement = 1000 * 60 * 60 * 24;
-
-    // Append 31 state points of 1 day intervals to represent both at least 1 week of past
-    // state data and for a total of 1 month of state data for all house systems but
-    // Lighting.
-    for (int i = 0; i < 31; i++) {
-      timestampPast -= timestampDecrement;
-      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      timestampPast += timestampFiveMinutes;
     }
 
     Map<String, Integer> baseTime = new HashMap<String, Integer>();
