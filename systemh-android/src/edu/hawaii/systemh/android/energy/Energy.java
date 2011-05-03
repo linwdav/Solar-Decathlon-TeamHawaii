@@ -37,13 +37,15 @@ public class Energy extends Activity {
 
     setContentView(R.layout.energy);
     
-//    SystemData pv = new SystemData("photovoltaics");   
-//    TextView pvText = (TextView) findViewById(R.id.PVValue);
-//    pvText.setText((int) pv.getEnergy());
-//    
-//    SystemData electric = new SystemData("electric");
-//    TextView electricText = (TextView) findViewById(R.id.PowerValue);
-//    electricText.setText((int) electric.getPower());
+    SystemData pv = new SystemData("photovoltaics");   
+    TextView pvText = (TextView) findViewById(R.id.PVValue);
+    int currentPV = (int) pv.getEnergy();
+    pvText.setText(currentPV + "");
+    
+    SystemData electric = new SystemData("electric");
+    TextView electricText = (TextView) findViewById(R.id.PowerValue);
+    int currentElectric = (int) electric.getPower();
+    electricText.setText(currentElectric + "");
   }
 
   /**
