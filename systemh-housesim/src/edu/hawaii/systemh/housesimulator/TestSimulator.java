@@ -83,8 +83,8 @@ public class TestSimulator {
     XPathExpression stateDataRecordCountExpr = xpath.compile("count(//state-data)");
     Object stateDataRecordCount = stateDataRecordCountExpr.evaluate(doc, XPathConstants.NUMBER);
     // There should be 12 records at 5 min intervals, 24 records at 1 hour intervals, and 31 records
-    // at 1 day intervals for each of the 4 systems to initialize the initial-data.xml file.
-    Double count = (12.0 + 24.0 + 31.0) * 4;
+    // at 1 day intervals for each of the 8 systems to initialize the initial-data.xml file.
+    Double count = (12.0 + 24.0 + 31.0) * 8;
     assertEquals("Checking for proper amount of state-data records.", count, stateDataRecordCount);
     //System.out.println("\nNumber of data records: " + count);
     XPathExpression hasAquaponicsDataExpr = xpath.compile(

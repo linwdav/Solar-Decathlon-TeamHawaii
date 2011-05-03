@@ -34,6 +34,7 @@ import edu.hawaii.systemh.housesimulator.electrical.ElectricalData;
 import edu.hawaii.systemh.housesimulator.electrical.ElectricalSystem;
 import edu.hawaii.systemh.housesimulator.hvac.HVACData;
 import edu.hawaii.systemh.housesimulator.hvac.HVACSystem;
+import edu.hawaii.systemh.housesimulator.lighting.LightingData;
 import edu.hawaii.systemh.housesimulator.lighting.bathroom.LightingBathroomSystem;
 import edu.hawaii.systemh.housesimulator.lighting.dining.LightingDiningSystem;
 import edu.hawaii.systemh.housesimulator.lighting.kitchen.LightingKitchenSystem;
@@ -408,6 +409,10 @@ public class SimulatorServer extends Application {
     for (int i = 0; i < 31; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
       timestampPast += timestampDay;
     }
 
@@ -416,6 +421,10 @@ public class SimulatorServer extends Application {
     for (int i = 0; i < 24; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
       timestampPast += timestampHour;
     }
     
@@ -424,6 +433,10 @@ public class SimulatorServer extends Application {
     for (int i = 0; i < 12; i++) {
       returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
       returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
+      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
       timestampPast += timestampFiveMinutes;
     }
 

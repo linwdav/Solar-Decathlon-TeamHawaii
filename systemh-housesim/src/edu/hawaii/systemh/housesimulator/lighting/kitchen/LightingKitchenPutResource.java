@@ -54,7 +54,7 @@ public class LightingKitchenPutResource extends ServerResource {
     // Call mutator corresponding to room.
     if (setLevel.equalsIgnoreCase(putCommand) && "SET_LIGHTING_LEVEL".equalsIgnoreCase(command)) {
       
-      LightingData.setKitchenLevel(Long.parseLong(arg));
+      LightingData.setKitchenLevel(Integer.parseInt(arg));
     }
     // Call lighting mutator corresponding to room.
     else if (setColor.equalsIgnoreCase(putCommand) && 

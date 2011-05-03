@@ -17,14 +17,21 @@ import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
  */
 public class LightingData {
 
+  /** Initialize Srings so as not to throw pmd with too many literals. */
+  private static String key = "key";
+  private static String value = "value";
+  private static String state = "state";
+  /** The current date defaulted to a value when this class is first instantiated. **/
+  private static Date currentTime = new Date();
+  
   /** The living room lighting level. */
-  private static long livingLevel = 70;
+  private static int livingLevel = 70;
   /** The dining room lighting level. */
-  private static long diningLevel = 80;
+  private static int diningLevel = 80;
   /** The kitchen lighting level. */
-  private static long kitchenLevel = 90;
+  private static int kitchenLevel = 90;
   /** The bathroom lighting level. */
-  private static long bathroomLevel = 100;
+  private static int bathroomLevel = 100;
   
   /** The dining room lighting color. */
   private static String diningColor = "#FF01FF";
@@ -255,7 +262,7 @@ public class LightingData {
    * 
    * @param newLivingLevel the level
    */
-  public static void setLivingLevel(long newLivingLevel) {
+  public static void setLivingLevel(int newLivingLevel) {
     livingLevel = newLivingLevel;
   }
 
@@ -265,7 +272,7 @@ public class LightingData {
    * @param newDiningLevel the level
    */
 
-  public static void setDiningLevel(long newDiningLevel) {
+  public static void setDiningLevel(int newDiningLevel) {
     diningLevel = newDiningLevel;
   }
 
@@ -275,7 +282,7 @@ public class LightingData {
    * @param newKitchenLevel the level
    */
 
-  public static void setKitchenLevel(long newKitchenLevel) {
+  public static void setKitchenLevel(int newKitchenLevel) {
     kitchenLevel = newKitchenLevel;
   }
 
@@ -284,7 +291,7 @@ public class LightingData {
    * 
    * @param newBathroomLevel the level
    */
-  public static void setBathroomLevel(long newBathroomLevel) {
+  public static void setBathroomLevel(int newBathroomLevel) {
     bathroomLevel = newBathroomLevel;
   }
   
@@ -360,7 +367,16 @@ public class LightingData {
   public static void setDiningEnabled(Boolean newDiningEnabled) {
     diningEnabled = newDiningEnabled;
   }
-
+  /**
+   * Sets the current time to a new time. Used for reproducing historical or future temperature
+   * records.
+   * 
+   * @param time The new date in milliseconds that have passed since January 1, 1970 00:00:00 GMT.
+   */
+  public static void setCurrentTime(long time) {
+    currentTime = new Date(time);
+    System.out.println(currentTime);
+  }
 
   /**
    * Returns the data as an XML Document instance.
@@ -370,7 +386,12 @@ public class LightingData {
    * @throws Exception If problems occur creating the XML.
    */
   public static DomRepresentation toXml(String room) throws Exception {
-    
+    //initializing room values so as not to repeat literals. 
+    String living = "living";
+    String dining = "dining";
+    String kitchen = "kitchen";
+    String bathroom = "bathroom";
+ 
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder docBuilder = null;
     docBuilder = factory.newDocumentBuilder();
@@ -379,21 +400,22 @@ public class LightingData {
 
     // Create root tag
     Element rootElement = doc.createElement("state-data");
-    rootElement.setAttribute("system", "lighting");
+    rootElement.setAttribute("system", "LIGHTING");
 
+    //pmd pickiness.
     String device = "device";
 
     // Set attribute according to room.
-    if ("living".equalsIgnoreCase(room)) {
+    if (living.equalsIgnoreCase(room)) {
       rootElement.setAttribute(device, "arduino-5");
     }
-    else if ("dining".equalsIgnoreCase(room)) {
+    else if (dining.equalsIgnoreCase(room)) {
       rootElement.setAttribute(device, "arduino-6");
     }
-    else if ("kitchen".equalsIgnoreCase(room)) {
+    else if (kitchen.equalsIgnoreCase(room)) {
       rootElement.setAttribute(device, "arduino-7");
     }
-    else if ("bathroom".equalsIgnoreCase(room)) {
+    else if (bathroom.equalsIgnoreCase(room)) {
       rootElement.setAttribute(device, "arduino-8");
     }
 
@@ -405,33 +427,32 @@ public class LightingData {
     String colorString = SystemHState.LIGHTING_COLOR.toString();
     
     // Create state tag.
-    Element levelElement = doc.createElement("state");
-    levelElement.setAttribute("key", levelString);
+    Element levelElement = doc.createElement(state);
+    levelElement.setAttribute(key, levelString);
 
-    Element enableElement = doc.createElement("state");
-    enableElement.setAttribute("key", enableString);
+    Element enableElement = doc.createElement(state);
+    enableElement.setAttribute(key, enableString);
     
-    Element colorElement = doc.createElement("state");
-    colorElement.setAttribute("key", colorString);
+    Element colorElement = doc.createElement(state);
+    colorElement.setAttribute(key, colorString);
     
-    String value = "value";
     // Retrieve lighting level according to room.
-    if ("living".equalsIgnoreCase(room)) {
+    if (living.equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(livingLevel));
       enableElement.setAttribute(value, String.valueOf(livingEnabled));
       colorElement.setAttribute(value, String.valueOf(livingColor));
     }
-    else if ("dining".equalsIgnoreCase(room)) {
+    else if (dining.equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(diningLevel));
       enableElement.setAttribute(value, String.valueOf(diningEnabled));
       colorElement.setAttribute(value, String.valueOf(diningColor));
     }
-    else if ("kitchen".equalsIgnoreCase(room)) {
+    else if (kitchen.equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(kitchenLevel));
       enableElement.setAttribute(value, String.valueOf(kitchenEnabled));
       colorElement.setAttribute(value, String.valueOf(kitchenColor));
     }
-    else if ("bathroom".equalsIgnoreCase(room)) {
+    else if (bathroom.equalsIgnoreCase(room)) {
       levelElement.setAttribute(value, String.valueOf(bathroomLevel));
       enableElement.setAttribute(value, String.valueOf(bathroomEnabled));
       colorElement.setAttribute(value, String.valueOf(bathroomColor));
@@ -448,4 +469,125 @@ public class LightingData {
     // Return the XML in DomRepresentation form.
     return result;
   }
+  /**
+   * Appends Lighting state data at a specific timestamp snap-shot to the Document object passed
+   * to this method.
+   * 
+   * @param room The room that is associated with the correct arduino board.
+   * @param doc Document object to append Lighting state data as child nodes.
+   * @param timestamp The specific time snap-shot the state data interested to be appended.
+   * @return Document object with appended Lighting state data.
+   */
+  public static Document toXmlByTimestamp(Document doc, Long timestamp, String room) {
+
+    //initializing room values so as not to repeat literals. 
+    String living = "living";
+    String dining = "dining";
+    String kitchen = "kitchen";
+    String bathroom = "bathroom";
+    String levelString = SystemHState.LIGHTING_LEVEL.toString();
+    String enableString = SystemHState.LIGHTING_ENABLED.toString();
+    String colorString = SystemHState.LIGHTING_COLOR.toString();
+    
+    setCurrentTime(timestamp);
+    modifySystemState();
+
+    // Get the root element, in this case would be <state-history> element.
+    Element rootElement = doc.getDocumentElement();
+ 
+    // Create state-data tag
+    Element stateDataElement = doc.createElement("state-data");
+    stateDataElement.setAttribute("system", "LIGHTING");
+    //to appease pmd.
+    String device = "device";
+    
+    // Set attribute according to room.
+    if (living.equalsIgnoreCase(room)) {
+      stateDataElement.setAttribute(device, "arduino-5");
+    }
+    else if (dining.equalsIgnoreCase(room)) {
+      stateDataElement.setAttribute(device, "arduino-6");
+    }
+    else if (kitchen.equalsIgnoreCase(room)) {
+      stateDataElement.setAttribute(device, "arduino-7");
+    }
+    else if (bathroom.equalsIgnoreCase(room)) {
+      stateDataElement.setAttribute(device, "arduino-8");
+    }
+    
+    stateDataElement.setAttribute("timestamp", timestamp.toString());
+    rootElement.appendChild(stateDataElement);
+  
+    // Retrieve lighting level according to room.
+    if (living.equalsIgnoreCase(room)) {
+      Element livingLevelElement = doc.createElement(state);
+      livingLevelElement.setAttribute(key, levelString);
+      livingLevelElement.setAttribute(value, String.valueOf(livingLevel));
+      stateDataElement.appendChild(livingLevelElement);
+      
+      Element livingEnabledElement = doc.createElement(state);
+      livingEnabledElement.setAttribute(key, enableString);
+      livingEnabledElement.setAttribute(value, String.valueOf(livingEnabled));
+      stateDataElement.appendChild(livingEnabledElement);
+
+      Element livingColorElement = doc.createElement(state);
+      livingColorElement.setAttribute(key, colorString);
+      livingColorElement.setAttribute(value, String.valueOf(livingColor));
+      stateDataElement.appendChild(livingColorElement);
+      
+    }
+    else if (dining.equalsIgnoreCase(room)) {
+      Element diningLevelElement = doc.createElement(state);
+      diningLevelElement.setAttribute(key, levelString);
+      diningLevelElement.setAttribute(value, String.valueOf(diningLevel));
+      stateDataElement.appendChild(diningLevelElement);
+
+      Element diningEnabledElement = doc.createElement(state);
+      diningEnabledElement.setAttribute(key, enableString);
+      diningEnabledElement.setAttribute(value, String.valueOf(diningEnabled));
+      stateDataElement.appendChild(diningEnabledElement);
+
+      Element diningColorElement = doc.createElement(state);
+      diningColorElement.setAttribute(key, colorString);
+      diningColorElement.setAttribute(value, String.valueOf(diningColor));
+      stateDataElement.appendChild(diningColorElement);
+    
+    }
+    else if (kitchen.equalsIgnoreCase(room)) {
+      Element kitchenLevelElement = doc.createElement(state);
+      kitchenLevelElement.setAttribute(key, levelString);
+      kitchenLevelElement.setAttribute(value, String.valueOf(kitchenLevel));
+      stateDataElement.appendChild(kitchenLevelElement);
+
+      Element kitchenEnabledElement = doc.createElement(state);
+      kitchenEnabledElement.setAttribute(key, enableString);
+      kitchenLevelElement.setAttribute(value, String.valueOf(kitchenEnabled));
+      stateDataElement.appendChild(kitchenLevelElement);
+      
+      Element kitchenColorElement = doc.createElement(state);
+      kitchenColorElement.setAttribute(key, colorString);
+      kitchenColorElement.setAttribute(value, String.valueOf(kitchenColor));
+      stateDataElement.appendChild(kitchenColorElement);
+      
+    }
+    else if (bathroom.equalsIgnoreCase(room)) {
+      Element bathroomLevelElement = doc.createElement(state);
+      bathroomLevelElement.setAttribute(key, levelString);
+      bathroomLevelElement.setAttribute(value, String.valueOf(bathroomLevel));
+      stateDataElement.appendChild(bathroomLevelElement);
+      
+      Element bathroomEnabledElement = doc.createElement(state);
+      bathroomEnabledElement.setAttribute(key, enableString);
+      bathroomEnabledElement.setAttribute(value, String.valueOf(bathroomEnabled));
+      stateDataElement.appendChild(bathroomEnabledElement);
+
+      Element bathroomColorElement = doc.createElement(state);
+      bathroomColorElement.setAttribute(key, colorString);
+      bathroomColorElement.setAttribute(value, String.valueOf(bathroomColor));
+      stateDataElement.appendChild(bathroomColorElement);
+      
+    }
+      return doc;
+  }
+
 }

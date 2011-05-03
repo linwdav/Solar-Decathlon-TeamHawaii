@@ -52,7 +52,7 @@ public class LightingBathroomPutResource extends ServerResource {
     
     // Call mutator corresponding to room.
     if (setLevel.equalsIgnoreCase(putCommand) && "SET_LIGHTING_LEVEL".equalsIgnoreCase(command)) {
-      LightingData.setBathroomLevel(Long.parseLong(arg));
+      LightingData.setBathroomLevel(Integer.parseInt(arg));
     }
     // Call lighting mutator corresponding to room.
     else if (setColor.equalsIgnoreCase(putCommand) && 

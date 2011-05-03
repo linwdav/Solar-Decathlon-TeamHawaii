@@ -53,7 +53,7 @@ public class LightingDiningPutResource extends ServerResource {
     String setColor = "color";
     
     if (setLevel.equalsIgnoreCase(putCommand) && "SET_LIGHTING_LEVEL".equalsIgnoreCase(command)) {
-      LightingData.setDiningLevel(Long.parseLong(arg));
+      LightingData.setDiningLevel(Integer.parseInt(arg));
     }
     else if (setColor.equalsIgnoreCase(putCommand) && 
         "SET_LIGHTING_COLOR".equalsIgnoreCase(command)) {
