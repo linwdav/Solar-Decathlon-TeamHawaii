@@ -1,5 +1,6 @@
 package edu.hawaii.systemh.energymodel.chartgenerator;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,12 @@ import edu.hawaii.systemh.energymodel.chartinterface.EnergyManagementChartInterf
  * @author Kylan Hughes, Kevin Leong, Emerson Tabucol
  * 
  */
-public class EnergyChartData {
+public class EnergyChartData implements Serializable {
+
+  /**
+   * Default Serial ID.
+   */
+  private static final long serialVersionUID = 1L;
 
   // PMD strings
   private static final String covered = "Consumption Covered";
@@ -204,21 +210,31 @@ public class EnergyChartData {
   } // End format percentage
 
   /**
-   * Accessor method for the chart data array.
+   * Accessor method for the chart data array.  Clones the data array.
    * 
    * @return Returns the data array
    */
   public double[][] getDataArray() {
-    return chartDataArray;
+    double[][] returnArray = new double[1][chartDataArray[0].length];
+
+    for (int i = 0; i < chartDataArray[0].length; i++) {
+      returnArray[0][i] = chartDataArray[0][i];
+  }
+    return returnArray;
   }
 
   /**
-   * Accessor method for the label string.
+   * Accessor method for the label string. Clones the label array.
    * 
    * @return Returns the label string as an array.
    */
   public String[] getLabelString() {
-    return chartLabelArray;
+    String[] returnArray = new String[chartLabelArray.length];
+
+    for (int i = 0; i < chartLabelArray.length; i++) {
+      returnArray[i] = chartLabelArray[i];
+    }
+    return returnArray;
   }
 
   /**
@@ -297,6 +313,7 @@ public class EnergyChartData {
   
   /**
    * Calculates how much was generated vs consumed over a time interval.
+   * 
    * @param dataMap - Holds the percentages of generation vs consumption.
    * @param startTime - start time
    * @param endTime - end time

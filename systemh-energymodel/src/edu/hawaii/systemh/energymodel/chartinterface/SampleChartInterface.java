@@ -1,5 +1,6 @@
 package edu.hawaii.systemh.energymodel.chartinterface;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import edu.hawaii.systemh.api.ApiDictionary.SystemHSystem;
@@ -12,7 +13,12 @@ import edu.hawaii.systemh.energymodel.EnergyConsumptionDictionary.EnergyConsumpt
  * @author Kylan Hughes, Kevin Leong, Emerson Tabucol
  * 
  */
-public class SampleChartInterface implements EnergyManagementChartInterface {
+public class SampleChartInterface implements EnergyManagementChartInterface, Serializable {
+
+  /**
+   * Add default serial id. 
+   */
+  private static final long serialVersionUID = 1L;
 
   // Time Durations in Milliseconds
   static final long oneWeekInMillis = 1000L * 60L * 60L * 24L * 7L;
@@ -159,8 +165,20 @@ public class SampleChartInterface implements EnergyManagementChartInterface {
     }
     return 0;
   }
+  
+  /**
+   * Populates the list with timestamp double pair data
+   * given a specific type and value. This is sample data only.
+   * 
+   * @param type The type.
+   * @param value The value.
+   * @param startTime The start time.
+   * @param endTime The end time.
+   * @return A list of sample data.
+   */
+  private List<TimestampDoublePair> populateList
+    (int type, double value, Long startTime, Long endTime) {
 
-  private List<TimestampDoublePair> populateList(int type, double value, Long startTime, Long endTime) {
     // Get the time now
     Long now = System.currentTimeMillis();
     Long dayBeforeNow = now - oneDayInMillis;
