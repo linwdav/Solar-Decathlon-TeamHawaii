@@ -43,7 +43,8 @@ public class Energy extends Header {
 
   // String constants to replace string literals that gave PMD errors
   private static final String SRC = "src";
-  private static final String pieColors = "0000FF";
+  String [] piedColors = {"00AF00", "FF0002", "FF8C00", "0000FF", "800080", "FFFF00", 
+          "708090", "A0522D", "D3D3D3", "87CEEB", "FF00FF", "FFC0CB" };
 
   EnergyChartData chartData;
   EnergyManagementChartInterface chartInterface;
@@ -195,6 +196,28 @@ public class Energy extends Header {
     monthSystemGraph.add(new AttributeModifier(SRC, true, new Model<String>(url)));
     add(monthSystemGraph);
   } // End Constructor
+  
+  /**
+   * Generates the string colors for the pie graph.
+   * @param arrSize The number of labels
+   * @return colorString The strings with different colors
+   */
+  private String generatePieColors (int arrSize) {
+      String colorString = "";
+      String pipe = "|";
+      StringBuffer buff = new StringBuffer();
+      //int arrSize = cData.getLabelString().length; //color is same number of Labels
+      
+      for (int i = 0; i < arrSize; i++) {
+          buff.append(piedColors[i]);
+          
+          if ( i < (arrSize - 1)) {
+              buff.append(pipe ); 
+          }
+      }
+      colorString = buff.toString();
+      return colorString;
+  }
 
   /**
    * Generates the URL for the graphs.
@@ -240,52 +263,45 @@ public class Energy extends Header {
         buf.append(pmd);
       }
     }
+    
+    String strColors = generatePieColors(labels.length);
     String valueLabels = buf.toString();
-    String colors = "";
     String title = "";
     switch (display) {
     case CONSUMPTION_DAY:
       title = "Consumption Covered By Generation For Past Day";
-      colors = "00AF00|FF0000";
       break;
     case CONSUMPTION_WEEK:
       title = "Consumption Covered By Generation For Past Week";
-      colors = "00AF00|FF0000";
       break;
     case CONSUMPTION_MONTH:
       title = "Consumption Covered By Generation For Past Month";
-      colors = "00AF00|FF0000";
       break;
     case DEVICES_LOAD_DAY:
       title = "Device Consumption Past Day";
-      colors = pieColors;
       break;
     case DEVICES_LOAD_WEEK:
       title = "Device Consumption Past Week";
-      colors = pieColors;
       break;
     case DEVICES_LOAD_MONTH:
       title = "Device Consumption Past Month";
-      colors = pieColors;
       break;
     case SYSTEM_LOAD_DAY:
       title = "System Consumption Past Day";
-      colors = pieColors;
       break;
     case SYSTEM_LOAD_WEEK:
       title = "System Consumption Past Week";
-      colors = pieColors;
       break;
     case SYSTEM_LOAD_MONTH:
       title = "System Consumption Past Month";
-      colors = pieColors;
       break;
     default:
-      colors = pieColors;
+      title = "Pie Chart";
     }
+      
     return "http://chart.apis.google.com/chart" 
         + "?chs=500x300" + "&cht=p" 
-        + "&chco=" + colors
+        + "&chco=" + strColors
         + "&chd=t:" + valueString 
         + "&chdl=" + labelString 
         + "&chl=" + valueLabels
