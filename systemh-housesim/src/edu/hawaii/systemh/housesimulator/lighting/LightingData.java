@@ -1,7 +1,7 @@
 package edu.hawaii.systemh.housesimulator.lighting;
 
+import java.util.Calendar;
 import java.util.Date;
-import java.util.Random;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import org.restlet.ext.xml.DomRepresentation;
@@ -12,7 +12,7 @@ import edu.hawaii.systemh.api.ApiDictionary.SystemHState;
 /**
  * Provides data on the Lighting system, as well as an XML representation.
  * 
- * @author Anthony Kinsey, Michael Cera
+ * @author Anthony Kinsey, Michael Cera, Kurt Teichman
  * @author Christopher Ramelb, David Lin, Leonardo Nguyen, Nathan Dorman
  */
 public class LightingData {
@@ -56,11 +56,82 @@ public class LightingData {
   //private static boolean occupantsHome  = false;
 
   /**
-   * Modifies the state of the system.
+   * Modifies the state of the system. Modeled to match data specified
+   * by Engineers xcel sheet, "new Energy Consumption.xls".
    */
   public static void modifySystemState() {
-    final Random randomGenerator = new Random();
-
+    //final Random randomGenerator = new Random();
+    int hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+    //int intensity = Math.log(hour)
+    switch (hour) {
+    case (5) :
+      diningLevel = 100;
+      livingLevel = 100;
+      kitchenLevel = 100;
+      bathroomLevel = 100;
+      break;
+    case (6) :
+      diningLevel = 100;
+      livingLevel = 100;
+      kitchenLevel = 100;
+      bathroomLevel = 100;
+      break;
+    case (7) :
+      diningLevel = 100;
+      livingLevel = 100;
+      kitchenLevel = 100;
+      bathroomLevel = 100;
+      break;
+    case (18) :
+      diningLevel = 50;
+      livingLevel = 50;
+      kitchenLevel = 50;
+      bathroomLevel = 50;
+      break;
+    case (19) :
+      diningLevel = 75;
+      livingLevel = 75;
+      kitchenLevel = 75;
+      bathroomLevel = 75;
+      break;
+    case (20) :
+      diningLevel = 100;
+      livingLevel = 100;
+      kitchenLevel = 100;
+      bathroomLevel = 100;
+      break;
+    case (21) :
+      diningLevel = 100;
+      livingLevel = 100;
+      kitchenLevel = 100;
+      bathroomLevel = 100;
+    break;
+    case (22) :
+      diningLevel = 75;
+      livingLevel = 75;
+      kitchenLevel = 75;
+      bathroomLevel = 75;
+    break;
+    case (23) :
+      diningLevel = 50;
+      livingLevel = 50;
+      kitchenLevel = 50;
+      bathroomLevel = 50;
+    break;
+    case (24) :
+      diningLevel = 25;
+      livingLevel = 25;
+      kitchenLevel = 25;
+      bathroomLevel = 25;
+    break;
+    default: // all other hours, lights are off
+      diningLevel = 0;
+      livingLevel = 0;
+      kitchenLevel = 0;
+      bathroomLevel = 0;
+  }
+    /*
+      //Calendar.get(Calendar.HOUR_OF_DAY); // get hour of the day
     // Living Room lights will be on ~60% of the time
     // When they are turned on they will be set to a
     // random value, just to show fluctuation in data
@@ -108,8 +179,9 @@ public class LightingData {
     else {
       bathroomLevel = 0;
     }
+    */
   }
-
+  
   /**
    * Prints the current state of the HVAC system.
    */
