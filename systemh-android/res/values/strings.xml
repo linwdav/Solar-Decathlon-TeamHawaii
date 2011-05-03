@@ -56,4 +56,6 @@
     <string name="Energy">Energy</string>
     <string name="HvacCurrTempLabel">Current Home Temperature</string>
     <string name="DesiredHomeTemp">Desired Home Temperature</string>
+    <string name="PVGeneration">Current PV Generation</string>
+    <string name="PowerConsumption">Current Power Consumption</string>
 </resources>

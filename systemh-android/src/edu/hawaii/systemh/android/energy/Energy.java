@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 import edu.hawaii.systemh.android.R;
 import edu.hawaii.systemh.android.menu.Menu;
+import edu.hawaii.systemh.android.systemdata.SystemData;
 
 /**
  * The activity that starts the help page.
@@ -16,7 +18,7 @@ import edu.hawaii.systemh.android.menu.Menu;
  * 
  */
 public class Energy extends Activity {
-
+  
   /**
    * Called when the activity is first created.
    * 
@@ -34,6 +36,14 @@ public class Energy extends Activity {
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     setContentView(R.layout.energy);
+    
+//    SystemData pv = new SystemData("photovoltaics");   
+//    TextView pvText = (TextView) findViewById(R.id.PVValue);
+//    pvText.setText((int) pv.getEnergy());
+//    
+//    SystemData electric = new SystemData("electric");
+//    TextView electricText = (TextView) findViewById(R.id.PowerValue);
+//    electricText.setText((int) electric.getPower());
   }
 
   /**
