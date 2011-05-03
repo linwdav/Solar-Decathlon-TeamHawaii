@@ -45,7 +45,7 @@ public class AquaponicsPutResource extends ServerResource {
       AquaponicsData.setDesiredTemperature(Integer.parseInt(arg));
     }
     else if ("feed".equalsIgnoreCase(putCommand) && "FEED_FISH".equalsIgnoreCase(command)) {
-      AquaponicsData.addFishFeed(Double.parseDouble(arg));
+      AquaponicsData.addFishFeed();
     }
     else if ("harvest".equalsIgnoreCase(putCommand)
         && "HARVEST_FISH".equalsIgnoreCase(command)) {
@@ -56,7 +56,7 @@ public class AquaponicsPutResource extends ServerResource {
       AquaponicsData.setNutrients(Double.parseDouble(arg));
     }
     else if ("ph".equalsIgnoreCase(putCommand) && "SET_PH".equalsIgnoreCase(command)) {
-      AquaponicsData.setDesiredPh(Double.parseDouble(arg));
+      AquaponicsData.setDesiredPH(Double.parseDouble(arg));
     }
     else if ("level".equalsIgnoreCase(putCommand)
         && "SET_WATER_LEVEL".equalsIgnoreCase(command)) {
