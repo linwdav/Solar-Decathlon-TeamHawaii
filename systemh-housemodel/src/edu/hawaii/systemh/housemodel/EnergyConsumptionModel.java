@@ -211,14 +211,15 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
   }
 
   /**
-   * Gets the amount of power that SystemH consumed from a given interval.
+   * Retrieves the amount of power that SystemH consumed within a given interval.
    * 
-   * @param startTime Long
-   * @param endTime Long
-   * @return double
+   * @param startTime The start time in ms since "the epoch".
+   * @param endTime The end time in ms since "the epoch".
+   * @return The amount of power of all house systems of SystemH has consumed during the interval.
    */
   @Override
   public double powerConsumed(Long startTime, Long endTime) {
+    
     List<TimestampIntegerPair> list = repo.getElectricalPowerDuringInterval(startTime, endTime);
     int power = 0;
 
@@ -230,11 +231,11 @@ public class EnergyConsumptionModel implements EnergyManagementChartInterface {
   }
 
   /**
-   * Gets the amount of power that SystemH generated from a given interval.
+   * Retrieves the amount of power that SystemH generated within a given interval.
    * 
-   * @param startTime Long
-   * @param endTime Long
-   * @return double
+   * @param startTime The start time in ms since "the epoch".
+   * @param endTime The end time in ms since "the epoch".
+   * @return The amount of power of SystemH has generated via solar grid during the interval.
    */
   @Override
   public double powerGenerated(Long startTime, Long endTime) {

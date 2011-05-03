@@ -12,6 +12,9 @@ import edu.hawaii.systemh.housemodel.HouseSystem;
  */
 public class HvacSystem extends HouseSystem {
 
+  /** The amount of Wattage Hour to heat or cool a degree within the home. **/
+  private static final double heatingCoolingEnergyUsage = 290;
+  
   /**
    * Default Constructor.
    */
@@ -47,5 +50,24 @@ public class HvacSystem extends HouseSystem {
     // Associated the following devices with the HVAC System.
     deviceMap.put(temperature.getDeviceName(), temperature);
     deviceMap.put(humidifier.getDeviceName(), humidifier);
+  }
+  
+  /**
+   * Returns the amount of energy load it would take to heat or cool the home to a specified
+   * temperature dependent on the current home temperature and the outside home temperature.
+   *
+   * @param currentHomeTemp The current home temperature.
+   * @param desiredHomeTemp The desired temperature to have the HVAC system maintain the home at.
+   * @param outsideHomeTemp The temperature outside the home.
+   * @return The amount of energy load it would take to make the current home temperature reflect
+   *         that of the desired home temperature specified.
+   */
+  public double energyUsageWhenDesiredTempSet(int currentHomeTemp, int desiredHomeTemp, 
+      int outsideHomeTemp) {
+    
+    int tempDiff = Math.abs(currentHomeTemp - desiredHomeTemp);
+    double energyUsagePerHour = heatingCoolingEnergyUsage * 0.50 * Math.pow(tempDiff, 2);
+    
+    return energyUsagePerHour;
   }
 }
