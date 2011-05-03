@@ -1,5 +1,7 @@
 package edu.hawaii.systemh.model.behavior;
  
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import org.htmlparser.Node;
 import org.htmlparser.Parser;
 import org.htmlparser.filters.TagNameFilter;
@@ -18,17 +20,26 @@ public class DailyTemperatureHistory {
   private static final String urlStart = "http://www.wunderground.com/history/airport/KDCA/";
   private static final String urlEnding = 
                         "/1/MonthlyHistory.html?req_city=NA&req_state=NA&req_statename=NA";
-   
-
+  private static DailyTemperatureHistory instance;
+  
+  static {
+    try {
+      instance = new DailyTemperatureHistory();
+    } 
+    catch (Exception e) {
+        throw new ExceptionInInitializerError(e);
+    }
+  }
   /**
    * Makes initializing calls for each of the three months of history.
    * @param year the year of the current date.
    * @param month the month of the current date.
    * @throws Exception if the url cannot be reached, or is invalid.
    */
-  public DailyTemperatureHistory(int year, int month) throws Exception {
-    int yrs = year;
-    int mths = month;
+  private DailyTemperatureHistory() throws Exception {
+    Calendar cal = new GregorianCalendar();
+    int yrs = cal.get(Calendar.YEAR);
+    int mths = cal.get(Calendar.MONTH);
     for (int i = 0; i < 3; i ++) {  
     //handle a rollback in years
       if (mths - (i ) == 0) {
@@ -81,7 +92,9 @@ public class DailyTemperatureHistory {
     }
   } 
 }
-
+  public synchronized static DailyTemperatureHistory getInstance() {
+    return instance;
+  }
   
   /**
    * Stores the data retrieved from WeatherUndergound.

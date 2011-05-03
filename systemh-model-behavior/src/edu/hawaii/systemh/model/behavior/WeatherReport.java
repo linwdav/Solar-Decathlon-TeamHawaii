@@ -22,20 +22,22 @@ import org.w3c.dom.Document;
  */
 public class WeatherReport { 
   private static XPathFactory factory = XPathFactory.newInstance();
-  private static XPath xpath = factory.newXPath(); 
-   
-  
-  private static final String weatherUrlTxt = 
-    "http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query=";
-  private static final String astrologicalUrlTxt =
-    "http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=";
+  private static XPath xpath = factory.newXPath();  
+  //private static final String weatherUrlTxt = 
+    //"http://api.wunderground.com/auto/wui/geo/WXCurrentObXML/index.xml?query=";
+  //private static final String astrologicalUrlTxt =
+    //"http://api.wunderground.com/auto/wui/geo/ForecastXML/index.xml?query=";
   private static URL weatherUrl;
   private static URL astroUrl;
   private static String location;
   private static final DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
   private static DocumentBuilder db;
   private Map<String,Double> conditionMap;
-
+  /** The String value of the area of interest, 
+   * given by WeatherUndergound's API.**/
+  private  static final String DC = "Washington%2c%20District%20of%20Columbia";
+  /** The weather station nearest DC that we will pull data from. **/
+  private static final String ECKINGTON = "Eckington%20Pl%2c%20NE%2c%20Washington";
   private  double cloudCover = -1;
   private  double fTemp = -1;
   private  double sunRise = -6;
@@ -44,6 +46,17 @@ public class WeatherReport {
   private  double highTemp = -1;
   private  Long timestamp = null; 
   private long lastUpdate = 0;
+  /** The singleton Instance. */
+  private static WeatherReport instance;
+  
+  static {
+    try {
+        instance = new WeatherReport(DC,ECKINGTON);
+    } catch (Exception e) {
+        throw new ExceptionInInitializerError(e);
+    }
+  }
+  
   
   /**
    * 
@@ -53,11 +66,19 @@ public class WeatherReport {
    * defined by Weather Undergound.
    * @throws Exception - Generic type Exception for XPath parsing and Restlet.
    */
-  public WeatherReport(String location, String station) throws Exception {
+  private WeatherReport(String location, String station) throws Exception {
     //initalize the object
     init(location, station);
     //poll the first set of data
     refresh();
+  }
+  
+  /**
+   * Returns the Singelton instance of WeatherReport.
+   * @return a Singleton instance initialized to the current instant.
+   */
+  public static synchronized WeatherReport getInstance() {
+    return instance;
   }
   
   /**

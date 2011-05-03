@@ -13,25 +13,42 @@ import java.util.TimeZone;
 public class Simulator { 
   /** The String value of the area of interest, 
    * given by WeatherUndergound's API.**/
-  private  static final String location = "Washington%2c%20District%20of%20Columbia";
-  /** The weather station nearest DC that we will pull data from. **/
-  private static final String station = "Eckington%20Pl%2c%20NE%2c%20Washington";
+  //private  static final String location = "Washington%2c%20District%20of%20Columbia";
+  ///** The weather station nearest DC that we will pull data from. **/
+  //private static final String station = "Eckington%20Pl%2c%20NE%2c%20Washington";
+  ///** The singleton instance.*/
+  private static Simulator instance;
+  
+  static {
+    try {
+        instance = new Simulator();
+    } catch (Exception e) {
+        throw new ExceptionInInitializerError(e);
+    }
+  }
   
   private static WeatherReport weatherReport; 
   /**
    * Default Constrctor.
    * @throws Exception If WeatherUnderground is unreachable.
    */
-  public Simulator() throws Exception {
+  private Simulator() throws Exception {
     init();
   }
   
   /**
-   * Initalizes the data.
+   * Returns the singleton instance of the class.
+   * @return instance of Simulator.
+   */
+  public static synchronized Simulator getInstance() {
+    return instance;
+  }
+  /**
+   * Initializes the data.
    * @throws Exception If WeatherUndergound cannot be reached.
    */
   private static final void init() throws Exception {
-    weatherReport = new WeatherReport(location,station); 
+    weatherReport = WeatherReport.getInstance(); 
   }
   /**
    * Generate a double between -12 (AM) and 12 (PM) representing the time.
@@ -43,11 +60,12 @@ public class Simulator {
     Calendar calendar = new GregorianCalendar(TimeZone.getTimeZone("HST"));  
     double rough = calendar.get(Calendar.HOUR_OF_DAY);  
     //Create a double representing time with 
-    //hour as the whole number,
+    //hour as the whole number (24 hr clock),
     //minutes as the first two decimal places,
     //seconds as the third and fourth decimal places, and
     //milliseconds as the fifth and sixth decimal places
     //all times expressed as percentages of their max value
+    //finally subtract 12.
     double fine = calendar.get(Calendar.MINUTE) / 60.0;
     fine += calendar.get(Calendar.SECOND) / 6000.0;
     fine += calendar.get(Calendar.MILLISECOND) / 10000000.0;
@@ -66,20 +84,35 @@ public class Simulator {
     return getOutsideTemp(getTime());
     }
   
+  
   /**
-   * Returns the outside temp based on a time from the current day.  
-   * Do not use for generating historical data.
-   * @param time - a double representing the time given by getTime().
-   * @return a double representing the temperature in F.
+   * Returns the outside temperature for a time during today's
+   * 24 hour period based on time.
+   * @param time the time of day to get the temp for.
+   * @return the temp in F at the given time.
    */
   public double getOutsideTemp(double time) {
+    return getOutsideTemp(time, weatherReport.getLowTemp(),
+                    weatherReport.getHighTemp());
+  }
+  /**
+   * Returns the outside temp based on a time from a certain day, and the
+   * highest and lowest temperatures of that day.  
+   * Do not use for generating historical data.
+   * @param time - a double representing the time given by getTime().
+   * @param lowTemp - the lowest temp of the day.
+   * @param highTemp - the highest temp of the day.
+   * @return a double representing the temperature in F.
+   */
+  public double getOutsideTemp(double time, double lowTemp, double highTemp) {
     //Using the basic formula   y = k*sin((x/4)-p) 
     //where k is half the difference in high and low temp.
       //representing the fluxuation above and below 0 for the basic sin function.
     //p represents some offset to make the wave fit the daylight hours.
+
     double seed = time / 4.0 - 5.0;  
-    double high = weatherReport.getHighTemp();
-    double low = weatherReport.getLowTemp();
+    double high = highTemp;
+    double low = lowTemp;
     return ((high - low) / 2.0) * Math.sin(seed) + ((high + low) / 2.0); 
   }
   

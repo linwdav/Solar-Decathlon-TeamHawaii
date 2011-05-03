@@ -30,7 +30,7 @@ public class BehavioralModel {
    */ 
   public static void main(String[] args) throws Exception {
     System.err.println("Behavioral model of the house.");   
-    DailyTemperatureHistory temp = new DailyTemperatureHistory(2011,4);  
+    DailyTemperatureHistory temp = DailyTemperatureHistory.getInstance();  
     Calendar date = new GregorianCalendar ();    
 
     int month = date.get(Calendar.MONTH ) + 1;  
