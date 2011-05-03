@@ -33,8 +33,8 @@ import edu.hawaii.systemh.housesimulator.aquaponics.AquaponicsSystem;
 import edu.hawaii.systemh.housesimulator.electrical.ElectricalData;
 import edu.hawaii.systemh.housesimulator.electrical.ElectricalSystem;
 import edu.hawaii.systemh.housesimulator.hvac.HVACData;
+import edu.hawaii.systemh.housesimulator.hvac.HVACDataWeb;
 import edu.hawaii.systemh.housesimulator.hvac.HVACSystem;
-import edu.hawaii.systemh.housesimulator.lighting.LightingData;
 import edu.hawaii.systemh.housesimulator.lighting.bathroom.LightingBathroomSystem;
 import edu.hawaii.systemh.housesimulator.lighting.dining.LightingDiningSystem;
 import edu.hawaii.systemh.housesimulator.lighting.kitchen.LightingKitchenSystem;
@@ -76,12 +76,12 @@ public class SimulatorServer extends Application {
       System.out.println("New sensor data will be updated every N seconds.");
       System.exit(0);
     }
-    // runServer();
+    //runServer();
   }
 
   /**
-   * Start servers beginning from port 7000. Applications and their resources are specified in their
-   * respective classes.
+   * Start servers beginning from port 7000. Applications and their resources are specified in
+   * their respective classes.
    * 
    * @throws Exception If problems occur starting up this server.
    */
@@ -396,48 +396,80 @@ public class SimulatorServer extends Application {
     Element rootElement = returnDoc.createElement("state-history");
     returnDoc.appendChild(rootElement);
 
-    long timestampDay = 1000 * 60 * 60 * 24;
-    long timestampHour = 1000 * 60 * 60;
-    long timestampFiveMinutes = 1000 * 60 * 5;
+    // Decrement a timestamp by 5 minutes.
+    long timestampDecrement = 1000 * 60 * 5;
+    // timestampPast is a timestamp value that gets decremented on to reflect
+    // past timestamp values.
+    long timestampPast = timestamp;
 
-    // Set timestampPast to a past date which is equals to 31 days + 1 day + 1 hour.
-    long timestampPast =
-        timestamp - ((timestampDay * 31) + (timestampHour * 24) + (timestampFiveMinutes * 12));
-
-    // Append 31 state points of 1 day intervals to represent a total of 1 month of state data for
-    // all house systems but Lighting.
-    for (int i = 0; i < 31; i++) {
-      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
-      timestampPast += timestampDay;
-    }
-
-    // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
-    // all house systems but Lighting.
-    for (int i = 0; i < 24; i++) {
-      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
-      timestampPast += timestampHour;
-    }
-    
     // Append 12 state points of 5 minute intervals to represent 1 hour of past state data
     // for all house system but Lighting.
-    for (int i = 0; i < 12; i++) {
-      returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
-      returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
-      timestampPast += timestampFiveMinutes;
+    HVACDataWeb data = HVACDataWeb.getInstance();;
+    //Try using the web resource first, if it fails, use the 
+    //standard DataClass
+    try {
+      long time;
+      for (int i = 11; i >= 0; i--) { 
+        time = timestampPast - i * timestampDecrement; 
+        returnDoc = AquaponicsData.toXmlByTimestamp(doc, time);
+        returnDoc = data.toXmlByTimestamp(doc, time);
+      }
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      for (int i = 0; i < 12; i++) {
+        returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
+        returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+        timestampPast -= timestampDecrement;
+      }
+    }
+    // Decrement a timestamp by 60 minutes or 1 hour.
+    timestampDecrement = 1000 * 60 * 60;
+    timestampPast = timestamp;
+
+    // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
+    // all house system but Lighting.
+    try {
+      System.out.println("day");
+      long time;
+      for (int i = 23; i >= 0; i--) { 
+        time = timestampPast - i * timestampDecrement; 
+        returnDoc = AquaponicsData.toXmlByTimestamp(doc, time); 
+        returnDoc = data.toXmlByTimestamp(doc, time);
+      }
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      for (int i = 0; i < 24; i++) {
+        returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
+        returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+        timestampPast -= timestampDecrement;
+      }
+    }
+
+    // Decrement a timestamp by 1 day.
+    timestampDecrement = 1000 * 60 * 60 * 24;
+    timestampPast = timestamp;
+
+    // Append 31 state points of 1 day intervals to represent both at least 1 week of past
+    // state data and for a total of 1 month of state data for all house systems but
+    // Lighting.
+    try {
+      System.out.println("month");
+      long time;
+      for (int i = 30; i >= 0; i--) { 
+        time = timestampPast - i * timestampDecrement; 
+        returnDoc = AquaponicsData.toXmlByTimestamp(doc, time); 
+        returnDoc = data.toXmlByTimestamp(doc, time);
+      }
+    }
+    catch (Exception e) { 
+      e.printStackTrace();
+      for (int i = 0; i < 31; i++) {
+        returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
+        returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
+        timestampPast -= timestampDecrement;
+      }
     }
 
     Map<String, Integer> baseTime = new HashMap<String, Integer>();
