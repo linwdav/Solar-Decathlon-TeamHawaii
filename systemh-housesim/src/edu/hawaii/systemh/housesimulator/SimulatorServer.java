@@ -404,7 +404,7 @@ public class SimulatorServer extends Application {
 
     // Append 12 state points of 5 minute intervals to represent 1 hour of past state data
     // for all house system but Lighting.
-    HVACDataWeb data = HVACDataWeb.getInstance();;
+    HVACDataWeb data = HVACDataWeb.getInstance();
     //Try using the web resource first, if it fails, use the 
     //standard DataClass
     try {
@@ -429,8 +429,7 @@ public class SimulatorServer extends Application {
 
     // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
     // all house system but Lighting.
-    try {
-      System.out.println("day");
+    try { 
       long time;
       for (int i = 23; i >= 0; i--) { 
         time = timestampPast - i * timestampDecrement; 
@@ -454,8 +453,7 @@ public class SimulatorServer extends Application {
     // Append 31 state points of 1 day intervals to represent both at least 1 week of past
     // state data and for a total of 1 month of state data for all house systems but
     // Lighting.
-    try {
-      System.out.println("month");
+    try { 
       long time;
       for (int i = 30; i >= 0; i--) { 
         time = timestampPast - i * timestampDecrement; 

@@ -45,6 +45,7 @@ public class HVACDataWeb {
   /** Flag for when occupants are within the home or away. **/ 
   private static boolean occupantsHome = false; 
    
+  /** Flag for on/off functionality.*/
   private static boolean HVACOn = true;
   
   /** The current temperature outside the home. **/
@@ -165,69 +166,56 @@ public class HVACDataWeb {
    * @param outsideTemp a double in C
    * @param timestamp a long representing the time in question.
    */
-  public static void modifySystemState(double outsideTemp, long timestamp) { 
-    Date test = new Date(timestamp);
-    //System.out.println("HOUR = " +test.getHours());
-    double goalTemp = getGoalTemp(timestamp); 
-    //System.out.println("GoalTemp = "+goalTemp);
-    //System.out.println("outsidetemp =" +outsideTemp);
+  public static void modifySystemState(double outsideTemp, long timestamp) {  
+    double goalTemp = getGoalTemp(timestamp);  
     long timeSinceSet = timestamp - lastUpdate;
+    
     double tempDifferenceInside = goalTemp - currentHomeTemp;
     double tempDifferenceOutside = outsideTemp - currentHomeTemp;
-    double outsideEffect = timeSinceSet * (1 / (60.0 * 7.0 * 1000.0));
     
-    //System.out.println("Temp diff inside =" +tempDifferenceInside);
-    //System.out.println("Temp diff outside =" +tempDifferenceOutside);
-
+    double outsideEffect = timeSinceSet * (1 / (60.0 * 7.0 * 1000.0)); 
+    
     Random rand = new Random();
     double offset = 2 * rand.nextDouble() - 3;
     // offset used to be this, but it got stuck as a static val when 
     //doing generation from timestamps. 
     //Math.sin(10 * (sim.getSystemTime(timestamp))) - 0.75;
-            
-    //System.out.println("offset =" + offset);
+             
     double hvacEffect = timeSinceSet * (1
-                          / (60.0 * 5.0 * 1000.0)); 
-    //System.out.println("hvac = " + (hvacEffect) + "outside =" +outsideEffect);
+                          / (60.0 * 5.0 * 1000.0));  
     boolean hvacBigger = Math.abs(hvacEffect) > Math.abs(outsideEffect);
     
     //if its been off too long the outside temp wins
     if (Math.abs(outsideEffect) >= Math.abs(tempDifferenceOutside)) {
-      if (!hvacBigger) {
-        currentHomeTemp = outsideTemp + offset / 3;
-        //System.out.println("maxed");
+      if (hvacBigger) {
+        currentHomeTemp = goalTemp + offset; 
       }
-      else {
-        currentHomeTemp = goalTemp + offset;
-        //System.out.println("mined");
+      else { 
+        currentHomeTemp = outsideTemp + offset / 3; 
       }
     }
     //outside effect
     else {
-      currentHomeTemp += outsideEffect;
-      //System.out.println("outsideEffect");
+      currentHomeTemp += outsideEffect; 
     }
     
     
     
      
       //if were not already there, hvac effect
-      if (Math.abs(currentHomeTemp - goalTemp) >= 1) {
+      if (Math.abs(currentHomeTemp - goalTemp) >= 1 && HVACOn) {
         //if we over shot it, set to goal
         if (Math.abs(hvacEffect) >= Math.abs(tempDifferenceInside)) {
-          if (!hvacBigger) {
-            currentHomeTemp = outsideTemp + offset / 3;
-            //System.out.println("maxed");
+          if (hvacBigger) {
+            currentHomeTemp = goalTemp + offset; 
           }
           else {
-            currentHomeTemp = goalTemp + offset;
-            //System.out.println("mined");
+            currentHomeTemp = outsideTemp + offset / 3; 
           }
         }
         //otherwise just cool
         else {
-          currentHomeTemp += hvacEffect; 
-          //System.out.println("hvacEffect");
+          currentHomeTemp += hvacEffect;  
         }
       }  
     lastUpdate = timestamp; 
@@ -252,22 +240,38 @@ public class HVACDataWeb {
    * @param time The new date in milliseconds that have passed since 
    *             January 1, 1970 00:00:00 GMT. 
    */
-  public void setCurrentTime(long time) {
+  public final void setCurrentTime(long time) {
+    setTimeDiscretely(time);
+  }
+  
+  /**
+   * Privately sets static variables from the instance caller.
+   * @param time the new current time to assign (although not necessarily
+   *          the actual current time).
+   */
+  private static final void setTimeDiscretely(long time) { 
     currentTime = new Date(time);
     lastUpdate = time;
   }
-  
   /**
    * Sets the desired temperature in Farenheit for the HVAC system to maintain the home at.
    * 
    * @param newDesiredTemp The temperature for the HVAC system to maintain the home at.
    */
-  public void setDesiredTemp(int newDesiredTemp) {
+  public final void setDesiredTemp(int newDesiredTemp) {
+    setDesiredTempDiscrete(newDesiredTemp);
+  }
+
+  /**
+   * Privately sets static values.
+   * @param newDesiredTemp new Temp to assign.
+   */
+  private static final void setDesiredTempDiscrete(int newDesiredTemp) { 
+    
     desiredTemp = newDesiredTemp;
     desiredTempHasBeenSet = true;
     whenDesiredTempCommandIssued = (new Date()).getTime();
   }
-
   /**
    * Returns the milliseconds since elapsed past January 1, 1970 00:00:00 GMT that a PUT
    * request has been sent to the HVAC system to maintain the home temperature at.
@@ -408,7 +412,7 @@ public class HVACDataWeb {
    * @return Document object with appended HVAC state data.
    */
   @SuppressWarnings("deprecation")
-  public Document toXmlByTimestamp(Document doc, Long timestamp) {
+  public Document toXmlByTimestamp(Document doc, long timestamp) {
 
     // Set the current HVAC system to reflect the state of the passed timestamp.
     // Re-initialize temperature values.
@@ -422,7 +426,7 @@ public class HVACDataWeb {
     //return today's values.
     if (currentDay == dateDay && currentMonth == dateMonth) { 
       double outsideTemp = sim.getOutsideTemp(sim.getSystemTime(timestamp));
-      modifySystemState(sim.fToC(outsideTemp),new Long(timestamp));
+      modifySystemState(sim.fToC(outsideTemp), timestamp );
     }
     //return historical data.
     else {
@@ -430,14 +434,12 @@ public class HVACDataWeb {
       TempPair tempPair = history.getTemp(dateMonth, dateDay); 
       double historicTemp = sim.getOutsideTemp(sim.getSystemTime(timestamp)
                           ,tempPair.getLow(),tempPair.getHigh());
-      historicTemp = sim.fToC(historicTemp); 
-     // System.out.println("historicTemp =" +historicTemp);
-      modifySystemState(historicTemp, new Long(timestamp));
-    } 
-    System.out.print( currentHomeTemp + ",");
+      historicTemp = sim.fToC(historicTemp);  
+      modifySystemState(historicTemp, timestamp);
+    }  
     String system = SystemHSystem.HVAC.toString();
     String device = "arduino-3";
-    String timestampString = timestamp.toString();
+    String timestampString = "" + timestamp;
     String temperatureString = SystemHState.TEMPERATURE.toString();
     int celsiusTemp = (int) currentHomeTemp;
 
@@ -459,12 +461,12 @@ public class HVACDataWeb {
     
     return doc;
   }
-  
+  /*
   /**
    * Test main method.
    * @throws Exception if no internet connection.
-   */
-  public static void main2() throws Exception {
+   *
+  public static final void main2() throws Exception {
     init();  
     for (int i = 72; i > 0; i --) {
     long time = new Date().getTime() - (1000 * 60 * 20) * i; 
@@ -475,5 +477,5 @@ public class HVACDataWeb {
         " temp = " + currentHomeTemp);
     System.out.println();
     } 
-  }
+  }*/
 }
