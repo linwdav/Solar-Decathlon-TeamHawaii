@@ -55,7 +55,10 @@ public class HvacSystem extends HouseSystem {
   /**
    * Returns the amount of energy load it would take to heat or cool the home to a specified
    * temperature dependent on the current home temperature and the outside home temperature.
-   *
+   * We are using a log function to accurately show that the energy to change the temperature
+   * will be bounded by a maximum amount if the there is a huge change required by the user
+   * to set the desired temperature.
+   * 
    * @param currentHomeTemp The current home temperature.
    * @param desiredHomeTemp The desired temperature to have the HVAC system maintain the home at.
    * @param outsideHomeTemp The temperature outside the home.
@@ -65,9 +68,9 @@ public class HvacSystem extends HouseSystem {
   public double energyUsageWhenDesiredTempSet(int currentHomeTemp, int desiredHomeTemp, 
       int outsideHomeTemp) {
     
-    int tempDiff = Math.abs(currentHomeTemp - desiredHomeTemp);
-    double energyUsagePerHour = heatingCoolingEnergyUsage * 0.50 * Math.pow(tempDiff, 2);
-    
+    long tempDiff = Math.abs(currentHomeTemp - desiredHomeTemp);
+    double energyUsagePerHour = (heatingCoolingEnergyUsage) * Math.log10(tempDiff) + 4;
+
     return energyUsagePerHour;
   }
 }

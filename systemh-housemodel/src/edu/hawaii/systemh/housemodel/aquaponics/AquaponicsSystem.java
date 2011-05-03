@@ -54,4 +54,26 @@ public class AquaponicsSystem extends HouseSystem {
     deviceMap.put(waterpump.getDeviceName(), waterpump);
     deviceMap.put(waterFilter.getDeviceName(), waterFilter);
   }
+  
+  /**
+   * The following method describes the amount of energy required to run
+   * the aquaponics system over a given period of time with regard to specifications
+   * found at:
+   * http://our.windowfarms.org/2011/01/21/aquaponicslite-test-
+   * system-monitoring-energy-consumption-and-food-output/.
+   * @param startTime the start time of the calculated interval.
+   * @param endTime the end time of the calculated interval.
+   * @param heaterState the boolean describing whether the heater is being turned on for
+   * the given amount of time.
+   * @return the required energy to run the aquaponics system for a set amount of time
+   * with regard to the heater being on or off.
+   */
+  public double energyUsageWhenDesiredTempSet(long startTime, long endTime, 
+      boolean heaterState) {  
+    long tempDiff = Math.abs(startTime - endTime);
+    
+    // heater is turned on, multiply by 3
+    return (heaterState) ? (0.0064) * 3 * tempDiff
+        : (0.0064) * tempDiff;
+  }
 }
