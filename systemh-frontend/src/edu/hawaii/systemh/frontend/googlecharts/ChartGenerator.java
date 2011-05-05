@@ -100,7 +100,7 @@ public class ChartGenerator {
     
     // Conductivity
     case AQUAPONICS_CONDUCTIVITY:
-        endRange = 20;
+        endRange = 30;
         stepCount = 2;
       break;
       
