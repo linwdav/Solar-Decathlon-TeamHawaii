@@ -447,7 +447,6 @@ public class LightingData {
    */
   public static void setCurrentTime(long time) {
     currentTime = new Date(time);
-    System.out.println(currentTime);
   }
 
   /**
@@ -633,8 +632,8 @@ public class LightingData {
 
       Element kitchenEnabledElement = doc.createElement(state);
       kitchenEnabledElement.setAttribute(key, enableString);
-      kitchenLevelElement.setAttribute(value, String.valueOf(kitchenEnabled));
-      stateDataElement.appendChild(kitchenLevelElement);
+      kitchenEnabledElement.setAttribute(value, String.valueOf(kitchenEnabled));
+      stateDataElement.appendChild(kitchenEnabledElement);
       
       Element kitchenColorElement = doc.createElement(state);
       kitchenColorElement.setAttribute(key, colorString);

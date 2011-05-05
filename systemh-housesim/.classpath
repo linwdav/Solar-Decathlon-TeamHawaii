@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="lib/restlet/org.restlet.jar"/>
 	<classpathentry kind="lib" path="lib/junit/junit.jar"/>
 	<classpathentry kind="lib" path="systemh-api/systemh-api.jar"/>
+	<classpathentry kind="lib" path="systemh-model-behavior.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
