@@ -74,12 +74,5 @@ public class TestEnergy {
     tester.assertComponent("DayDevicesGraph", WebMarkupContainer.class);
     tester.assertComponent("WeekDevicesGraph", WebMarkupContainer.class);
     tester.assertComponent("MonthDevicesGraph", WebMarkupContainer.class);
-    tester.assertComponent("DaySystemGraph", WebMarkupContainer.class);
-    tester.assertComponent("WeekSystemGraph", WebMarkupContainer.class);
-    tester.assertComponent("MonthSystemGraph", WebMarkupContainer.class);
-   
-    // The following line is useful for seeing what's on the page.
-    //tester.debugComponentTrees();
-
   }
 }

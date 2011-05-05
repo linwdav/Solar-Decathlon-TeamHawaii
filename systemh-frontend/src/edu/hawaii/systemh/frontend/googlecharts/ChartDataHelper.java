@@ -519,7 +519,7 @@ public class ChartDataHelper {
    * @param index The index (for loop).
    * @return The original timestamp.
    */
-  long stepBackwardInTime(TimeInterval timeInterval,
+  static long stepBackwardInTime(TimeInterval timeInterval,
       Calendar calendar, int index) {
     
     // Store the original time
@@ -569,41 +569,14 @@ public class ChartDataHelper {
     
     return originalTime;
   }
-  
-  /*  
-  double[][] populateDataArray
-    (TimeInterval timeInterval, ChartDataType dataType, String methodName) {
     
-    // Current index in the array being populated.
-    int index = 0;
-
-    // Initialize the data array.
-    double[][] actualData = initializeDataArray(timeInterval, dataType);
-
-    // Used to back off from the given calendar date. Make a copy.
-    Calendar tempCalendar = Calendar.getInstance();
-    tempCalendar.setTime(chartStartDate.getTime());
-
-    long tempEndTimestamp;
-
-    // Temp lists to hold repository data fetches
-    List<TimestampDoublePair> doubleList;
-    List<TimestampIntegerPair> intList;
-    
-    
-    
-    
-    return actualData;
-  }
-  */
-  
   /**
    * Averages all values in the given list. This handles a list of TimestampDoublePairs.
    * 
    * @param list List of entries.
    * @return Average value of all entries in list.
    */
-  double averageTimestampDouble(List<TimestampDoublePair> list) {
+  static double averageTimestampDouble(List<TimestampDoublePair> list) {
     double sum = 0;
     int count = 0;
 
@@ -623,7 +596,7 @@ public class ChartDataHelper {
    * @param list List of entries.
    * @return Average value of all entries in list.
    */
-  double averageTimestampInteger(List<TimestampIntegerPair> list) {
+  static double averageTimestampInteger(List<TimestampIntegerPair> list) {
     int sum = 0;
     int count = 0;
 
@@ -725,4 +698,23 @@ public class ChartDataHelper {
   String[] getAxisArray() {
     return this.axis;
   }
+
+  /**
+   * Sets the data array.
+   * 
+   * @param dataArray The data array to set.
+   */
+  void setDataArray(double[][] dataArray) {
+    this.dataArray = dataArray;
+  }
+  
+  /**
+   * Sets the axis array.
+   * 
+   * @param axisArray The axis array to set.
+   */
+  void setAxisArray(String[] axisArray) {
+    this.axis = axisArray;
+  }
+  
 } // End ChartDataHelper Class

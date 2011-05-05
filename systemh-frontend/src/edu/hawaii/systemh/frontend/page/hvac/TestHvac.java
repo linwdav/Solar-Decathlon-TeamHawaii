@@ -9,7 +9,6 @@ import org.apache.wicket.markup.html.image.Image;
 import org.apache.wicket.markup.html.link.Link;
 import org.apache.wicket.util.tester.WicketTester;
 import org.junit.Test;
-import com.codecommit.wicket.Chart;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.page.SelectModalWindow;
 import edu.hawaii.systemh.frontend.weatherparser.WeatherParser;
@@ -73,9 +72,6 @@ public class TestHvac {
     tester.assertComponent("form:airTemperature", TextField.class);
     tester.assertComponent("form:SubmitTemp", AjaxButton.class);
     tester.assertComponent("form:Feedback", Label.class);
-    tester.assertComponent("tempM", Chart.class);
-    tester.assertComponent("tempW", Chart.class);
-    tester.assertComponent("tempD", Chart.class);
 
     tester.clickLink("button");
     tester.clickLink("button");

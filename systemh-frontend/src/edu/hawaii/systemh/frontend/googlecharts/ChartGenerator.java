@@ -221,5 +221,14 @@ public class ChartGenerator {
   
     return returnString.toString();
   } // End generateDataString method
+  
+  /**
+   * Sets the data helper.  For testing purposes.
+   * 
+   * @param dataHelper Helper to set.
+   */
+  void setHelper(ChartDataHelper dataHelper) {
+    this.dataHelper = dataHelper;
+  }
 
 } // End ChartGenerator class
