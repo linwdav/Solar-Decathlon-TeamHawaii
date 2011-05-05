@@ -408,10 +408,10 @@ public class SimulatorServer extends Application {
     HVACDataWeb data = HVACDataWeb.getInstance();
     //Try using the web resource first, if it fails, use the 
     //standard DataClass
-	String living = "living";
-	String dining = "dining";
-	String kitchen = "kitchen";
-	String bathroom = "bathroom";
+    String living = "living";
+    String dining = "dining";
+    String kitchen = "kitchen";
+    String bathroom = "bathroom";
     try {
       for (int i = 11; i >= 0; i--) { 
         time = timestampPast - i * timestampDecrement; 
