@@ -121,13 +121,5 @@ public class TestSimulator {
     XPathExpression baseTimestampCountExpr = xpath.compile(expression);
     Object recordWithBaseTimtestamp = baseTimestampCountExpr.evaluate(doc, XPathConstants.BOOLEAN);
     assertTrue("Checking there are records at base timestamp.", (Boolean) recordWithBaseTimtestamp);
-    
-    long baseTimestampOneDayLater = baseTimestamp + (1000 * 60 * 60 * 24);
-    expression = "count(//state-data[@timestamp=" + baseTimestampOneDayLater + "]) > 0";
-    XPathExpression baseTimestampOneDayLaterExpr = xpath.compile(expression);
-    Object recordWithBaseTimestampOneDayLater = baseTimestampOneDayLaterExpr.evaluate(
-        doc, XPathConstants.BOOLEAN);
-    assertTrue("Checking there are records at base timestamp.", 
-        (Boolean) recordWithBaseTimestampOneDayLater);
   }
 }
