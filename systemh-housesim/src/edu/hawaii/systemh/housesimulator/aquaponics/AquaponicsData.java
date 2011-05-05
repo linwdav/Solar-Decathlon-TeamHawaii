@@ -295,8 +295,7 @@ public class AquaponicsData {
    * @return the number of dead fish in the tank.
    */
   public int getDeadFish() {
-    int deadFish = tank.getDeadFish();
-    return deadFish;
+    return tank.getDeadFish();
   }
 
   /**
