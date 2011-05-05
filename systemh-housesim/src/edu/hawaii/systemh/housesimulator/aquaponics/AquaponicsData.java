@@ -158,7 +158,8 @@ public class AquaponicsData {
     // Create electrical conductivity state tag.
     Element electricalConductivityElement = doc.createElement(state);
     electricalConductivityElement.setAttribute(key, "ELECTRICAL_CONDUCTIVITY");
-    electricalConductivityElement.setAttribute(value, String.valueOf(tank.getElectricalConductivity()));
+    electricalConductivityElement.setAttribute(value, 
+        String.valueOf(tank.getElectricalConductivity()));
     rootElement.appendChild(electricalConductivityElement);
 
     // Create temperature state tag.
@@ -200,8 +201,8 @@ public class AquaponicsData {
   }
 
   /**
-   * Appends Aquaponics state data at a specific timestamp snap-shot to the Document object passed
-   * to this method.
+   * Appends Aquaponics state data at a specific timestamp 
+   * snap-shot to the Document object passed to this method.
    * 
    * @param doc Document object to append Aquaponics state data as child nodes.
    * @param timestamp The specific time snap-shot the state data interested to be appended.
@@ -241,7 +242,8 @@ public class AquaponicsData {
     // Create electrical conductivity state tag.
     Element electricalConductivityElement = doc.createElement(state);
     electricalConductivityElement.setAttribute(key, "ELECTRICAL_CONDUCTIVITY");
-    electricalConductivityElement.setAttribute(value, String.valueOf(tank.getElectricalConductivity()));
+    electricalConductivityElement.setAttribute(value,
+        String.valueOf(tank.getElectricalConductivity()));
     stateElement.appendChild(electricalConductivityElement);
 
     // Create temperature state tag.
@@ -278,41 +280,85 @@ public class AquaponicsData {
     return doc;
   }
 
+  /**
+   * Returns the number of live fish in the tank.
+   * 
+   * @return liveFish the number of live fish in the tank.
+   */
   public int getAliveFish() {
     return tank.getLiveFish();
   }
 
+  /**
+   * Returns the number of dead fish in the tank.
+   * 
+   * @return the number of dead fish in the tank.
+   */
   public int getDeadFish() {
-    return tank.getDeadFish();
+    int deadFish = tank.getDeadFish();
+    return deadFish;
   }
 
+  /**
+   * Returns the circulation level of the tank.
+   * 
+   * @return circulation the circulation level of the tank.
+   */
   public double getCirc() {
     return roundSingleDecimal(tank.getCirculation());
   }
 
+  /**
+   * Returns the electrical conductivity level of the tank.
+   * 
+   * @return ec the electrical conductivity level of the tank.
+   */
   public double getEC() {
     return roundSingleDecimal(tank.getElectricalConductivity());
   }
 
+  /**
+   * Returns the temperature of the tank.
+   * 
+   * @return temperature the temperature of the tank.
+   */
   public int getTemp() {
     return tank.getTemperature();
-
   }
 
+  /**
+   * Returns the turbidity of the tank.
+   * 
+   * @return turbidity the turbidity of the tank.
+   */
   public double getTurb() {
     return roundSingleDecimal(tank.getTurbidity());
 
   }
 
+  /**
+   * Returns the water level of the tank.
+   * 
+   * @return waterLevel the water level of the tank.
+   */
   public int getWaterLevel() {
     return tank.getWaterLevel();
-
   }
 
+  /**
+   * Returns the pH level of the tank.
+   * 
+   * @return pH the pH level of the tank.
+   */
   public double getPH() {
     return roundSingleDecimal(tank.getPH());
   }
 
+  /**
+   * Returns the dissolved level of the tank.
+   * 
+   * @return oxygen the dissolved level level of the tank.
+   */
   public double getOxygen() {
     return roundSingleDecimal(tank.getOxygen());
   }

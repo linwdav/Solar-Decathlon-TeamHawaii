@@ -46,35 +46,40 @@ public class Fish {
 
   /**
    * Feeds the fish.
+   * @return ate, true if passed, false if failed.
    */
   public boolean feed() {
+    boolean ate = false;
     for (int i = 0; i < stomach.length; ++i) {
-      if (stomach[i] != true && health > 0) {
+      if (!stomach[i] && health > 0) {
         stomach[i] = true;
         this.health += 1;
-        return true;
+        ate = true;
+        return ate;
       }
     }
     // 25% chance fish suffers from being overfed.
     this.health -= this.health -= (randomGen.nextInt(2) * randomGen.nextInt(2));
-    return false;
+    return ate;
   }
 
   /**
    * Relieves the fish.
+   * @return excrete, true if the fish excreted, else false.
    */
   public boolean excrete() {
-    // Time-based?
+    boolean excrete = false;
     for (int i = stomach.length - 1; i >= 0; --i) {
-      if (stomach[i] != false) {
+      if (stomach[i]) {
         stomach[i] = false;
-        return true;
+        excrete = true;
+        return excrete;
       }
     }
     // 3.1% chance that the fish suffers from hunger.
     this.health -= (randomGen.nextInt(2) * randomGen.nextInt(2) * randomGen.nextInt(2)
         * randomGen.nextInt(2) * randomGen.nextInt(2));
-    return false;
+    return excrete;
   }
 
   // Getters

@@ -59,7 +59,8 @@ public class FishTank {
   
   /**
    * Constructor.
-   * @param fishCount, the initial number of fish in the tank.
+   * @param fishCount the initial number of fish in the tank.
+   * @param fishHealth the initial health of fish in the tank.
    */
   public FishTank(int fishCount, int fishHealth) {
     this.school = new Fish[fishCount];
@@ -80,7 +81,7 @@ public class FishTank {
    * Feeds the fish in the tank.
    */
   public void feedFish() {
-    for(Fish x: school) {
+    for (Fish x : school) {
       x.feed();
     }
   }
@@ -89,10 +90,10 @@ public class FishTank {
    * Check the pH of the tank.
    */
   public void checkPH() {
-    for(Fish x: school) {
+    for (Fish x : school) {
       // 25% chance fish excrete
       if (x.getHealth() > 0 && randomGen.nextInt(2) + randomGen.nextInt(2) == 1 
-            && x.excrete() == true) {
+            && x.excrete()) {
         pH -= (double) 1 / (getLiveFish() + getDeadFish());
         electricalConductivity += (double) 1 / (getLiveFish() + getDeadFish());
       }
@@ -105,7 +106,7 @@ public class FishTank {
    */
   public int getDeadFish() {
     int deadFish = 0;
-    for (Fish x: this.school) {
+    for (Fish x : this.school) {
       if (x != null && x.getHealth() <= 0) {
         deadFish++;
       }
@@ -119,7 +120,7 @@ public class FishTank {
    */
   public int getLiveFish() {
     int liveFish = 0;
-    for (Fish x: this.school) {
+    for (Fish x : this.school) {
       if (x != null && x.getHealth() > 0) {
         liveFish++;
       }
@@ -206,7 +207,8 @@ public class FishTank {
    * Change number of dead fish according to current conditions.
    */
   public void changeDeadFish() {
-    if (((electricalConductivity < minEC) || (electricalConductivity > maxEC) || (temperature < minTemp) || (temperature > maxTemp)
+    if (((electricalConductivity < minEC) || (electricalConductivity > maxEC) 
+        || (temperature < minTemp) || (temperature > maxTemp) 
         || (waterLevel < minWater) || (waterLevel > maxWater) || (pH < minPH) || (pH > maxPH)
         || (oxygen < minOxygen) || (oxygen > maxOxygen))
         && (getLiveFish() > 0)) {
@@ -237,6 +239,7 @@ public class FishTank {
   
   /**
    * Change water temperature.
+   * @param desiredTemperature the target temperature level.
    */
   public void changeTemperature(int desiredTemperature) {
     if (temperature < desiredTemperature) {
@@ -277,6 +280,7 @@ public class FishTank {
   /**
    * Change water level based on desired water level.
    * The change in water level causes a direct change to both oxygen and circulation levels.
+   * @param desiredWaterLevel the target water level.
    */
   public void changeWaterLevel(double desiredWaterLevel) {
     double previousWaterLevel = waterLevel;
@@ -306,6 +310,7 @@ public class FishTank {
   
   /**
    * Change electrical conductivity.
+   * @param desiredElectricalConductivity the target electrical conductivity level.
    */
   public void changeElectricalConductivity(double desiredElectricalConductivity) {
     if (electricalConductivity < desiredElectricalConductivity) {
@@ -326,6 +331,7 @@ public class FishTank {
   
   /**
    * Change water PH.
+   * @param desiredPH the target pH level.
    */
   public void changePH(double desiredPH) {
     if (pH < desiredPH) {
