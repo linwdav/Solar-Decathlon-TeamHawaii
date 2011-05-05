@@ -53,7 +53,7 @@ import edu.hawaii.systemh.housesimulator.simulationtimer.SimulationTimer;
  * @version 2.0
  */
 public class SimulatorServer extends Application {
-
+	static long time = 0;
   /**
    * User specifies the time between system data refresh. If a time interval has been specified
    * correctly, a device properties file and an initial data file is generated before running the
@@ -413,7 +413,6 @@ public class SimulatorServer extends Application {
 	String kitchen = "kitchen";
 	String bathroom = "bathroom";
     try {
-      long time;
       for (int i = 11; i >= 0; i--) { 
         time = timestampPast - i * timestampDecrement; 
         returnDoc = data.toXmlByTimestamp(doc, time);
@@ -444,7 +443,6 @@ public class SimulatorServer extends Application {
     // Append 24 state points of 1 hour intervals to represent 1 day of past state data for
     // all house system but Lighting.
     try { 
-      long time;
       for (int i = 23; i >= 0; i--) { 
         time = timestampPast - i * timestampDecrement;  
         returnDoc = data.toXmlByTimestamp(doc, time); 
@@ -476,7 +474,6 @@ public class SimulatorServer extends Application {
     // state data and for a total of 1 month of state data for all house systems but
     // Lighting.
     try { 
-      long time;
       for (int i = 30; i >= 0; i--) { 
         time = timestampPast - i * timestampDecrement; 
         returnDoc = data.toXmlByTimestamp(doc, time);
