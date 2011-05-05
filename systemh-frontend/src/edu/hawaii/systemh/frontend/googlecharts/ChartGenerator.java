@@ -27,7 +27,7 @@ public class ChartGenerator {
   int width;
   
   // Container to add chart to
-  WebMarkupContainer wmc;
+  WebMarkupContainer wmc = null;
 
   /**
    * Constructor that creates a data helper object and populates it with
@@ -63,9 +63,11 @@ public class ChartGenerator {
     // Populate Data
     dataHelper.populateChart();
     
-    wmc.add(new AttributeModifier("src", true, 
+    if (wmc != null) {
+      wmc.add(new AttributeModifier("src", true, 
         new Model<String>(constructChartURI(width, height))));
-  }
+    }
+  } // End add chart
   
   /**
    * Generates the chart's URI.
@@ -86,32 +88,32 @@ public class ChartGenerator {
     
     // PH graph
     case AQUAPONICS_PH:
-      endRange = 14;
-      stepCount = 1;
+        endRange = 14;
+        stepCount = 1;
       break;
     
     // Temperature
     case AQUAPONICS_TEMP:
-      endRange = 50;
-      stepCount = 5;
+        endRange = 50;
+        stepCount = 5;
       break;
     
     // Conductivity
     case AQUAPONICS_CONDUCTIVITY:
-      endRange = 20;
-      stepCount = 2;
+        endRange = 20;
+        stepCount = 2;
       break;
       
     // HVAC Temp
     case HVAC_TEMP:
-      endRange = 50;
-      stepCount = 5;
+        endRange = 50;
+        stepCount = 5;
       break;
       
     // Energy consumption vs. generation
     case GENERATION_CONSUMPTION:
-      endRange = 2400;
-      stepCount = 250;
+        endRange = 2400;
+        stepCount = 250;
       break;
       
     default:
@@ -229,6 +231,15 @@ public class ChartGenerator {
    */
   void setHelper(ChartDataHelper dataHelper) {
     this.dataHelper = dataHelper;
+  }
+  
+  /**
+   * Gets the data helper.  For testing purposes.
+   * 
+   * @return The data helper.
+   */
+  ChartDataHelper getHelper() {
+    return this.dataHelper;
   }
 
 } // End ChartGenerator class
