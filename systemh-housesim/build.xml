@@ -19,7 +19,13 @@
         <include name="*.jar" />
       </fileset>
     </path>
-    
+
+     <path id="systemh-model-behavior.path">
+      <fileset dir="${basedir}">
+        <include name="systemh-model-behavior.jar" />
+      </fileset>
+    </path>
+  	
     <ivy:retrieve organisation="org.restlet" module="restlet" revision="${restlet.version}" pattern="${lib.dir}/restlet/[artifact].[ext]" sync="true" inline="true" conf="default,xml" log="download-only" transitive="true" type="jar,javadoc" />
     <path id="restlet.path">
       <fileset dir="${lib.dir}/restlet">
@@ -31,8 +37,8 @@
   <!-- Basic properties for this system. -->
   <property name="system.name" value="systemh-housesim" />
   <property name="system.main.class" value="edu.hawaii.systemh.housesimulator.SimulatorServer" />
-  <property name="majorVersionNumber" value="2" />
-  <property name="minorVersionNumber" value="1" />
+  <property name="majorVersionNumber" value="3" />
+  <property name="minorVersionNumber" value="0" />
   <tstamp>
     <format property="DAYSTAMP" pattern="Mdd" />
     <format property="TSTAMP" pattern="HH:mm:ss" />
@@ -44,6 +50,7 @@
     <path refid="junit.path" />
     <path refid="restlet.path" />
     <path refid="systemh-api.path" />
+  	<path refid="systemh-model-behavior.path"/>
   </path>
 
 
