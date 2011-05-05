@@ -1,7 +1,7 @@
 package edu.hawaii.systemh.housesimulator.hvac;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotSame;
 import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -149,7 +149,7 @@ public class TestHVAC {
     int newCurrentHomeTemp =
         Integer.parseInt(((Element) stateNodes.item(0)).getAttribute(valueAttributeString));
 
-    assertTrue("The home temperature should change.", currentHomeTemp != newCurrentHomeTemp);
+    assertNotSame("The home temperature should change.", currentHomeTemp, newCurrentHomeTemp);
 
     HVACData.resetHVACSystem();
 
@@ -179,7 +179,7 @@ public class TestHVAC {
     newCurrentHomeTemp =
         Integer.parseInt(((Element) stateNodes.item(0)).getAttribute(valueAttributeString));
 
-    assertTrue("The home temperature should change", currentHomeTemp != newCurrentHomeTemp);
+    assertNotSame("The home temperature should change", currentHomeTemp, newCurrentHomeTemp);
 
     // System.out.println("Current HVAC state 6.5 mintues after setting a desired temperature.");
     // HVACData.printHVACSystemState();
