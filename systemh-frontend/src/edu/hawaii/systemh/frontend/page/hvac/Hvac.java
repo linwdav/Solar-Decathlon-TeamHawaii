@@ -1,12 +1,5 @@
 package edu.hawaii.systemh.frontend.page.hvac;
 
-//import java.util.ArrayList;
-//import java.util.List;
-//import java.util.ArrayList;
-//import java.util.List;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.apache.wicket.Component;
@@ -29,23 +22,14 @@ import org.apache.wicket.markup.html.list.PageableListView;
 import org.apache.wicket.model.Model;
 import org.apache.wicket.model.PropertyModel;
 import org.apache.wicket.util.time.Duration;
-import com.codecommit.wicket.AbstractChartData;
-import com.codecommit.wicket.Chart;
-import com.codecommit.wicket.ChartAxis;
-import com.codecommit.wicket.ChartAxisType;
-import com.codecommit.wicket.ChartDataEncoding;
-import com.codecommit.wicket.ChartGrid;
-import com.codecommit.wicket.ChartProvider;
-import com.codecommit.wicket.ChartType;
-import com.codecommit.wicket.IChartData;
-import com.codecommit.wicket.MarkerType;
-import com.codecommit.wicket.ShapeMarker;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleCommandType;
 import edu.hawaii.ihale.api.ApiDictionary.IHaleSystem;
 import edu.hawaii.ihale.api.repository.SystemStatusMessage;
-import edu.hawaii.ihale.api.repository.TimestampIntegerPair;
 import edu.hawaii.systemh.frontend.SolarDecathlonApplication;
 import edu.hawaii.systemh.frontend.SolarDecathlonSession;
+import edu.hawaii.systemh.frontend.googlecharts.ChartDataHelper.ChartDataType;
+import edu.hawaii.systemh.frontend.googlecharts.ChartGenerator;
+import edu.hawaii.systemh.frontend.googlecharts.ChartDataHelper.TimeInterval;
 import edu.hawaii.systemh.frontend.page.Header;
 import edu.hawaii.systemh.frontend.page.help.Help;
 
@@ -337,275 +321,29 @@ public class Hvac extends Header {
     form.add(feedback);
     add(form);
 
-    addDayGraph();
-    addWeekGraph();
-    addMonthGraph();
+    // MarkupContainers for graphs.
+    WebMarkupContainer dayGraph = new WebMarkupContainer("dayGraphImage");
+    WebMarkupContainer weekGraph = new WebMarkupContainer("weekGraphImage");
+    WebMarkupContainer monthGraph = new WebMarkupContainer("monthGraphImage");
 
-  }
-
-  /**
-   * Add day graph to the page.
-   */
-  private void addDayGraph() {
-    IChartData data = new AbstractChartData(ChartDataEncoding.TEXT, 100) {
-
-      private static final long serialVersionUID = 1L;
-
-      public double[][] getData() {
-
-        Calendar current = Calendar.getInstance();
-        long lastTwentyFour = 24 * 60 * 60 * 1000L;
-        long time = (new Date()).getTime();
-        long mHBegin =
-            current.get(Calendar.MINUTE) * 60000 + current.get(Calendar.SECOND) * 1000
-                + current.get(Calendar.MILLISECOND);
-        long twoHours = 2 * 60 * 60 * 1000L;
-        List<TimestampIntegerPair> temperatureList =
-            SolarDecathlonApplication.getRepository()
-                .getHvacTemperatureSince(time - lastTwentyFour);
-
-        double[] data = new double[13];
-        int pointsFound = 0;
-        long totalValue = 0;
-
-        for (int i = 12; i >= 0; i--) {
-          for (int j = temperatureList.size() - 1; j >= 0; j--) {
-
-            if ((temperatureList.get(j).getTimestamp() < ((time - mHBegin) - (twoHours * (i - 1))))
-                && (temperatureList.get(j).getTimestamp() > ((time - mHBegin) - (twoHours * i)))) {
-              totalValue += temperatureList.get(j).getValue();
-              pointsFound++;
-            }
-          }
-          if (pointsFound > 0) {
-            data[12 - i] = ((totalValue / pointsFound) - 5) * 2.856;
-          }
-          else {
-            data[12 - i] = 0;
-          }
-
-          totalValue = 0;
-          pointsFound = 0;
-        }
-
-        return new double[][] { {}, data };
-      }
-    };
-
-    ChartProvider provider = new ChartProvider(new Dimension(450, 275), ChartType.LINE_XY, data);
-    provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (&#176;C / Hour)");
-    ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
-    axisX.setLabels(generateXAxis(0));
-
-    provider.addAxis(axisX);
-    ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
-    axisY.setLabels(new String[] { "5", "10", "15", "20", "25", "30", "35", "40" });
-    provider.addAxis(axisY);
-
-    provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
-    provider.setGrid(new ChartGrid(0, 100 / 11));
-
-    add(new Chart("tempD", provider));
-  }
-
-  /**
-   * Add week graph to the page.
-   */
-  private void addWeekGraph() {
-    IChartData data = new AbstractChartData(ChartDataEncoding.TEXT, 100) {
-
-      private static final long serialVersionUID = 1L;
-
-      public double[][] getData() {
-
-        double[] data = new double[7];
-        Calendar current = Calendar.getInstance();
-        long mInADay = 24 * 3600000;
-        long time = (new Date()).getTime();
-        long mWeekAgo =
-            (6 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L
-                + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND) * 1000L
-                + current.get(Calendar.MILLISECOND);
-        long mToday =
-            current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
-                + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
-
-        List<TimestampIntegerPair> temperatureList =
-            SolarDecathlonApplication.getRepository().getHvacTemperatureSince(time - mWeekAgo);
-
-        long totalValue = 0;
-        int pointsFound = 0;
-        for (int i = 6; i >= 0; i--) {
-          for (int j = 0; j < temperatureList.size(); j++) {
-
-            if ((temperatureList.get(j).getTimestamp() < ((time - mToday) - (mInADay * (i - 1))))
-                && (temperatureList.get(j).getTimestamp() > ((time - mToday) - (mInADay * i)))) {
-              totalValue += temperatureList.get(j).getValue();
-              pointsFound++;
-            }
-
-          }
-          if (pointsFound > 0) {
-            data[6 - i] = ((totalValue / pointsFound) - 5) * 2.856;
-          }
-          else {
-            data[6 - i] = 0;
-          }
-
-          totalValue = 0;
-          pointsFound = 0;
-        }
-
-        return new double[][] { {}, data };
-      }
-    };
-
-    ChartProvider provider = new ChartProvider(new Dimension(450, 275), ChartType.LINE_XY, data);
-    provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (&#176;C / Hour)");
-    ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
-    axisX.setLabels(generateXAxis(1));
-    provider.addAxis(axisX);
-    ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
-    axisY.setLabels(new String[] { "5", "10", "15", "20", "25", "30", "35", "40" });
-    provider.addAxis(axisY);
-
-    provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
-    provider.setGrid(new ChartGrid(0, 100 / 11));
-
-    add(new Chart("tempW", provider));
-  }
-
-  /**
-   * Add month graph to the page.
-   */
-  private void addMonthGraph() {
-    IChartData data = new AbstractChartData(ChartDataEncoding.TEXT, 100) {
-
-      private static final long serialVersionUID = 1L;
-
-      public double[][] getData() {
-
-        double[] data = new double[7];
-        Calendar current = Calendar.getInstance();
-        long mFive = 5 * 24 * 60 * 60 * 1000L;
-        long mInADay = 24 * 3600000;
-        long time = (new Date()).getTime();
-        long mMonthAgo =
-            (30 * mInADay) + current.get(Calendar.HOUR_OF_DAY) * 3600000L
-                + current.get(Calendar.MINUTE) * 60000L + current.get(Calendar.SECOND) * 1000L
-                + current.get(Calendar.MILLISECOND);
-        long mToday =
-            current.get(Calendar.HOUR_OF_DAY) * 3600000L + current.get(Calendar.MINUTE) * 60000L
-                + current.get(Calendar.SECOND) * 1000L + current.get(Calendar.MILLISECOND);
-
-        List<TimestampIntegerPair> temperatureList =
-            SolarDecathlonApplication.getRepository().getHvacTemperatureSince(time - mMonthAgo);
-
-        long totalValue = 0;
-        int pointsFound = 0;
-        for (int i = 6; i >= 0; i--) {
-          for (int j = 0; j < temperatureList.size(); j++) {
-
-            if ((temperatureList.get(j).getTimestamp() < ((time - mToday) - (mFive * (i - 1))))
-                && (temperatureList.get(j).getTimestamp() > ((time - mToday) - (mFive * i)))) {
-              totalValue += temperatureList.get(j).getValue();
-              pointsFound++;
-            }
-
-          }
-          if (pointsFound > 0) {
-            data[6 - i] = ((totalValue / pointsFound) - 5) * 2.856;
-          }
-          else {
-            data[6 - i] = 0;
-          }
-
-          totalValue = 0;
-          pointsFound = 0;
-        }
-
-        return new double[][] { {}, data };
-      }
-    };
-
-    ChartProvider provider = new ChartProvider(new Dimension(450, 275), ChartType.LINE_XY, data);
-    provider.setColors(new Color[] { Color.BLUE });
-    provider.setTitle("Inside Temperature (&#176;C / Hour)");
-    ChartAxis axisX = new ChartAxis(ChartAxisType.BOTTOM);
-    axisX.setLabels(generateXAxis(2));
-    provider.addAxis(axisX);
-    ChartAxis axisY = new ChartAxis(ChartAxisType.LEFT);
-    axisY.setLabels(new String[] { "5", "10", "15", "20", "25", "30", "35", "40" });
-    provider.addAxis(axisY);
-
-    provider.addShapeMarker(new ShapeMarker(MarkerType.DIAMOND, Color.RED, 0, -1, 5));
-    provider.setGrid(new ChartGrid(0, 100 / 11));
-
-    add(new Chart("tempM", provider));
-  }
-
-  /**
-   * Generate and return the X axis.
-   * 
-   * @param type 0: day graph 1: week graph 2: month graph
-   * @return A string array.
-   */
-  private String[] generateXAxis(int type) {
-    // String[] axisDayLabels = new String[13];
-    // String[] axisWeekLabels = new String[7];
-    // String[] axisMonthLabels = new String[7];
-    Calendar calendar = Calendar.getInstance();
-
-    int currentHour = calendar.get(Calendar.HOUR_OF_DAY);
-    int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
-    int currentMonth = calendar.get(Calendar.MONTH);
-    int currentDayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-
-    if (type == 0) {
-      String[] axisDayLabels = new String[13];
-      for (int i = 0; i <= 12; i++) {
-
-        currentHour %= 12;
-        if (currentHour == 0) {
-          currentHour = 12;
-        }
-        axisDayLabels[i] = currentHour + "H";
-        currentHour += 2;
-      }
-      return axisDayLabels;
-    }
-
-    if (type == 1) {
-      String[] axisWeekLabels = new String[7];
-      String[] daysOfWeek = { "Sat", "Sun", "Mon", "Tues", "Wed", "Thurs", "Fri" };
-      // x-axis is the past 7 days starting from current day.
-      for (int i = 0; i <= 5; i++) {
-        axisWeekLabels[i] = daysOfWeek[(currentDay + i + 1) % 7];
-      }
-      axisWeekLabels[6] = daysOfWeek[currentDay % 7];
-
-      return axisWeekLabels;
-    }
-    else {
-      String[] axisMonthLabels = new String[7];
-      int[] months = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
-
-      for (int i = 0; i <= 5; i++) {
-        if ((currentDayOfMonth - ((6 - i) * 5)) <= 0) {
-          axisMonthLabels[i] =
-              String.valueOf(months[currentMonth - 1] - ((6 - i) * 5 - currentDayOfMonth));
-        }
-        else {
-          axisMonthLabels[i] = String.valueOf(currentDayOfMonth - ((6 - i) * 5));
-        }
-      }
-      axisMonthLabels[6] = String.valueOf(currentDayOfMonth);
-
-      return axisMonthLabels;
-    }
-  }
+    // Setup charts
+    ChartGenerator cgDay = new ChartGenerator(TimeInterval.DAY,
+        ChartDataType.HVAC_TEMP, dayGraph, 500, 250 );
+    ChartGenerator cgWeek = new ChartGenerator(TimeInterval.WEEK,
+        ChartDataType.HVAC_TEMP, weekGraph, 500, 250 );
+    ChartGenerator cgMonth = new ChartGenerator(TimeInterval.MONTH,
+        ChartDataType.HVAC_TEMP, monthGraph, 500, 250 );
+    
+    // Generate charts
+    cgDay.addChart();
+    cgWeek.addChart();
+    cgMonth.addChart();
+    
+    // Add Charts to view
+    add(dayGraph);
+    add(weekGraph);
+    add(monthGraph);
+  } // End constructor
 
   /**
    * Set the button label.

@@ -1,6 +1,7 @@
 package edu.hawaii.systemh.frontend.page.aquaponics;
 
 import java.io.Serializable;
+import edu.hawaii.systemh.frontend.googlecharts.ChartDataHelper.ChartDataType;
 
 /**
  * The aquaponics stats sessions page.
@@ -13,7 +14,7 @@ public class AquaponicsStatsSession implements Serializable {
   /** Support serialization. */
   private static final long serialVersionUID = 1L;
   
-  private int currentGraph = 0;
+  private ChartDataType currentGraph = ChartDataType.AQUAPONICS_PH;
   /**
    * empty for now.
    */
@@ -25,16 +26,16 @@ public class AquaponicsStatsSession implements Serializable {
    * Returns the current graph associated with the users session.
    * @return The current graph.
    */
-  public int getCurrentGraph() {
+  public ChartDataType getCurrentGraph() {
     return currentGraph;
   }
   
   /**
    * Sets the current graph for the user's session.
-   * @param currentGraph - the graph to display.
+   * @param chartDataType - the graph to display.
    */
-  public void setCurrentGraph(int currentGraph) {
-    this.currentGraph = currentGraph;
+  public void setCurrentGraph(ChartDataType chartDataType) {
+    this.currentGraph = chartDataType;
   }
   
 }
