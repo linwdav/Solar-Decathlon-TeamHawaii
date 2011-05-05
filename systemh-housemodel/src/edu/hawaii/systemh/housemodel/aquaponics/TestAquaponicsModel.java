@@ -57,5 +57,9 @@ public class TestAquaponicsModel {
     }
     
     assertEquals(systemTotal, (waterPumpTotal + heaterTotal + filterTotal), 0.0);
+    
+    AquaponicsSystem aquaponicsSystem = new AquaponicsSystem();
+    assertEquals(11612160,
+        aquaponicsSystem.energyUsageWhenDesiredTempSet(startTime, endTime, true), 0.1);
   }
 }

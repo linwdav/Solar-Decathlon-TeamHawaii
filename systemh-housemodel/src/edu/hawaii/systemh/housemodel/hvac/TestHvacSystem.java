@@ -52,6 +52,10 @@ public class TestHvacSystem {
       heatingandcoolingTotal += heatingandcoolingValues.get(i).getValue();
     }
     
+
     assertEquals(systemTotal, (humidifierTotal + heatingandcoolingTotal), 0.0);
+    
+    HvacSystem hvacSystem = new HvacSystem();
+    assertEquals(164,hvacSystem.energyUsageWhenDesiredTempSet(0, 100, 100),0.0);
   }
 }
