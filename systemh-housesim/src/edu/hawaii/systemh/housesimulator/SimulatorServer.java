@@ -408,16 +408,20 @@ public class SimulatorServer extends Application {
     HVACDataWeb data = HVACDataWeb.getInstance();
     //Try using the web resource first, if it fails, use the 
     //standard DataClass
+	String living = "living";
+	String dining = "dining";
+	String kitchen = "kitchen";
+	String bathroom = "bathroom";
     try {
       long time;
       for (int i = 11; i >= 0; i--) { 
         time = timestampPast - i * timestampDecrement; 
         returnDoc = data.toXmlByTimestamp(doc, time);
         returnDoc = AquaponicsData.toXmlByTimestamp(doc, time);
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "living");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "dining");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "kitchen");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "bathroom");
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, living);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, dining);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, kitchen);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, bathroom);
       }
     }
     catch (Exception e) {
@@ -425,10 +429,10 @@ public class SimulatorServer extends Application {
       for (int i = 0; i < 12; i++) {
         returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
         returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, living);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, dining);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, kitchen);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, bathroom);
         timestampPast -= timestampDecrement;
       }
     }
@@ -445,10 +449,10 @@ public class SimulatorServer extends Application {
         time = timestampPast - i * timestampDecrement;  
         returnDoc = data.toXmlByTimestamp(doc, time); 
         returnDoc = AquaponicsData.toXmlByTimestamp(doc, time); 
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "living");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "dining");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "kitchen");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "bathroom");
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, living);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, dining);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, kitchen);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, bathroom);
       }
     }
     catch (Exception e) {
@@ -456,10 +460,10 @@ public class SimulatorServer extends Application {
       for (int i = 0; i < 24; i++) {
         returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
         returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast);
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, living);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, dining);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, kitchen);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, bathroom);
         timestampPast -= timestampDecrement;
       }
     }
@@ -477,10 +481,10 @@ public class SimulatorServer extends Application {
         time = timestampPast - i * timestampDecrement; 
         returnDoc = data.toXmlByTimestamp(doc, time);
         returnDoc = AquaponicsData.toXmlByTimestamp(doc, time);  
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "living");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "dining");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "kitchen");
-        returnDoc = LightingData.toXmlByTimestamp(doc, time, "bathroom");
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, living);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, dining);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, kitchen);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, bathroom);
       }
     }
     catch (Exception e) { 
@@ -488,10 +492,10 @@ public class SimulatorServer extends Application {
       for (int i = 0; i < 31; i++) {
         returnDoc = AquaponicsData.toXmlByTimestamp(doc, timestampPast);
         returnDoc = HVACData.toXmlByTimestamp(doc, timestampPast); 
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "living");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "dining");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "kitchen");
-        returnDoc = LightingData.toXmlByTimestamp(doc, timestampPast, "bathroom");
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, living);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, dining);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, kitchen);
+        returnDoc = LightingData.toXmlByTimestamp(doc, time, bathroom);
         timestampPast -= timestampDecrement;
       }
     }
