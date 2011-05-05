@@ -53,7 +53,7 @@ import edu.hawaii.systemh.housesimulator.simulationtimer.SimulationTimer;
  * @version 2.0
  */
 public class SimulatorServer extends Application {
-	static long time = 0;
+    static long time = 0;
   /**
    * User specifies the time between system data refresh. If a time interval has been specified
    * correctly, a device properties file and an initial data file is generated before running the
