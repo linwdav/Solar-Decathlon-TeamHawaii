@@ -23,7 +23,9 @@
 
 // XML Parser instance
 @synthesize parser = _parser;
+@synthesize aquaponicsTableView = _aquaponicsTableView;
 
+/*
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -32,9 +34,11 @@
     }
     return self;
 }
+ */
 
 - (void)dealloc
 {
+    [_aquaponicsTableView release];
     [_parser release];
     [super dealloc];
 }
@@ -64,7 +68,6 @@
     // Initialize state data 
     NSMutableDictionary *stateDataTemp = [[NSMutableDictionary alloc] init];
     [self.parser setStateData:stateDataTemp];
-    
     [stateDataTemp release];
     
     // Load default values for state data
@@ -79,7 +82,7 @@
     
     
     // Start timer for countdown - update at 1.0 second intervals
-    [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(updateTable)
+    [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateTable)
                                    userInfo:nil repeats:YES];
 
     
@@ -94,6 +97,7 @@
 
 - (void)viewDidUnload
 {
+    self.aquaponicsTableView = nil;
     self.parser = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -130,6 +134,12 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {    
+    // This method runs first, so use it to assign the table view from the delegate
+    // to the local tableview variable
+    if (!self.aquaponicsTableView) {
+        self.aquaponicsTableView = tableView;
+    }
+    
     // Return the number of sections. (number of key-value pairs in dictionary)
     return [[self.parser stateData] count];
 }
@@ -302,12 +312,13 @@
 
 #pragma mark - Update Table
 
+// Updates the table in the current view from the XML document at the specified URL.
 - (void) updateTable {
     
     [self.parser parseXMLFile:@"http://localhost:8111/AQUAPONICS/state"];
-    
+
     // Reload Table view
-    [self.tableView reloadData];
+    [self.aquaponicsTableView reloadData];
 } // End updateTable
 
 

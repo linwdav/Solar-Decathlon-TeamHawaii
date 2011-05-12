@@ -10,13 +10,15 @@
 
 @class xmlDataParser;
 
-@interface aquaponicsController : UITableViewController {
+@interface aquaponicsController : UIViewController <UITableViewDelegate, UITableViewDataSource> {
+    
     xmlDataParser *parser;
+    UITableView *aquaponicsTableView;
 
 }
 
 @property (nonatomic, retain) xmlDataParser *parser;
-
+@property (nonatomic, retain) IBOutlet UITableView *aquaponicsTableView;
 
 
 @end
