@@ -21,6 +21,7 @@
 @property (nonatomic, retain) NSMutableDictionary *stateData;
 
 - (BOOL) parseXMLFile:(NSString *) urlPath;
+- (BOOL) sendXMLCommand: (NSString *) urlPath withCommand: (NSString *) commandName andArg: (NSString *) argValue;
 
 
 @end

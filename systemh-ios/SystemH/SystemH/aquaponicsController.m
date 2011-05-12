@@ -81,10 +81,13 @@
     [[self.parser stateData] setObject:@"0.0" forKey:OXYGEN];
     
     
+    [self.parser sendXMLCommand:@"http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=15" withCommand:@"SET_TEMPERATURE" andArg:@"20"];
+    
     // Start timer for countdown - update at 1.0 second intervals
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateTable)
                                    userInfo:nil repeats:YES];
 
+    
     
     [super viewDidLoad];
 

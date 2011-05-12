@@ -66,6 +66,40 @@
     return success;
 } // end parse XML File
 
+- (BOOL) sendXMLCommand: (NSString *) urlPath withCommand: (NSString *) commandName andArg: (NSString *) argValue {
+    
+    NSString *xmlHeader = @"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
+    NSString *xmlPartOne = [NSString stringWithFormat:@"<command name=\"%@\">", commandName];
+    NSString *xmlPartTwo = [NSString stringWithFormat:@"<arg value=\"%@\"/></command>", argValue];
+    
+    NSString *xmlAsString = [NSString stringWithFormat:@"%@%@%@", xmlHeader, xmlPartOne, xmlPartTwo];
+    NSData *data = [xmlAsString dataUsingEncoding:NSASCIIStringEncoding];
+    
+    NSURL *xmlURL = [NSURL URLWithString:urlPath];
+    NSMutableURLRequest *putRequest = [[NSMutableURLRequest alloc] initWithURL:xmlURL];
+    
+    [putRequest setTimeoutInterval:5.0];
+    [putRequest setHTTPMethod:@"PUT"];
+    [putRequest setValue:@"text/xml; charset=UTF-8" forHTTPHeaderField:@"Content-type"];
+    [putRequest setHTTPBody:data];
+    
+    NSURLConnection *putConnection;
+    putConnection = [[NSURLConnection alloc] initWithRequest:putRequest delegate:self];
+    
+    if (!putConnection) {
+        NSLog(@"PUT failed");
+    }
+    else {
+        NSLog(@"PUT success");
+    }
+    
+    return YES;
+    
+}
+
+-(void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    NSLog(@"Status Code: %i", [(NSHTTPURLResponse *)response statusCode]);
+}
 
 // Deallocation Method
 - (void) dealloc {
