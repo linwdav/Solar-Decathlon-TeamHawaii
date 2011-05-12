@@ -21,6 +21,13 @@
 		55889248137B7D7B0047CC95 /* tab_redo.png in Resources */ = {isa = PBXBuildFile; fileRef = 55889247137B7D7B0047CC95 /* tab_redo.png */; };
 		5588924A137B7DE20047CC95 /* tab_house.png in Resources */ = {isa = PBXBuildFile; fileRef = 55889249137B7DE20047CC95 /* tab_house.png */; };
 		5588924E137B80300047CC95 /* systemh_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5588924D137B80300047CC95 /* systemh_icon.png */; };
+		55889264137B8B3D0047CC95 /* hvacController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889262137B8B3D0047CC95 /* hvacController.m */; };
+		55889265137B8B3D0047CC95 /* hvacView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55889263137B8B3D0047CC95 /* hvacView.xib */; };
+		55889269137BA9820047CC95 /* testAquaponics.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889267137BA9810047CC95 /* testAquaponics.m */; };
+		5588926A137BA9820047CC95 /* testAquaponics.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55889268137BA9810047CC95 /* testAquaponics.xib */; };
+		5588926E137BAB2D0047CC95 /* energyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5588926C137BAB2C0047CC95 /* energyController.m */; };
+		5588926F137BAB2D0047CC95 /* energyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5588926D137BAB2C0047CC95 /* energyView.xib */; };
+		55889273137BAEF30047CC95 /* xmlDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889272137BAEF30047CC95 /* xmlDataParser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +49,17 @@
 		55889247137B7D7B0047CC95 /* tab_redo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_redo.png; sourceTree = "<group>"; };
 		55889249137B7DE20047CC95 /* tab_house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_house.png; sourceTree = "<group>"; };
 		5588924D137B80300047CC95 /* systemh_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = systemh_icon.png; sourceTree = "<group>"; };
+		55889261137B8B3D0047CC95 /* hvacController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hvacController.h; sourceTree = "<group>"; };
+		55889262137B8B3D0047CC95 /* hvacController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hvacController.m; sourceTree = "<group>"; };
+		55889263137B8B3D0047CC95 /* hvacView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = hvacView.xib; sourceTree = "<group>"; };
+		55889266137BA9810047CC95 /* testAquaponics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testAquaponics.h; sourceTree = "<group>"; };
+		55889267137BA9810047CC95 /* testAquaponics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testAquaponics.m; sourceTree = "<group>"; };
+		55889268137BA9810047CC95 /* testAquaponics.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = testAquaponics.xib; sourceTree = "<group>"; };
+		5588926B137BAB2C0047CC95 /* energyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = energyController.h; sourceTree = "<group>"; };
+		5588926C137BAB2C0047CC95 /* energyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = energyController.m; sourceTree = "<group>"; };
+		5588926D137BAB2C0047CC95 /* energyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = energyView.xib; sourceTree = "<group>"; };
+		55889271137BAEF30047CC95 /* xmlDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xmlDataParser.h; sourceTree = "<group>"; };
+		55889272137BAEF30047CC95 /* xmlDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xmlDataParser.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +106,8 @@
 		55889228137B7B600047CC95 /* SystemH */ = {
 			isa = PBXGroup;
 			children = (
+				55889270137BAEB60047CC95 /* XML */,
+				55889250137B83CB0047CC95 /* Model */,
 				5588923D137B7B820047CC95 /* Views */,
 				5588923C137B7B780047CC95 /* Controllers */,
 				55889231137B7B600047CC95 /* SystemHAppDelegate.h */,
@@ -113,6 +133,13 @@
 		5588923C137B7B780047CC95 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				55889261137B8B3D0047CC95 /* hvacController.h */,
+				55889262137B8B3D0047CC95 /* hvacController.m */,
+				55889266137BA9810047CC95 /* testAquaponics.h */,
+				55889267137BA9810047CC95 /* testAquaponics.m */,
+				55889268137BA9810047CC95 /* testAquaponics.xib */,
+				5588926B137BAB2C0047CC95 /* energyController.h */,
+				5588926C137BAB2C0047CC95 /* energyController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -120,6 +147,8 @@
 		5588923D137B7B820047CC95 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				5588926D137BAB2C0047CC95 /* energyView.xib */,
+				55889263137B8B3D0047CC95 /* hvacView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -136,6 +165,22 @@
 				5588924D137B80300047CC95 /* systemh_icon.png */,
 			);
 			name = Images;
+			sourceTree = "<group>";
+		};
+		55889250137B83CB0047CC95 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		55889270137BAEB60047CC95 /* XML */ = {
+			isa = PBXGroup;
+			children = (
+				55889271137BAEF30047CC95 /* xmlDataParser.h */,
+				55889272137BAEF30047CC95 /* xmlDataParser.m */,
+			);
+			name = XML;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -194,6 +239,9 @@
 				55889248137B7D7B0047CC95 /* tab_redo.png in Resources */,
 				5588924A137B7DE20047CC95 /* tab_house.png in Resources */,
 				5588924E137B80300047CC95 /* systemh_icon.png in Resources */,
+				55889265137B8B3D0047CC95 /* hvacView.xib in Resources */,
+				5588926A137BA9820047CC95 /* testAquaponics.xib in Resources */,
+				5588926F137BAB2D0047CC95 /* energyView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -206,6 +254,10 @@
 			files = (
 				55889230137B7B600047CC95 /* main.m in Sources */,
 				55889233137B7B600047CC95 /* SystemHAppDelegate.m in Sources */,
+				55889264137B8B3D0047CC95 /* hvacController.m in Sources */,
+				55889269137BA9820047CC95 /* testAquaponics.m in Sources */,
+				5588926E137BAB2D0047CC95 /* energyController.m in Sources */,
+				55889273137BAEF30047CC95 /* xmlDataParser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
