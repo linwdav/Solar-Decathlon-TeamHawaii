@@ -29,6 +29,8 @@
 		5588926F137BAB2D0047CC95 /* energyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5588926D137BAB2C0047CC95 /* energyView.xib */; };
 		55889273137BAEF30047CC95 /* xmlDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889272137BAEF30047CC95 /* xmlDataParser.m */; };
 		55889281137C1C250047CC95 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889280137C1C250047CC95 /* NSString+Helpers.m */; };
+		5588928A137C32B60047CC95 /* aquaponicsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889288137C32B50047CC95 /* aquaponicsController.m */; };
+		5588928B137C32B60047CC95 /* aquaponicsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55889289137C32B60047CC95 /* aquaponicsView.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -63,6 +65,9 @@
 		55889272137BAEF30047CC95 /* xmlDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xmlDataParser.m; sourceTree = "<group>"; };
 		5588927F137C1C250047CC95 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
 		55889280137C1C250047CC95 /* NSString+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Helpers.m"; sourceTree = "<group>"; };
+		55889287137C32B50047CC95 /* aquaponicsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = aquaponicsController.h; sourceTree = "<group>"; };
+		55889288137C32B50047CC95 /* aquaponicsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = aquaponicsController.m; sourceTree = "<group>"; };
+		55889289137C32B60047CC95 /* aquaponicsView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = aquaponicsView.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,6 +148,8 @@
 				55889267137BA9810047CC95 /* testAquaponics.m */,
 				5588926B137BAB2C0047CC95 /* energyController.h */,
 				5588926C137BAB2C0047CC95 /* energyController.m */,
+				55889287137C32B50047CC95 /* aquaponicsController.h */,
+				55889288137C32B50047CC95 /* aquaponicsController.m */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -153,6 +160,7 @@
 				5588926D137BAB2C0047CC95 /* energyView.xib */,
 				55889263137B8B3D0047CC95 /* hvacView.xib */,
 				55889268137BA9810047CC95 /* testAquaponics.xib */,
+				55889289137C32B60047CC95 /* aquaponicsView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -255,6 +263,7 @@
 				55889265137B8B3D0047CC95 /* hvacView.xib in Resources */,
 				5588926A137BA9820047CC95 /* testAquaponics.xib in Resources */,
 				5588926F137BAB2D0047CC95 /* energyView.xib in Resources */,
+				5588928B137C32B60047CC95 /* aquaponicsView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -272,6 +281,7 @@
 				5588926E137BAB2D0047CC95 /* energyController.m in Sources */,
 				55889273137BAEF30047CC95 /* xmlDataParser.m in Sources */,
 				55889281137C1C250047CC95 /* NSString+Helpers.m in Sources */,
+				5588928A137C32B60047CC95 /* aquaponicsController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

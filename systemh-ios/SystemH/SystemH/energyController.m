@@ -37,6 +37,9 @@
 
 - (void)viewDidLoad
 {
+    // set title of the navigation bar
+    self.navigationItem.title = @"Energy";
+    
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
