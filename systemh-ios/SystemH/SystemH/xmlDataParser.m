@@ -18,6 +18,10 @@
 - (void)parser:(NSXMLParser *)parser parseErrorOccurred:(NSError *)parseError {
 
     // Error handling here
+    /*
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"There was an error that occurred during synching" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    [alert show];
+    */
 }
 
 // Retrieves the state data from the XML document and stores it as key-value pairs
@@ -66,39 +70,38 @@
     return success;
 } // end parse XML File
 
-- (BOOL) sendXMLCommand: (NSString *) urlPath withCommand: (NSString *) commandName andArg: (NSString *) argValue {
+
+// Sends the command via PUT request.  All parameters are included in the URL pathname
+- (BOOL) sendXMLCommand: (NSString *) hostName fromSystem: (NSString *) systemName withCommand: (NSString *) commandName andArg: (NSString *) argValue {
+ 
+    // Construct full URL for PUT request
+    NSString *urlAsString = [[NSString alloc] initWithFormat:@"%@/%@/command/%@?arg=%@", hostName, systemName, commandName, argValue];
+        
+    // Initialize URL request with URL
+    NSURL *fullURL = [NSURL URLWithString:urlAsString];
+    NSMutableURLRequest *putRequest = [[NSMutableURLRequest alloc] initWithURL:fullURL];
     
-    NSString *xmlHeader = @"<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
-    NSString *xmlPartOne = [NSString stringWithFormat:@"<command name=\"%@\">", commandName];
-    NSString *xmlPartTwo = [NSString stringWithFormat:@"<arg value=\"%@\"/></command>", argValue];
-    
-    NSString *xmlAsString = [NSString stringWithFormat:@"%@%@%@", xmlHeader, xmlPartOne, xmlPartTwo];
-    NSData *data = [xmlAsString dataUsingEncoding:NSASCIIStringEncoding];
-    
-    NSURL *xmlURL = [NSURL URLWithString:urlPath];
-    NSMutableURLRequest *putRequest = [[NSMutableURLRequest alloc] initWithURL:xmlURL];
-    
+    // Configure request
     [putRequest setTimeoutInterval:5.0];
     [putRequest setHTTPMethod:@"PUT"];
     [putRequest setValue:@"text/xml; charset=UTF-8" forHTTPHeaderField:@"Content-type"];
-    [putRequest setHTTPBody:data];
     
+    // Send request
     NSURLConnection *putConnection;
     putConnection = [[NSURLConnection alloc] initWithRequest:putRequest delegate:self];
     
+    // Return whether operation succeeded or not
     if (!putConnection) {
-        NSLog(@"PUT failed");
+        return NO;
     }
     else {
-        NSLog(@"PUT success");
+        // Means request went through but it's not certain if successful or not (may recieve 404 status code)
+        return YES;
     }
-    
-    return YES;
-    
-}
+} // End SendXMLCommand
 
 -(void) connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
-    NSLog(@"Status Code: %i", [(NSHTTPURLResponse *)response statusCode]);
+    NSLog(@"PUT Request Status Code: %i", [(NSHTTPURLResponse *)response statusCode]);
 }
 
 // Deallocation Method

@@ -19,6 +19,11 @@
 #define PH @"PH"
 #define OXYGEN @"OXYGEN"
 
+#define HOST @"http://localhost:8111"
+#define SYSTEM_NAME @"AQUAPONICS"
+
+#define STATE_DATA_URL @"http://localhost:8111/AQUAPONICS/state"
+
 @implementation aquaponicsController
 
 // XML Parser instance
@@ -71,24 +76,21 @@
     [stateDataTemp release];
     
     // Load default values for state data
-    [[self.parser stateData] setObject:@"0.0" forKey:CIRCULATION];
-    [[self.parser stateData] setObject:@"0.0" forKey:ELECTRICAL_CONDUCTIVITY];
-    [[self.parser stateData] setObject:@"0.0" forKey:DEAD_FISH];
-    [[self.parser stateData] setObject:@"0.0" forKey:TEMPERATURE];
-    [[self.parser stateData] setObject:@"0.0" forKey:TURBIDITY];
-    [[self.parser stateData] setObject:@"0.0" forKey:WATER_LEVEL];
-    [[self.parser stateData] setObject:@"0.0" forKey:PH];
-    [[self.parser stateData] setObject:@"0.0" forKey:OXYGEN];
+    [[self.parser stateData] setObject:@"---" forKey:CIRCULATION];
+    [[self.parser stateData] setObject:@"---" forKey:ELECTRICAL_CONDUCTIVITY];
+    [[self.parser stateData] setObject:@"---" forKey:DEAD_FISH];
+    [[self.parser stateData] setObject:@"---" forKey:TEMPERATURE];
+    [[self.parser stateData] setObject:@"---" forKey:TURBIDITY];
+    [[self.parser stateData] setObject:@"---" forKey:WATER_LEVEL];
+    [[self.parser stateData] setObject:@"---" forKey:PH];
+    [[self.parser stateData] setObject:@"---" forKey:OXYGEN];
     
-    
-    [self.parser sendXMLCommand:@"http://localhost:8111/AQUAPONICS/command/SET_TEMPERATURE?arg=15" withCommand:@"SET_TEMPERATURE" andArg:@"20"];
+
+    [self.parser sendXMLCommand:HOST fromSystem:SYSTEM_NAME withCommand:@"SET_TEMPERATURE" andArg:@"20"];
     
     // Start timer for countdown - update at 1.0 second intervals
     [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(updateTable)
                                    userInfo:nil repeats:YES];
-
-    
-    
     [super viewDidLoad];
 
     // Uncomment the following line to preserve selection between presentations.
@@ -317,9 +319,9 @@
 
 // Updates the table in the current view from the XML document at the specified URL.
 - (void) updateTable {
+    // Update Data
+    [self.parser parseXMLFile:STATE_DATA_URL];   
     
-    [self.parser parseXMLFile:@"http://localhost:8111/AQUAPONICS/state"];
-
     // Reload Table view
     [self.aquaponicsTableView reloadData];
 } // End updateTable
