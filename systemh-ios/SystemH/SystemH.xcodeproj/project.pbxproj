@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		55633F5E137DE5D7007300C2 /* EnergyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55633F5C137DE5D7007300C2 /* EnergyController.m */; };
 		55633F5F137DE5D7007300C2 /* EnergyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55633F5D137DE5D7007300C2 /* EnergyController.xib */; };
+		55633F63137DF503007300C2 /* HvacController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55633F61137DF502007300C2 /* HvacController.m */; };
+		55633F64137DF503007300C2 /* HvacController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55633F62137DF502007300C2 /* HvacController.xib */; };
 		55889223137B7B5F0047CC95 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889222137B7B5F0047CC95 /* UIKit.framework */; };
 		55889225137B7B5F0047CC95 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889224137B7B5F0047CC95 /* Foundation.framework */; };
 		55889227137B7B600047CC95 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889226137B7B5F0047CC95 /* CoreGraphics.framework */; };
@@ -33,6 +35,9 @@
 		55633F5B137DE5D7007300C2 /* EnergyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyController.h; sourceTree = "<group>"; };
 		55633F5C137DE5D7007300C2 /* EnergyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnergyController.m; sourceTree = "<group>"; };
 		55633F5D137DE5D7007300C2 /* EnergyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnergyController.xib; sourceTree = "<group>"; };
+		55633F60137DF502007300C2 /* HvacController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HvacController.h; sourceTree = "<group>"; };
+		55633F61137DF502007300C2 /* HvacController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HvacController.m; sourceTree = "<group>"; };
+		55633F62137DF502007300C2 /* HvacController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HvacController.xib; sourceTree = "<group>"; };
 		5588921E137B7B5F0047CC95 /* SystemH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SystemH.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55889222137B7B5F0047CC95 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55889224137B7B5F0047CC95 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -136,7 +141,9 @@
 				55889288137C32B50047CC95 /* aquaponicsController.m */,
 				55633F5B137DE5D7007300C2 /* EnergyController.h */,
 				55633F5C137DE5D7007300C2 /* EnergyController.m */,
-				55633F5D137DE5D7007300C2 /* EnergyController.xib */,
+				55633F60137DF502007300C2 /* HvacController.h */,
+				55633F61137DF502007300C2 /* HvacController.m */,
+				55633F62137DF502007300C2 /* HvacController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -144,6 +151,7 @@
 		5588923D137B7B820047CC95 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				55633F5D137DE5D7007300C2 /* EnergyController.xib */,
 				55889289137C32B60047CC95 /* aquaponicsView.xib */,
 			);
 			name = Views;
@@ -246,6 +254,7 @@
 				5588924E137B80300047CC95 /* systemh_icon.png in Resources */,
 				5588928B137C32B60047CC95 /* aquaponicsView.xib in Resources */,
 				55633F5F137DE5D7007300C2 /* EnergyController.xib in Resources */,
+				55633F64137DF503007300C2 /* HvacController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +271,7 @@
 				55889281137C1C250047CC95 /* NSString+Helpers.m in Sources */,
 				5588928A137C32B60047CC95 /* aquaponicsController.m in Sources */,
 				55633F5E137DE5D7007300C2 /* EnergyController.m in Sources */,
+				55633F63137DF503007300C2 /* HvacController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
