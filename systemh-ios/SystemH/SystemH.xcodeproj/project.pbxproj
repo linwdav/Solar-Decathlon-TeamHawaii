@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		55633F5E137DE5D7007300C2 /* EnergyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55633F5C137DE5D7007300C2 /* EnergyController.m */; };
+		55633F5F137DE5D7007300C2 /* EnergyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55633F5D137DE5D7007300C2 /* EnergyController.xib */; };
 		55889223137B7B5F0047CC95 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889222137B7B5F0047CC95 /* UIKit.framework */; };
 		55889225137B7B5F0047CC95 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889224137B7B5F0047CC95 /* Foundation.framework */; };
 		55889227137B7B600047CC95 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889226137B7B5F0047CC95 /* CoreGraphics.framework */; };
@@ -21,12 +23,6 @@
 		55889248137B7D7B0047CC95 /* tab_redo.png in Resources */ = {isa = PBXBuildFile; fileRef = 55889247137B7D7B0047CC95 /* tab_redo.png */; };
 		5588924A137B7DE20047CC95 /* tab_house.png in Resources */ = {isa = PBXBuildFile; fileRef = 55889249137B7DE20047CC95 /* tab_house.png */; };
 		5588924E137B80300047CC95 /* systemh_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5588924D137B80300047CC95 /* systemh_icon.png */; };
-		55889264137B8B3D0047CC95 /* hvacController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889262137B8B3D0047CC95 /* hvacController.m */; };
-		55889265137B8B3D0047CC95 /* hvacView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55889263137B8B3D0047CC95 /* hvacView.xib */; };
-		55889269137BA9820047CC95 /* testAquaponics.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889267137BA9810047CC95 /* testAquaponics.m */; };
-		5588926A137BA9820047CC95 /* testAquaponics.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55889268137BA9810047CC95 /* testAquaponics.xib */; };
-		5588926E137BAB2D0047CC95 /* energyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5588926C137BAB2C0047CC95 /* energyController.m */; };
-		5588926F137BAB2D0047CC95 /* energyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5588926D137BAB2C0047CC95 /* energyView.xib */; };
 		55889273137BAEF30047CC95 /* xmlDataParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889272137BAEF30047CC95 /* xmlDataParser.m */; };
 		55889281137C1C250047CC95 /* NSString+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889280137C1C250047CC95 /* NSString+Helpers.m */; };
 		5588928A137C32B60047CC95 /* aquaponicsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55889288137C32B50047CC95 /* aquaponicsController.m */; };
@@ -34,6 +30,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		55633F5B137DE5D7007300C2 /* EnergyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyController.h; sourceTree = "<group>"; };
+		55633F5C137DE5D7007300C2 /* EnergyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnergyController.m; sourceTree = "<group>"; };
+		55633F5D137DE5D7007300C2 /* EnergyController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnergyController.xib; sourceTree = "<group>"; };
 		5588921E137B7B5F0047CC95 /* SystemH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SystemH.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55889222137B7B5F0047CC95 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55889224137B7B5F0047CC95 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -52,15 +51,6 @@
 		55889247137B7D7B0047CC95 /* tab_redo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_redo.png; sourceTree = "<group>"; };
 		55889249137B7DE20047CC95 /* tab_house.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = tab_house.png; sourceTree = "<group>"; };
 		5588924D137B80300047CC95 /* systemh_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = systemh_icon.png; sourceTree = "<group>"; };
-		55889261137B8B3D0047CC95 /* hvacController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hvacController.h; sourceTree = "<group>"; };
-		55889262137B8B3D0047CC95 /* hvacController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = hvacController.m; sourceTree = "<group>"; };
-		55889263137B8B3D0047CC95 /* hvacView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = hvacView.xib; sourceTree = "<group>"; };
-		55889266137BA9810047CC95 /* testAquaponics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = testAquaponics.h; sourceTree = "<group>"; };
-		55889267137BA9810047CC95 /* testAquaponics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = testAquaponics.m; sourceTree = "<group>"; };
-		55889268137BA9810047CC95 /* testAquaponics.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = testAquaponics.xib; sourceTree = "<group>"; };
-		5588926B137BAB2C0047CC95 /* energyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = energyController.h; sourceTree = "<group>"; };
-		5588926C137BAB2C0047CC95 /* energyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = energyController.m; sourceTree = "<group>"; };
-		5588926D137BAB2C0047CC95 /* energyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = energyView.xib; sourceTree = "<group>"; };
 		55889271137BAEF30047CC95 /* xmlDataParser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = xmlDataParser.h; sourceTree = "<group>"; };
 		55889272137BAEF30047CC95 /* xmlDataParser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = xmlDataParser.m; sourceTree = "<group>"; };
 		5588927F137C1C250047CC95 /* NSString+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Helpers.h"; sourceTree = "<group>"; };
@@ -142,14 +132,11 @@
 		5588923C137B7B780047CC95 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				55889261137B8B3D0047CC95 /* hvacController.h */,
-				55889262137B8B3D0047CC95 /* hvacController.m */,
-				55889266137BA9810047CC95 /* testAquaponics.h */,
-				55889267137BA9810047CC95 /* testAquaponics.m */,
-				5588926B137BAB2C0047CC95 /* energyController.h */,
-				5588926C137BAB2C0047CC95 /* energyController.m */,
 				55889287137C32B50047CC95 /* aquaponicsController.h */,
 				55889288137C32B50047CC95 /* aquaponicsController.m */,
+				55633F5B137DE5D7007300C2 /* EnergyController.h */,
+				55633F5C137DE5D7007300C2 /* EnergyController.m */,
+				55633F5D137DE5D7007300C2 /* EnergyController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -157,9 +144,6 @@
 		5588923D137B7B820047CC95 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				5588926D137BAB2C0047CC95 /* energyView.xib */,
-				55889263137B8B3D0047CC95 /* hvacView.xib */,
-				55889268137BA9810047CC95 /* testAquaponics.xib */,
 				55889289137C32B60047CC95 /* aquaponicsView.xib */,
 			);
 			name = Views;
@@ -260,10 +244,8 @@
 				55889248137B7D7B0047CC95 /* tab_redo.png in Resources */,
 				5588924A137B7DE20047CC95 /* tab_house.png in Resources */,
 				5588924E137B80300047CC95 /* systemh_icon.png in Resources */,
-				55889265137B8B3D0047CC95 /* hvacView.xib in Resources */,
-				5588926A137BA9820047CC95 /* testAquaponics.xib in Resources */,
-				5588926F137BAB2D0047CC95 /* energyView.xib in Resources */,
 				5588928B137C32B60047CC95 /* aquaponicsView.xib in Resources */,
+				55633F5F137DE5D7007300C2 /* EnergyController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,12 +258,10 @@
 			files = (
 				55889230137B7B600047CC95 /* main.m in Sources */,
 				55889233137B7B600047CC95 /* SystemHAppDelegate.m in Sources */,
-				55889264137B8B3D0047CC95 /* hvacController.m in Sources */,
-				55889269137BA9820047CC95 /* testAquaponics.m in Sources */,
-				5588926E137BAB2D0047CC95 /* energyController.m in Sources */,
 				55889273137BAEF30047CC95 /* xmlDataParser.m in Sources */,
 				55889281137C1C250047CC95 /* NSString+Helpers.m in Sources */,
 				5588928A137C32B60047CC95 /* aquaponicsController.m in Sources */,
+				55633F5E137DE5D7007300C2 /* EnergyController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,6 +366,7 @@
 				5588923B137B7B600047CC95 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
