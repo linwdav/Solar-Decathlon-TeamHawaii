@@ -8,9 +8,29 @@
 
 #import <UIKit/UIKit.h>
 
+@class xmlDataParser;
 
 @interface HvacController : UIViewController {
     
+    UILabel *currentTempLabel;
+    UILabel *desiredTempLabel;
+    UISlider *desiredTempSlider;
+    
+    // Saved Desired Temp Value
+    NSString *savedDesiredTempValue; 
+    
+    // Parser to aid in XML parsing and Commands via HTTP PUT requests
+    xmlDataParser *parser;
+
 }
+@property (nonatomic, retain) xmlDataParser *parser;
+
+@property (nonatomic, retain) NSString *savedDesiredTempValue;
+
+@property (nonatomic, retain) IBOutlet UILabel *currentTempLabel;
+@property (nonatomic, retain) IBOutlet UILabel *desiredTempLabel;
+@property (nonatomic, retain) IBOutlet UISlider *desiredTempSlider;
+
+- (IBAction) setDesiredTempViaSlider;
 
 @end

@@ -77,6 +77,7 @@
     // Construct full URL for PUT request
     NSString *urlAsString = [[NSString alloc] initWithFormat:@"%@/%@/command/%@?arg=%@", hostName, systemName, commandName, argValue];
         
+    NSLog(@"PUT URL: %@", urlAsString);
     // Initialize URL request with URL
     NSURL *fullURL = [NSURL URLWithString:urlAsString];
     NSMutableURLRequest *putRequest = [[NSMutableURLRequest alloc] initWithURL:fullURL];

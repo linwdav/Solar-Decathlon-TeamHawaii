@@ -143,7 +143,6 @@
 				55633F5C137DE5D7007300C2 /* EnergyController.m */,
 				55633F60137DF502007300C2 /* HvacController.h */,
 				55633F61137DF502007300C2 /* HvacController.m */,
-				55633F62137DF502007300C2 /* HvacController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -153,6 +152,7 @@
 			children = (
 				55633F5D137DE5D7007300C2 /* EnergyController.xib */,
 				55889289137C32B60047CC95 /* aquaponicsView.xib */,
+				55633F62137DF502007300C2 /* HvacController.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
