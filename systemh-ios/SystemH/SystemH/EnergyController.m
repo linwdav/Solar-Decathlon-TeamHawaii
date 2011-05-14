@@ -10,6 +10,7 @@
 #import "EnergyController.h"
 #import "xmlDataParser.h"
 #import "NSString+Helpers.h"
+#import "NSDate+Helpers.h"
 
 #define KWH @"kWh"
 #define ELECTRIC @"POWER"
@@ -18,7 +19,7 @@
 #define ELECTRIC_STATE_DATA_URL @"http://localhost:8111/ELECTRIC/state"
 #define PV_STATE_DATA_URL @"http://localhost:8111/PHOTOVOLTAIC/state"
 
-#define NUM_SECTIONS 2
+#define NUM_SECTIONS 3
 
 @implementation EnergyController
 
@@ -166,6 +167,8 @@
             // Second section contains one row (energy delta)
         case 1:
             return 1;
+        case 2:
+            return 1;
         default:
             return 0;
     } // End Switch
@@ -206,6 +209,18 @@
             
             self.energyBalance = [self reportDifferenceBetweenAsDouble:self.pvReading andAnotherValue:self.electricReading];
             cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ kWh",self.energyBalance];
+            break;
+            
+        case 2:
+            cell.textLabel.text = @"Last Updated";
+            NSString *timestampAsString = (NSString *)[[self.photovoltaicParser stateData] objectForKey:@"timestamp"];
+            
+            if (!timestampAsString) {
+                cell.detailTextLabel.text = @"---";
+            }
+            else {
+                cell.detailTextLabel.text = [NSDate convertTimeStampToDate:timestampAsString];
+            }
             break;
             
         default:

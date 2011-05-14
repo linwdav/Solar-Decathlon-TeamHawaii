@@ -11,6 +11,7 @@
 		55633F5F137DE5D7007300C2 /* EnergyController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55633F5D137DE5D7007300C2 /* EnergyController.xib */; };
 		55633F63137DF503007300C2 /* HvacController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55633F61137DF502007300C2 /* HvacController.m */; };
 		55633F64137DF503007300C2 /* HvacController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55633F62137DF502007300C2 /* HvacController.xib */; };
+		55633F70137E3D77007300C2 /* NSDate+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = 55633F6F137E3D77007300C2 /* NSDate+Helpers.m */; };
 		55889223137B7B5F0047CC95 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889222137B7B5F0047CC95 /* UIKit.framework */; };
 		55889225137B7B5F0047CC95 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889224137B7B5F0047CC95 /* Foundation.framework */; };
 		55889227137B7B600047CC95 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 55889226137B7B5F0047CC95 /* CoreGraphics.framework */; };
@@ -38,6 +39,8 @@
 		55633F60137DF502007300C2 /* HvacController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HvacController.h; sourceTree = "<group>"; };
 		55633F61137DF502007300C2 /* HvacController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HvacController.m; sourceTree = "<group>"; };
 		55633F62137DF502007300C2 /* HvacController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HvacController.xib; sourceTree = "<group>"; };
+		55633F6E137E3D77007300C2 /* NSDate+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Helpers.h"; sourceTree = "<group>"; };
+		55633F6F137E3D77007300C2 /* NSDate+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDate+Helpers.m"; sourceTree = "<group>"; };
 		5588921E137B7B5F0047CC95 /* SystemH.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SystemH.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		55889222137B7B5F0047CC95 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		55889224137B7B5F0047CC95 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -192,6 +195,8 @@
 			children = (
 				5588927F137C1C250047CC95 /* NSString+Helpers.h */,
 				55889280137C1C250047CC95 /* NSString+Helpers.m */,
+				55633F6E137E3D77007300C2 /* NSDate+Helpers.h */,
+				55633F6F137E3D77007300C2 /* NSDate+Helpers.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -272,6 +277,7 @@
 				5588928A137C32B60047CC95 /* aquaponicsController.m in Sources */,
 				55633F5E137DE5D7007300C2 /* EnergyController.m in Sources */,
 				55633F63137DF503007300C2 /* HvacController.m in Sources */,
+				55633F70137E3D77007300C2 /* NSDate+Helpers.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

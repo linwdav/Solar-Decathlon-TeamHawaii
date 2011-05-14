@@ -7,7 +7,7 @@
 //
 
 #import "xmlDataParser.h"
-
+#define TIMESTAMP_KEY @"timestamp"
 
 @implementation xmlDataParser
 
@@ -45,8 +45,25 @@
         
         // Stores values in the state data Dictionary
         [self.stateData setObject:value forKey:key];
+    } // End if
+    
+    // Get timestamp
+    if ( [elementName isEqualToString:@"state-data"]) {
         
-        return;
+        // Create state data dictionary if it doesn't exist
+        if (!self.stateData) {
+            NSMutableDictionary *stateDataTemp = [[NSMutableDictionary alloc] init];
+            self.stateData = stateDataTemp;
+            
+            [stateDataTemp release];
+        }
+        
+        // Gets key and value from the attribues dictionary
+        NSString * key = TIMESTAMP_KEY;
+        NSString * value = (NSString *)[attributeDict objectForKey:TIMESTAMP_KEY];
+        
+        // Stores values in the state data Dictionary
+        [self.stateData setObject:value forKey:key];
     } // End if
 
 } // End get attributes method
