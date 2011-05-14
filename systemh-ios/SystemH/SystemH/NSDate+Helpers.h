@@ -10,6 +10,9 @@
 
 
 @interface NSDate (NSDate_Helpers)
+
+// Formats a string (Epoch long in milliseconds) to a date format MM/dd/YY HH:mm:ss
 + (NSString *) convertTimeStampToDate: (NSString *) timestampAsString;
+
 @end
 
