@@ -9,6 +9,7 @@
 #import "HvacController.h"
 #import "xmlDataParser.h"
 #import "NSString+Helpers.h"
+#import "NSDate+Helpers.h"
 
 #define TEMPERATURE @"TEMPERATURE"
 
@@ -27,6 +28,7 @@
 @synthesize desiredTempLabel;
 @synthesize desiredTempSlider;
 @synthesize savedDesiredTempValue;
+@synthesize timestampLabel;
 @synthesize parser;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -45,6 +47,7 @@
     [currentTempLabel release];
     [desiredTempLabel release];
     [desiredTempSlider release];
+    [timestampLabel release];
     [super dealloc];
 }
 
@@ -100,6 +103,7 @@
     [self setCurrentTempLabel:nil];
     [self setDesiredTempLabel:nil];
     [self setDesiredTempSlider:nil];
+    [self setTimestampLabel:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -130,6 +134,18 @@
     
     // Set Current Temperature Label
     self.currentTempLabel.text = [(NSString *)[[self.parser stateData] objectForKey:TEMPERATURE] truncateDecimals:2];
+    
+    // Get latest timestamp
+    NSString *timestampAsString = (NSString *)[[self.parser stateData] objectForKey:@"timestamp"];
+    
+    if (!timestampAsString) {
+        self.timestampLabel.text = @"---";
+    }
+    else {
+        self.timestampLabel.text = [NSDate convertTimeStampToDate:timestampAsString];
+    }
+    
+    [self.timestampLabel setNeedsDisplay];
     
     // Reload Table view
     [self.currentTempLabel setNeedsDisplay];

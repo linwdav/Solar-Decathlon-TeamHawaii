@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5562D3431380516600AF73C4 /* LightingController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5562D3411380516600AF73C4 /* LightingController.m */; };
-		5562D3441380516600AF73C4 /* LightingController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5562D3421380516600AF73C4 /* LightingController.xib */; };
+		5562D3441380516600AF73C4 /* LightingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 5562D3421380516600AF73C4 /* LightingView.xib */; };
 		55633F5E137DE5D7007300C2 /* EnergyController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55633F5C137DE5D7007300C2 /* EnergyController.m */; };
 		55633F5F137DE5D7007300C2 /* EnergyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 55633F5D137DE5D7007300C2 /* EnergyView.xib */; };
 		55633F63137DF503007300C2 /* HvacController.m in Sources */ = {isa = PBXBuildFile; fileRef = 55633F61137DF502007300C2 /* HvacController.m */; };
@@ -37,7 +37,7 @@
 /* Begin PBXFileReference section */
 		5562D3401380516600AF73C4 /* LightingController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LightingController.h; sourceTree = "<group>"; };
 		5562D3411380516600AF73C4 /* LightingController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LightingController.m; sourceTree = "<group>"; };
-		5562D3421380516600AF73C4 /* LightingController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LightingController.xib; sourceTree = "<group>"; };
+		5562D3421380516600AF73C4 /* LightingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LightingView.xib; sourceTree = "<group>"; };
 		55633F5B137DE5D7007300C2 /* EnergyController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EnergyController.h; sourceTree = "<group>"; };
 		55633F5C137DE5D7007300C2 /* EnergyController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EnergyController.m; sourceTree = "<group>"; };
 		55633F5D137DE5D7007300C2 /* EnergyView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EnergyView.xib; sourceTree = "<group>"; };
@@ -153,7 +153,6 @@
 				55633F61137DF502007300C2 /* HvacController.m */,
 				5562D3401380516600AF73C4 /* LightingController.h */,
 				5562D3411380516600AF73C4 /* LightingController.m */,
-				5562D3421380516600AF73C4 /* LightingController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -164,6 +163,7 @@
 				55633F5D137DE5D7007300C2 /* EnergyView.xib */,
 				55889289137C32B60047CC95 /* AquaponicsView.xib */,
 				55633F62137DF502007300C2 /* HvacView.xib */,
+				5562D3421380516600AF73C4 /* LightingView.xib */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -268,7 +268,7 @@
 				5588928B137C32B60047CC95 /* AquaponicsView.xib in Resources */,
 				55633F5F137DE5D7007300C2 /* EnergyView.xib in Resources */,
 				55633F64137DF503007300C2 /* HvacView.xib in Resources */,
-				5562D3441380516600AF73C4 /* LightingController.xib in Resources */,
+				5562D3441380516600AF73C4 /* LightingView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

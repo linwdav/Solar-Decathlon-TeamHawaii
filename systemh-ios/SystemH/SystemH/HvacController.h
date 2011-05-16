@@ -22,7 +22,9 @@
     // Parser to aid in XML parsing and Commands via HTTP PUT requests
     xmlDataParser *parser;
 
+    UILabel *timestampLabel;
 }
+@property (nonatomic, retain) IBOutlet UILabel *timestampLabel;
 @property (nonatomic, retain) xmlDataParser *parser;
 
 @property (nonatomic, retain) NSString *savedDesiredTempValue;
