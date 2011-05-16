@@ -133,11 +133,20 @@
     [self.parser parseXMLFile:STATE_DATA_URL];   
     
     // Set Current Temperature Label
-    self.currentTempLabel.text = [(NSString *)[[self.parser stateData] objectForKey:TEMPERATURE] truncateDecimals:2];
+    NSString *currentTempAsString = [(NSString *)[[self.parser stateData] objectForKey:TEMPERATURE] truncateDecimals:2];
+
+    // Check to see if there's any data for Current Temp
+    if (!currentTempAsString) {
+        self.currentTempLabel.text = @"---";
+    }
+    else {
+        self.currentTempLabel.text = currentTempAsString;
+    }
     
     // Get latest timestamp
     NSString *timestampAsString = (NSString *)[[self.parser stateData] objectForKey:@"timestamp"];
-    
+        
+    // Check to see if there's any data for timestamp
     if (!timestampAsString) {
         self.timestampLabel.text = @"---";
     }

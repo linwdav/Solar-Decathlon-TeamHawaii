@@ -98,11 +98,14 @@
 											<double key="NSSize">17</double>
 											<int key="NSfFlags">16</int>
 										</object>
-										<reference key="IBUITextColor" ref="955359562"/>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">2</int>
+											<bytes key="NSRGB">MC40MTk2MDc4Nzc3IDAuNDg2Mjc0NTQwNCAwLjYyNzQ1MTAwMjYAA</bytes>
+										</object>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
 										<float key="IBUIMinimumFontSize">10</float>
-										<int key="IBUITextAlignment">1</int>
+										<int key="IBUITextAlignment">2</int>
 									</object>
 								</object>
 								<string key="NSFrameSize">{320, 44}</string>
@@ -189,11 +192,14 @@
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<string key="IBUIText">---</string>
 										<reference key="IBUIFont" ref="538457552"/>
-										<reference key="IBUITextColor" ref="955359562"/>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">2</int>
+											<bytes key="NSRGB">MC40MTk2MDc4Nzc3IDAuNDg2Mjc0NTQwNCAwLjYyNzQ1MTAwMjYAA</bytes>
+										</object>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
 										<float key="IBUIMinimumFontSize">10</float>
-										<int key="IBUITextAlignment">1</int>
+										<int key="IBUITextAlignment">2</int>
 									</object>
 								</object>
 								<string key="NSFrameSize">{320, 80}</string>
@@ -249,7 +255,7 @@
 									<object class="IBUILabel" id="476039302">
 										<reference key="NSNextResponder" ref="1047564292"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{258, 12}, {42, 21}}</string>
+										<string key="NSFrame">{{143, 12}, {157, 21}}</string>
 										<reference key="NSSuperview" ref="1047564292"/>
 										<reference key="NSWindow"/>
 										<bool key="IBUIOpaque">NO</bool>
@@ -259,11 +265,14 @@
 										<string key="targetRuntimeIdentifier">IBCocoaTouchFramework</string>
 										<string key="IBUIText">---</string>
 										<reference key="IBUIFont" ref="538457552"/>
-										<reference key="IBUITextColor" ref="955359562"/>
+										<object class="NSColor" key="IBUITextColor">
+											<int key="NSColorSpace">2</int>
+											<bytes key="NSRGB">MC40MTk2MDc4Nzc3IDAuNDg2Mjc0NTQwNCAwLjYyNzQ1MTAwMjYAA</bytes>
+										</object>
 										<nil key="IBUIHighlightedColor"/>
 										<int key="IBUIBaselineAdjustment">1</int>
 										<float key="IBUIMinimumFontSize">10</float>
-										<int key="IBUITextAlignment">1</int>
+										<int key="IBUITextAlignment">2</int>
 									</object>
 								</object>
 								<string key="NSFrameSize">{320, 44}</string>
