@@ -125,9 +125,8 @@ public class Menu extends Activity {
    */
   public void checkConnection() {
     dialog =
-        ProgressDialog.show(this, "Please wait...", "Connecting to the house system..."
-            + "\n\n\nTouch outside to cancel");
-    dialog.setCancelable(true);
+        ProgressDialog.show(this, "Please wait...", "Connecting to the house system...");
+    dialog.setCancelable(false);
     new ConnectionThread().start();
   }
 

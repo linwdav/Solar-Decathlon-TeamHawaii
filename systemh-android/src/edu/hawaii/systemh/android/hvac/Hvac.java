@@ -2,10 +2,12 @@ package edu.hawaii.systemh.android.hvac;
 
 
 import java.util.Date;
-import org.restlet.data.Status;
+//import org.restlet.data.Status;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -36,6 +38,19 @@ public class Hvac extends Activity {
   private static String feedbackMsg = "";
   private SystemData hvac;
   
+  // Displays the current home temperature
+  private TextView currTempTextView;
+    
+  private boolean running = false;
+  
+  //handler to handle messages from another running thread
+  private Handler handler = new Handler() {
+    @Override
+    public void handleMessage(Message msg) {
+      currTempTextView.setText(msg.obj + "\u00b0C");
+    }
+  };
+  
   /** 
    * Called when the activity is first created. 
    * @param savedInstanceState - A mapping from String values to various Parcelable types. 
@@ -43,10 +58,6 @@ public class Hvac extends Activity {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-
-    // Displays the current home temperature
-    TextView currTempTextView;
-    int currentTemp;
     
     // Requesting to turn the title OFF.
     requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -56,12 +67,10 @@ public class Hvac extends Activity {
         WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
     setContentView(R.layout.hvac);
-    
-    hvac = new SystemData("hvac");
-    
+        
     currTempTextView = (TextView) findViewById(R.id.TextViewCurrTempValue);
-    currentTemp = (int) hvac.getTemp();
-    currTempTextView.setText(currentTemp + "\u00b0C");
+    hvac = new SystemData("hvac");
+    currTempTextView.setText((int)hvac.getTemp() + "\u00b0C");
 
     desiredHomeTempLog = (TextView) findViewById(R.id.TextViewDesiredHomeTempLog);
     if (!"".equals(feedbackMsg)) {
@@ -95,16 +104,22 @@ public class Hvac extends Activity {
       @Override
       public void onStopTrackingTouch(SeekBar seekBar) {
         int tempSet = desiredHomeTempSeekBar.getProgress();
-        Status status = hvac.setHvacTemp(tempSet);
-        if (status != null && status.equals(Status.SUCCESS_OK)) {
+        hvac.setHvacTemp(tempSet);
+        //if (status != null && status.equals(Status.SUCCESS_OK)) {
           feedbackMsg += new Date() + " :\t" + tempSet + "\u00b0 has been set.\n";
           desiredHomeTempLog.setText(feedbackMsg);
-        }
-        else {
-          feedbackMsg += new Date() + " :\tThe request has failed.\n";
-        }
+        //}
+        //else {
+        //  feedbackMsg += new Date() + " :\tThe request has failed.\n";
+        //}
       }
     });
+    
+    // refresh the pages every minute
+    Runnable runnable = new SystemDataRunnable();
+    running = true;
+    Thread dataGatherThread = new Thread(runnable);
+    dataGatherThread.start();
   }
 
   /**
@@ -124,5 +139,43 @@ public class Hvac extends Activity {
   protected void onStop() {
     finish();
     super.onDestroy();
+  }
+  
+  @Override
+  protected void onPause() {
+    running = false;
+    super.onStop();
+  }
+  
+  
+  /**
+   * A runnable that gathers System data and updates the views on the current page.
+   * 
+   * @author Group H
+   * 
+   */
+  public class SystemDataRunnable implements Runnable {
+
+    private Message msg;
+
+    @Override
+    public void run() {
+
+      while (running) {
+        
+        try {          
+          hvac = new SystemData("hvac");
+          msg = new Message();  
+          msg.obj = hvac.getTemp();
+          handler.sendMessage(msg);          
+          
+          Thread.sleep(60000);
+        }
+        catch (InterruptedException e) {
+          e.printStackTrace();
+        }
+
+      }
+    }
   }
 }

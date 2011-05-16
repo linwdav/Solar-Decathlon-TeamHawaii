@@ -4,7 +4,7 @@
     <string name="Menu">Menu</string>
     <string name="HouseName">Hale Pilihonua</string>
     <string name="Aquaponics">Aquaponics System</string>
-    <string name="Lighting">Lighting System Controls</string>
+    <string name="Lighting">Lighting System</string>
     <string name="Hvac">Hvac System</string>
     <string name="Help">Help</string>
     <string name="Settings">User Settings</string>
@@ -12,7 +12,7 @@
     <string name="Confirm">Confirm</string>
     <string name="Close">Close</string>
     <string name="ColorPicker">Pick a Color</string>
-    <string name="ChangeColor">Change Color</string>
+    <string name="ChangeColor">Change Color:</string>
     <string name="lightSwitch">Light Switch:</string>
     <string name="roomPrompt">Choose a room:</string>
     <string name="systemPrompt">Choose a system:</string>
