@@ -21,13 +21,13 @@ public class AquaponicsData {
   
   // Stored command values.
   /** Represents the desired electrical conductivity level of the tank in µS/cm. */
-  private static double goalElectricalConductivity;
+  private static double goalElectricalConductivity = 15.0;
   /** Represents the desired temperature of the tank in Celcius. */
-  private static int goalTemperature;
+  private static int goalTemperature = 32;
   /** Represents the desired water level of the tank in inches. */
-  private static double goalWater;
+  private static double goalWater = 42;
   /** Represents the desired pH level of the tank. */
-  private static double goalPH;
+  private static double goalPH = 7.0;
   /** Initializes the tank with 20 fish, each with 10 health points. */
   private static FishTank tank = new FishTank(20, 10);
 
@@ -79,7 +79,7 @@ public class AquaponicsData {
    * 
    * @param newDesiredNutrients the nutrient level.
    */
-  public static void setNutrients(double newDesiredNutrients) {
+  public static void setNutrients(double newDesiredNutrients) { 
     goalElectricalConductivity = newDesiredNutrients;
   }
 
